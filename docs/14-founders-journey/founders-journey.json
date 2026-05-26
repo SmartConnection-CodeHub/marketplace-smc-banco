@@ -1,0 +1,74 @@
+{
+  "default": "ONBOARDING",
+  "scenarios": {
+    "ONBOARDING": {
+      "title": "Onboarding 3 founders al sistema",
+      "sub": "Setup · primer producto · primera venta · primera factura",
+      "callout": "Primer mes operando. Si llegamos al hito 'venta cerrada end-to-end auto' en mes 1 vamos bien. Si tarda más · revisar.",
+      "tags": ["Setup primer mes", "Aha-moment crítico"],
+      "stages": [
+        { "num": "01", "name": "Setup", "boxes": [
+          { "code": "FJ-01", "label": "Conectar OAuth MeLi + tokens cookies", "kind": "create", "stack": "Guillermo" },
+          { "code": "FJ-02", "label": "Cargar primer producto manual", "kind": "create", "stack": "Camila + Javier" },
+          { "code": "FJ-03", "label": "Verificar DTE Open Factura emite OK", "kind": "doc", "stack": "Guillermo + Controller" }
+        ]},
+        { "num": "02", "name": "Primer ciclo", "boxes": [
+          { "code": "FJ-04", "label": "Publicar producto en MeLi", "kind": "create", "stack": "Adapter MeLi" },
+          { "code": "FJ-05", "label": "Recibir primera orden vía webhook", "kind": "notify", "stack": "Webhook firmado" },
+          { "code": "FJ-06", "label": "Despachar con courier · emitir DTE 39", "kind": "doc", "stack": "Camila + sistema" }
+        ]},
+        { "num": "03", "name": "Aha-moment", "boxes": [
+          { "code": "FJ-07", "label": "Orden cerrada sin intervención manual", "kind": "notify", "stack": "Sistema autónomo" }
+        ]},
+        { "num": "04", "name": "Estabilizar", "boxes": [
+          { "code": "FJ-08", "label": "10+ órdenes/semana sin issue", "kind": "update", "stack": "Operación regular" },
+          { "code": "FJ-09", "label": "Cerrar mes con conciliación clean", "kind": "doc", "stack": "Controller validation" }
+        ]}
+      ]
+    },
+    "MP_FIRST": {
+      "title": "Primera licitación Mercado Público",
+      "sub": "Detectar · postular · adjudicar · entregar",
+      "callout": "Hito B2G crítico. Diferencia entre 'lo intentamos' y 'lo operamos en serio'.",
+      "tags": ["Hito B2G", "Factura DTE 33"],
+      "stages": [
+        { "num": "01", "name": "Detectar", "boxes": [
+          { "code": "MP-01", "label": "Sync diario trae licitaciones afines", "kind": "search", "stack": "Cron 8am" }
+        ]},
+        { "num": "02", "name": "Postular", "boxes": [
+          { "code": "MP-02", "label": "Oferta Cerebro IA + revisar Javier", "kind": "create", "stack": "Cerebro + humano" },
+          { "code": "MP-03", "label": "Submit a Mercado Público", "kind": "notify", "stack": "MP API" }
+        ]},
+        { "num": "03", "name": "Esperar", "boxes": [
+          { "code": "MP-04", "label": "Día de apertura ofertas", "kind": "search", "stack": "Polling" }
+        ]},
+        { "num": "04", "name": "Adjudicar", "boxes": [
+          { "code": "MP-05", "label": "Primera victoria · OC recibida", "kind": "notify", "stack": "Aha B2G" }
+        ]},
+        { "num": "05", "name": "Despacho institucional", "boxes": [
+          { "code": "MP-06", "label": "Despacho + acta recepción + DTE 33", "kind": "doc", "stack": "Camila + Open Factura" }
+        ]}
+      ]
+    },
+    "EVOLVE": {
+      "title": "Operación regular Y1",
+      "sub": "Stand-up semanal · cierre mensual · sourcing continuo",
+      "callout": "Ciclo regular cuando el sistema ya está estable. Foco en operar · NO en levantar.",
+      "tags": ["Operación regular", "Stand-up + Mensual + Trimestral"],
+      "stages": [
+        { "num": "01", "name": "Stand-up lunes", "boxes": [
+          { "code": "EV-01", "label": "15 min · status 3 founders", "kind": "notify", "stack": "WhatsApp video" }
+        ]},
+        { "num": "02", "name": "Operar día", "boxes": [
+          { "code": "EV-02", "label": "Camila bodega · Javier ventas · Guille sistema", "kind": "update", "stack": "Roles paralelos" }
+        ]},
+        { "num": "03", "name": "Cierre mensual", "boxes": [
+          { "code": "EV-03", "label": "F29 SII · revisión P&L · ajustes", "kind": "doc", "stack": "Controller + Guille" }
+        ]},
+        { "num": "04", "name": "Review trimestral", "boxes": [
+          { "code": "EV-04", "label": "Risk Register + roadmap próximo Q", "kind": "update", "stack": "Los 3 founders" }
+        ]}
+      ]
+    }
+  }
+}

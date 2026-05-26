@@ -1,0 +1,9 @@
+{
+  "title": "Proyección comercio 3 años · ventas vs COGS vs cash",
+  "labels": ["Q4-26", "Q1-27", "Q2-27", "Q3-27", "Q4-27", "Q1-28", "Q2-28", "Q3-28", "Q4-28"],
+  "series": [
+    { "name": "Ventas (CLP M)",  "color": "#00C1C1", "points": [4, 9, 18, 30, 48, 70, 95, 125, 168] },
+    { "name": "COGS (CLP M)",     "color": "#EF4444", "points": [3, 6, 12, 19, 30, 42, 55, 71, 92]  },
+    { "name": "Cash balance (M)", "color": "#10B981", "points": [50, 47, 45, 47, 56, 71, 95, 125, 165] }
+  ]
+}

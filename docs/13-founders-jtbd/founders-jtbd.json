@@ -1,0 +1,34 @@
+{
+  "title": "Jobs To Be Done · founders operadores",
+  "persona": "Camila · Javier · Guillermo operando SMC SpA",
+  "jobs": {
+    "functional": [
+      "Sincronizar stock cross-canal sin oversell",
+      "Postular automáticamente a licitaciones MP afines",
+      "Emitir DTE 33/39/61 según tipo de venta",
+      "Detectar oportunidades de productos no listados (Cerebro scoring)",
+      "Generar etiqueta courier y tracking en 1 click",
+      "Conciliar pagos pasarelas vs DTE emitidos"
+    ],
+    "emotional": [
+      "Dormir tranquilo sin oversell pendiente",
+      "Confianza en stock real vs sistema (sin Excel paralelo)",
+      "Orgullo de operar profesional",
+      "Reducir ansiedad fin de mes (IVA · F29 automatizado)",
+      "Sentir control sobre múltiples canales sin saltar paneles"
+    ],
+    "social": [
+      "Demostrar a Nexport que somos comprador serio",
+      "Demostrar a entidades públicas (MP) que somos proveedor confiable",
+      "Operar sin fricciones como familia + socio (Camila/Javier + Guillermo)",
+      "Atraer eventual empleado bodega que valore tecnología"
+    ]
+  },
+  "outcomes": [
+    "Tiempo semanal sincronizando manual cada founder: &lt; 1h",
+    "Ventas perdidas oversell: 0 unidades/mes",
+    "% órdenes con DTE auto-emitido &lt; 1 min: &gt; 95%",
+    "Ratio adjudicación Mercado Público: &gt; 25% postuladas",
+    "Decisiones sourcing data-driven (score Cerebro): &gt; 80%"
+  ]
+}

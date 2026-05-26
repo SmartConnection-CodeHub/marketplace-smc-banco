@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>21 · Modelo Comercio · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+</head>
+<body>
+<nav class="doc-nav"><a href="16-comparativa-tools.html">◂ doc anterior</a><span class="nav-center">DOC 21 · NEGOCIO</span><a href="23-financial-comercio.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Negocio</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 21 · Negocio</div>
+    <h1 class="cover-title">Modelo Comercio</h1>
+    <p class="cover-subtitle">Cómo SMC SpA genera dinero · ciclo compra-venta multi-canal · sin SaaS · sin suscripciones.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">2.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Founders + Controller</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-modelo-de-negocio-en-1-l-nea">01 · Modelo de negocio en 1 línea</a><span class="toc-pg">03</span></li><li><a href="#02-diagrama-del-flujo-de-dinero">02 · Diagrama del flujo de dinero</a><span class="toc-pg">04</span></li><li><a href="#03-streams-de-revenue">03 · Streams de revenue</a><span class="toc-pg">05</span></li><li><a href="#04-estructura-de-costos">04 · Estructura de costos</a><span class="toc-pg">06</span></li><li><a href="#05-lo-que-no-cobramos">05 · Lo que NO cobramos</a><span class="toc-pg">07</span></li><li><a href="#06-reglas-de-inversi-n">06 · Reglas de inversión</a><span class="toc-pg">08</span></li><li><a href="#07-cu-ndo-evaluar-pivote">07 · Cuándo evaluar pivote</a><span class="toc-pg">09</span></li></ol>
+</section>
+
+<section class="page" id="01-modelo-de-negocio-en-1-l-nea">
+  <h2><span class="h2-num">01</span>Modelo de negocio en 1 línea</h2>
+  <p>SMC SpA compra productos a Nexport (importador) y los vende en 3 canales (Mercado Libre · Mercado Público · B2B empresas). Margen blend objetivo: 35-45%.</p>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>03</span></div>
+</section>
+<section class="page" id="02-diagrama-del-flujo-de-dinero">
+  <h2><span class="h2-num">02</span>Diagrama del flujo de dinero</h2>
+  <pre class="ascii">Capital inicial 50M CLP
+      ↓
+Compra a Nexport (LCL/FCL · 30-60 días)
+      ↓
+Recepción bodega · QA · ingreso inventario
+      ↓
+Publicación cross-canal (MeLi + MP + B2B)
+      ↓
+                ┌────────┴────────┐
+            Venta MeLi       Venta B2G        Venta B2B
+       (B2C alto vol.)  (institucional)  (empresa privada)
+                └────────┬────────┘
+                         ↓
+              Cobro (pasarela · transferencia)
+                         ↓
+              DTE emitido (SII · Open Factura)
+                         ↓
+              Reinversión + reserva impuestos</pre>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>04</span></div>
+</section>
+<section class="page" id="03-streams-de-revenue">
+  <h2><span class="h2-num">03</span>Streams de revenue</h2>
+  <table>
+<thead><tr>
+<th>Canal</th>
+<th>% esperado Y1</th>
+<th>Margen típico</th>
+<th>Plazo cobro</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Mercado Libre (B2C)</td>
+<td>50%</td>
+<td>28% (post comisión MeLi)</td>
+<td>14-28 días</td>
+</tr>
+<tr>
+<td>Mercado Público (B2G)</td>
+<td>30%</td>
+<td>38%</td>
+<td>30-60 días</td>
+</tr>
+<tr>
+<td>B2B empresa privada</td>
+<td>15%</td>
+<td>42%</td>
+<td>30-60 días</td>
+</tr>
+<tr>
+<td>D2C storefront (Y2+)</td>
+<td>5% Y1 · 30% Y3</td>
+<td>50%</td>
+<td>inmediato</td>
+</tr>
+</tbody></table>
+<p>Blend Y1 estimado: 35% margen bruto antes de costos operativos.</p>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>05</span></div>
+</section>
+<section class="page" id="04-estructura-de-costos">
+  <h2><span class="h2-num">04</span>Estructura de costos</h2>
+  <ul>
+<li><strong>COGS</strong>: precio Nexport + logística importación + bodegaje</li>
+<li><strong>Comisiones canal</strong>: MeLi 12-18% · pasarelas 2-3% · MP solo si gana</li>
+<li><strong>Operación</strong>: bodega · couriers (cobro a cliente) · DTE · IA usage</li>
+<li><strong>Founders</strong>: $0 sueldo Y1 · compensación equity · utilidades Y2+</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>06</span></div>
+</section>
+<section class="page" id="05-lo-que-no-cobramos">
+  <h2><span class="h2-num">05</span>Lo que NO cobramos</h2>
+  <div class="box box-info"><div class="box-title">💡 Claridad de modelo</div><p>NO cobramos suscripción · NO cobramos por uso del sistema · NO cobramos a terceros. SMC SpA gana plata vendiendo productos físicos · la plataforma es una herramienta interna no un producto comercializable.</p></div>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>07</span></div>
+</section>
+<section class="page" id="06-reglas-de-inversi-n">
+  <h2><span class="h2-num">06</span>Reglas de inversión</h2>
+  <ul>
+<li>50% del margen mes 1-6 va a reposición stock (rotación)</li>
+<li>20% reserva impuestos (IVA · IDPC · F22)</li>
+<li>10% reserva contingencia (devoluciones · merma · disputas)</li>
+<li>20% disponible para evaluación: nuevos SKUs · ampliar bodega · contratación</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>08</span></div>
+</section>
+<section class="page" id="07-cu-ndo-evaluar-pivote">
+  <h2><span class="h2-num">07</span>Cuándo evaluar pivote</h2>
+  <div class="box box-warning"><div class="box-title">⚠️ Triggers para reevaluación profunda</div><ul>
+<li>Margen blended Y1 &lt; 25%: revisar sourcing y mix canales</li>
+<li>Inventario stuck &gt; 90 días: revisar pricing o liquidar</li>
+<li>Cualquier canal acaba de revenue Y3 &gt; 80%: dependencia · diversificar</li>
+</ul></div>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>09</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="16-comparativa-tools.html">◂ doc anterior</a><span class="nav-center">FIN DOC 21</span><a href="23-financial-comercio.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
+</body>
+</html>

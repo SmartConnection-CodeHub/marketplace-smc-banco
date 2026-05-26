@@ -17,33 +17,24 @@
       { n: '07', t: 'Architecture',           f: '07-architecture.html',  s: 'ok' },
       { n: '08', t: 'Roadmap',                f: '08-roadmap.html',       s: 'ok' },
     ]},
-    { id: 'com', emoji: '💰', name: 'Comercial & Producto', color: '#F472B6', docs: [
-      { n: '10', t: 'Prospect Definition',    f: '10-prospect.html',         s: 'ok' },
-      { n: '11', t: 'ICP',                    f: '11-icp.html',              s: 'ok' },
-      { n: '12', t: 'Buyer Personas (Agentes)',f: '12-personas.html',        s: 'ok' },
-      { n: '13', t: 'Jobs to be Done',        f: '13-jtbd.html',             s: 'ok' },
-      { n: '14', t: 'Customer Journey',       f: '14-customer-journey.html', s: 'ok' },
-      { n: '15', t: 'Value Proposition',      f: '15-value-prop.html',       s: 'ok' },
-      { n: '16', t: 'Competitive Analysis',   f: '16-competitive.html',      s: 'ok' },
-      { n: '17', t: 'Pricing Strategy',       f: '17-pricing.html',          s: 'ok' },
-      { n: '18', t: 'Go-to-Market',           f: '18-gtm.html',              s: 'ok' },
-      { n: '19', t: 'Sales Playbook',         f: '19-sales-playbook.html',   s: 'ok' },
-      { n: '20', t: 'Pitch Deck',             f: '20-pitch-deck.html',       s: 'ok' },
+    { id: 'found', emoji: '👥', name: 'Founders Operation', color: '#C026D3', docs: [
+      { n: '12', t: 'Roles Founders',         f: '12-roles-founders.html',   s: 'ok' },
+      { n: '13', t: 'Founders JTBD',          f: '13-founders-jtbd.html',    s: 'ok' },
+      { n: '14', t: 'Founders Journey',       f: '14-founders-journey.html', s: 'ok' },
+      { n: '15', t: 'Valor Interno SMC SpA',  f: '15-value-internal.html',   s: 'ok' },
+      { n: '16', t: 'Comparativa Tools',      f: '16-comparativa-tools.html',s: 'ok' },
     ]},
-    { id: 'biz', emoji: '💼', name: 'Negocio & Finanzas', color: '#F59E0B', docs: [
-      { n: '21', t: 'Business Model Canvas',  f: '21-business-model.html',   s: 'ok' },
-      { n: '22', t: 'TAM · SAM · SOM',        f: '22-tam-sam-som.html',      s: 'ok' },
-      { n: '23', t: 'Financial Model 3y',     f: '23-financial-model.html',  s: 'ok' },
-      { n: '24', t: 'Unit Economics',         f: '24-unit-economics.html',   s: 'ok' },
+    { id: 'biz', emoji: '💼', name: 'Negocio & Comercio', color: '#F59E0B', docs: [
+      { n: '21', t: 'Modelo Comercio',         f: '21-business-comercio.html', s: 'ok' },
+      { n: '23', t: 'Financial Model Comercio',f: '23-financial-comercio.html',s: 'ok' },
+      { n: '24', t: 'Margen por Canal',        f: '24-margen-canal.html',      s: 'ok' },
     ]},
-    { id: 'brand', emoji: '🎙️', name: 'Marca & Marketing', color: '#7C3AED', docs: [
+    { id: 'brand', emoji: '🎙️', name: 'Marca interna', color: '#7C3AED', docs: [
       { n: '25', t: 'Brand Book',             f: '25-brand-book.html',       s: 'ok' },
       { n: '26', t: 'Tone of Voice',          f: '26-tone-of-voice.html',    s: 'ok' },
       { n: '27', t: 'Visual Identity',        f: '27-visual-identity.html',  s: 'ok' },
     ]},
-    { id: 'legal', emoji: '⚖️', name: 'Legal & Compliance', color: '#EF4444', docs: [
-      { n: '28', t: 'Terms of Service',       f: '28-terms-of-service.html', s: 'ok' },
-      { n: '29', t: 'Privacy + Cookies',      f: '29-privacy-policy.html',   s: 'ok' },
+    { id: 'legal', emoji: '⚖️', name: 'Legal', color: '#EF4444', docs: [
       { n: '30', t: 'Templates legales',      f: '30-templates-legal.html',  s: 'ok' },
     ]},
     { id: 'sec', emoji: '⛨', name: 'Seguridad', color: '#3B82F6', docs: [

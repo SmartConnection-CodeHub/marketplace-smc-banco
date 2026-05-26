@@ -1,0 +1,9 @@
+{
+  "title": "Margen por canal · ticket promedio · plazo cobro",
+  "labels": ["MeLi B2C", "Mercado Público B2G", "B2B privado", "D2C storefront (Y2)"],
+  "series": [
+    { "name": "Margen %",         "color": "#00C1C1", "points": [28, 38, 42, 50] },
+    { "name": "Ticket prom (K)",  "color": "#F59E0B", "points": [35, 400, 250, 45] },
+    { "name": "Plazo cobro días", "color": "#EF4444", "points": [21, 45, 45, 1] }
+  ]
+}
