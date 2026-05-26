@@ -1,0 +1,15 @@
+{
+  "title": "Power × Interest · estrategia por cuadrante",
+  "items": [
+    { "id": "S1", "label": "Camila Bianchi (Founder)",        "power": "high", "interest": "high" },
+    { "id": "S2", "label": "Javier Bianchi (Founder)",         "power": "high", "interest": "high" },
+    { "id": "S3", "label": "Guillermo González León (Founder)","power": "high", "interest": "high" },
+    { "id": "S4", "label": "Operadores Pro (5 primeros)",      "power": "low",  "interest": "high" },
+    { "id": "S5", "label": "Mercado Libre (canal)",            "power": "high", "interest": "low"  },
+    { "id": "S6", "label": "Mercado Público (canal)",          "power": "low",  "interest": "high" },
+    { "id": "S7", "label": "Supabase · AWS · Groq",            "power": "high", "interest": "low"  },
+    { "id": "S8", "label": "Contadores galvarez.cl",            "power": "low",  "interest": "low"  },
+    { "id": "S9", "label": "SII Chile",                        "power": "high", "interest": "low"  },
+    { "id": "S10","label": "Eventual inversor Año 2",          "power": "high", "interest": "low"  }
+  ]
+}

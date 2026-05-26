@@ -1,0 +1,237 @@
+{
+  "default": "P01",
+  "scenarios": {
+    "P01": {
+      "title": "P01 · Sourcing",
+      "sub": "Búsqueda de productos · matching mercado",
+      "callout": "Identificar productos candidatos en SoloTodo y otras fuentes públicas Chile · score por margen y demanda.",
+      "tags": ["Cerebro · scoring", "Fuentes Chile gratis"],
+      "stages": [
+        { "num": "01", "name": "Detectar", "boxes": [
+          { "code": "P01-01", "label": "Scrape SoloTodo categorías", "kind": "search", "stack": "Cron diario · API pública" },
+          { "code": "P01-02", "label": "Cargar Open Food Facts si aplica", "kind": "search", "stack": "API OFF" }
+        ]},
+        { "num": "02", "name": "Scoring", "boxes": [
+          { "code": "P01-03", "label": "6 señales sin LLM · multistore/spread/etc", "kind": "search", "stack": "Postgres + cerebro lógica" }
+        ]},
+        { "num": "03", "name": "Sugerir operador", "boxes": [
+          { "code": "P01-04", "label": "Top oportunidades en dashboard", "kind": "notify", "stack": "UI cards + cerebro chat" }
+        ]}
+      ]
+    },
+    "P02": {
+      "title": "P02 · Compra a Nexport",
+      "sub": "Intermediario importador · LCL/FCL",
+      "callout": "Compra al intermediario importador para llenar stock. Términos a definir Y1.",
+      "tags": ["Importación", "B2B compra"],
+      "stages": [
+        { "num": "01", "name": "Cotizar", "boxes": [
+          { "code": "P02-01", "label": "RFQ a Nexport", "kind": "create", "stack": "Email + portal Nexport" }
+        ]},
+        { "num": "02", "name": "Confirmar OC", "boxes": [
+          { "code": "P02-02", "label": "OC emitida al proveedor", "kind": "doc", "stack": "DTE 33 recibido" },
+          { "code": "P02-03", "label": "Pago anticipado / 30 días", "kind": "pay", "stack": "Transferencia bancaria" }
+        ]},
+        { "num": "03", "name": "Tracking importación", "boxes": [
+          { "code": "P02-04", "label": "ETA + manifest + documentación", "kind": "doc", "stack": "Nexport portal" }
+        ]}
+      ]
+    },
+    "P03": {
+      "title": "P03 · Recepción en bodega",
+      "sub": "Conteo · QA · ingreso a inventario",
+      "callout": "Llegada del lote a bodega. Verificación física + ingreso digital a Postgres.",
+      "tags": ["Operación bodega", "QA físico"],
+      "stages": [
+        { "num": "01", "name": "Recepción física", "boxes": [
+          { "code": "P03-01", "label": "Conteo + estado producto", "kind": "search", "stack": "Manual operador" }
+        ]},
+        { "num": "02", "name": "Ingreso inventario", "boxes": [
+          { "code": "P03-02", "label": "Insert mkt_inventory", "kind": "create", "stack": "Postgres + adapter" },
+          { "code": "P03-03", "label": "Fotos al storage", "kind": "doc", "stack": "Supabase Storage" }
+        ]}
+      ]
+    },
+    "P04": {
+      "title": "P04 · Publicación cross-canal",
+      "sub": "Listing en MeLi · D2C · MP · B2B",
+      "callout": "Una vez en inventario, se publica simultáneamente en todos los canales activos del operador via Channel Adapter Pattern.",
+      "tags": ["Cross-canal", "Adapter pattern"],
+      "stages": [
+        { "num": "01", "name": "MeLi", "boxes": [
+          { "code": "P04-01", "label": "POST /items MeLi", "kind": "create", "stack": "MeLi API · OAuth" }
+        ]},
+        { "num": "02", "name": "D2C storefront", "boxes": [
+          { "code": "P04-02", "label": "Insert catalog + ISR revalidate", "kind": "create", "stack": "Storefront Next.js" }
+        ]},
+        { "num": "03", "name": "MP catálogo", "boxes": [
+          { "code": "P04-03", "label": "Update catálogo Mercado Público", "kind": "update", "stack": "MP API REST" }
+        ]},
+        { "num": "04", "name": "B2B portal", "boxes": [
+          { "code": "P04-04", "label": "Sync portal B2B + cache invalidation", "kind": "update", "stack": "B2B API" }
+        ]}
+      ]
+    },
+    "P05": {
+      "title": "P05 · Venta MeLi (B2C marketplace ajeno)",
+      "sub": "Webhook orden · Aceptación · Despacho",
+      "callout": "Canal alto volumen · margen menor por comisión MeLi · webhook firmado clave para idempotency.",
+      "tags": ["MeLi · OAuth", "Volumen alto Y1"],
+      "stages": [
+        { "num": "01", "name": "Webhook MeLi", "boxes": [
+          { "code": "P05-01", "label": "Validar firma + idempotency", "kind": "notify", "stack": "MeLi webhook" }
+        ]},
+        { "num": "02", "name": "Aceptar", "boxes": [
+          { "code": "P05-02", "label": "Reservar stock", "kind": "update", "stack": "Postgres SELECT FOR UPDATE" }
+        ]},
+        { "num": "03", "name": "Despachar", "boxes": [
+          { "code": "P05-03", "label": "Etiqueta courier + tracking", "kind": "doc", "stack": "Chilexpress/Starken" }
+        ]},
+        { "num": "04", "name": "Factura", "boxes": [
+          { "code": "P05-04", "label": "DTE 39 boleta", "kind": "doc", "stack": "Open Factura" }
+        ]}
+      ]
+    },
+    "P06": {
+      "title": "P06 · Venta D2C (storefront propio)",
+      "sub": "Tráfico ADS · checkout · post-venta",
+      "callout": "Sin comisión marketplace · margen mayor pero requiere inversión ADS y skills marketing.",
+      "tags": ["D2C", "ADS Meta/Google/TikTok"],
+      "stages": [
+        { "num": "01", "name": "Conversión", "boxes": [
+          { "code": "P06-01", "label": "Landing → cart → checkout", "kind": "search", "stack": "Storefront Next.js" }
+        ]},
+        { "num": "02", "name": "Checkout", "boxes": [
+          { "code": "P06-02", "label": "WebPay Plus o MercadoPago", "kind": "pay", "stack": "Pasarela seleccionable" }
+        ]},
+        { "num": "03", "name": "Despacho", "boxes": [
+          { "code": "P06-03", "label": "Courier auto + tracking email", "kind": "doc", "stack": "Adapter pattern courier" }
+        ]},
+        { "num": "04", "name": "Post-venta", "boxes": [
+          { "code": "P06-04", "label": "NPS · reseña · upsell", "kind": "notify", "stack": "Cerebro email + UI" }
+        ]}
+      ]
+    },
+    "P07": {
+      "title": "P07 · Venta B2G Mercado Público",
+      "sub": "Detección licitación · postular · adjudicar",
+      "callout": "Margen menor pero ticket alto. Ciclo más largo (días hasta semanas).",
+      "tags": ["B2G", "Factura DTE 33"],
+      "stages": [
+        { "num": "01", "name": "Detectar", "boxes": [
+          { "code": "P07-01", "label": "Sync licitaciones diarias 8am", "kind": "search", "stack": "MP API cron" }
+        ]},
+        { "num": "02", "name": "Postular", "boxes": [
+          { "code": "P07-02", "label": "Generar oferta Cerebro", "kind": "create", "stack": "Template + AI" },
+          { "code": "P07-03", "label": "Enviar a MP", "kind": "notify", "stack": "MP API POST" }
+        ]},
+        { "num": "03", "name": "Adjudicar", "boxes": [
+          { "code": "P07-04", "label": "Webhook resultado", "kind": "notify", "stack": "MP webhook" }
+        ]},
+        { "num": "04", "name": "Despacho + Factura", "boxes": [
+          { "code": "P07-05", "label": "Guía + factura DTE 33", "kind": "doc", "stack": "Open Factura" }
+        ]}
+      ]
+    },
+    "P08": {
+      "title": "P08 · Venta B2B empresa privada",
+      "sub": "RFQ · cotización · aprobación · despacho",
+      "callout": "Ticket más alto · pago a 30/60/90 días · requiere historial cuentas y precios negociados.",
+      "tags": ["B2B", "Pago diferido"],
+      "stages": [
+        { "num": "01", "name": "RFQ", "boxes": [
+          { "code": "P08-01", "label": "Cliente envía RFQ", "kind": "create", "stack": "Portal B2B" }
+        ]},
+        { "num": "02", "name": "Cotizar", "boxes": [
+          { "code": "P08-02", "label": "Pricing engine con descuentos volumen", "kind": "create", "stack": "Cerebro pricing" }
+        ]},
+        { "num": "03", "name": "Aprobar", "boxes": [
+          { "code": "P08-03", "label": "Click aprobación cliente · firma HMAC", "kind": "update", "stack": "Portal B2B firma" }
+        ]},
+        { "num": "04", "name": "Cerrar", "boxes": [
+          { "code": "P08-04", "label": "Despacho LTL · factura DTE 33", "kind": "doc", "stack": "Open Factura" }
+        ]}
+      ]
+    },
+    "P09": {
+      "title": "P09 · Fulfillment despacho",
+      "sub": "Cotización · etiqueta · tracking · entrega",
+      "callout": "Cross-cutting · usado por P05/P06/P07/P08. Adapter Pattern también acá: misma interfaz · distinto courier.",
+      "tags": ["Logística", "Cross-canal"],
+      "stages": [
+        { "num": "01", "name": "Cotizar", "boxes": [
+          { "code": "P09-01", "label": "Cotización por peso/volumen", "kind": "search", "stack": "Adapter courier" }
+        ]},
+        { "num": "02", "name": "Generar etiqueta", "boxes": [
+          { "code": "P09-02", "label": "Etiqueta PDF + número tracking", "kind": "doc", "stack": "Courier API" }
+        ]},
+        { "num": "03", "name": "Tracking", "boxes": [
+          { "code": "P09-03", "label": "Webhook updates courier", "kind": "notify", "stack": "Courier webhook" }
+        ]},
+        { "num": "04", "name": "Entrega", "boxes": [
+          { "code": "P09-04", "label": "Confirmación entregado", "kind": "update", "stack": "Webhook final" }
+        ]}
+      ]
+    },
+    "P10": {
+      "title": "P10 · Devolución",
+      "sub": "Opcional · ojalá poco · proceso reversa",
+      "callout": "Devolución del cliente. Coordinación con courier en logística reversa. Nota de crédito SII si aplica.",
+      "tags": ["Reversa", "Nota crédito DTE 61"],
+      "stages": [
+        { "num": "01", "name": "Solicitud", "boxes": [
+          { "code": "P10-01", "label": "Cliente solicita devolución", "kind": "notify", "stack": "Soporte ticket / canal" }
+        ]},
+        { "num": "02", "name": "Aprobar", "boxes": [
+          { "code": "P10-02", "label": "Validar política devolución", "kind": "search", "stack": "Reglas operador" }
+        ]},
+        { "num": "03", "name": "Logística reversa", "boxes": [
+          { "code": "P10-03", "label": "Etiqueta courier reversa", "kind": "doc", "stack": "Courier API reverse" }
+        ]},
+        { "num": "04", "name": "Refund + NC", "boxes": [
+          { "code": "P10-04", "label": "Reverso pago + DTE 61 nota crédito", "kind": "pay", "stack": "Pasarela + Open Factura" }
+        ]}
+      ]
+    },
+    "P11": {
+      "title": "P11 · Facturación electrónica",
+      "sub": "DTE 33 · 39 · 61 · SII",
+      "callout": "Cross-cutting con SII. Requiere autorización previa de tipos en SII. Status SMC SpA: solo exenta autorizada, pedir 33/39/61.",
+      "tags": ["SII Chile", "DTE auto"],
+      "stages": [
+        { "num": "01", "name": "Trigger evento", "boxes": [
+          { "code": "P11-01", "label": "Orden cerrada · monto > 0", "kind": "notify", "stack": "Evento pg_notify" }
+        ]},
+        { "num": "02", "name": "Determinar tipo DTE", "boxes": [
+          { "code": "P11-02", "label": "39 boleta · 33 factura · 61 NC", "kind": "search", "stack": "Lógica negocio" }
+        ]},
+        { "num": "03", "name": "Emitir", "boxes": [
+          { "code": "P11-03", "label": "POST a Open Factura", "kind": "doc", "stack": "Open Factura API" }
+        ]},
+        { "num": "04", "name": "Archivar", "boxes": [
+          { "code": "P11-04", "label": "PDF al storage + email cliente", "kind": "doc", "stack": "Supabase Storage" }
+        ]}
+      ]
+    },
+    "P12": {
+      "title": "P12 · Conciliación financiera",
+      "sub": "Pagos recibidos · DTE emitido · libro mayor",
+      "callout": "Cierre del ciclo. Reconciliar lo que se cobró vs lo que se facturó. Reportes contador galvarez.cl mensual.",
+      "tags": ["Contable", "F29 mensual"],
+      "stages": [
+        { "num": "01", "name": "Importar movimientos", "boxes": [
+          { "code": "P12-01", "label": "Bank statement / pasarelas", "kind": "search", "stack": "Manual fase 1 · API fase 2" }
+        ]},
+        { "num": "02", "name": "Matching", "boxes": [
+          { "code": "P12-02", "label": "Match pagos vs DTE", "kind": "search", "stack": "Lógica + cerebro asistencia" }
+        ]},
+        { "num": "03", "name": "Reporte mensual", "boxes": [
+          { "code": "P12-03", "label": "Export contador galvarez.cl", "kind": "doc", "stack": "Excel + PDF" }
+        ]},
+        { "num": "04", "name": "F29 SII", "boxes": [
+          { "code": "P12-04", "label": "Declaración mensual IVA", "kind": "doc", "stack": "SII Chile" }
+        ]}
+      ]
+    }
+  }
+}

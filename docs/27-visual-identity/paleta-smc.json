@@ -1,0 +1,43 @@
+{
+  "title": "Paleta visual SMC · click para copiar hex",
+  "sub": "Tokens CSS oficiales · grupos por jerarquía",
+  "groups": [
+    {
+      "name": "Tinta neutra · Ink scale",
+      "tokens": [
+        { "name": "smc-ink-900", "hex": "#0F172A", "rgb": "15·23·42",     "uso": "Fondos dark · textos principales" },
+        { "name": "smc-ink-700", "hex": "#334155", "rgb": "51·65·85",     "uso": "Textos secundarios · dividers" },
+        { "name": "smc-ink-500", "hex": "#64748B", "rgb": "100·116·139",  "uso": "Captions · placeholders" },
+        { "name": "smc-ink-200", "hex": "#E2E8F0", "rgb": "226·232·240",  "uso": "Bordes · superficies sutiles" },
+        { "name": "smc-ink-50",  "hex": "#F8FAFC", "rgb": "248·250·252",  "uso": "Fondos hero · empty states" }
+      ]
+    },
+    {
+      "name": "Brand · primaria",
+      "tokens": [
+        { "name": "smc-primary",   "hex": "#00C1C1", "rgb": "0·193·193",  "uso": "Teal SMC · accent · CTA principal" },
+        { "name": "smc-secondary", "hex": "#0F766E", "rgb": "15·118·110", "uso": "Teal oscuro · hover · degradés" }
+      ]
+    },
+    {
+      "name": "Semántica · estados",
+      "tokens": [
+        { "name": "accent-success", "hex": "#10B981", "uso": "Status ok · validaciones · badge verde" },
+        { "name": "accent-warning", "hex": "#F59E0B", "uso": "Atención · prevención · badge ámbar" },
+        { "name": "accent-danger",  "hex": "#EF4444", "uso": "Error · destructive · breaking changes" },
+        { "name": "accent-info",    "hex": "#3B82F6", "uso": "Info neutral · enlaces · seguridad" }
+      ]
+    },
+    {
+      "name": "Bloques banco · marcadores",
+      "tokens": [
+        { "name": "block-com",   "hex": "#F472B6", "uso": "Bloque comercial (rosa)" },
+        { "name": "block-biz",   "hex": "#F59E0B", "uso": "Bloque negocio (ámbar)" },
+        { "name": "block-marca", "hex": "#7C3AED", "uso": "Bloque marca (violeta)" },
+        { "name": "block-legal", "hex": "#EF4444", "uso": "Bloque legal (rojo)" },
+        { "name": "block-sec",   "hex": "#3B82F6", "uso": "Bloque seguridad (azul)" },
+        { "name": "block-gov",   "hex": "#94A3B8", "uso": "Bloque gobernanza (gris)" }
+      ]
+    }
+  ]
+}

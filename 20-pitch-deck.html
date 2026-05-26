@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head><meta charset="UTF-8"><title>20 · Pitch Deck · Marketplace SMC</title><link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
 <style>
 .slide { padding: 60px 50px; border: 1px solid var(--ink-200); border-radius: 16px; margin: 20px 0; background: white; min-height: 380px; display: flex; flex-direction: column; justify-content: center; page-break-inside: avoid; }
 .slide-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--smc-primary); letter-spacing: 2px; font-weight: 700; margin-bottom: 14px; }
@@ -151,9 +152,19 @@
   <div class="page-footer"><span>Banco SMC · Pitch</span><span>08</span></div>
 </section>
 
+
+<section class="page" id="pitch-slides-section">
+  <h2><span class="h2-num">00b</span>12 slides interactivas</h2>
+  <p style="color:#475569;font-size:14px;line-height:1.6;margin-top:-8px;">Pitch deck completo · 12 cards estilo YC con color por tipo de mensaje · click no aplica · scroll horizontal en mobile.</p>
+  <div class="diagram-host kind-slides" id="pitch-slides" data-kind="slides"></div>
+  <script type="application/json" data-for="pitch-slides">{"title": "Pitch Deck · 12 slides estilo YC", "slides": [{"num": "01", "kicker": "VISIÓN", "title": "Operar todos tus canales desde un solo lugar", "body": "MeLi · D2C · Mercado Público · B2B sin saltar entre paneles.", "color": "#0F172A"}, {"num": "02", "kicker": "PROBLEMA", "title": "Vendedor chileno opera 4 canales y nada conversa", "body": "Stock, precios y órdenes en spreadsheets · oversell mensual · ventas perdidas.", "color": "#7F1D1D"}, {"num": "03", "kicker": "MERCADO", "title": "60K PYMEs venden online en Chile · solo 8% en >2 canales", "kpi": "60.000 PYMEs", "color": "#1E3A8A"}, {"num": "04", "kicker": "SOLUCIÓN", "title": "Channel Adapter Pattern + Cerebro IA", "body": "1 producto · N canales sincronizados · oportunidades sugeridas en tiempo real.", "color": "#0F766E"}, {"num": "05", "kicker": "PRODUCTO", "title": "Sync stock real-time + sugerencias IA", "bullets": ["Multistore + spread scoring", "OAuth MeLi httpOnly", "DTE SII auto", "Smart cache 6h/12h"], "color": "#0E7490"}, {"num": "06", "kicker": "TRACCIÓN", "title": "0 → 5 operadores Pro en 6 meses Y1", "kpi": "MRR target $900K", "color": "#15803D"}, {"num": "07", "kicker": "GTM", "title": "LinkedIn + referidos founder + demos asistidos", "body": "CAC bajo Y1 vía marketing orgánico · escalar paid Y2.", "color": "#A16207"}, {"num": "08", "kicker": "MODELO", "title": "SaaS suscripción mensual UF + add-ons", "bullets": ["Starter $80K/mes", "Pro $180K/mes", "Business $380K/mes", "Enterprise custom"], "color": "#7C3AED"}, {"num": "09", "kicker": "COMPETENCIA", "title": "Nadie cubre 4 canales · IA · DTE Chile junto", "body": "BeezUp · Streamline · Sellbrite no operan en Chile. Local: solo features sueltos.", "color": "#9F1239"}, {"num": "10", "kicker": "EQUIPO", "title": "3 founders · 17 años de servicio combinado", "body": "Camila Bianchi · Javier Bianchi · Guillermo González León.", "color": "#0F172A"}, {"num": "11", "kicker": "ROADMAP", "title": "Q4 26 MVP · Q3 27 B2B · Q4 27 multi-tenant", "color": "#3B82F6"}, {"num": "12", "kicker": "ASK", "title": "Bootstrap Y1 · ronda semilla Y2 si PMF claro", "body": "Capital inicial autofinanciado $50M · si llegamos a 30 Pro buscamos semilla USD 500K.", "color": "#0F766E"}]}</script>
+  <div class="page-footer"><span>Banco SMC</span><span>—</span></div>
+</section>
 </div>
 <nav class="doc-nav"><a href="19-sales-playbook.html">◂ doc 19</a><span class="nav-center">FIN DOC 20</span><a href="21-business-model.html">doc 21 · BMC ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
 </body>
 </html>

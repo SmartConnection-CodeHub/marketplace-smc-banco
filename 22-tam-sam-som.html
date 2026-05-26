@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>22 · TAM SAM SOM · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<head><meta charset="UTF-8"><title>22 · TAM SAM SOM · Marketplace SMC</title><link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css"></head>
 <body>
 <nav class="doc-nav"><a href="21-business-model.html">◂ doc 21</a><span class="nav-center">DOC 22 · NEGOCIO</span><a href="23-financial-model.html">doc 23 · Financial ▸</a></nav>
 <div class="doc">
@@ -81,9 +82,19 @@ Y3 · 500 clientes × $180K × 12    = $1.080M CLP ARR (~10% SAM)
   <div class="page-footer"><span>Banco SMC · TAM</span><span>06</span></div>
 </section>
 
+
+<section class="page" id="tam-funnel-section">
+  <h2><span class="h2-num">00b</span>Funnel TAM → SAM → SOM → Objetivo Y1</h2>
+  <p style="color:#475569;font-size:14px;line-height:1.6;margin-top:-8px;">De 60.000 PYMEs en Chile · 8.400 multi-canal alcanzables · 420 obtenibles Y3 · 30 target Y1.</p>
+  <div class="diagram-host kind-funnel" id="tam-funnel" data-kind="funnel"></div>
+  <script type="application/json" data-for="tam-funnel">{"title": "TAM · SAM · SOM · funnel direccionable Chile", "levels": [{"label": "TAM · todo el e-commerce Chile", "value": 60000, "sub": "PYMEs y empresas con ventas online", "color": "#94A3B8"}, {"label": "SAM · multi-canal con >USD 30K/mes", "value": 8400, "sub": "14% · operan en 2+ canales o quieren", "color": "#3B82F6"}, {"label": "SOM · alcanzable Y3 con GTM SMC", "value": 420, "sub": "5% del SAM · early adopters", "color": "#00C1C1"}, {"label": "Objetivo Y1 · paying customers", "value": 30, "sub": "0.5% SOM · founding members", "color": "#10B981"}]}</script>
+  <div class="page-footer"><span>Banco SMC</span><span>—</span></div>
+</section>
 </div>
 <nav class="doc-nav"><a href="21-business-model.html">◂ doc 21</a><span class="nav-center">FIN DOC 22</span><a href="23-financial-model.html">doc 23 · Financial ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
 </body>
 </html>

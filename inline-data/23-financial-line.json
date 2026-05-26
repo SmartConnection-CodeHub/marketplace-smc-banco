@@ -1,0 +1,9 @@
+{
+  "title": "Proyección financiera 3 años · Revenue vs Costos vs Cash",
+  "labels": ["Q4-26", "Q1-27", "Q2-27", "Q3-27", "Q4-27", "Q1-28", "Q2-28", "Q3-28", "Q4-28"],
+  "series": [
+    { "name": "Revenue (CLP millones)", "color": "#00C1C1", "points": [0, 2, 6, 12, 22, 38, 56, 78, 108] },
+    { "name": "Costos op (CLP millones)","color": "#EF4444", "points": [3, 5, 8, 12, 18, 25, 32, 42, 54] },
+    { "name": "Cash balance (CLP M)",   "color": "#10B981", "points": [50, 47, 45, 45, 49, 62, 86, 122, 176] }
+  ]
+}

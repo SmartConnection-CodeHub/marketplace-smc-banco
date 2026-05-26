@@ -1,0 +1,9 @@
+{
+  "title": "TAM · SAM · SOM · funnel direccionable Chile",
+  "levels": [
+    { "label": "TAM · todo el e-commerce Chile",      "value": 60000, "sub": "PYMEs y empresas con ventas online",     "color": "#94A3B8" },
+    { "label": "SAM · multi-canal con >USD 30K/mes",  "value": 8400,  "sub": "14% · operan en 2+ canales o quieren",   "color": "#3B82F6" },
+    { "label": "SOM · alcanzable Y3 con GTM SMC",     "value": 420,   "sub": "5% del SAM · early adopters",            "color": "#00C1C1" },
+    { "label": "Objetivo Y1 · paying customers",      "value": 30,    "sub": "0.5% SOM · founding members",             "color": "#10B981" }
+  ]
+}

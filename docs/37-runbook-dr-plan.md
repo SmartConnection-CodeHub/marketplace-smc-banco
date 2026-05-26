@@ -46,7 +46,12 @@ TRIMESTRAL
 - Audit accesos · revocar inactivos
 ```
 
-# 03 · Escenarios DR
+# 03 · Escenarios DR interactivos
+
+> [!pipeline] dr-scenarios
+> Cada escenario DR con sus etapas y pasos clave. Click en cualquier paso ve el detalle (stack · errores comunes · acciones específicas). Cambiá de escenario con el selector arriba.
+
+# 04 · Escenarios DR (referencia detallada)
 
 ## E1 · Supabase region down
 

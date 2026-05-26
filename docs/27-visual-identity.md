@@ -25,17 +25,10 @@ El logo de Marketplace SMC se construye sobre el wordmark **Smart Connection** c
 > [!warning] Espacio de respiro
 > Mínimo `1x` (donde `x` = altura de la M de Smart) alrededor del logo. NUNCA pegarlo a borde · texto · imagen.
 
-# 02 · Paleta primaria
+# 02 · Paleta visual interactiva
 
-| Token | Hex | RGB | Uso |
-|-------|-----|-----|-----|
-| smc-ink-900 | `#0F172A` | 15·23·42 | Fondos dark · textos principales |
-| smc-ink-700 | `#334155` | 51·65·85 | Textos secundarios · dividers |
-| smc-ink-500 | `#64748B` | 100·116·139 | Captions · placeholders |
-| smc-ink-200 | `#E2E8F0` | 226·232·240 | Bordes · superficies sutiles |
-| smc-ink-50 | `#F8FAFC` | 248·250·252 | Fondos hero · empty states |
-| smc-primary | `#00C1C1` | 0·193·193 | Teal SMC · accent · CTA |
-| smc-secondary | `#0F766E` | 15·118·110 | Teal oscuro · hover · degradés |
+> [!swatch] paleta-smc
+> Click en cualquier swatch copia el hex al portapapeles · cada token mapea a una variable CSS oficial usada en todo el banco y la app.
 
 # 03 · Paleta semántica
 

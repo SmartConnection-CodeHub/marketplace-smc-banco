@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>36 · Stakeholder Map · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<head><meta charset="UTF-8"><title>36 · Stakeholder Map · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+</head>
 <body>
 <nav class="doc-nav"><a href="35-risk-register.html">◂ doc anterior</a><span class="nav-center">DOC 36 · PRODUCTO</span><a href="37-runbook-dr-plan.html">doc siguiente ▸</a></nav>
 <div class="doc">
@@ -23,7 +26,7 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-lista-de-stakeholders">01 · Lista de stakeholders</a><span class="toc-pg">03</span></li><li><a href="#02-estrategia-por-cuadrante">02 · Estrategia por cuadrante</a><span class="toc-pg">04</span></li><li><a href="#03-matriz-raci-decisiones-clave">03 · Matriz RACI · decisiones clave</a><span class="toc-pg">05</span></li><li><a href="#04-cadencia-comunicaci-n">04 · Cadencia comunicación</a><span class="toc-pg">06</span></li><li><a href="#05-reglas-oro">05 · Reglas oro</a><span class="toc-pg">07</span></li></ol>
+  <ol><li><a href="#01-lista-de-stakeholders">01 · Lista de stakeholders</a><span class="toc-pg">03</span></li><li><a href="#02-power-interest-interactivo">02 · Power × Interest interactivo</a><span class="toc-pg">04</span></li><li><a href="#03-matriz-raci-decisiones-clave">03 · Matriz RACI · decisiones clave</a><span class="toc-pg">05</span></li><li><a href="#04-cadencia-comunicaci-n">04 · Cadencia comunicación</a><span class="toc-pg">06</span></li><li><a href="#05-reglas-oro">05 · Reglas oro</a><span class="toc-pg">07</span></li></ol>
 </section>
 
 <section class="page" id="01-lista-de-stakeholders">
@@ -110,13 +113,19 @@
 </tbody></table>
   <div class="page-footer"><span>Banco SMC · Producto</span><span>03</span></div>
 </section>
-<section class="page" id="02-estrategia-por-cuadrante">
-  <h2><span class="h2-num">02</span>Estrategia por cuadrante</h2>
-  <ul>
-<li><strong>Alto interés + Alto poder</strong> (S1-S3 · S5 · S7 · S9): manage closely · reuniones regulares</li>
-<li><strong>Alto interés + Bajo poder</strong> (S4 · S8): keep informed · newsletter · check-ins</li>
-<li><strong>Bajo interés + Alto poder</strong> (S10): keep satisfied · materiales preparados por si activa</li>
-<li><strong>Bajo interés + Bajo poder</strong>: monitor · revisar trimestralmente</li>
+<section class="page" id="02-power-interest-interactivo">
+  <h2><span class="h2-num">02</span>Power × Interest interactivo</h2>
+  <div class="diagram-section">
+  <p class="diagram-caption">Cada stakeholder en su cuadrante con la estrategia asignada. Founders en Manage Closely (poder + interés altos) · proveedores críticos en Keep Satisfied (alto poder · bajo interés activo) · operadores en Keep Informed.</p>
+  <div class="diagram-host kind-pi-matrix" id="power-interest" data-kind="pi-matrix"></div>
+  <script type="application/json" data-for="power-interest">{"title": "Power × Interest · estrategia por cuadrante", "items": [{"id": "S1", "label": "Camila Bianchi (Founder)", "power": "high", "interest": "high"}, {"id": "S2", "label": "Javier Bianchi (Founder)", "power": "high", "interest": "high"}, {"id": "S3", "label": "Guillermo González León (Founder)", "power": "high", "interest": "high"}, {"id": "S4", "label": "Operadores Pro (5 primeros)", "power": "low", "interest": "high"}, {"id": "S5", "label": "Mercado Libre (canal)", "power": "high", "interest": "low"}, {"id": "S6", "label": "Mercado Público (canal)", "power": "low", "interest": "high"}, {"id": "S7", "label": "Supabase · AWS · Groq", "power": "high", "interest": "low"}, {"id": "S8", "label": "Contadores galvarez.cl", "power": "low", "interest": "low"}, {"id": "S9", "label": "SII Chile", "power": "high", "interest": "low"}, {"id": "S10", "label": "Eventual inversor Año 2", "power": "high", "interest": "low"}]}</script>
+</div>
+<p>Estrategia por cuadrante:</p>
+<ul>
+<li><strong>Manage closely</strong> (alto poder + alto interés): reuniones regulares · involucrar en decisiones</li>
+<li><strong>Keep informed</strong> (bajo poder + alto interés): newsletter · check-ins · feedback recurrente</li>
+<li><strong>Keep satisfied</strong> (alto poder + bajo interés): materiales preparados · respuestas rápidas si activan</li>
+<li><strong>Monitor</strong> (bajo poder + bajo interés): revisar trimestralmente</li>
 </ul>
   <div class="page-footer"><span>Banco SMC · Producto</span><span>04</span></div>
 </section>
@@ -272,5 +281,7 @@
 <nav class="doc-nav"><a href="35-risk-register.html">◂ doc anterior</a><span class="nav-center">FIN DOC 36</span><a href="37-runbook-dr-plan.html">doc siguiente ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
 </body>
 </html>

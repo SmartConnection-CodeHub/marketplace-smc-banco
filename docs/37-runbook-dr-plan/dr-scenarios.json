@@ -1,0 +1,118 @@
+{
+  "default": "E1",
+  "scenarios": {
+    "E1": {
+      "title": "Supabase region down",
+      "sub": "Probabilidad baja · Impacto total",
+      "callout": "Si la región sa-east-1 cae, perdemos DB+Auth. Estrategia: comunicar inmediato + esperar upstream + futuro read-replica cross-region.",
+      "tags": ["Severidad SEV1", "RTO 4h", "Sin self-hosted backup activo"],
+      "stages": [
+        { "num": "01", "name": "Detección", "boxes": [
+          { "code": "DR-E101", "label": "Alertas CloudWatch + Supabase status", "kind": "notify", "stack": "CloudWatch · status.supabase.com" }
+        ]},
+        { "num": "02", "name": "Confirmar", "boxes": [
+          { "code": "DR-E102", "label": "Verificar status.supabase.com", "kind": "search", "stack": "Página oficial proveedor" }
+        ]},
+        { "num": "03", "name": "Contener", "boxes": [
+          { "code": "DR-E103", "label": "Activar mantención estática", "kind": "update", "stack": "S3 + CloudFront static page" },
+          { "code": "DR-E104", "label": "Notificar clientes &lt;15min", "kind": "notify", "stack": "Email + status page interno" }
+        ]},
+        { "num": "04", "name": "Esperar resolución", "boxes": [
+          { "code": "DR-E105", "label": "Sin acción local posible", "kind": "search", "stack": "Dependencia upstream" }
+        ]},
+        { "num": "05", "name": "Recuperación", "boxes": [
+          { "code": "DR-E106", "label": "Verificar reconexión + smoke test", "kind": "search", "stack": "Postman smoke suite" },
+          { "code": "DR-E107", "label": "Postmortem 48h", "kind": "doc", "stack": "Template incident-response" }
+        ]}
+      ]
+    },
+    "E2": {
+      "title": "Deploy malo en main",
+      "sub": "Probabilidad media · Impacto alto",
+      "callout": "Build pasa pero rompe prod (regresión no detectada en CI). Rollback Amplify a build anterior y hotfix branch.",
+      "tags": ["SEV2", "Rollback &lt;30min", "Causa típica"],
+      "stages": [
+        { "num": "01", "name": "Detección", "boxes": [
+          { "code": "DR-E201", "label": "Sentry spike 5xx", "kind": "notify", "stack": "Sentry alert" },
+          { "code": "DR-E202", "label": "Usuarios reportan", "kind": "notify", "stack": "Soporte ticket" }
+        ]},
+        { "num": "02", "name": "Identificar", "boxes": [
+          { "code": "DR-E203", "label": "git -C path log --oneline -5", "kind": "search", "stack": "Git history" }
+        ]},
+        { "num": "03", "name": "Rollback", "boxes": [
+          { "code": "DR-E204", "label": "Amplify rollback al build anterior", "kind": "update", "stack": "AWS Amplify Console" }
+        ]},
+        { "num": "04", "name": "Hotfix", "boxes": [
+          { "code": "DR-E205", "label": "Crear hotfix branch", "kind": "create", "stack": "Git branch · GitHub PR" },
+          { "code": "DR-E206", "label": "Patch + deploy verificado", "kind": "update", "stack": "CI · Amplify deploy" }
+        ]},
+        { "num": "05", "name": "Cierre", "boxes": [
+          { "code": "DR-E207", "label": "Postmortem 48h", "kind": "doc", "stack": "Template incident-response" }
+        ]}
+      ]
+    },
+    "E3": {
+      "title": "DB corruption / migración mala",
+      "sub": "Probabilidad baja · Impacto catastrófico",
+      "callout": "Migración rompe FK o data inconsistente. PITR restore al timestamp seguro · perdemos lo escrito desde ese punto.",
+      "tags": ["SEV1", "PITR 30d", "Data loss aceptado"],
+      "stages": [
+        { "num": "01", "name": "Bloquear writes", "boxes": [
+          { "code": "DR-E301", "label": "Feature flag read-only ON", "kind": "update", "stack": "GrowthBook · KV flag" }
+        ]},
+        { "num": "02", "name": "Identificar timestamp", "boxes": [
+          { "code": "DR-E302", "label": "Buscar último snapshot consistente", "kind": "search", "stack": "Supabase PITR · logs" }
+        ]},
+        { "num": "03", "name": "PITR restore", "boxes": [
+          { "code": "DR-E303", "label": "Restore Supabase a TS", "kind": "update", "stack": "Supabase dashboard · CLI" }
+        ]},
+        { "num": "04", "name": "Recuperar datos perdidos", "boxes": [
+          { "code": "DR-E304", "label": "Sync desde fuentes externas (MeLi, MP)", "kind": "update", "stack": "Adapter pattern resync" },
+          { "code": "DR-E305", "label": "Notificar clientes data afectada", "kind": "notify", "stack": "Email + status page" }
+        ]}
+      ]
+    },
+    "E4": {
+      "title": "API key comprometida",
+      "sub": "Probabilidad media · Impacto alto",
+      "callout": "Key expuesta en log/git/repo. Revocación inmediata + audit + notificación si data afectada.",
+      "tags": ["SEV1-2", "Rotación trimestral preventiva", "Audit obligatorio"],
+      "stages": [
+        { "num": "01", "name": "Detectar", "boxes": [
+          { "code": "DR-E401", "label": "Alerta proveedor / spike costo / log inusual", "kind": "notify", "stack": "Sentry + CloudWatch + provider alert" }
+        ]},
+        { "num": "02", "name": "Revocar", "boxes": [
+          { "code": "DR-E402", "label": "Revocar key comprometida", "kind": "delete", "stack": "Provider console" },
+          { "code": "DR-E403", "label": "Generar key nueva", "kind": "create", "stack": "Provider console + Amplify env" }
+        ]},
+        { "num": "03", "name": "Investigar", "boxes": [
+          { "code": "DR-E404", "label": "Audit logs · qué hizo el atacante", "kind": "search", "stack": "mkt_api_logs + provider logs" }
+        ]},
+        { "num": "04", "name": "Comunicar", "boxes": [
+          { "code": "DR-E405", "label": "Notificar clientes si data afectada", "kind": "notify", "stack": "Email + Ley 19.628 &lt;72h" }
+        ]}
+      ]
+    },
+    "E5": {
+      "title": "MeLi PolicyAgent bloqueo cuenta",
+      "sub": "Probabilidad alta · Impacto crítico",
+      "callout": "MeLi bloquea cuenta dev. Revenue de MeLi para hasta resolver. Pivote a D2C+MP+B2B mientras tanto.",
+      "tags": ["Crítico revenue", "Plan B activado", "Sin SLA MeLi"],
+      "stages": [
+        { "num": "01", "name": "Detectar", "boxes": [
+          { "code": "DR-E501", "label": "403 sistemático en endpoints MeLi", "kind": "notify", "stack": "Logger central · alert" }
+        ]},
+        { "num": "02", "name": "Ticket MeLi", "boxes": [
+          { "code": "DR-E502", "label": "Abrir ticket developer support", "kind": "create", "stack": "developers.mercadolibre.cl" }
+        ]},
+        { "num": "03", "name": "Pivote", "boxes": [
+          { "code": "DR-E503", "label": "Priorizar D2C + MP + B2B en roadmap", "kind": "update", "stack": "Decisión founder + PM" }
+        ]},
+        { "num": "04", "name": "Comunicar", "boxes": [
+          { "code": "DR-E504", "label": "Email operadores afectados", "kind": "notify", "stack": "Email transaccional" },
+          { "code": "DR-E505", "label": "Plan B v5 Opportunities sin DPP", "kind": "doc", "stack": "ADR-0001 · sin DPP scope limitado" }
+        ]}
+      ]
+    }
+  }
+}

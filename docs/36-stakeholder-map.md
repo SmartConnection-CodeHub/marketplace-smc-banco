@@ -27,12 +27,17 @@ next: 37-runbook-dr-plan.html
 | S9 | SII Chile | Regulador | Medio | Alto |
 | S10 | Eventual inversor Año 2 | Potencial | Bajo (hoy) | Alto (futuro) |
 
-# 02 · Estrategia por cuadrante
+# 02 · Power × Interest interactivo
 
-- **Alto interés + Alto poder** (S1-S3 · S5 · S7 · S9): manage closely · reuniones regulares
-- **Alto interés + Bajo poder** (S4 · S8): keep informed · newsletter · check-ins
-- **Bajo interés + Alto poder** (S10): keep satisfied · materiales preparados por si activa
-- **Bajo interés + Bajo poder**: monitor · revisar trimestralmente
+> [!pi-matrix] power-interest
+> Cada stakeholder en su cuadrante con la estrategia asignada. Founders en Manage Closely (poder + interés altos) · proveedores críticos en Keep Satisfied (alto poder · bajo interés activo) · operadores en Keep Informed.
+
+Estrategia por cuadrante:
+
+- **Manage closely** (alto poder + alto interés): reuniones regulares · involucrar en decisiones
+- **Keep informed** (bajo poder + alto interés): newsletter · check-ins · feedback recurrente
+- **Keep satisfied** (alto poder + bajo interés): materiales preparados · respuestas rápidas si activan
+- **Monitor** (bajo poder + bajo interés): revisar trimestralmente
 
 # 03 · Matriz RACI · decisiones clave
 

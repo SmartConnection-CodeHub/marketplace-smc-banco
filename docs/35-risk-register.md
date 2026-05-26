@@ -56,7 +56,12 @@ Este registro lo revisamos trimestral en sesión de 1h.
 | E2 | Falta capacidad técnica (1 dev a tiempo parcial) | 3 | 3 | 9 | Contratar dev Q2 · usar más agentes IA · scope realista | Founders |
 | E3 | Conflicto Javier-InfoPet vs Marketplace | 2 | 2 | 4 | Declaración explícita en pacto socios · review trimestral | Compliance |
 
-# 06 · Top riesgos para mover este trimestre (score &gt;= 6)
+# 06 · Heatmap visual P×I
+
+> [!heatmap] risk-heatmap
+> Cada riesgo posicionado en su cuadrante. Click revela detalle. Los rojos (score 9 · cuadrante superior derecho) son los críticos a mover ya.
+
+# 07 · Top riesgos para mover este trimestre (score &gt;= 6)
 
 1. C1 · MeLi DPP no aprueba (9)
 2. E2 · Falta capacidad técnica (9)

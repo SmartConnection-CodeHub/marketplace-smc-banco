@@ -1,0 +1,21 @@
+{
+  "title": "Heatmap riesgos · Probabilidad × Impacto",
+  "axisX": { "label": "Probabilidad", "ticks": ["Baja", "Media", "Alta"] },
+  "axisY": { "label": "Impacto", "ticks": ["Alto", "Medio", "Bajo"] },
+  "items": [
+    { "id": "C1", "label": "MeLi DPP no aprueba Y1",        "x": 3, "y": 3, "score": 9 },
+    { "id": "C2", "label": "Churn > 30% primeros 6 meses",   "x": 2, "y": 3, "score": 6 },
+    { "id": "C3", "label": "No conseguir 5 Pro Q4",          "x": 2, "y": 3, "score": 6 },
+    { "id": "C4", "label": "Competidor similar gratis",      "x": 2, "y": 2, "score": 4 },
+    { "id": "T1", "label": "API canal cambia sin aviso",     "x": 3, "y": 2, "score": 6 },
+    { "id": "T2", "label": "Supabase down extendido",        "x": 1, "y": 3, "score": 3 },
+    { "id": "T3", "label": "Costo IA escala > revenue",      "x": 2, "y": 2, "score": 4 },
+    { "id": "T4", "label": "Tech debt paraliza features",    "x": 2, "y": 3, "score": 6 },
+    { "id": "L1", "label": "SMC SpA pierde rectif. giro",    "x": 2, "y": 3, "score": 6 },
+    { "id": "L2", "label": "Cliente reclama data breach",    "x": 1, "y": 3, "score": 3 },
+    { "id": "L3", "label": "SII rechaza DTE",                "x": 2, "y": 2, "score": 4 },
+    { "id": "E1", "label": "Founder se va antes vesting",    "x": 2, "y": 3, "score": 6 },
+    { "id": "E2", "label": "Falta capacidad técnica",        "x": 3, "y": 3, "score": 9 },
+    { "id": "E3", "label": "Conflicto Javier-InfoPet",       "x": 2, "y": 2, "score": 4 }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "default": "PRO",
+  "scenarios": {
+    "PRO": {
+      "title": "Operador Pro (Comercial)",
+      "sub": "Awareness → Consideration → Purchase → Onboarding → Retention → Expansion",
+      "callout": "Persona objetivo: PYME con ventas activas en al menos 1 canal · busca centralizar multi-canal sin perder control.",
+      "tags": ["Tier Pro $180.000/mes", "Onboarding asistido", "5 primeros Y1"],
+      "stages": [
+        { "num": "01", "name": "Awareness", "boxes": [
+          { "code": "CJ-A01", "label": "Ve LinkedIn post Portavoz", "kind": "notify", "stack": "Contenido orgánico", "desc": "Funnel arranca con contenido SMC en LinkedIn que llega a su feed." },
+          { "code": "CJ-A02", "label": "Recomendación gremial", "kind": "notify", "stack": "Word of mouth Y1" }
+        ]},
+        { "num": "02", "name": "Consideration", "boxes": [
+          { "code": "CJ-C01", "label": "Landing marketplace.smconnection.cl", "kind": "search", "stack": "Hero · pricing · demo video" },
+          { "code": "CJ-C02", "label": "Demo guiada Loom", "kind": "search", "stack": "Loom 4-6 min", "desc": "Demo asíncrona con caso real para no exigir reunión en frío." }
+        ]},
+        { "num": "03", "name": "Purchase", "boxes": [
+          { "code": "CJ-P01", "label": "Solicitud demo en vivo", "kind": "create", "stack": "Calendly · Comercial agente" },
+          { "code": "CJ-P02", "label": "Trial 14 días setup asistido", "kind": "create", "stack": "Onboarding playbook" }
+        ]},
+        { "num": "04", "name": "Onboarding", "boxes": [
+          { "code": "CJ-O01", "label": "Conectar MeLi OAuth", "kind": "update", "stack": "Wizard OAuth in-app" },
+          { "code": "CJ-O02", "label": "Importar catálogo inicial", "kind": "create", "stack": "CSV o sync MeLi auto", "desc": "El primer producto publicado es la métrica de aha-moment." },
+          { "code": "CJ-O03", "label": "Aha-moment · primera venta sincronizada", "kind": "notify", "stack": "Webhook MeLi → app" }
+        ]},
+        { "num": "05", "name": "Retention", "boxes": [
+          { "code": "CJ-R01", "label": "Check-in semana 2 y 4", "kind": "notify", "stack": "Comercial 1-1 + email" },
+          { "code": "CJ-R02", "label": "NPS mensual", "kind": "notify", "stack": "Email + in-app" },
+          { "code": "CJ-R03", "label": "Logs uso real · si baja flag", "kind": "search", "stack": "PostHog funnels + alert" }
+        ]},
+        { "num": "06", "name": "Expansion", "boxes": [
+          { "code": "CJ-E01", "label": "Upsell a Business tier", "kind": "pay", "stack": "Comercial + caso de valor" },
+          { "code": "CJ-E02", "label": "Activar canal nuevo (D2C / MP)", "kind": "create", "stack": "Adapter pattern · wizard" },
+          { "code": "CJ-E03", "label": "Referral programs · invita 1 obtiene mes", "kind": "notify", "stack": "Codes + landing referral" }
+        ]}
+      ]
+    },
+    "B2G": {
+      "title": "Operador B2G especializado",
+      "sub": "Awareness → Consideration → Pilot → Adjudicación → Operación → Expansion",
+      "callout": "Persona: empresa que ya postula a Mercado Público y necesita automatizar detección + cotización.",
+      "tags": ["Tier Business", "Ciclo más largo", "Ticket mayor"],
+      "stages": [
+        { "num": "01", "name": "Awareness", "boxes": [
+          { "code": "CJ-B-A01", "label": "Búsqueda Google 'mercado público automatización'", "kind": "search", "stack": "SEO blog" }
+        ]},
+        { "num": "02", "name": "Consideration", "boxes": [
+          { "code": "CJ-B-C01", "label": "Caso éxito otro cliente B2G", "kind": "search", "stack": "Landing case study" }
+        ]},
+        { "num": "03", "name": "Pilot", "boxes": [
+          { "code": "CJ-B-P01", "label": "Trial 30 días con 1 categoría", "kind": "create", "stack": "Scope acotado piloto" }
+        ]},
+        { "num": "04", "name": "Adjudicación", "boxes": [
+          { "code": "CJ-B-AD01", "label": "Primera licitación ganada via SMC", "kind": "notify", "stack": "Aha-moment B2G" }
+        ]},
+        { "num": "05", "name": "Operación", "boxes": [
+          { "code": "CJ-B-O01", "label": "Volumen mensual constante", "kind": "update", "stack": "10-30 licitaciones/mes" }
+        ]},
+        { "num": "06", "name": "Expansion", "boxes": [
+          { "code": "CJ-B-E01", "label": "Más categorías · todo el catálogo", "kind": "create", "stack": "Sin friction" }
+        ]}
+      ]
+    },
+    "D2C": {
+      "title": "Operador D2C marketing-driven",
+      "sub": "Discovery → Setup → ADS launch → Conversión → Retention",
+      "callout": "Persona: dueño/a de marca que ya vende en MeLi pero quiere su tienda propia con tráfico pagado.",
+      "tags": ["Tier Pro+ADS", "Marketing-savvy", "Margen alto"],
+      "stages": [
+        { "num": "01", "name": "Discovery", "boxes": [
+          { "code": "CJ-D-D01", "label": "Pain point: comisión MeLi alta", "kind": "search", "stack": "Reconoce el problema" }
+        ]},
+        { "num": "02", "name": "Setup", "boxes": [
+          { "code": "CJ-D-S01", "label": "Setup storefront + branding", "kind": "create", "stack": "Wizard Next.js template" },
+          { "code": "CJ-D-S02", "label": "Conectar pasarela WebPay/MP", "kind": "pay", "stack": "OAuth pasarelas" }
+        ]},
+        { "num": "03", "name": "ADS launch", "boxes": [
+          { "code": "CJ-D-A01", "label": "Pixels Meta/Google/TikTok", "kind": "notify", "stack": "GTM template" },
+          { "code": "CJ-D-A02", "label": "Primera campaña $500K presupuesto", "kind": "create", "stack": "Operador o asesor" }
+        ]},
+        { "num": "04", "name": "Conversión", "boxes": [
+          { "code": "CJ-D-CV01", "label": "Primera venta D2C orgánica", "kind": "notify", "stack": "Aha D2C" }
+        ]},
+        { "num": "05", "name": "Retention", "boxes": [
+          { "code": "CJ-D-R01", "label": "NPS · upsell catálogo", "kind": "notify", "stack": "Cerebro email" }
+        ]}
+      ]
+    }
+  }
+}

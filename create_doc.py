@@ -35,11 +35,36 @@ Convención .md:
 """
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent
+
+# Tipos de bloques visuales soportados.
+# Cada uno apunta a una init function en SMCDiagram (resuelta en _diagram-kit.js).
+DIAGRAM_KINDS = {
+    'hla', 'pipeline', 'erd', 'swatch', 'heatmap',
+    'funnel', 'gantt', 'canvas9', 'slides', 'pi-matrix',
+    'chart-line', 'chart-bar',
+}
+
+# Sidecar JSON cargado en una pasada del .md actual.
+_SIDECAR_CACHE = {}
+
+
+def load_sidecar(md_path, diagram_id):
+    """Carga `docs/<doc-stem>/<diagram-id>.json` relativo al .md."""
+    stem = md_path.stem
+    cand = md_path.parent / stem / f"{diagram_id}.json"
+    if cand.exists():
+        try:
+            return json.loads(cand.read_text(encoding='utf-8'))
+        except Exception as ex:
+            print(f'⚠️  JSON inválido {cand}: {ex}')
+            return {}
+    return None
 
 
 # ============================================================
@@ -169,17 +194,37 @@ def md_to_html(md_text):
             i += 1
             continue
 
-        # callout box: > [!premise] título
-        m = re.match(r'^> \[!(\w+)\](?: (.+))?$', line)
+        # callout box: > [!premise] título   |   > [!hla] my-id  (diagrama)
+        m = re.match(r'^> \[!([\w-]+)\](?: (.+))?$', line)
         if m:
             flush_list()
             kind = m.group(1).lower()
-            title = m.group(2) or ''
+            arg = (m.group(2) or '').strip()
             content_lines = []
             i += 1
             while i < len(lines) and lines[i].startswith('>'):
                 content_lines.append(lines[i].lstrip('> '))
                 i += 1
+
+            # === DIAGRAMA INTERACTIVO ===
+            if kind in DIAGRAM_KINDS:
+                diagram_id = arg or f'{kind}-1'
+                # 1ra línea del cuerpo = caption opcional
+                caption = content_lines[0].strip() if content_lines else ''
+                cfg = _SIDECAR_CACHE.get(diagram_id, {}) or {}
+                # Inyecta data + skeleton
+                kind_dash = kind  # 'pi-matrix' etc OK
+                host_class = f'diagram-host kind-{kind_dash}'
+                json_data = json.dumps(cfg, ensure_ascii=False)
+                out.append(f'''<div class="diagram-section">
+  {f'<p class="diagram-caption">{md_inline(caption)}</p>' if caption else ''}
+  <div class="{host_class}" id="{diagram_id}" data-kind="{kind_dash}"></div>
+  <script type="application/json" data-for="{diagram_id}">{json_data}</script>
+</div>''')
+                continue
+
+            # === CALLOUT NORMAL ===
+            title = arg
             box_content = md_to_html('\n'.join(content_lines))
             klass = {
                 'premise': 'box-premise', 'anti': 'box-anti',
@@ -292,7 +337,10 @@ def render_html(meta, sections):
 
     html = f'''<!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>{number} · {title} · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<head><meta charset="UTF-8"><title>{number} · {title} · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+</head>
 <body>
 <nav class="doc-nav">{nav_prev}<span class="nav-center">DOC {number:0>2} · {block.upper()}</span>{nav_next}</nav>
 <div class="doc">
@@ -324,6 +372,8 @@ def render_html(meta, sections):
 <nav class="doc-nav">{nav_prev}<span class="nav-center">FIN DOC {number:0>2}</span>{nav_next}</nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
 </body>
 </html>
 '''
@@ -349,6 +399,19 @@ def main():
 
         md = md_path.read_text(encoding='utf-8')
         meta, body = parse_frontmatter(md)
+
+        # Pre-carga sidecars JSON · docs/<stem>/*.json
+        _SIDECAR_CACHE.clear()
+        sidecar_dir = md_path.parent / md_path.stem
+        sidecars_loaded = 0
+        if sidecar_dir.exists() and sidecar_dir.is_dir():
+            for j in sidecar_dir.glob('*.json'):
+                try:
+                    _SIDECAR_CACHE[j.stem] = json.loads(j.read_text(encoding='utf-8'))
+                    sidecars_loaded += 1
+                except Exception as ex:
+                    print(f'   ⚠️  sidecar inválido {j.name}: {ex}')
+
         sections = split_sections(body)
 
         number = meta.get('number', '?')
@@ -358,7 +421,7 @@ def main():
 
         html = render_html(meta, sections)
 
-        print(f'📄 {md_path.name} · {len(sections)} secciones · → {out_name}')
+        print(f'📄 {md_path.name} · {len(sections)} secciones · {sidecars_loaded} sidecars · → {out_name}')
         if args.apply:
             out_path.write_text(html, encoding='utf-8')
             print(f'   ✓ Escrito · {len(html)} bytes')

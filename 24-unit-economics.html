@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>24 · Unit Economics · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<head><meta charset="UTF-8"><title>24 · Unit Economics · Marketplace SMC</title><link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css"></head>
 <body>
 <nav class="doc-nav"><a href="23-financial-model.html">◂ doc 23</a><span class="nav-center">DOC 24 · NEGOCIO</span><a href="25-brand-book.html">doc 25 · Brand ▸</a></nav>
 <div class="doc">
@@ -93,9 +94,19 @@ CAC payback                      $45K / $180K = 0.25 meses (&lt;1 mes · target 
   <div class="page-footer"><span>Banco SMC · Unit Econ</span><span>06</span></div>
 </section>
 
+
+<section class="page" id="unit-bar-section">
+  <h2><span class="h2-num">00b</span>Unit Economics por tier · ARPU vs CAC vs LTV 24m</h2>
+  <p style="color:#475569;font-size:14px;line-height:1.6;margin-top:-8px;">LTV/CAC saludable cuando ratio &gt; 3. Pro y Business tienen ratio 13.5x (mejor). Starter en 12x. Enterprise 12x con ciclo más largo.</p>
+  <div class="diagram-host kind-chart-bar" id="unit-bar" data-kind="chart-bar"></div>
+  <script type="application/json" data-for="unit-bar">{"title": "Unit Economics · ARPU vs CAC vs LTV por tier", "labels": ["Starter", "Pro", "Business", "Enterprise"], "series": [{"name": "ARPU mensual (CLP K)", "color": "#00C1C1", "points": [80, 180, 380, 800]}, {"name": "CAC adquisición (CLP K)", "color": "#F59E0B", "points": [120, 240, 480, 1200]}, {"name": "LTV 24m (CLP K)", "color": "#10B981", "points": [1440, 3240, 6840, 14400]}]}</script>
+  <div class="page-footer"><span>Banco SMC</span><span>—</span></div>
+</section>
 </div>
 <nav class="doc-nav"><a href="23-financial-model.html">◂ doc 23</a><span class="nav-center">FIN DOC 24</span><a href="25-brand-book.html">doc 25 · Brand ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
 </body>
 </html>

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>08 · Roadmap · Marketplace SMC</title>
 <link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
 <style>
 .phase { background: white; border: 1px solid var(--ink-200); border-radius: 14px; padding: 24px; margin: 18px 0; border-left: 6px solid var(--smc-primary); }
 .phase-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
@@ -117,6 +118,14 @@
   </div>
   <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>03</span></div>
 </section>
+<section class="page" id="roadmap-gantt-section">
+  <h2><span class="h2-num">00b</span>Gantt visual 5 trimestres</h2>
+  <p style="color:#475569;font-size:14px;line-height:1.6;margin-top:-8px;">Roadmap Q4 2026 → Q4 2027 · 8 fases F0-F7 con dependencias y owner por fase.</p>
+  <div class="diagram-host kind-gantt" id="roadmap-gantt" data-kind="gantt"></div>
+  <script type="application/json" data-for="roadmap-gantt">{"title": "Roadmap Marketplace SMC · 7 fases F0-F7 · Q4 2026 → Q4 2027", "months": ["Q4-26", "Q1-27", "Q2-27", "Q3-27", "Q4-27"], "tasks": [{"id": "F0", "name": "F0 · Setup legal + cuentas", "owner": "Compliance + Controller", "start": 0, "dur": 1, "color": "#94A3B8"}, {"id": "F1", "name": "F1 · MVP MeLi end-to-end", "owner": "Backend + Frontend", "start": 0, "dur": 2, "color": "#3B82F6"}, {"id": "F2", "name": "F2 · Cerebro v5 Opportunities", "owner": "Hoku + Backend", "start": 1, "dur": 2, "color": "#C026D3"}, {"id": "F3", "name": "F3 · D2C storefront + ADS", "owner": "Frontend + Comercial", "start": 2, "dur": 2, "color": "#00C1C1"}, {"id": "F4", "name": "F4 · Mercado Público B2G", "owner": "Backend + Comercial", "start": 2, "dur": 2, "color": "#F59E0B"}, {"id": "F5", "name": "F5 · B2B portal + RFQ", "owner": "Backend + Comercial", "start": 3, "dur": 2, "color": "#10B981"}, {"id": "F6", "name": "F6 · Multi-tenant escalable", "owner": "Architect + INFRA-OPS", "start": 3, "dur": 2, "color": "#7C3AED"}, {"id": "F7", "name": "F7 · IA premium + observ.", "owner": "Hoku + Pipeline", "start": 4, "dur": 1, "color": "#EF4444"}]}</script>
+  <div class="page-footer"><span>Banco SMC</span><span>—</span></div>
+</section>
+
 
 <!-- ADR:ADR-0001/v5-roadmap -->
 <section class="page" id="roadmap-v5">
@@ -416,5 +425,7 @@
 <nav class="doc-nav"><a href="07-architecture.html">◂ doc 07</a><span class="nav-center">FIN DOCUMENTO 08 · FIN BLUEPRINT</span><a href="index.html">índice ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
 </body>
 </html>

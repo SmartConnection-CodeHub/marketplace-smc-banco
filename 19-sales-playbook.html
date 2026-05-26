@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>19 · Sales Playbook · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<head><meta charset="UTF-8"><title>19 · Sales Playbook · Marketplace SMC</title><link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css"></head>
 <body>
 <nav class="doc-nav"><a href="18-gtm.html">◂ doc 18</a><span class="nav-center">DOC 19 · COMERCIAL</span><a href="20-pitch-deck.html">doc 20 · Pitch ▸</a></nav>
 <div class="doc">
@@ -116,9 +117,19 @@ Preguntas clave:
   <div class="page-footer"><span>Banco SMC · Sales</span><span>07</span></div>
 </section>
 
+
+<section class="page" id="sales-funnel-section">
+  <h2><span class="h2-num">01b</span>Funnel ventas con conversion rates</h2>
+  <p style="color:#475569;font-size:14px;line-height:1.6;margin-top:-8px;">200 leads/mes target → 9 closed won. Conversión 4.5% lead → pago. CAC por etapa permite optimizar dónde invertir.</p>
+  <div class="diagram-host kind-funnel" id="sales-funnel" data-kind="funnel"></div>
+  <script type="application/json" data-for="sales-funnel">{"title": "Funnel Sales SMC · top → conversión", "levels": [{"label": "Lead inicial", "value": 200, "sub": "LinkedIn · referidos · landing", "color": "#94A3B8"}, {"label": "MQL · interés real", "value": 80, "sub": "Solicita demo / contenido", "color": "#3B82F6"}, {"label": "SQL · demo agendada", "value": 40, "sub": "Reunión con Comercial", "color": "#0F766E"}, {"label": "Trial · 14 días", "value": 24, "sub": "Conecta MeLi + 1 producto", "color": "#00C1C1"}, {"label": "Closed Won · paga Pro", "value": 9, "sub": "Conversión 4.5% sobre lead", "color": "#10B981"}]}</script>
+  <div class="page-footer"><span>Banco SMC</span><span>—</span></div>
+</section>
 </div>
 <nav class="doc-nav"><a href="18-gtm.html">◂ doc 18</a><span class="nav-center">FIN DOC 19</span><a href="20-pitch-deck.html">doc 20 · Pitch ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
 </body>
 </html>
