@@ -1121,24 +1121,47 @@
       const params = ep.parameters || [];
       const body = ep.requestBody;
       return `<div class="swagger-tryout">
-        <div class="swagger-tryout-head">▶ Try it out</div>
+        <div class="swagger-tryout-head">▶ Try it out · editá y ejecutá en vivo</div>
         <div class="swagger-tryout-fields">
           ${params.map(p => `<div class="swagger-tryout-field">
             <label>${esc(p.name)}${p.required ? ' <span style="color:#EF4444;">*</span>' : ''}<br><small style="color:#64748B;font-weight:400;text-transform:none;letter-spacing:0;">${esc(p.in || 'query')}</small></label>
-            <input type="text" data-param="${esc(p.name)}" data-in="${esc(p.in || 'query')}" placeholder="${esc(p.default || p.type || '')}" value="${esc(p.default || '')}">
+            <input type="text" data-param="${esc(p.name)}" data-in="${esc(p.in || 'query')}" data-ep="${esc(ep.id)}" placeholder="${esc(p.default || p.type || '')}" value="${esc(p.default || '')}">
           </div>`).join('')}
           ${body ? `<div class="swagger-tryout-field">
             <label>body<br><small style="color:#64748B;font-weight:400;text-transform:none;letter-spacing:0;">${esc(body.contentType || 'application/json')}</small></label>
-            <textarea data-body="1">${esc(body.example || '')}</textarea>
+            <textarea data-body="1" data-ep="${esc(ep.id)}">${esc(body.example || '')}</textarea>
           </div>` : ''}
         </div>
-        <div class="swagger-tryout-actions">
-          <button class="swagger-btn" data-action="execute" data-ep="${esc(ep.id)}">▶ Ejecutar</button>
-          <button class="swagger-btn is-secondary" data-action="copy-curl" data-ep="${esc(ep.id)}">📋 Copiar curl</button>
+        <pre class="swagger-curl-live" data-curl-live="${esc(ep.id)}"></pre>
+        <div class="swagger-tryout-actions" style="margin-top:10px;">
+          <button class="swagger-btn" data-action="execute" data-ep="${esc(ep.id)}">▶ Execute</button>
+          <button class="swagger-btn is-secondary" data-action="copy-curl" data-ep="${esc(ep.id)}">📋 Copy curl</button>
           <button class="swagger-btn is-secondary" data-action="reset" data-ep="${esc(ep.id)}">↺ Reset</button>
         </div>
         <div class="swagger-result" data-result style="display:none;"></div>
       </div>`;
+    }
+
+    function buildCurlText(ep, fields) {
+      const url = buildUrl(ep, fields);
+      const lines = [`curl -X ${ep.method === 'SSE' ? 'POST' : ep.method} '${url}'`];
+      const needsAuth = ep.auth !== 'none' && ep.auth !== 'HMAC firma' && ep.auth !== 'CRON_SECRET header';
+      if (needsAuth && jwt) lines.push(`  -H 'Authorization: Bearer ${jwt.slice(0, 14)}...'`);
+      else if (needsAuth)  lines.push(`  -H 'Authorization: Bearer <TOKEN>'`);
+      if (fields.body) {
+        lines.push(`  -H 'Content-Type: application/json'`);
+        lines.push(`  -d '${fields.body.replace(/'/g, "'\\''").slice(0, 200)}${fields.body.length > 200 ? '...' : ''}'`);
+      }
+      return lines.join(' \\\n');
+    }
+
+    function refreshCurlLive(epId) {
+      const ep = endpoints.find(e => e.id === epId);
+      if (!ep) return;
+      const preview = root.querySelector(`[data-curl-live="${CSS.escape(epId)}"]`);
+      if (!preview) return;
+      const fields = collectFields(ep);
+      preview.textContent = buildCurlText(ep, fields);
     }
 
     // Reescribimos renderEndpoint para incluir tryout
@@ -1150,7 +1173,7 @@
         ? '<span class="swagger-auth-tag is-none">PÚBLICO</span>'
         : `<span class="swagger-auth-tag">${esc(ep.auth || 'JWT')}</span>`;
 
-      return `<div class="swagger-endpoint" id="sw-${esc(ep.id)}" data-id="${esc(ep.id)}">
+      return `<div class="swagger-endpoint" id="sw-${esc(ep.id)}" data-id="${esc(ep.id)}" data-method="${esc(ep.method)}">
         <div class="swagger-endpoint-header">
           <span class="swagger-method ${methodClass(ep.method)}">${esc(ep.method)}</span>
           <span class="swagger-path">${highlightPath(ep.path)}</span>
@@ -1175,7 +1198,7 @@
           </div>` : ''}
 
           ${body ? `<div class="swagger-section">
-            <div class="swagger-section-label">Request Body${body.contentType ? ` · ${esc(body.contentType)}` : ''}</div>
+            <div class="swagger-section-label">Request Body Schema${body.contentType ? ` · ${esc(body.contentType)}` : ''}</div>
             <pre class="swagger-code">${esc(body.example || '')}</pre>
           </div>` : ''}
 
@@ -1261,6 +1284,16 @@
       root.querySelectorAll('[data-action="execute"]').forEach(b => b.addEventListener('click', () => doExecute(b.getAttribute('data-ep'))));
       root.querySelectorAll('[data-action="copy-curl"]').forEach(b => b.addEventListener('click', () => doCopyCurl(b.getAttribute('data-ep'))));
       root.querySelectorAll('[data-action="reset"]').forEach(b => b.addEventListener('click', () => doReset(b.getAttribute('data-ep'))));
+
+      // Live curl preview: refresh on input change
+      root.querySelectorAll('input[data-param], textarea[data-body]').forEach(el => {
+        el.addEventListener('input', () => {
+          const epId = el.getAttribute('data-ep');
+          if (epId) refreshCurlLive(epId);
+        });
+      });
+      // Render inicial de curl previews + status grande
+      endpoints.forEach(ep => refreshCurlLive(ep.id));
     }
 
     function rerenderHeader() {
@@ -1390,8 +1423,9 @@
         try { parsed = JSON.stringify(JSON.parse(text), null, 2); } catch {}
         const cls = statusClass(res.status);
         resultEl.innerHTML = `<div class="swagger-result-head">
-          <span class="swagger-result-status ${cls}" style="background:white;">${res.status} ${esc(res.statusText)}</span>
-          <span class="swagger-result-meta">${duration}ms · ${url}</span>
+          <span class="swagger-result-status is-big ${cls}">${res.status}</span>
+          <span style="color:white;font-weight:600;">${esc(res.statusText || '')}</span>
+          <span class="swagger-result-meta">${duration}ms · ${esc(url)}</span>
         </div>
         <pre class="swagger-result-body${res.ok ? '' : ' is-error'}">${esc(parsed)}</pre>`;
         history.push({ method, path: ep.path, status: res.status, duration_ms: duration, ts: new Date().toLocaleTimeString('es-CL') });
@@ -1482,6 +1516,19 @@
       // Para hla/erd · si el host está vacío, auto-genera skeleton
       function hlaFromHost(d) {
         const r = document.getElementById(d.id);
+        // Envolver d.svg en <svg> si no lo está ya
+        let svgMarkup = d.svg || '';
+        if (svgMarkup && !svgMarkup.trim().startsWith('<svg')) {
+          const vb = d.viewBox || '0 0 1400 800';
+          svgMarkup = `<svg class="diagram-svg" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+              </marker>
+            </defs>
+            ${svgMarkup}
+          </svg>`;
+        }
         if (r && r.children.length === 0) {
           r.className = 'diagram-wrapper kind-' + (d._origKind || 'hla');
           r.innerHTML = `
@@ -1503,7 +1550,7 @@
                 <button data-zoom="reset">⊡</button>
                 <button data-zoom="fullscreen">⤢</button>
               </div>
-              ${d.svg || ''}
+              ${svgMarkup}
             </div>
             <aside class="diagram-panel">
               <div class="diagram-panel-header">

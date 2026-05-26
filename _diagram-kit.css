@@ -1110,6 +1110,75 @@
 .swagger-endpoint:hover { border-color: #00C1C1; }
 .swagger-endpoint.is-open { border-color: #00C1C1; box-shadow: 0 6px 18px rgba(0,193,193,0.10); }
 
+/* Petstore-style: bar tenue colored por método */
+.swagger-endpoint[data-method="GET"]    { background: linear-gradient(to right, rgba(16,185,129,0.05), transparent 200px); border-left: 4px solid #10B981; }
+.swagger-endpoint[data-method="POST"]   { background: linear-gradient(to right, rgba(59,130,246,0.05), transparent 200px); border-left: 4px solid #3B82F6; }
+.swagger-endpoint[data-method="PUT"]    { background: linear-gradient(to right, rgba(245,158,11,0.05), transparent 200px); border-left: 4px solid #F59E0B; }
+.swagger-endpoint[data-method="PATCH"]  { background: linear-gradient(to right, rgba(249,115,22,0.05), transparent 200px); border-left: 4px solid #F97316; }
+.swagger-endpoint[data-method="DELETE"] { background: linear-gradient(to right, rgba(239,68,68,0.05), transparent 200px); border-left: 4px solid #EF4444; }
+.swagger-endpoint[data-method="SSE"]    { background: linear-gradient(to right, rgba(192,38,211,0.05), transparent 200px); border-left: 4px solid #C026D3; }
+
+/* Status code grande en response · estilo Petstore */
+.swagger-result-status.is-big {
+  font-size: 22px;
+  font-weight: 800;
+  padding: 8px 14px;
+  letter-spacing: 0.5px;
+}
+.swagger-result-status.is-big.code-2xx { background: #10B981; color: white; }
+.swagger-result-status.is-big.code-3xx { background: #3B82F6; color: white; }
+.swagger-result-status.is-big.code-4xx { background: #F59E0B; color: white; }
+.swagger-result-status.is-big.code-5xx { background: #EF4444; color: white; }
+
+/* Curl live preview · siempre visible mientras editás */
+.swagger-curl-live {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #1E293B;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: #93C5FD;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.4;
+  position: relative;
+  max-height: 120px;
+  overflow-y: auto;
+}
+.swagger-curl-live::before {
+  content: 'curl preview ▼';
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+}
+
+/* Authorize button modal global · estilo Petstore */
+.swagger-auth-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  color: #0F172A;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 2px solid #10B981;
+  cursor: pointer;
+  transition: all .14s;
+  margin-left: auto;
+}
+.swagger-auth-modal-btn:hover { background: #10B981; color: white; }
+.swagger-auth-modal-btn::before { content: '🔓'; }
+.swagger-auth-modal-btn.is-locked::before { content: '🔒'; }
+.swagger-auth-modal-btn.is-locked { border-color: #94A3B8; }
+.swagger-auth-modal-btn.is-locked:hover { background: #475569; }
+
 .swagger-endpoint-header {
   display: flex;
   align-items: center;
