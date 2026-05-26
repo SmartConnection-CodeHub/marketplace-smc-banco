@@ -2,275 +2,361 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Marketplace SMC · Blueprint · Índice</title>
+<title>Banco de Documentos · Marketplace SMC</title>
 <link rel="stylesheet" href="_styles.css">
 <style>
-.hero {
-  min-height: 60vh;
-  background: linear-gradient(135deg, #0F172A 0%, #0F766E 50%, #00C1C1 100%);
-  color: white;
-  padding: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -30%;
-  right: -10%;
-  width: 60%;
-  height: 160%;
-  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
-}
-.hero-eyebrow {
-  font-size: 12px;
-  letter-spacing: 4px;
-  color: rgba(255,255,255,0.6);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-  position: relative;
-  z-index: 2;
-}
-.hero-title {
-  font-size: 88px;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -3px;
-  margin: 0 0 20px;
-  position: relative;
-  z-index: 2;
-}
-.hero-sub {
-  font-size: 22px;
-  font-weight: 300;
-  color: rgba(255,255,255,0.85);
-  max-width: 700px;
-  position: relative;
-  z-index: 2;
-}
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  max-width: 700px;
-  margin-top: 48px;
-  position: relative;
-  z-index: 2;
-  padding-top: 32px;
-  border-top: 1px solid rgba(255,255,255,0.15);
-}
+.hero { min-height: 60vh; background: linear-gradient(135deg, #0F172A 0%, #0F766E 50%, #00C1C1 100%); color: white; padding: 80px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -30%; right: -10%; width: 60%; height: 160%; background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%); }
+.hero-eyebrow { font-size: 12px; letter-spacing: 4px; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 16px; position: relative; z-index: 2; }
+.hero-title { font-size: 88px; font-weight: 800; line-height: 1; letter-spacing: -3px; margin: 0 0 20px; position: relative; z-index: 2; }
+.hero-sub { font-size: 22px; font-weight: 300; color: rgba(255,255,255,0.85); max-width: 700px; position: relative; z-index: 2; }
+.hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 800px; margin-top: 48px; position: relative; z-index: 2; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.15); }
 .hero-stat { font-size: 12px; }
 .hero-stat-num { font-size: 32px; font-weight: 800; color: #00C1C1; line-height: 1; }
 .hero-stat-label { color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 6px; }
-.docs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 0;
-}
-.doc-card {
-  background: white;
-  border: 1px solid var(--ink-200);
-  border-radius: 16px;
-  padding: 28px;
-  transition: all 0.2s;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-.doc-card:hover {
-  border-color: var(--smc-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(0,193,193,0.15);
-  text-decoration: none;
-}
-.doc-card.is-pending { opacity: 0.55; }
-.doc-card.is-pending:hover { transform: none; cursor: not-allowed; }
-.doc-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--smc-primary);
-  font-weight: 700;
-  letter-spacing: 2px;
-  margin-bottom: 12px;
-}
-.doc-title {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--ink-900);
-  line-height: 1.2;
-  margin-bottom: 10px;
-  letter-spacing: -0.5px;
-}
-.doc-desc {
-  font-size: 13px;
-  color: var(--ink-500);
-  line-height: 1.5;
-  flex: 1;
-  margin-bottom: 16px;
-}
-.doc-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--ink-400);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.section-label {
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--smc-primary);
-  font-weight: 700;
-  margin: 0 0 16px;
-}
-.section-title {
-  font-size: 32px;
-  font-weight: 800;
-  margin: 0 0 32px;
-  color: var(--ink-900);
-  letter-spacing: -1px;
-}
+.block-section { margin-top: 56px; }
+.block-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 2px solid var(--ink-100); }
+.block-title { font-size: 26px; font-weight: 800; color: var(--ink-900); margin: 0; letter-spacing: -0.5px; }
+.block-tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--smc-primary); font-weight: 700; }
+.block-count { font-size: 13px; color: var(--ink-500); }
+.docs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; padding: 0; }
+.doc-card { background: white; border: 1px solid var(--ink-200); border-radius: 14px; padding: 22px; transition: all 0.2s; text-decoration: none; color: inherit; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+.doc-card:hover { border-color: var(--smc-primary); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,193,193,0.15); text-decoration: none; }
+.doc-card.is-pending { opacity: 0.45; }
+.doc-card.is-pending:hover { transform: none; cursor: not-allowed; border-color: var(--ink-200); box-shadow: none; }
+.doc-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--smc-primary); font-weight: 700; letter-spacing: 2px; margin-bottom: 10px; }
+.doc-title { font-size: 17px; font-weight: 800; color: var(--ink-900); line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.3px; }
+.doc-desc { font-size: 12px; color: var(--ink-500); line-height: 1.5; flex: 1; margin-bottom: 12px; }
+.doc-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--ink-400); text-transform: uppercase; letter-spacing: 1px; align-items: center; }
+.b-tech { border-top: 4px solid #00C1C1; }
+.b-com { border-top: 4px solid #F472B6; }
+.b-biz { border-top: 4px solid #F59E0B; }
+.b-brand { border-top: 4px solid #7C3AED; }
+.b-legal { border-top: 4px solid #EF4444; }
+.b-sec { border-top: 4px solid #3B82F6; }
+.b-gov { border-top: 4px solid #94A3B8; }
+.section-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--smc-primary); font-weight: 700; margin: 0 0 16px; }
+.section-title { font-size: 32px; font-weight: 800; margin: 0 0 48px; color: var(--ink-900); letter-spacing: -1px; }
 </style>
 </head>
 <body>
 
 <section class="hero">
-  <div class="hero-eyebrow">◆ Smart Connection SpA · Blueprint</div>
+  <div class="hero-eyebrow">◆ Smart Connection SpA · Banco de Documentos</div>
   <h1 class="hero-title">Marketplace SMC</h1>
-  <p class="hero-sub">Plataforma operativa unificada multi-canal · 8 documentos que definen qué somos, cómo operamos y cómo se construye.</p>
+  <p class="hero-sub">Banco completo de documentos · estratégico · comercial · técnico · legal · operativo. Cada documento es standalone y navegable.</p>
   <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="hero-stat-num">8</div>
-      <div class="hero-stat-label">Documentos</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">~120</div>
-      <div class="hero-stat-label">Páginas total</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">4</div>
-      <div class="hero-stat-label">Canales venta</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">7m</div>
-      <div class="hero-stat-label">Roadmap construcción</div>
-    </div>
+    <div class="hero-stat"><div class="hero-stat-num">25</div><div class="hero-stat-label">Documentos listos</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">~150</div><div class="hero-stat-label">Páginas total</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">7</div><div class="hero-stat-label">Bloques temáticos</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">15</div><div class="hero-stat-label">Pendientes</div></div>
   </div>
 </section>
 
-<div class="doc" style="padding: 64px 72px;">
+<div class="doc" style="padding: 56px 64px;">
 
-  <p class="section-label">Versión 1.0 · 2026-05-26</p>
-  <h2 class="section-title">8 documentos del Blueprint</h2>
+  <p class="section-label">Versión 1.0 · 2026-05-26 · Banco completo en construcción</p>
+  <h2 class="section-title">Índice del Banco</h2>
 
-  <div class="docs-grid">
-
-    <a class="doc-card" href="01-vision.html">
-      <div class="doc-num">01 / 08</div>
-      <div class="doc-title">Vision &amp; Prospect</div>
-      <div class="doc-desc">Qué es Marketplace SMC, para quién, qué resuelve, modelo de negocio en 4 fases, valores no transables.</div>
-      <div class="doc-meta">
-        <span><span class="badge badge-active">Listo</span></span>
-        <span>14 pág</span>
+  <!-- BLOQUE PRODUCTO TÉCNICO -->
+  <div class="block-section">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">📦 Bloque 01</div>
+        <h3 class="block-title">Producto Técnico</h3>
       </div>
-    </a>
+      <div class="block-count">8 / 8 listos</div>
+    </div>
+    <div class="docs-grid">
+      <a class="doc-card b-tech" href="01-vision.html">
+        <div class="doc-num">01 / 08</div>
+        <div class="doc-title">Vision &amp; Prospect</div>
+        <div class="doc-desc">Qué es Marketplace SMC · para quién · modelo de negocio en 4 fases · valores no transables.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>14 pág</span></div>
+      </a>
+      <a class="doc-card b-tech" href="02-bbp.html">
+        <div class="doc-num">02 / 08</div>
+        <div class="doc-title">Business Blueprint</div>
+        <div class="doc-desc">12 procesos end-to-end + diagramas BPMN · sourcing · compra · venta x4 · fulfillment · facturación.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>16 pág</span></div>
+      </a>
+      <a class="doc-card b-tech" href="03-requirements.html">
+        <div class="doc-num">03 / 08</div>
+        <div class="doc-title">Requirements</div>
+        <div class="doc-desc">Requerimientos funcionales (FR) y no funcionales (NFR) · priorizados P1-P4 · compliance Chile.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>12 pág</span></div>
+      </a>
+      <a class="doc-card b-tech" href="04-rfp.html">
+        <div class="doc-num">04 / 08</div>
+        <div class="doc-title">RFP · Request for Proposal</div>
+        <div class="doc-desc">Especificación contractual · 10 secciones · timeline · presupuesto · riesgos.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>12 pág</span></div>
+      </a>
+      <a class="doc-card b-tech" href="05-data-model.html">
+        <div class="doc-num">05 / 08</div>
+        <div class="doc-title">Data Model</div>
+        <div class="doc-desc">Schema único multi-tenant · 20+ tablas con tenant_id · diagrama ERD.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>12 pág</span></div>
+      </a>
+      <a class="doc-card b-tech" href="06-api-catalog.html">
+        <div class="doc-num">06 / 08</div>
+        <div class="doc-title">API Catalog</div>
+        <div class="doc-desc">Endpoints internos + Channel Adapter Pattern · 80+ rutas REST · webhooks externos.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>12 pág</span></div>
+      </a>
+      <a class="doc-card b-tech" href="07-architecture.html">
+        <div class="doc-num">07 / 08</div>
+        <div class="doc-title">Architecture Spec</div>
+        <div class="doc-desc">Stack técnico · deploy AWS Amplify · escalabilidad · event-driven · ADRs.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>12 pág</span></div>
+      </a>
+      <a class="doc-card b-tech" href="08-roadmap.html">
+        <div class="doc-num">08 / 08</div>
+        <div class="doc-title">Roadmap</div>
+        <div class="doc-desc">Fases F0-F7 · timeline Gantt visual · dependencias · capital · bloqueos.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>12 pág</span></div>
+      </a>
+    </div>
+  </div>
 
-    <a class="doc-card" href="02-bbp.html">
-      <div class="doc-num">02 / 08</div>
-      <div class="doc-title">Business Blueprint</div>
-      <div class="doc-desc">12 procesos end-to-end + diagramas BPMN: sourcing · compra · recepción · publicación · venta x4 canales · fulfillment · facturación · cobranza.</div>
-      <div class="doc-meta">
-        <span><span class="badge badge-active">Listo</span></span>
-        <span>16 pág</span>
+  <!-- BLOQUE COMERCIAL & PRODUCTO -->
+  <div class="block-section">
+    <div class="block-header">
+      <div>
+        <div class="block-tag" style="color:#F472B6">💰 Bloque 02</div>
+        <h3 class="block-title">Comercial &amp; Producto</h3>
       </div>
-    </a>
+      <div class="block-count">11 / 11 listos</div>
+    </div>
+    <div class="docs-grid">
+      <a class="doc-card b-com" href="10-prospect.html">
+        <div class="doc-num">10 / 11</div>
+        <div class="doc-title">Prospect Definition</div>
+        <div class="doc-desc">Quién es nuestro prospecto · señales · triggers · objeciones · anti-prospecto.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>8 pág</span></div>
+      </a>
+      <a class="doc-card b-com" href="11-icp.html">
+        <div class="doc-num">11 / 11</div>
+        <div class="doc-title">ICP · Customer Profile</div>
+        <div class="doc-desc">Ideal Customer Profile · firmographics · technographics · score / 20.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>8 pág</span></div>
+      </a>
+      <a class="doc-card b-com" href="12-personas.html">
+        <div class="doc-num">12 / 11</div>
+        <div class="doc-title">Buyer Personas</div>
+        <div class="doc-desc">5 personas detalladas · Guillermo · Catalina · Diego · Mónica · Rodrigo.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>7 pág</span></div>
+      </a>
+      <a class="doc-card b-com" href="13-jtbd.html">
+        <div class="doc-num">13 / 11</div>
+        <div class="doc-title">Jobs to be Done</div>
+        <div class="doc-desc">Framework JTBD · funcionales · emocionales · sociales · outcome metrics.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>8 pág</span></div>
+      </a>
+      <a class="doc-card b-com" href="14-customer-journey.html">
+        <div class="doc-num">14 / 11</div>
+        <div class="doc-title">Customer Journey</div>
+        <div class="doc-desc">6 etapas · Awareness → Consideration → Purchase → Onboarding → Retención → Expansion.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>9 pág</span></div>
+      </a>
+      <a class="doc-card b-com" href="15-value-prop.html">
+        <div class="doc-num">15 / 11</div>
+        <div class="doc-title">Value Proposition</div>
+        <div class="doc-desc">Strategyzer Canvas · pain relievers · gain creators · statement final.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>5 pág</span></div>
+      </a>
+      <a class="doc-card b-com" href="16-competitive.html">
+        <div class="doc-num">16 / 11</div>
+        <div class="doc-title">Competitive Analysis</div>
+        <div class="doc-desc">8 competidores · feature matrix · pricing comparativo · SWOT · diferenciación.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>9 pág</span></div>
+      </a>
+      <a class="doc-card b-com" href="17-pricing.html">
+        <div class="doc-num">17 / 11</div>
+        <div class="doc-title">Pricing Strategy</div>
+        <div class="doc-desc">3 tiers + Enterprise · justificación · add-ons · descuentos · roadmap.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>6 pág</span></div>
+      </a>
+      <a class="doc-card b-com" href="18-gtm.html">
+        <div class="doc-num">18 / 11</div>
+        <div class="doc-title">Go-to-Market</div>
+        <div class="doc-desc">3 fases lanzamiento · canales adquisición · KPIs · activación 90 días.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>6 pág</span></div>
+      </a>
+      <a class="doc-card b-com" href="19-sales-playbook.html">
+        <div class="doc-num">19 / 11</div>
+        <div class="doc-title">Sales Playbook</div>
+        <div class="doc-desc">Funnel · script discovery · demo · objeciones · cierre checklist.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>7 pág</span></div>
+      </a>
+      <a class="doc-card b-com" href="20-pitch-deck.html">
+        <div class="doc-num">20 / 11</div>
+        <div class="doc-title">Pitch Deck</div>
+        <div class="doc-desc">12 slides estilo YC · problema · solución · mercado · tracción · ask.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>8 pág</span></div>
+      </a>
+    </div>
+  </div>
 
-    <a class="doc-card" href="03-requirements.html">
-      <div class="doc-num">03 / 08</div>
-      <div class="doc-title">Requirements</div>
-      <div class="doc-desc">Requerimientos funcionales (FR) y no funcionales (NFR): performance, seguridad, escalabilidad, compliance Chile. Priorizados P1-P4.</div>
-      <div class="doc-meta">
-        <span><span class="badge badge-active">Listo</span></span>
-        <span>12 pág</span>
+  <!-- BLOQUE NEGOCIO & FINANZAS -->
+  <div class="block-section">
+    <div class="block-header">
+      <div>
+        <div class="block-tag" style="color:#F59E0B">💼 Bloque 03</div>
+        <h3 class="block-title">Negocio &amp; Finanzas</h3>
       </div>
-    </a>
+      <div class="block-count">4 / 4 listos</div>
+    </div>
+    <div class="docs-grid">
+      <a class="doc-card b-biz" href="21-business-model.html">
+        <div class="doc-num">21 / 04</div>
+        <div class="doc-title">Business Model Canvas</div>
+        <div class="doc-desc">9 bloques Strategyzer · cómo creamos · entregamos · capturamos valor.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>3 pág</span></div>
+      </a>
+      <a class="doc-card b-biz" href="22-tam-sam-som.html">
+        <div class="doc-num">22 / 04</div>
+        <div class="doc-title">TAM · SAM · SOM</div>
+        <div class="doc-desc">Mercado direccionable Chile · top-down + bottom-up · proyección 3 años.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>6 pág</span></div>
+      </a>
+      <a class="doc-card b-biz" href="23-financial-model.html">
+        <div class="doc-num">23 / 04</div>
+        <div class="doc-title">Financial Model 3y</div>
+        <div class="doc-desc">P&amp;L proyectado · cash flow · capital needs · break-even mensual.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>5 pág</span></div>
+      </a>
+      <a class="doc-card b-biz" href="24-unit-economics.html">
+        <div class="doc-num">24 / 04</div>
+        <div class="doc-title">Unit Economics</div>
+        <div class="doc-desc">ARPU · CAC · LTV · payback · gross margin · análisis sensibilidad.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>6 pág</span></div>
+      </a>
+    </div>
+  </div>
 
-    <a class="doc-card" href="04-rfp.html">
-      <div class="doc-num">04 / 08</div>
-      <div class="doc-title">RFP · Request for Proposal</div>
-      <div class="doc-desc">Especificación contractual para construcción interna o vendor externo · 10 secciones estilo SMC con timeline, presupuesto, riesgos.</div>
-      <div class="doc-meta">
-        <span><span class="badge badge-active">Listo</span></span>
-        <span>12 pág</span>
+  <!-- BLOQUE MARCA & MARKETING -->
+  <div class="block-section">
+    <div class="block-header">
+      <div>
+        <div class="block-tag" style="color:#7C3AED">🎙️ Bloque 04</div>
+        <h3 class="block-title">Marca &amp; Marketing</h3>
       </div>
-    </a>
+      <div class="block-count">2 / 3 listos</div>
+    </div>
+    <div class="docs-grid">
+      <a class="doc-card b-brand" href="25-brand-book.html">
+        <div class="doc-num">25 / 03</div>
+        <div class="doc-title">Brand Book</div>
+        <div class="doc-desc">Misión · visión · valores no transables · arquetipo · personalidad.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>5 pág</span></div>
+      </a>
+      <a class="doc-card b-brand" href="26-tone-of-voice.html">
+        <div class="doc-num">26 / 03</div>
+        <div class="doc-title">Tone of Voice</div>
+        <div class="doc-desc">4 dimensiones del tono · do/don't · por plataforma · por mensaje.</div>
+        <div class="doc-meta"><span class="badge badge-active">Listo</span><span>5 pág</span></div>
+      </a>
+      <a class="doc-card b-brand is-pending" href="#">
+        <div class="doc-num">27 / 03</div>
+        <div class="doc-title">Visual Identity</div>
+        <div class="doc-desc">Logo · paleta · tipografía · iconografía · grid · ejemplos.</div>
+        <div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~6 pág</span></div>
+      </a>
+    </div>
+  </div>
 
-    <a class="doc-card" href="05-data-model.html">
-      <div class="doc-num">05 / 08</div>
-      <div class="doc-title">Data Model</div>
-      <div class="doc-desc">Schema único multi-tenant · 20+ tablas con tenant_id · 1 inventario · 1 catálogo clientes · chart of accounts. Diagrama ERD.</div>
-      <div class="doc-meta">
-        <span><span class="badge badge-active">Listo</span></span>
-        <span>12 pág</span>
+  <!-- BLOQUE LEGAL -->
+  <div class="block-section">
+    <div class="block-header">
+      <div>
+        <div class="block-tag" style="color:#EF4444">⚖️ Bloque 05</div>
+        <h3 class="block-title">Legal &amp; Compliance</h3>
       </div>
-    </a>
+      <div class="block-count">0 / 3 · pendiente</div>
+    </div>
+    <div class="docs-grid">
+      <a class="doc-card b-legal is-pending" href="#">
+        <div class="doc-num">28 / 03</div>
+        <div class="doc-title">Terms of Service</div>
+        <div class="doc-desc">ToS adaptado Ley Chile · responsabilidades · garantías · limitaciones.</div>
+        <div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~6 pág</span></div>
+      </a>
+      <a class="doc-card b-legal is-pending" href="#">
+        <div class="doc-num">29 / 03</div>
+        <div class="doc-title">Privacy + Cookies</div>
+        <div class="doc-desc">Privacy según Ley 19.628 Chile + banner cookies + DPA.</div>
+        <div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~6 pág</span></div>
+      </a>
+      <a class="doc-card b-legal is-pending" href="#">
+        <div class="doc-num">30 / 03</div>
+        <div class="doc-title">Templates legales</div>
+        <div class="doc-desc">NDA · DPA · contrato proveedor · pacto socios template.</div>
+        <div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~5 pág</span></div>
+      </a>
+    </div>
+  </div>
 
-    <a class="doc-card" href="06-api-catalog.html">
-      <div class="doc-num">06 / 08</div>
-      <div class="doc-title">API Catalog</div>
-      <div class="doc-desc">Endpoints internos + Channel Adapter pattern · 80+ rutas REST · webhooks externos · contratos versionados.</div>
-      <div class="doc-meta">
-        <span><span class="badge badge-active">Listo</span></span>
-        <span>12 pág</span>
+  <!-- BLOQUE SEGURIDAD -->
+  <div class="block-section">
+    <div class="block-header">
+      <div>
+        <div class="block-tag" style="color:#3B82F6">⛨ Bloque 06</div>
+        <h3 class="block-title">Seguridad</h3>
       </div>
-    </a>
+      <div class="block-count">0 / 2 · pendiente</div>
+    </div>
+    <div class="docs-grid">
+      <a class="doc-card b-sec is-pending" href="#">
+        <div class="doc-num">31 / 02</div>
+        <div class="doc-title">Security Policy</div>
+        <div class="doc-desc">Access control · cifrado · password policy · datos sensibles.</div>
+        <div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~5 pág</span></div>
+      </a>
+      <a class="doc-card b-sec is-pending" href="#">
+        <div class="doc-num">32 / 02</div>
+        <div class="doc-title">Incident Response</div>
+        <div class="doc-desc">Plan respuesta incidentes · detection · contención · comunicación · postmortem.</div>
+        <div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~5 pág</span></div>
+      </a>
+    </div>
+  </div>
 
-    <a class="doc-card" href="07-architecture.html">
-      <div class="doc-num">07 / 08</div>
-      <div class="doc-title">Architecture Spec</div>
-      <div class="doc-desc">Stack técnico · deploy AWS Amplify · escalabilidad · event-driven Postgres NOTIFY · monorepo modular · ADRs · observabilidad.</div>
-      <div class="doc-meta">
-        <span><span class="badge badge-active">Listo</span></span>
-        <span>12 pág</span>
+  <!-- BLOQUE GOBERNANZA & OPS -->
+  <div class="block-section">
+    <div class="block-header">
+      <div>
+        <div class="block-tag" style="color:#94A3B8">👔 Bloque 07</div>
+        <h3 class="block-title">Gobernanza &amp; Operaciones</h3>
       </div>
-    </a>
-
-    <a class="doc-card" href="08-roadmap.html">
-      <div class="doc-num">08 / 08</div>
-      <div class="doc-title">Roadmap</div>
-      <div class="doc-desc">Fases F0-F7 · timeline Gantt visual · dependencias legales + financieras · capital por fase · bloqueos identificados.</div>
-      <div class="doc-meta">
-        <span><span class="badge badge-active">Listo</span></span>
-        <span>12 pág</span>
-      </div>
-    </a>
-
+      <div class="block-count">0 / 9 · pendiente</div>
+    </div>
+    <div class="docs-grid">
+      <a class="doc-card b-gov is-pending" href="#"><div class="doc-num">33 / 09</div><div class="doc-title">PRD Template</div><div class="doc-desc">Template Product Requirements Doc + PRDs activos.</div><div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~5 pág</span></div></a>
+      <a class="doc-card b-gov is-pending" href="#"><div class="doc-num">34 / 09</div><div class="doc-title">OKRs Framework</div><div class="doc-desc">OKR framework + OKRs Q3-Q4 2026.</div><div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~4 pág</span></div></a>
+      <a class="doc-card b-gov is-pending" href="#"><div class="doc-num">35 / 09</div><div class="doc-title">Risk Register</div><div class="doc-desc">Riesgos · probabilidad · impacto · mitigación · owner.</div><div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~5 pág</span></div></a>
+      <a class="doc-card b-gov is-pending" href="#"><div class="doc-num">36 / 09</div><div class="doc-title">RACI Matrix</div><div class="doc-desc">Mapa stakeholders + RACI por proceso.</div><div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~4 pág</span></div></a>
+      <a class="doc-card b-gov is-pending" href="#"><div class="doc-num">37 / 09</div><div class="doc-title">Runbook + DR</div><div class="doc-desc">Incidentes operación · recovery · backup · rollback.</div><div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~5 pág</span></div></a>
+      <a class="doc-card b-gov is-pending" href="#"><div class="doc-num">38 / 09</div><div class="doc-title">Onboarding Dev</div><div class="doc-desc">Setup local · arquitectura · primeras tareas · stack.</div><div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~4 pág</span></div></a>
+      <a class="doc-card b-gov is-pending" href="#"><div class="doc-num">39 / 09</div><div class="doc-title">API SDK + Postman</div><div class="doc-desc">Collection Postman · ejemplos curl · SDK TS.</div><div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~5 pág</span></div></a>
+      <a class="doc-card b-gov is-pending" href="#"><div class="doc-num">40 / 09</div><div class="doc-title">Glosario</div><div class="doc-desc">Términos · acrónimos · jerga · domain language.</div><div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~3 pág</span></div></a>
+      <a class="doc-card b-gov is-pending" href="#"><div class="doc-num">41 / 09</div><div class="doc-title">Changelog</div><div class="doc-desc">Changelog público estilo Linear · releases · versionado.</div><div class="doc-meta"><span class="badge badge-pending">Pendiente</span><span>~3 pág</span></div></a>
+    </div>
   </div>
 
   <div style="margin-top: 60px; padding: 32px; background: var(--ink-50); border-radius: 16px; text-align: center;">
-    <h3 style="margin-top: 0; font-size: 18px;">Cómo navegar este blueprint</h3>
+    <h3 style="margin-top: 0; font-size: 18px;">Cómo navegar este banco</h3>
     <p style="color: var(--ink-500); font-size: 14px;">
       Cada documento es <strong>standalone</strong> · podés leer en orden o saltar.<br>
       Para imprimir PDF: abrí el documento · <code>Cmd+P</code> · "Save as PDF".<br>
-      Estilo branded SMC · funciona offline · sin dependencias externas.
-    </p>
-    <p style="color: var(--ink-500); font-size: 13px; margin-top: 16px;">
-      Maquetas HTML navegables del Hub (Doc 09) quedan pendientes · construir después de validar este blueprint con stakeholders.
+      Estilo branded SMC · funciona offline · acceso con PIN <strong>hoku</strong>.
     </p>
   </div>
 
 </div>
 
 <footer style="background: var(--ink-900); color: rgba(255,255,255,0.5); padding: 32px 72px; text-align: center; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;">
-  Smart Connection SpA · Blueprint Marketplace · Confidencial · 2026
+  Smart Connection SpA · Banco Marketplace SMC · Confidencial · 2026
 </footer>
 
 <script src="auth.js"></script>
