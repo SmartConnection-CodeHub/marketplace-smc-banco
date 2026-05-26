@@ -12,10 +12,50 @@ prev: 05-data-model.html
 next: 07-architecture.html
 ---
 
-# 01 · API Catalog interactivo
+# 01 · Listado completo · 30 endpoints
+
+| # | Método | Path | Tag | Auth | Descripción |
+|---|--------|------|-----|------|-------------|
+| 1 | POST | `/api/auth/login` | Auth | público | Login email + password · genera JWT |
+| 2 | POST | `/api/auth/refresh` | Auth | refresh token | Renueva access_token |
+| 3 | POST | `/api/auth/logout` | Auth | JWT | Cierra sesión · limpia cookies |
+| 4 | GET | `/api/products` | Products | JWT | Lista productos con filtros |
+| 5 | POST | `/api/products` | Products | JWT | Crea producto en catálogo maestro |
+| 6 | GET | `/api/products/:id` | Products | JWT | Detalle + listings cross-canal |
+| 7 | PATCH | `/api/products/:id` | Products | JWT | Patch parcial · dispara sync canales |
+| 8 | DELETE | `/api/products/:id` | Products | JWT | Soft delete · status=archived |
+| 9 | GET | `/api/inventory` | Inventory | JWT | Stock real-time · filtro low_stock |
+| 10 | PATCH | `/api/inventory/:product_id` | Inventory | JWT | Ajusta stock · pg_notify cross-canal |
+| 11 | GET | `/api/orders` | Orders | JWT | Lista órdenes filtros status/channel |
+| 12 | GET | `/api/orders/:id` | Orders | JWT | Detalle + items + payments + invoice |
+| 13 | POST | `/api/orders/:id/accept` | Orders | JWT | Acepta orden · reserva stock |
+| 14 | POST | `/api/orders/:id/ship` | Orders | JWT | Genera etiqueta + tracking |
+| 15 | POST | `/api/orders/:id/cancel` | Orders | JWT | Cancela · libera stock · refund |
+| 16 | POST | `/api/payments` | Payments | JWT | Crea pago abstrayendo pasarela |
+| 17 | POST | `/api/invoices/emit` | Payments | JWT | Emite DTE 33/39/61 en SII |
+| 18 | POST | `/api/channels/meli/sync` | Channels | JWT | Sync MeLi stock + precios + listings |
+| 19 | POST | `/api/channels/mp/sync` | Channels | JWT | Sync catálogo Mercado Público |
+| 20 | GET | `/api/channels` | Channels | JWT | Canales activos + health |
+| 21 | POST | `/api/cerebro/chat` | Cerebro IA | JWT | Chat IA · SSE streaming · fallback chain |
+| 22 | GET | `/api/cerebro/opportunities` | Cerebro IA | JWT | Oportunidades scored sin LLM |
+| 23 | POST | `/api/webhooks/meli` | Webhooks | HMAC | Recibe órdenes MeLi · firma SHA-256 |
+| 24 | POST | `/api/webhooks/payment` | Webhooks | HMAC | Notif. pasarela · estado pago |
+| 25 | POST | `/api/webhooks/courier` | Webhooks | HMAC | Tracking updates couriers |
+| 26 | POST | `/api/cron/refresh-meli` | Cron | CRON_SECRET | Refresh tokens MeLi 6h |
+| 27 | POST | `/api/cron/sync-mp` | Cron | CRON_SECRET | Sync licitaciones MP diario 8am |
+| 28 | POST | `/api/cron/cache-cleanup` | Cron | CRON_SECRET | Limpia Smart Cache Cold 7d |
+| 29 | GET | `/api/logs/api` | Logs | JWT founders | Logs centralizados LLMOps |
+| 30 | GET | `/api/health` | Logs | público | Health check uptime |
+
+# 02 · Mapa de interacciones · quién llama a quién
+
+> [!hla] api-interactions
+> Cómo se conectan los 30 endpoints internamente. Click en cualquier bloque ve qué otros endpoints dispara o consume. Hover destaca la ruta end-to-end · filtros canal aíslan MeLi · MP · D2C · B2B.
+
+# 03 · Detalle expandible · estilo Swagger interactivo
 
 > [!swagger] api-spec
-> 30+ endpoints agrupados por dominio. Click en cualquier endpoint expande detalle · parámetros · request body · responses por código · curl ejemplo. Sidebar navegable para saltar rápido.
+> Click en cualquier endpoint expande detalle · parámetros · request body · responses por código · curl ejemplo. **Login arriba** para activar el "▶ Probar" en cada endpoint · ejecuta requests reales contra la API.
 
 # 02 · Convenciones del API
 
