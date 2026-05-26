@@ -1,167 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>20 · Pitch Deck · Marketplace SMC</title><link rel="stylesheet" href="_styles.css">
+<head><meta charset="UTF-8"><title>20 · Pitch Deck · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
 <link rel="stylesheet" href="_diagram-kit.css">
-<style>
-.slide { padding: 60px 50px; border: 1px solid var(--ink-200); border-radius: 16px; margin: 20px 0; background: white; min-height: 380px; display: flex; flex-direction: column; justify-content: center; page-break-inside: avoid; }
-.slide-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--smc-primary); letter-spacing: 2px; font-weight: 700; margin-bottom: 14px; }
-.slide-title { font-size: 36px; font-weight: 800; margin: 0 0 18px; line-height: 1.1; }
-.slide-body { font-size: 16px; color: var(--ink-700); line-height: 1.6; }
-.slide-stat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 24px; }
-.slide-stat-num { font-size: 48px; font-weight: 800; color: var(--smc-primary-dark); line-height: 1; }
-.slide-stat-label { font-size: 12px; color: var(--ink-500); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 6px; }
-</style>
 </head>
 <body>
-<nav class="doc-nav"><a href="19-sales-playbook.html">◂ doc 19</a><span class="nav-center">DOC 20 · COMERCIAL</span><a href="21-business-model.html">doc 21 · BMC ▸</a></nav>
+<nav class="doc-nav"><a href="19-sales-playbook.html">◂ doc anterior</a><span class="nav-center">DOC 20 · COMERCIAL</span><a href="21-business-model.html">doc siguiente ▸</a></nav>
 <div class="doc">
 <section class="cover">
   <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Comercial</div></div>
   <div class="cover-center">
     <div class="cover-doc-num">Documento 20 · Comercial</div>
     <h1 class="cover-title">Pitch Deck</h1>
-    <p class="cover-subtitle">12 slides estilo Y Combinator · problema · solución · mercado · tracción · ask.</p>
+    <p class="cover-subtitle">12 slides estilo YC · cuándo usar · quién cuenta · cadencia update.</p>
     <div class="cover-meta">
       <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Para</div><div class="cover-meta-value">Inversores · socios · partners</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Comercial · Founders</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
     </div>
   </div>
   <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
 </section>
 
-<section class="page">
-  <div class="slide">
-    <div class="slide-num">SLIDE 01 · TITLE</div>
-    <h1 class="slide-title">Marketplace SMC</h1>
-    <div class="slide-body">El Stripe del vendedor multi-canal chileno · 1 plataforma · N canales · cero Excel paralelo.</div>
-  </div>
-
-  <div class="slide">
-    <div class="slide-num">SLIDE 02 · PROBLEMA</div>
-    <h1 class="slide-title">Las PYMEs chilenas pierden 30% de su tiempo en conciliación manual</h1>
-    <div class="slide-body">
-      Operan en 4-5 herramientas separadas (MeLi · Bsale · Excel · Defontana · Shopify) que NO se hablan entre sí. Resultado: oversell · contabilidad rota · ceguera cross-canal · &amp; quiebra cuando crecen.
-    </div>
-  </div>
-  <div class="page-footer"><span>Banco SMC · Pitch</span><span>03</span></div>
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-12-slides-interactivas">01 · 12 slides interactivas</a><span class="toc-pg">03</span></li><li><a href="#02-cu-ndo-usar-cada-versi-n">02 · Cuándo usar cada versión</a><span class="toc-pg">04</span></li><li><a href="#03-qui-n-cuenta-cada-slide">03 · Quién cuenta cada slide</a><span class="toc-pg">05</span></li><li><a href="#04-cadencia-de-update">04 · Cadencia de update</a><span class="toc-pg">06</span></li><li><a href="#05-lo-que-no-va-en-el-deck">05 · Lo que NO va en el deck</a><span class="toc-pg">07</span></li><li><a href="#06-branding-obligatorio">06 · Branding obligatorio</a><span class="toc-pg">08</span></li></ol>
 </section>
 
-<section class="page">
-  <div class="slide">
-    <div class="slide-num">SLIDE 03 · SOLUCIÓN</div>
-    <h1 class="slide-title">1 plataforma · N canales · operación unificada</h1>
-    <div class="slide-body">
-      Marketplace SMC centraliza inventario · ventas (MeLi · D2C · B2G · B2B) · facturación SII · contabilidad y analytics en un solo lugar. Cada canal externo es un adapter plug-and-play.
-    </div>
-  </div>
-
-  <div class="slide">
-    <div class="slide-num">SLIDE 04 · CÓMO FUNCIONA</div>
-    <h1 class="slide-title">3 pilares técnicos</h1>
-    <div class="slide-body">
-      <strong>1. Single Source of Truth</strong> · 1 inventario para todos los canales<br>
-      <strong>2. Channel Adapter Pattern</strong> · agregar canal = 1 adapter · no refactor<br>
-      <strong>3. Event-driven Accounting</strong> · cada venta dispara asiento contable automático
-    </div>
-  </div>
-  <div class="page-footer"><span>Banco SMC · Pitch</span><span>04</span></div>
-</section>
-
-<section class="page">
-  <div class="slide">
-    <div class="slide-num">SLIDE 05 · MERCADO</div>
-    <h1 class="slide-title">320.000 PYMEs activas en Chile · ~5% multi-canal hoy</h1>
-    <div class="slide-stat">
-      <div><div class="slide-stat-num">$48B</div><div class="slide-stat-label">TAM Chile CLP/año</div></div>
-      <div><div class="slide-stat-num">$8B</div><div class="slide-stat-label">SAM (PYMEs multi-canal)</div></div>
-      <div><div class="slide-stat-num">$200M</div><div class="slide-stat-label">SOM año 3</div></div>
-    </div>
-  </div>
-
-  <div class="slide">
-    <div class="slide-num">SLIDE 06 · COMPETENCIA</div>
-    <h1 class="slide-title">Mercado fragmentado · NADIE unifica</h1>
-    <div class="slide-body">
-      Bsale es POS · Defontana es contabilidad · Channable solo listing · SAP es enterprise. <strong>Cero competidor unifica los 4 verticales</strong> para PYMEs chilenas. Ventana abierta para un "Stripe del comercio multi-canal Chile".
-    </div>
-  </div>
-  <div class="page-footer"><span>Banco SMC · Pitch</span><span>05</span></div>
-</section>
-
-<section class="page">
-  <div class="slide">
-    <div class="slide-num">SLIDE 07 · MODELO DE NEGOCIO</div>
-    <h1 class="slide-title">SaaS subscription · $80K-$380K CLP/mes</h1>
-    <div class="slide-body">
-      3 tiers: Starter $80K · Pro $180K · Business $380K · Enterprise custom. Add-ons por tenant adicional · canal extra · usuarios. <strong>Pricing 60% menor que stack equivalente actual.</strong>
-    </div>
-  </div>
-
-  <div class="slide">
-    <div class="slide-num">SLIDE 08 · TRACCIÓN (futura)</div>
-    <h1 class="slide-title">Roadmap · de design partners a $100M ARR</h1>
-    <div class="slide-stat">
-      <div><div class="slide-stat-num">10</div><div class="slide-stat-label">Design partners Q1 2027</div></div>
-      <div><div class="slide-stat-num">100</div><div class="slide-stat-label">Clientes Q4 2027</div></div>
-      <div><div class="slide-stat-num">$216M</div><div class="slide-stat-label">ARR Y2 target CLP</div></div>
-    </div>
-  </div>
-  <div class="page-footer"><span>Banco SMC · Pitch</span><span>06</span></div>
-</section>
-
-<section class="page">
-  <div class="slide">
-    <div class="slide-num">SLIDE 09 · EQUIPO</div>
-    <h1 class="slide-title">3 founders · equity TBD</h1>
-    <div class="slide-body">
-      <strong>Camila Bianchi</strong> · co-founder (rol TBD)<br>
-      <strong>Javier Bianchi</strong> · co-founder · experiencia tech (también opera InfoPet)<br>
-      <strong>Guillermo González León</strong> · founder · 8 años Smart Connection · vendió MeLi · construyó marca propia Kanki streetwear · stack Next.js + Supabase + IA.<br><br>
-      <strong>Caso 0 propio</strong>: SMC opera bajo este Hub · si funciona para nosotros · funciona para nuestros clientes.
-    </div>
-  </div>
-
-  <div class="slide">
-    <div class="slide-num">SLIDE 10 · TECNOLOGÍA</div>
-    <h1 class="slide-title">Built on Next.js + Supabase + Groq</h1>
-    <div class="slide-body">
-      Stack moderno · multi-tenant nativo con RLS Postgres · event-driven · monorepo · adapter pattern. <strong>Construido para escalar a 10.000 tenants sin refactor.</strong> Datos en Chile (Supabase sa-east-1).
-    </div>
-  </div>
-  <div class="page-footer"><span>Banco SMC · Pitch</span><span>07</span></div>
-</section>
-
-<section class="page">
-  <div class="slide">
-    <div class="slide-num">SLIDE 11 · ROADMAP</div>
-    <h1 class="slide-title">Construcción ~7 meses · launch Q4 2027</h1>
-    <div class="slide-body">
-      F0 Discovery (2 sem) → F1 Core (4 sem) → F2 MeLi (4 sem) → F3 D2C (3 sem) → F4 MP B2G (4 sem) → F5 B2B (3 sem) → F6 Finance (4 sem) → F7 IA (3 sem) → F8 Hardening · UAT (3 sem). <strong>Beta cerrada Q3 2027 · launch público Q1 2028.</strong>
-    </div>
-  </div>
-
-  <div class="slide">
-    <div class="slide-num">SLIDE 12 · ASK</div>
-    <h1 class="slide-title">Buscamos: socio operativo + capital semilla</h1>
-    <div class="slide-body">
-      <strong>$50M CLP capital inicial</strong> para construir MVP + 12 meses runway. <strong>Co-founder operativo</strong> (ventas + go-to-market) · equity TBD. <strong>3 design partners</strong> activos para co-construir. Contacto: guillermo.gonzalez@smconnection.cl
-    </div>
-  </div>
-  <div class="page-footer"><span>Banco SMC · Pitch</span><span>08</span></div>
-</section>
-
-
-<section class="page" id="pitch-slides-section">
-  <h2><span class="h2-num">00b</span>12 slides interactivas</h2>
-  <p style="color:#475569;font-size:14px;line-height:1.6;margin-top:-8px;">Pitch deck completo · 12 cards estilo YC con color por tipo de mensaje · click no aplica · scroll horizontal en mobile.</p>
+<section class="page" id="01-12-slides-interactivas">
+  <h2><span class="h2-num">01</span>12 slides interactivas</h2>
+  <div class="diagram-section">
+  <p class="diagram-caption">Recorrer en orden · cada slide responde una pregunta del lector. Click no aplica (visual estático).</p>
   <div class="diagram-host kind-slides" id="pitch-slides" data-kind="slides"></div>
   <script type="application/json" data-for="pitch-slides">{"title": "Pitch Deck · 12 slides estilo YC", "slides": [{"num": "01", "kicker": "VISIÓN", "title": "Operar todos tus canales desde un solo lugar", "body": "MeLi · D2C · Mercado Público · B2B sin saltar entre paneles.", "color": "#0F172A"}, {"num": "02", "kicker": "PROBLEMA", "title": "Vendedor chileno opera 4 canales y nada conversa", "body": "Stock, precios y órdenes en spreadsheets · oversell mensual · ventas perdidas.", "color": "#7F1D1D"}, {"num": "03", "kicker": "MERCADO", "title": "60K PYMEs venden online en Chile · solo 8% en >2 canales", "kpi": "60.000 PYMEs", "color": "#1E3A8A"}, {"num": "04", "kicker": "SOLUCIÓN", "title": "Channel Adapter Pattern + Cerebro IA", "body": "1 producto · N canales sincronizados · oportunidades sugeridas en tiempo real.", "color": "#0F766E"}, {"num": "05", "kicker": "PRODUCTO", "title": "Sync stock real-time + sugerencias IA", "bullets": ["Multistore + spread scoring", "OAuth MeLi httpOnly", "DTE SII auto", "Smart cache 6h/12h"], "color": "#0E7490"}, {"num": "06", "kicker": "TRACCIÓN", "title": "0 → 5 operadores Pro en 6 meses Y1", "kpi": "MRR target $900K", "color": "#15803D"}, {"num": "07", "kicker": "GTM", "title": "LinkedIn + referidos founder + demos asistidos", "body": "CAC bajo Y1 vía marketing orgánico · escalar paid Y2.", "color": "#A16207"}, {"num": "08", "kicker": "MODELO", "title": "SaaS suscripción mensual UF + add-ons", "bullets": ["Starter $80K/mes", "Pro $180K/mes", "Business $380K/mes", "Enterprise custom"], "color": "#7C3AED"}, {"num": "09", "kicker": "COMPETENCIA", "title": "Nadie cubre 4 canales · IA · DTE Chile junto", "body": "BeezUp · Streamline · Sellbrite no operan en Chile. Local: solo features sueltos.", "color": "#9F1239"}, {"num": "10", "kicker": "EQUIPO", "title": "3 founders · 17 años de servicio combinado", "body": "Camila Bianchi · Javier Bianchi · Guillermo González León.", "color": "#0F172A"}, {"num": "11", "kicker": "ROADMAP", "title": "Q4 26 MVP · Q3 27 B2B · Q4 27 multi-tenant", "color": "#3B82F6"}, {"num": "12", "kicker": "ASK", "title": "Bootstrap Y1 · ronda semilla Y2 si PMF claro", "body": "Capital inicial autofinanciado $50M · si llegamos a 30 Pro buscamos semilla USD 500K.", "color": "#0F766E"}]}</script>
-  <div class="page-footer"><span>Banco SMC</span><span>—</span></div>
-</section>
 </div>
-<nav class="doc-nav"><a href="19-sales-playbook.html">◂ doc 19</a><span class="nav-center">FIN DOC 20</span><a href="21-business-model.html">doc 21 · BMC ▸</a></nav>
+  <div class="page-footer"><span>Banco SMC · Comercial</span><span>03</span></div>
+</section>
+<section class="page" id="02-cu-ndo-usar-cada-versi-n">
+  <h2><span class="h2-num">02</span>Cuándo usar cada versión</h2>
+  <table>
+<thead><tr>
+<th>Versión</th>
+<th>Cuándo</th>
+<th>Duración pitch</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Deck completo 12 slides</td>
+<td>Reunión con inversor · partner estratégico</td>
+<td>20-30 min</td>
+</tr>
+<tr>
+<td>Resumen 5 slides (1·2·4·6·12)</td>
+<td>Email follow-up · LinkedIn DM</td>
+<td>leen 2 min</td>
+</tr>
+<tr>
+<td>Versión 1 slide (#12 Ask)</td>
+<td>Quick intro · networking · evento</td>
+<td>leen 30 seg</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Comercial</span><span>04</span></div>
+</section>
+<section class="page" id="03-qui-n-cuenta-cada-slide">
+  <h2><span class="h2-num">03</span>Quién cuenta cada slide</h2>
+  <ul>
+<li><strong>Slides 1-3 (Visión · Problema · Mercado)</strong>: founder visible (Guillermo o Camila) · transmite convicción</li>
+<li><strong>Slides 4-5 (Solución · Producto)</strong>: tech founder (Guillermo) · transmite factibilidad</li>
+<li><strong>Slides 6-8 (Tracción · GTM · Modelo)</strong>: Comercial agente · transmite ejecución</li>
+<li><strong>Slides 9-11 (Competencia · Equipo · Roadmap)</strong>: founder cualquiera · transmite cobertura</li>
+<li><strong>Slide 12 (Ask)</strong>: founder principal · transmite decisión</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Comercial</span><span>05</span></div>
+</section>
+<section class="page" id="04-cadencia-de-update">
+  <h2><span class="h2-num">04</span>Cadencia de update</h2>
+  <ul>
+<li><strong>Cada trimestre</strong>: actualizar slide 6 (Tracción) con números reales</li>
+<li><strong>Cuando cierra fase importante</strong>: actualizar slide 11 (Roadmap)</li>
+<li><strong>Cuando pivota algo</strong>: revisar slides 4-5 (Solución · Producto)</li>
+<li><strong>Antes de cada pitch</strong>: leer en voz alta los 12 títulos para detectar disonancias</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Comercial</span><span>06</span></div>
+</section>
+<section class="page" id="05-lo-que-no-va-en-el-deck">
+  <h2><span class="h2-num">05</span>Lo que NO va en el deck</h2>
+  <div class="box box-anti"><div class="box-title">⛔ Evitar</div><ul>
+<li>Detalle técnico denso (Architect Spec doc 07 si preguntan)</li>
+<li>Financial detalle (Financial Model doc 23 si preguntan)</li>
+<li>Logos clientes que aún no son clientes</li>
+<li>"Disruptive" · "leverage" · "synergy" · jerga vacía</li>
+<li>Slides con &gt;30 palabras (regla Garr Reynolds)</li>
+</ul></div>
+  <div class="page-footer"><span>Banco SMC · Comercial</span><span>07</span></div>
+</section>
+<section class="page" id="06-branding-obligatorio">
+  <h2><span class="h2-num">06</span>Branding obligatorio</h2>
+  <ul>
+<li>Logo SMC en header todas las slides</li>
+<li>Footer: smconnection.cl · Confidencial · año</li>
+<li>Tipografía consistente (Inter display · JetBrains Mono code)</li>
+<li>Paleta del Doc 27 Visual Identity · jamás colores aproximados</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Comercial</span><span>08</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="19-sales-playbook.html">◂ doc anterior</a><span class="nav-center">FIN DOC 20</span><a href="21-business-model.html">doc siguiente ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
 <script src="_diagram-kit.js"></script>
