@@ -1,0 +1,436 @@
+{
+  "title": "Marketplace SMC · API Reference",
+  "baseUrl": "https://marketplace.smconnection.cl/api",
+  "auth": "Bearer JWT (Supabase Auth · tenant_id claims)",
+  "tags": [
+    { "id": "auth",      "name": "Authentication",         "icon": "🔐" },
+    { "id": "products",  "name": "Products & Catalog",     "icon": "📦" },
+    { "id": "inventory", "name": "Inventory",              "icon": "📊" },
+    { "id": "orders",    "name": "Orders & Sales",         "icon": "🛒" },
+    { "id": "payments",  "name": "Payments & DTE",         "icon": "💳" },
+    { "id": "channels",  "name": "Channel Adapters",       "icon": "🔌" },
+    { "id": "cerebro",   "name": "Cerebro IA",             "icon": "🧠" },
+    { "id": "webhooks",  "name": "Webhooks (inbound)",     "icon": "📡" },
+    { "id": "cron",      "name": "Cron Jobs (internal)",   "icon": "⏱️" },
+    { "id": "logs",      "name": "Logs & Observability",   "icon": "📋" }
+  ],
+  "endpoints": [
+    {
+      "id": "auth-login",
+      "tag": "auth",
+      "method": "POST",
+      "path": "/api/auth/login",
+      "summary": "Login con email + password",
+      "auth": "none",
+      "description": "Autentica usuario contra Supabase Auth. Devuelve access_token (1h), refresh_token (30d), tenant_id, role. Cookies httpOnly set automáticamente.",
+      "requestBody": {
+        "contentType": "application/json",
+        "example": "{\n  \"email\": \"camila@smconnection.cl\",\n  \"password\": \"***\"\n}"
+      },
+      "curl": "curl -X POST https://marketplace.smconnection.cl/api/auth/login \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"email\":\"camila@smconnection.cl\",\"password\":\"***\"}'",
+      "responses": [
+        { "code": "200", "description": "Login exitoso", "example": "{\n  \"access_token\": \"eyJhbGc...\",\n  \"refresh_token\": \"eyJhbGc...\",\n  \"expires_in\": 3600,\n  \"tenant_id\": \"uuid-tenant\",\n  \"role\": \"founder\"\n}" },
+        { "code": "401", "description": "Credenciales inválidas",  "example": "{\n  \"error\": \"invalid_credentials\",\n  \"message\": \"Email o password incorrectos\"\n}" },
+        { "code": "429", "description": "Rate limit excedido (5/min)" }
+      ]
+    },
+    {
+      "id": "auth-refresh",
+      "tag": "auth",
+      "method": "POST",
+      "path": "/api/auth/refresh",
+      "summary": "Renueva access_token",
+      "auth": "Refresh Token",
+      "description": "Renueva el access_token usando el refresh_token (cookie httpOnly). Validez: 1h adicional.",
+      "responses": [
+        { "code": "200", "description": "Token renovado" },
+        { "code": "401", "description": "Refresh token vencido o inválido" }
+      ]
+    },
+    {
+      "id": "auth-logout",
+      "tag": "auth",
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "summary": "Cierra sesión · invalida tokens",
+      "auth": "JWT",
+      "responses": [{ "code": "200", "description": "Logout OK · cookies limpiadas" }]
+    },
+
+    {
+      "id": "products-list",
+      "tag": "products",
+      "method": "GET",
+      "path": "/api/products",
+      "summary": "Lista productos del tenant",
+      "description": "Lista paginada con filtros opcionales. RLS aplica automáticamente por tenant_id desde JWT.",
+      "parameters": [
+        { "name": "limit", "in": "query", "type": "integer", "default": "20", "desc": "Resultados por página (max 100)" },
+        { "name": "offset", "in": "query", "type": "integer", "default": "0" },
+        { "name": "channel", "in": "query", "type": "string", "desc": "meli · d2c · mp · b2b · all" },
+        { "name": "category_id", "in": "query", "type": "uuid" },
+        { "name": "search", "in": "query", "type": "string", "desc": "Busca en name + description" },
+        { "name": "order", "in": "query", "type": "string", "default": "created_at.desc" }
+      ],
+      "curl": "curl -H 'Authorization: Bearer $TOKEN' \\\n  'https://marketplace.smconnection.cl/api/products?limit=20&channel=meli'",
+      "responses": [
+        { "code": "200", "description": "Lista de productos", "example": "{\n  \"data\": [\n    {\n      \"id\": \"uuid\",\n      \"sku\": \"SKU-001\",\n      \"name\": \"Producto X\",\n      \"price\": 19990,\n      \"stock\": 12\n    }\n  ],\n  \"total\": 350,\n  \"limit\": 20,\n  \"offset\": 0\n}" },
+        { "code": "401", "description": "JWT vencido o ausente" }
+      ]
+    },
+    {
+      "id": "products-create",
+      "tag": "products",
+      "method": "POST",
+      "path": "/api/products",
+      "summary": "Crea producto en catálogo maestro",
+      "description": "Crea producto único en mkt_products. SKU debe ser único por tenant_id. Validación Zod en backend.",
+      "requestBody": {
+        "contentType": "application/json",
+        "example": "{\n  \"sku\": \"SKU-001\",\n  \"name\": \"Producto X\",\n  \"description\": \"...\",\n  \"base_price\": 19990,\n  \"category_id\": \"uuid\",\n  \"images\": [\"https://...\"],\n  \"attributes\": { \"color\": \"azul\", \"talla\": \"M\" }\n}"
+      },
+      "responses": [
+        { "code": "201", "description": "Producto creado" },
+        { "code": "400", "description": "Validación falló (SKU duplicado o campo requerido)" },
+        { "code": "401", "description": "No autorizado" }
+      ]
+    },
+    {
+      "id": "products-detail",
+      "tag": "products",
+      "method": "GET",
+      "path": "/api/products/:id",
+      "summary": "Detalle producto + sus listings cross-canal",
+      "parameters": [{ "name": "id", "in": "path", "type": "uuid", "required": true }],
+      "responses": [
+        { "code": "200", "description": "Producto + array listings por canal" },
+        { "code": "404", "description": "Producto no encontrado en tenant" }
+      ]
+    },
+    {
+      "id": "products-update",
+      "tag": "products",
+      "method": "PATCH",
+      "path": "/api/products/:id",
+      "summary": "Actualiza campos del producto",
+      "description": "Patch parcial · solo campos en body se actualizan. Si cambia base_price, dispara re-sync canales activos."
+    },
+    {
+      "id": "products-delete",
+      "tag": "products",
+      "method": "DELETE",
+      "path": "/api/products/:id",
+      "summary": "Borra producto (soft delete · status='archived')",
+      "description": "NO borra físicamente. Marca status='archived'. Mantiene órdenes históricas referenciando este SKU."
+    },
+
+    {
+      "id": "inventory-list",
+      "tag": "inventory",
+      "method": "GET",
+      "path": "/api/inventory",
+      "summary": "Stock real-time por producto",
+      "parameters": [
+        { "name": "low_stock", "in": "query", "type": "boolean", "desc": "Filtra solo productos con stock < 5" },
+        { "name": "warehouse", "in": "query", "type": "string", "default": "main" }
+      ]
+    },
+    {
+      "id": "inventory-update",
+      "tag": "inventory",
+      "method": "PATCH",
+      "path": "/api/inventory/:product_id",
+      "summary": "Ajusta stock · dispara pg_notify cross-canal",
+      "description": "Suma/resta stock con motivo (reposición · merma · ajuste · venta). pg_notify dispara sync a TODOS los canales activos automáticamente. Ver Escenario E del Doc 07.",
+      "requestBody": {
+        "contentType": "application/json",
+        "example": "{\n  \"delta\": 50,\n  \"motivo\": \"reposicion\",\n  \"warehouse\": \"main\",\n  \"note\": \"Llegada lote Nexport #2026-04\"\n}"
+      },
+      "responses": [
+        { "code": "200", "description": "Stock actualizado · sync canales en cola" },
+        { "code": "409", "description": "Conflict · stock negativo no permitido" }
+      ]
+    },
+
+    {
+      "id": "orders-list",
+      "tag": "orders",
+      "method": "GET",
+      "path": "/api/orders",
+      "summary": "Lista órdenes con filtros",
+      "parameters": [
+        { "name": "status", "in": "query", "type": "enum", "desc": "created · accepted · shipped · delivered · canceled" },
+        { "name": "channel", "in": "query", "type": "string" },
+        { "name": "date_from", "in": "query", "type": "date" },
+        { "name": "date_to", "in": "query", "type": "date" }
+      ]
+    },
+    {
+      "id": "orders-detail",
+      "tag": "orders",
+      "method": "GET",
+      "path": "/api/orders/:id",
+      "summary": "Detalle completo orden",
+      "description": "Devuelve orden + items + payments + invoice + tracking courier (si existe).",
+      "parameters": [{ "name": "id", "in": "path", "type": "uuid", "required": true }],
+      "responses": [
+        { "code": "200", "description": "Orden con todas las relaciones expandidas" }
+      ]
+    },
+    {
+      "id": "orders-accept",
+      "tag": "orders",
+      "method": "POST",
+      "path": "/api/orders/:id/accept",
+      "summary": "Acepta orden · reserva stock con SELECT FOR UPDATE",
+      "description": "Verifica stock disponible · reserva en mkt_inventory dentro de transacción. Cambia status created → accepted.",
+      "responses": [
+        { "code": "200", "description": "Orden aceptada · stock reservado" },
+        { "code": "409", "description": "Stock insuficiente · cambia status a 'oversold'" }
+      ]
+    },
+    {
+      "id": "orders-ship",
+      "tag": "orders",
+      "method": "POST",
+      "path": "/api/orders/:id/ship",
+      "summary": "Genera etiqueta + tracking · cambia status",
+      "description": "Cotiza courier (Chilexpress/Starken via Adapter), genera etiqueta PDF, guarda tracking número, status → shipped.",
+      "requestBody": {
+        "contentType": "application/json",
+        "example": "{\n  \"courier\": \"chilexpress\",\n  \"package\": { \"peso_kg\": 1.2, \"largo\": 30, \"ancho\": 20, \"alto\": 10 }\n}"
+      }
+    },
+    {
+      "id": "orders-cancel",
+      "tag": "orders",
+      "method": "POST",
+      "path": "/api/orders/:id/cancel",
+      "summary": "Cancela orden · libera stock · refund si aplica"
+    },
+
+    {
+      "id": "payments-create",
+      "tag": "payments",
+      "method": "POST",
+      "path": "/api/payments",
+      "summary": "Crea pago abstrayendo pasarela",
+      "description": "Adapter Pattern: misma interfaz para webpay · mercadopago · transferencia. Idempotency key recomendado.",
+      "requestBody": {
+        "contentType": "application/json",
+        "example": "{\n  \"order_id\": \"uuid\",\n  \"gateway\": \"webpay\",\n  \"amount\": 19990,\n  \"idempotency_key\": \"uuid-único\"\n}"
+      }
+    },
+    {
+      "id": "invoices-emit",
+      "tag": "payments",
+      "method": "POST",
+      "path": "/api/invoices/emit",
+      "summary": "Emite DTE en SII vía Open Factura",
+      "description": "Tipos soportados: 33 (factura) · 39 (boleta) · 61 (NC). Adjunta PDF a Supabase Storage. Folio asignado por SII.",
+      "requestBody": {
+        "contentType": "application/json",
+        "example": "{\n  \"order_id\": \"uuid\",\n  \"tipo_dte\": 39\n}"
+      },
+      "responses": [
+        { "code": "201", "description": "DTE emitido · folio asignado · PDF guardado" },
+        { "code": "400", "description": "RUT inválido o tipo DTE no autorizado en SII" },
+        { "code": "502", "description": "Open Factura/SII no disponible · retry exponencial activado" }
+      ]
+    },
+
+    {
+      "id": "channels-sync-meli",
+      "tag": "channels",
+      "method": "POST",
+      "path": "/api/channels/meli/sync",
+      "summary": "Sync stock + precios + listings con MeLi",
+      "description": "Disparo manual o vía pg_notify. Usa cookies httpOnly OAuth · refresh automático si expiró.",
+      "notes": "Rate limit MeLi: 1.000 req/min por aplicación. Adapter usa pool con backoff."
+    },
+    {
+      "id": "channels-sync-mp",
+      "tag": "channels",
+      "method": "POST",
+      "path": "/api/channels/mp/sync",
+      "summary": "Sync catálogo con Mercado Público",
+      "description": "Actualiza catálogo de productos en ChileCompra. Requiere MERCADOPUBLICO_TICKET env var."
+    },
+    {
+      "id": "channels-list",
+      "tag": "channels",
+      "method": "GET",
+      "path": "/api/channels",
+      "summary": "Canales activos del tenant + status conexión",
+      "responses": [
+        { "code": "200", "description": "Lista canales con health check", "example": "[\n  { \"id\": \"meli\", \"is_active\": true, \"token_expires_at\": \"2026-05-26T20:00:00Z\", \"health\": \"ok\" },\n  { \"id\": \"mp\",   \"is_active\": true, \"health\": \"ok\" }\n]" }
+      ]
+    },
+
+    {
+      "id": "cerebro-chat",
+      "tag": "cerebro",
+      "method": "SSE",
+      "path": "/api/cerebro/chat",
+      "summary": "Chat con Cerebro IA · streaming SSE",
+      "description": "Server-Sent Events. Cada token llega como evento. Fallback chain Groq → Gemini → DeepSeek (NUNCA Claude · regla Hoku).",
+      "requestBody": {
+        "contentType": "application/json",
+        "example": "{\n  \"prompt\": \"¿Qué oportunidades tengo en MeLi esta semana?\",\n  \"context\": { \"period\": \"last_7d\" }\n}"
+      },
+      "responses": [
+        { "code": "200", "description": "Stream SSE · events: data, error, done" }
+      ]
+    },
+    {
+      "id": "cerebro-opportunities",
+      "tag": "cerebro",
+      "method": "GET",
+      "path": "/api/cerebro/opportunities",
+      "summary": "Oportunidades scored (sin LLM · 6 señales)",
+      "description": "Scoring 0-100 basado en: multistore · spread · availability · stability · premium · meli. Ver ADR-0001.",
+      "parameters": [
+        { "name": "min_score", "in": "query", "type": "integer", "default": "70" },
+        { "name": "category", "in": "query", "type": "string" }
+      ]
+    },
+
+    {
+      "id": "webhook-meli",
+      "tag": "webhooks",
+      "method": "POST",
+      "path": "/api/webhooks/meli",
+      "summary": "Recibe órdenes nuevas de Mercado Libre",
+      "auth": "HMAC firma",
+      "description": "MeLi notifica eventos (order_created · payment_received · shipping_updated). Valida firma HMAC SHA-256. Idempotency key obligatoria.",
+      "responses": [
+        { "code": "200", "description": "Procesado OK" },
+        { "code": "401", "description": "Firma HMAC inválida" },
+        { "code": "409", "description": "Idempotency key duplicada (no es error · ignorado)" }
+      ]
+    },
+    {
+      "id": "webhook-payment",
+      "tag": "webhooks",
+      "method": "POST",
+      "path": "/api/webhooks/payment",
+      "summary": "Webhook pasarelas (WebPay · MercadoPago)",
+      "auth": "HMAC firma",
+      "description": "Notificación de pago aprobado/rechazado/reverso. Actualiza mkt_payments.status."
+    },
+    {
+      "id": "webhook-courier",
+      "tag": "webhooks",
+      "method": "POST",
+      "path": "/api/webhooks/courier",
+      "summary": "Tracking updates de couriers",
+      "auth": "HMAC firma"
+    },
+
+    {
+      "id": "cron-refresh-meli",
+      "tag": "cron",
+      "method": "POST",
+      "path": "/api/cron/refresh-meli",
+      "summary": "Refresh tokens MeLi cada 6h",
+      "auth": "CRON_SECRET header",
+      "description": "Vercel cron · header x-cron-secret obligatorio. Refresh tokens OAuth antes que caduquen."
+    },
+    {
+      "id": "cron-sync-mp",
+      "tag": "cron",
+      "method": "POST",
+      "path": "/api/cron/sync-mp",
+      "summary": "Sync licitaciones Mercado Público diario 8am",
+      "auth": "CRON_SECRET header"
+    },
+    {
+      "id": "cron-cache-cleanup",
+      "tag": "cron",
+      "method": "POST",
+      "path": "/api/cron/cache-cleanup",
+      "summary": "Cleanup Smart Cache Cold cada 7 días",
+      "auth": "CRON_SECRET header"
+    },
+
+    {
+      "id": "logs-api",
+      "tag": "logs",
+      "method": "GET",
+      "path": "/api/logs/api",
+      "summary": "API logs centralizados (LLMOps)",
+      "auth": "JWT · solo founders",
+      "parameters": [
+        { "name": "level", "in": "query", "type": "enum", "desc": "info · warn · error" },
+        { "name": "since", "in": "query", "type": "datetime" }
+      ]
+    },
+    {
+      "id": "logs-health",
+      "tag": "logs",
+      "method": "GET",
+      "path": "/api/health",
+      "summary": "Health check público · uptime",
+      "auth": "none",
+      "responses": [
+        { "code": "200", "description": "OK", "example": "{\n  \"status\": \"healthy\",\n  \"version\": \"v2.0.0\",\n  \"db\": \"up\",\n  \"channels\": { \"meli\": \"up\", \"mp\": \"up\" }\n}" },
+        { "code": "503", "description": "Degraded · uno o más servicios down" }
+      ]
+    }
+  ],
+  "schemas": {
+    "Product": {
+      "id": "uuid",
+      "tenant_id": "uuid (FK)",
+      "sku": "string (unique per tenant)",
+      "name": "string",
+      "description": "string?",
+      "base_price": "integer (CLP)",
+      "category_id": "uuid?",
+      "images": "string[]",
+      "attributes": "jsonb",
+      "status": "active | archived",
+      "created_at": "timestamptz",
+      "updated_at": "timestamptz"
+    },
+    "Order": {
+      "id": "uuid",
+      "tenant_id": "uuid (FK)",
+      "channel_id": "string (meli | d2c | mp | b2b)",
+      "external_order_id": "string",
+      "status": "created | accepted | shipped | delivered | canceled | oversold",
+      "total": "integer (CLP)",
+      "currency": "CLP",
+      "created_at": "timestamptz",
+      "items": "OrderItem[]",
+      "payments": "Payment[]",
+      "invoice": "Invoice?"
+    },
+    "Invoice": {
+      "id": "uuid",
+      "order_id": "uuid (FK)",
+      "tipo_dte": "33 | 39 | 61",
+      "folio_sii": "integer",
+      "pdf_url": "signed_url (Supabase Storage)",
+      "emitted_at": "timestamptz",
+      "amount": "integer (CLP)",
+      "rut_cliente": "string"
+    },
+    "Opportunity": {
+      "id": "uuid",
+      "score": "integer (0-100)",
+      "signals": {
+        "multistore": "number",
+        "spread": "number",
+        "availability": "number",
+        "stability": "number",
+        "premium": "number",
+        "meli": "number"
+      },
+      "suggested_price": "integer (CLP)",
+      "category": "string",
+      "source_url": "string",
+      "computed_at": "timestamptz"
+    }
+  }
+}

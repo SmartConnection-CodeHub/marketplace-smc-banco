@@ -930,6 +930,169 @@
   }
 
   // ===========================================================
+  // SWAGGER · OpenAPI-style endpoint catalog
+  //   JSON: { title, baseUrl, auth, tags:[{id,name,icon}], endpoints:[{id,tag,method,path,summary,description,auth,parameters,requestBody,responses,curl}], schemas:{Name:{...}} }
+  // ===========================================================
+  function initSwagger(cfg) {
+    const root = document.getElementById(cfg.id);
+    if (!root) return;
+
+    const tags = cfg.tags || [];
+    const endpoints = cfg.endpoints || [];
+    const schemas = cfg.schemas || {};
+
+    function methodClass(m) { return 'swagger-method-' + (m || 'get').toLowerCase(); }
+    function statusClass(c) {
+      const n = parseInt(c) || 0;
+      if (n < 300) return 'code-2xx';
+      if (n < 400) return 'code-3xx';
+      if (n < 500) return 'code-4xx';
+      return 'code-5xx';
+    }
+    function highlightPath(p) {
+      return esc(p).replace(/:([\w-]+)/g, '<span class="param">:$1</span>');
+    }
+
+    // Sidebar
+    let sidebarHtml = '';
+    tags.forEach(t => {
+      const tagEps = endpoints.filter(e => e.tag === t.id);
+      if (tagEps.length === 0) return;
+      sidebarHtml += `<div class="swagger-tag-group">
+        <div class="swagger-tag-head"><span class="swagger-tag-icon">${esc(t.icon || '·')}</span>${esc(t.name)}</div>
+        ${tagEps.map(e => `<a href="#sw-${esc(e.id)}" class="swagger-sidebar-link" data-target="sw-${esc(e.id)}">
+          <span class="swagger-sidebar-method ${methodClass(e.method)}">${esc(e.method)}</span>
+          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(e.path.split('/').slice(-1)[0] || e.path)}</span>
+        </a>`).join('')}
+      </div>`;
+    });
+
+    // Content: una sección por tag, con endpoints adentro
+    let contentHtml = '';
+    tags.forEach(t => {
+      const tagEps = endpoints.filter(e => e.tag === t.id);
+      if (tagEps.length === 0) return;
+      contentHtml += `<div class="swagger-tag-section">
+        <div class="swagger-tag-section-head">
+          <span class="swagger-tag-section-icon">${esc(t.icon || '·')}</span>
+          <h3 class="swagger-tag-section-title">${esc(t.name)}</h3>
+        </div>
+        ${tagEps.map(ep => renderEndpoint(ep)).join('')}
+      </div>`;
+    });
+
+    function renderEndpoint(ep) {
+      const params = ep.parameters || [];
+      const body = ep.requestBody;
+      const responses = ep.responses || [];
+      const authTag = ep.auth === 'none'
+        ? '<span class="swagger-auth-tag is-none">PÚBLICO</span>'
+        : `<span class="swagger-auth-tag">${esc(ep.auth || 'JWT')}</span>`;
+
+      return `<div class="swagger-endpoint" id="sw-${esc(ep.id)}" data-id="${esc(ep.id)}">
+        <div class="swagger-endpoint-header">
+          <span class="swagger-method ${methodClass(ep.method)}">${esc(ep.method)}</span>
+          <span class="swagger-path">${highlightPath(ep.path)}</span>
+          <span class="swagger-summary">${esc(ep.summary || '')}${authTag}</span>
+          <span class="swagger-arrow">▾</span>
+        </div>
+        <div class="swagger-endpoint-body">
+          ${ep.description ? `<div class="swagger-section"><div class="swagger-section-label">Descripción</div><div class="swagger-desc">${esc(ep.description)}</div></div>` : ''}
+
+          ${params.length ? `<div class="swagger-section">
+            <div class="swagger-section-label">Parámetros</div>
+            <table class="swagger-params-table">
+              <thead><tr><th>Nombre</th><th>En</th><th>Tipo</th><th>Default</th><th>Descripción</th></tr></thead>
+              <tbody>${params.map(p => `<tr>
+                <td><span class="param-name">${esc(p.name)}</span>${p.required ? ' <span class="param-required">*</span>' : ''}</td>
+                <td>${esc(p.in || 'query')}</td>
+                <td><span class="param-type">${esc(p.type || 'string')}</span></td>
+                <td>${p.default ? `<span class="param-default">${esc(p.default)}</span>` : '<span style="color:#94A3B8">—</span>'}</td>
+                <td>${esc(p.desc || '')}</td>
+              </tr>`).join('')}</tbody>
+            </table>
+          </div>` : ''}
+
+          ${body ? `<div class="swagger-section">
+            <div class="swagger-section-label">Request Body${body.contentType ? ` · ${esc(body.contentType)}` : ''}</div>
+            <pre class="swagger-code">${esc(body.example || '')}</pre>
+          </div>` : ''}
+
+          ${ep.curl ? `<div class="swagger-section">
+            <div class="swagger-section-label">curl ejemplo</div>
+            <pre class="swagger-code">${esc(ep.curl)}</pre>
+          </div>` : ''}
+
+          ${responses.length ? `<div class="swagger-section">
+            <div class="swagger-section-label">Responses</div>
+            ${responses.map(r => `<div class="swagger-response-row">
+              <div class="swagger-response-code ${statusClass(r.code)}">${esc(r.code)}</div>
+              <div>
+                <div class="swagger-response-desc"><strong>${esc(r.description || '')}</strong></div>
+                ${r.example ? `<pre class="swagger-code" style="margin-top:8px;">${esc(r.example)}</pre>` : ''}
+              </div>
+            </div>`).join('')}
+          </div>` : ''}
+
+          ${ep.notes ? `<div class="swagger-section">
+            <div class="swagger-section-label">Notas</div>
+            <div class="swagger-desc">${esc(ep.notes)}</div>
+          </div>` : ''}
+        </div>
+      </div>`;
+    }
+
+    // Schemas
+    let schemasHtml = '';
+    const schemaKeys = Object.keys(schemas);
+    if (schemaKeys.length) {
+      schemasHtml = `<div class="swagger-schemas">
+        <div class="swagger-tag-section-head">
+          <span class="swagger-tag-section-icon">🧬</span>
+          <h3 class="swagger-tag-section-title">Schemas / Modelos</h3>
+        </div>
+        ${schemaKeys.map(k => `<div class="swagger-schema-card">
+          <div class="swagger-schema-title">${esc(k)}</div>
+          <pre class="swagger-code">${esc(JSON.stringify(schemas[k], null, 2))}</pre>
+        </div>`).join('')}
+      </div>`;
+    }
+
+    root.innerHTML = `<div class="swagger-shell">
+      <div class="swagger-head">
+        <h2 class="swagger-title">${esc(cfg.title || 'API Catalog')}</h2>
+        ${cfg.baseUrl ? `<span class="swagger-baseurl">${esc(cfg.baseUrl)}</span>` : ''}
+        ${cfg.auth ? `<span class="swagger-auth">🔐 ${esc(cfg.auth)}</span>` : ''}
+      </div>
+      <div class="swagger-body">
+        <aside class="swagger-sidebar">${sidebarHtml}</aside>
+        <div class="swagger-content">${contentHtml}${schemasHtml}</div>
+      </div>
+    </div>`;
+
+    // Bind clicks: header toggles body
+    root.querySelectorAll('.swagger-endpoint-header').forEach(h => {
+      h.addEventListener('click', () => {
+        h.parentElement.classList.toggle('is-open');
+      });
+    });
+    // Sidebar click highlights + scroll
+    root.querySelectorAll('.swagger-sidebar-link').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = a.getAttribute('data-target');
+        const target = root.querySelector(`#${id}`);
+        if (target) {
+          target.classList.add('is-open');
+          root.querySelectorAll('.swagger-sidebar-link').forEach(x => x.classList.remove('is-active'));
+          a.classList.add('is-active');
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  }
+
+  // ===========================================================
   // BOOT · escanea [data-kind] y bootea cada uno
   // ===========================================================
   function boot() {
@@ -998,6 +1161,7 @@
         'chart-bar': initChartBar,
         'jtbd': initJTBD,
         'value-prop': initValueProp,
+        'swagger': initSwagger,
       };
       const fn = dispatcher[kind];
       if (fn) {
@@ -1021,5 +1185,6 @@
   window.SMCDiagram.initChartBar = initChartBar;
   window.SMCDiagram.initJTBD = initJTBD;
   window.SMCDiagram.initValueProp = initValueProp;
+  window.SMCDiagram.initSwagger = initSwagger;
   window.SMCDiagram.boot = boot;
 })();
