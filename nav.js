@@ -68,22 +68,88 @@
   const css = `
     @keyframes smc-nav-slide-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
     @keyframes smc-nav-fade-in  { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes smc-nav-pulse    { 0%, 100% { box-shadow: 0 0 0 0 rgba(0,193,193,0.4); } 50% { box-shadow: 0 0 0 12px rgba(0,193,193,0); } }
-    #smc-nav-toggle {
-      position: fixed; top: 18px; right: 18px; z-index: 9998;
-      width: 48px; height: 48px; border-radius: 12px;
-      background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 193, 193, 0.3);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all .2s ease;
-      animation: smc-nav-pulse 2.5s ease-in-out infinite;
+    @keyframes smc-nav-radar {
+      0%   { transform: scale(1);   opacity: 0.85; }
+      80%  { opacity: 0; }
+      100% { transform: scale(3.2); opacity: 0; }
     }
-    #smc-nav-toggle:hover { background: rgba(0, 193, 193, 0.15); transform: scale(1.05); animation: none; }
-    #smc-nav-toggle svg { width: 22px; height: 22px; }
+    @keyframes smc-nav-bob {
+      0%, 100% { transform: translateY(-50%) translateX(0); }
+      50%      { transform: translateY(-50%) translateX(-3px); }
+    }
+
+    /* botón centrado vertical · lateral derecho */
+    #smc-nav-toggle {
+      position: fixed;
+      top: 50%; right: 22px;
+      transform: translateY(-50%);
+      z-index: 9998;
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #0F172A 0%, #0F766E 100%);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 193, 193, 0.45);
+      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 193, 193, 0.15);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background .2s ease, box-shadow .2s ease;
+      animation: smc-nav-bob 4s ease-in-out infinite;
+    }
+
+    /* 2 anillos radar concéntricos · stagger 1s */
+    #smc-nav-toggle::before,
+    #smc-nav-toggle::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 2px solid #00C1C1;
+      animation: smc-nav-radar 2.4s cubic-bezier(.22, 1, .36, 1) infinite;
+      pointer-events: none;
+    }
+    #smc-nav-toggle::after { animation-delay: 1.2s; }
+
+    /* hover · pausa radar · agranda · brilla teal */
+    #smc-nav-toggle:hover {
+      background: linear-gradient(135deg, #0F766E 0%, #00C1C1 100%);
+      box-shadow: 0 8px 32px rgba(0, 193, 193, 0.45), 0 0 0 2px rgba(0, 193, 193, 0.6);
+    }
+    #smc-nav-toggle:hover,
+    #smc-nav-toggle:hover::before,
+    #smc-nav-toggle:hover::after,
+    #smc-nav-toggle.open,
+    #smc-nav-toggle.open::before,
+    #smc-nav-toggle.open::after {
+      animation: none;
+    }
+    #smc-nav-toggle.open {
+      transform: translateY(-50%) scale(0.95);
+    }
+    #smc-nav-toggle.open::before,
+    #smc-nav-toggle.open::after { opacity: 0; }
+
+    #smc-nav-toggle svg { width: 26px; height: 26px; position: relative; z-index: 1; }
     #smc-nav-toggle .bar { stroke: #00C1C1; stroke-width: 2.5; stroke-linecap: round; transition: all .25s ease; }
+    #smc-nav-toggle:hover .bar { stroke: white; }
     #smc-nav-toggle.open .bar-1 { transform: rotate(45deg) translate(4px, 4px); }
     #smc-nav-toggle.open .bar-2 { opacity: 0; }
     #smc-nav-toggle.open .bar-3 { transform: rotate(-45deg) translate(4px, -4px); }
+    #smc-nav-toggle.open .bar { stroke: white; }
+
+    /* mobile · botón más chico, esquina inferior */
+    @media (max-width: 800px) {
+      #smc-nav-toggle {
+        top: auto; bottom: 24px; right: 18px;
+        transform: translateY(0);
+        width: 52px; height: 52px;
+        animation: none;
+      }
+      @keyframes smc-nav-radar {
+        0%   { transform: scale(1);   opacity: 0.85; }
+        80%  { opacity: 0; }
+        100% { transform: scale(2.4); opacity: 0; }
+      }
+    }
 
     #smc-nav-backdrop {
       position: fixed; inset: 0; z-index: 9996;
