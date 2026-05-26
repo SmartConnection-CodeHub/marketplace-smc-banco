@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>35 · Risk Register · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<body>
+<nav class="doc-nav"><a href="34-okrs-framework.html">◂ doc anterior</a><span class="nav-center">DOC 35 · PRODUCTO</span><a href="36-stakeholder-map.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Producto</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 35 · Producto</div>
+    <h1 class="cover-title">Risk Register</h1>
+    <p class="cover-subtitle">Registro vivo de riesgos Marketplace SMC · probabilidad × impacto · plan de mitigación por cada uno.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">PM</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-c-mo-se-usa">01 · Cómo se usa</a><span class="toc-pg">03</span></li><li><a href="#02-riesgos-comerciales">02 · Riesgos comerciales</a><span class="toc-pg">04</span></li><li><a href="#03-riesgos-t-cnicos">03 · Riesgos técnicos</a><span class="toc-pg">05</span></li><li><a href="#04-riesgos-legales-y-compliance">04 · Riesgos legales y compliance</a><span class="toc-pg">06</span></li><li><a href="#05-riesgos-de-equipo">05 · Riesgos de equipo</a><span class="toc-pg">07</span></li><li><a href="#06-top-riesgos-para-mover-este-trimestre-score-gt-6">06 · Top riesgos para mover este trimestre (score &gt;= 6)</a><span class="toc-pg">08</span></li><li><a href="#07-revisi-n-trimestral">07 · Revisión trimestral</a><span class="toc-pg">09</span></li></ol>
+</section>
+
+<section class="page" id="01-c-mo-se-usa">
+  <h2><span class="h2-num">01</span>Cómo se usa</h2>
+  <p>Este registro lo revisamos trimestral en sesión de 1h.</p>
+<ul>
+<li>Cada riesgo tiene dueño · NO "el equipo" (responsabilidad difusa = no se mueve)</li>
+<li>Probabilidad: Baja (1) · Media (2) · Alta (3)</li>
+<li>Impacto: Bajo (1) · Medio (2) · Alto (3)</li>
+<li>Score = P × I (rango 1-9)</li>
+<li>Acción según score: 1-2 monitor · 3-4 mitigar trimestre · 6-9 acción inmediata</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>03</span></div>
+</section>
+<section class="page" id="02-riesgos-comerciales">
+  <h2><span class="h2-num">02</span>Riesgos comerciales</h2>
+  <table>
+<thead><tr>
+<th>ID</th>
+<th>Riesgo</th>
+<th>P</th>
+<th>I</th>
+<th>Score</th>
+<th>Mitigación</th>
+<th>Dueño</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>C1</td>
+<td>MeLi DPP no aprueba en Y1</td>
+<td>3</td>
+<td>3</td>
+<td>9</td>
+<td>Plan B: integración pública no-DPP con scope limitado</td>
+<td>Comercial</td>
+</tr>
+<tr>
+<td>C2</td>
+<td>Churn &gt; 30% en primeros 6 meses</td>
+<td>2</td>
+<td>3</td>
+<td>6</td>
+<td>Onboarding asistido · check-ins semana 2-4-8</td>
+<td>Comercial</td>
+</tr>
+<tr>
+<td>C3</td>
+<td>No conseguir 5 clientes Pro Q4</td>
+<td>2</td>
+<td>3</td>
+<td>6</td>
+<td>Pre-vender desde Q3 · descuento founding members</td>
+<td>Comercial</td>
+</tr>
+<tr>
+<td>C4</td>
+<td>Competidor lanza algo similar gratis</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>Foco en multi-canal (no solo MeLi) · diferenciación IA</td>
+<td>Cerebro</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>04</span></div>
+</section>
+<section class="page" id="03-riesgos-t-cnicos">
+  <h2><span class="h2-num">03</span>Riesgos técnicos</h2>
+  <table>
+<thead><tr>
+<th>ID</th>
+<th>Riesgo</th>
+<th>P</th>
+<th>I</th>
+<th>Score</th>
+<th>Mitigación</th>
+<th>Dueño</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td>API de canal externo cambia sin aviso</td>
+<td>3</td>
+<td>2</td>
+<td>6</td>
+<td>Adapter Pattern + alertas changelog · degradación graceful</td>
+<td>TechLead</td>
+</tr>
+<tr>
+<td>T2</td>
+<td>Supabase down extendido</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>PITR backups · documentar manual failover · status page</td>
+<td>INFRA-OPS</td>
+</tr>
+<tr>
+<td>T3</td>
+<td>Costo IA escala más rápido que revenue</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>Fallback chain Groq → Gemini · cache de prompts comunes</td>
+<td>Hoku</td>
+</tr>
+<tr>
+<td>T4</td>
+<td>Tech debt acumulado paraliza features</td>
+<td>2</td>
+<td>3</td>
+<td>6</td>
+<td>20% capacidad cada sprint a deuda · score B mínimo en core</td>
+<td>Architect</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>05</span></div>
+</section>
+<section class="page" id="04-riesgos-legales-y-compliance">
+  <h2><span class="h2-num">04</span>Riesgos legales y compliance</h2>
+  <table>
+<thead><tr>
+<th>ID</th>
+<th>Riesgo</th>
+<th>P</th>
+<th>I</th>
+<th>Score</th>
+<th>Mitigación</th>
+<th>Dueño</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>L1</td>
+<td>SMC SpA pierde rectificación giro</td>
+<td>2</td>
+<td>3</td>
+<td>6</td>
+<td>Plan B: constituir Marketplace SMC SpA dedicada Q4</td>
+<td>Compliance</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>Cliente reclama por data breach</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>Security policy · 2FA admins · audit logs</td>
+<td>Security</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>SII rechaza facturas DTE</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>Doble validador (Open Factura + Acepta) · monitoring</td>
+<td>Controller</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>06</span></div>
+</section>
+<section class="page" id="05-riesgos-de-equipo">
+  <h2><span class="h2-num">05</span>Riesgos de equipo</h2>
+  <table>
+<thead><tr>
+<th>ID</th>
+<th>Riesgo</th>
+<th>P</th>
+<th>I</th>
+<th>Score</th>
+<th>Mitigación</th>
+<th>Dueño</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>E1</td>
+<td>Founder se va antes vesting</td>
+<td>2</td>
+<td>3</td>
+<td>6</td>
+<td>Vesting 4 años con cliff 1 año en pacto socios</td>
+<td>Compliance</td>
+</tr>
+<tr>
+<td>E2</td>
+<td>Falta capacidad técnica (1 dev a tiempo parcial)</td>
+<td>3</td>
+<td>3</td>
+<td>9</td>
+<td>Contratar dev Q2 · usar más agentes IA · scope realista</td>
+<td>Founders</td>
+</tr>
+<tr>
+<td>E3</td>
+<td>Conflicto Javier-InfoPet vs Marketplace</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>Declaración explícita en pacto socios · review trimestral</td>
+<td>Compliance</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>07</span></div>
+</section>
+<section class="page" id="06-top-riesgos-para-mover-este-trimestre-score-gt-6">
+  <h2><span class="h2-num">06</span>Top riesgos para mover este trimestre (score &gt;= 6)</h2>
+  <ul>
+<li>C1 · MeLi DPP no aprueba (9)</li>
+<li>E2 · Falta capacidad técnica (9)</li>
+<li>C2 · Churn primeros meses (6)</li>
+<li>C3 · No conseguir 5 Pro Q4 (6)</li>
+<li>T1 · API canal cambia (6)</li>
+<li>T4 · Tech debt paraliza (6)</li>
+<li>L1 · Rectificación SMC SpA (6)</li>
+<li>E1 · Founder se va (6)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>08</span></div>
+</section>
+<section class="page" id="07-revisi-n-trimestral">
+  <h2><span class="h2-num">07</span>Revisión trimestral</h2>
+  <ul>
+<li>Sesión 1h con los 3 founders + Cerebro</li>
+<li>Cada dueño reporta status su riesgo (verde · amarillo · rojo)</li>
+<li>Riesgos resueltos → archivo histórico</li>
+<li>Riesgos nuevos → agregar con dueño</li>
+<li>Reordenar prioridades por scoring actual</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>09</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="34-okrs-framework.html">◂ doc anterior</a><span class="nav-center">FIN DOC 35</span><a href="36-stakeholder-map.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>

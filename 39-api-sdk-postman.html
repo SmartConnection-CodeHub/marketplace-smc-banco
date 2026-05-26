@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>39 · API SDK & Postman · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<body>
+<nav class="doc-nav"><a href="38-onboarding-dev.html">◂ doc anterior</a><span class="nav-center">DOC 39 · PRODUCTO</span><a href="40-glosario.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Producto</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 39 · Producto</div>
+    <h1 class="cover-title">API SDK<br>Postman</h1>
+    <p class="cover-subtitle">Cómo consumir la API Marketplace SMC · ejemplos curl · SDK JS · colección Postman · autenticación.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Backend</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-base-url">01 · Base URL</a><span class="toc-pg">03</span></li><li><a href="#02-autenticaci-n">02 · Autenticación</a><span class="toc-pg">04</span></li><li><a href="#03-endpoints-principales">03 · Endpoints principales</a><span class="toc-pg">05</span></li><li><a href="#04-c-digos-error">04 · Códigos error</a><span class="toc-pg">06</span></li><li><a href="#05-rate-limits">05 · Rate limits</a><span class="toc-pg">07</span></li><li><a href="#06-sdk-js-futuro-q2-2027">06 · SDK JS (futuro Q2 2027)</a><span class="toc-pg">08</span></li><li><a href="#07-colecci-n-postman">07 · Colección Postman</a><span class="toc-pg">09</span></li><li><a href="#08-webhooks-q3-2027">08 · Webhooks (Q3 2027)</a><span class="toc-pg">10</span></li></ol>
+</section>
+
+<section class="page" id="01-base-url">
+  <h2><span class="h2-num">01</span>Base URL</h2>
+  <table>
+<thead><tr>
+<th>Ambiente</th>
+<th>URL</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Producción</td>
+<td><code>https://marketplace.smconnection.cl/api</code></td>
+</tr>
+<tr>
+<td>QAS</td>
+<td><code>https://qas.marketplace.smconnection.cl/api</code> (futuro)</td>
+</tr>
+<tr>
+<td>Local dev</td>
+<td><code>http://localhost:3000/api</code></td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>03</span></div>
+</section>
+<section class="page" id="02-autenticaci-n">
+  <h2><span class="h2-num">02</span>Autenticación</h2>
+  <p>Toda llamada requiere bearer token JWT obtenido vía Supabase Auth.</p>
+<pre class="ascii">curl -X POST https://marketplace.smconnection.cl/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"usuario@ejemplo.cl","password":"***"}'</pre>
+<p>Respuesta:</p>
+<pre class="ascii">{
+  "access_token": "eyJhbGc...",
+  "refresh_token": "eyJhbGc...",
+  "expires_in": 3600,
+  "tenant_id": "uuid-tenant"
+}</pre>
+<p>Usar token en headers de toda llamada posterior:</p>
+<pre class="ascii">Authorization: Bearer eyJhbGc...</pre>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>04</span></div>
+</section>
+<section class="page" id="03-endpoints-principales">
+  <h2><span class="h2-num">03</span>Endpoints principales</h2>
+  <h3>GET /api/products</h3>
+<p>Lista productos del tenant. Soporta filtros y paginación.</p>
+<pre class="ascii">curl -H "Authorization: Bearer $TOKEN" \
+  "https://marketplace.smconnection.cl/api/products?limit=20&offset=0"</pre>
+<p>Query params:</p>
+<ul>
+<li><code>limit</code> (default 20 · max 100)</li>
+<li><code>offset</code> (default 0)</li>
+<li><code>channel</code> (meli · d2c · b2g · b2b · all)</li>
+<li><code>category_id</code></li>
+<li><code>search</code> (busca en nombre · descripción)</li>
+<li><code>order</code> (default <code>created_at.desc</code>)</li>
+</ul>
+<h3>GET /api/opportunities</h3>
+<p>Devuelve oportunidades scored (sin LLM). Ver ADR-0001.</p>
+<pre class="ascii">curl -H "Authorization: Bearer $TOKEN" \
+  "https://marketplace.smconnection.cl/api/opportunities?min_score=70"</pre>
+<h3>POST /api/sync/meli</h3>
+<p>Dispara sincronización con MeLi (proxy OAuth).</p>
+<pre class="ascii">curl -X POST -H "Authorization: Bearer $TOKEN" \
+  https://marketplace.smconnection.cl/api/sync/meli</pre>
+<h3>GET /api/data</h3>
+<p>Endpoint genérico tabla. Cuidado con <code>order</code> por defecto.</p>
+<div class="box box-warning"><div class="box-title">⚠️ Bug conocido</div><p>Default <code>order=created_at.desc</code> falla en <code>mkt_products</code> (tiene <code>snapshot_at</code>). Pasar <code>order=snapshot_at.desc</code> explícito si la tabla no tiene <code>created_at</code>.</p></div>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>05</span></div>
+</section>
+<section class="page" id="04-c-digos-error">
+  <h2><span class="h2-num">04</span>Códigos error</h2>
+  <table>
+<thead><tr>
+<th>Code</th>
+<th>Significado</th>
+<th>Acción</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+<td>-</td>
+</tr>
+<tr>
+<td>201</td>
+<td>Creado</td>
+<td>-</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad request</td>
+<td>Revisar query params · body</td>
+</tr>
+<tr>
+<td>401</td>
+<td>No autorizado</td>
+<td>Token vencido · re-login</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Prohibido</td>
+<td>RLS · este tenant no tiene acceso</td>
+</tr>
+<tr>
+<td>404</td>
+<td>No existe</td>
+<td>Revisar id</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Rate limit</td>
+<td>Esperar · ver header <code>Retry-After</code></td>
+</tr>
+<tr>
+<td>500</td>
+<td>Server error</td>
+<td>Reportar a soporte con request-id</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>06</span></div>
+</section>
+<section class="page" id="05-rate-limits">
+  <h2><span class="h2-num">05</span>Rate limits</h2>
+  <ul>
+<li>60 requests/minuto por usuario</li>
+<li>600 requests/minuto por IP</li>
+<li>Headers de respuesta: <code>X-RateLimit-Limit</code> · <code>X-RateLimit-Remaining</code> · <code>X-RateLimit-Reset</code></li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>07</span></div>
+</section>
+<section class="page" id="06-sdk-js-futuro-q2-2027">
+  <h2><span class="h2-num">06</span>SDK JS (futuro Q2 2027)</h2>
+  <p>Por ahora sólo curl/fetch directo. SDK oficial en roadmap:</p>
+<pre class="ascii">// borrador del SDK · NO existe aún
+import { MarketplaceSMC } from '@smc/sdk-js'
+
+const client = new MarketplaceSMC({ apiKey: '...' })
+
+const products = await client.products.list({ limit: 20 })
+const opps = await client.opportunities.list({ minScore: 70 })
+await client.sync.meli()</pre>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>08</span></div>
+</section>
+<section class="page" id="07-colecci-n-postman">
+  <h2><span class="h2-num">07</span>Colección Postman</h2>
+  <p>Descargar colección curada con todos los endpoints:</p>
+<pre class="ascii">https://marketplace.smconnection.cl/docs/postman/Marketplace-SMC.json</pre>
+<p>Importar en Postman:</p>
+<ul>
+<li>File → Import → URL</li>
+<li>Pegar URL</li>
+<li>Configurar environment con <code>base_url</code> y <code>access_token</code></li>
+<li>Run collection completa para smoke test</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>09</span></div>
+</section>
+<section class="page" id="08-webhooks-q3-2027">
+  <h2><span class="h2-num">08</span>Webhooks (Q3 2027)</h2>
+  <p>Suscribir a eventos asincrónicos:</p>
+<ul>
+<li><code>product.synced</code></li>
+<li><code>order.created</code></li>
+<li><code>inventory.low_stock</code></li>
+<li><code>opportunity.detected</code></li>
+</ul>
+<p>Endpoint registro:</p>
+<pre class="ascii">POST /api/webhooks/subscribe
+{ "url": "https://tuapp.cl/hook", "events": ["order.created"] }</pre>
+<div class="box box-info"><div class="box-title">💡 Verificación</div><p>Cada webhook llega firmado HMAC SHA-256 · validar header <code>X-SMC-Signature</code> antes de procesar.</p></div>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>10</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="38-onboarding-dev.html">◂ doc anterior</a><span class="nav-center">FIN DOC 39</span><a href="40-glosario.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>

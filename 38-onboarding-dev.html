@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>38 · Onboarding Dev Guide · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<body>
+<nav class="doc-nav"><a href="37-runbook-dr-plan.html">◂ doc anterior</a><span class="nav-center">DOC 38 · OPERACIONES</span><a href="39-api-sdk-postman.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Operaciones</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 38 · Operaciones</div>
+    <h1 class="cover-title">Onboarding Dev Guide</h1>
+    <p class="cover-subtitle">Cómo arrancar como dev en Marketplace SMC en menos de 1 día · setup · stack · convenciones · primer PR.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">TechLead</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-bienvenida">01 · Bienvenida</a><span class="toc-pg">03</span></li><li><a href="#02-setup">02 · Setup</a><span class="toc-pg">04</span></li><li><a href="#03-variables-de-entorno">03 · Variables de entorno</a><span class="toc-pg">05</span></li><li><a href="#04-stack-en-1-pantalla">04 · Stack en 1 pantalla</a><span class="toc-pg">06</span></li><li><a href="#05-convenciones-c-digo">05 · Convenciones código</a><span class="toc-pg">07</span></li><li><a href="#06-workflow-git">06 · Workflow Git</a><span class="toc-pg">08</span></li><li><a href="#07-primer-pr-sugerido">07 · Primer PR sugerido</a><span class="toc-pg">09</span></li><li><a href="#08-qui-n-pregunta-qu">08 · Quién pregunta qué</a><span class="toc-pg">10</span></li><li><a href="#09-recursos">09 · Recursos</a><span class="toc-pg">11</span></li><li><a href="#10-checklist-primer-d-a">10 · Checklist primer día</a><span class="toc-pg">12</span></li></ol>
+</section>
+
+<section class="page" id="01-bienvenida">
+  <h2><span class="h2-num">01</span>Bienvenida</h2>
+  <p>Si estás leyendo esto sos parte de Marketplace SMC. Esta guía te lleva de 0 al primer PR mergeado en &lt;1 día.</p>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>03</span></div>
+</section>
+<section class="page" id="02-setup">
+  <h2><span class="h2-num">02</span>Setup</h2>
+  <pre class="ascii">1. Hardware
+   - Mac con M1+ o Linux ARM/x64
+   - Mínimo 16GB RAM · 100GB libre
+
+2. Cuentas necesarias
+   - GitHub (te invitamos a la org)
+   - Google Workspace @smconnection.cl
+   - Supabase (acceso lectura QAS)
+   - AWS Console (rol IAM dev)
+
+3. Software base
+   - Node 22.x LTS · pnpm o npm
+   - Git con SSH key generada
+   - VS Code o JetBrains · cualquiera
+   - Claude Code (CLI) recomendado
+
+4. Clonar repos
+   git -C ~/projects clone git@github.com:SmartConnection-CodeHub/smartconnection-marketplace.git
+   cd smartconnection-marketplace
+   npm install
+   cp .env.example .env.local</pre>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>04</span></div>
+</section>
+<section class="page" id="03-variables-de-entorno">
+  <h2><span class="h2-num">03</span>Variables de entorno</h2>
+  <p>Pedile a Guillermo o INFRA-OPS las variables para <code>.env.local</code>. NUNCA commitearlas.</p>
+<p>Variables críticas mínimas:</p>
+<pre class="ascii">NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+MELI_CLIENT_ID=
+MELI_CLIENT_SECRET=
+MELI_ACCESS_TOKEN=
+MERCADOPUBLICO_TICKET=
+GROQ_API_KEY=</pre>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>05</span></div>
+</section>
+<section class="page" id="04-stack-en-1-pantalla">
+  <h2><span class="h2-num">04</span>Stack en 1 pantalla</h2>
+  <pre class="ascii">Next.js 16 (App Router · Server Components default)
+   ↓
+TypeScript 5.x estricto
+   ↓
+Tailwind v4 · Radix · @smc/ui
+   ↓
+Supabase (Postgres + Auth + RLS)
+   ↓
+AWS Amplify (deploy push a main)</pre>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>06</span></div>
+</section>
+<section class="page" id="05-convenciones-c-digo">
+  <h2><span class="h2-num">05</span>Convenciones código</h2>
+  <ul>
+<li><strong>Edit siempre · Write solo si &gt;80% archivo cambia</strong></li>
+<li>Server Components por defecto · <code>use client</code> solo nodos hoja</li>
+<li>Validación: Zod schemas compartidos client + server</li>
+<li>Estilos: tokens CSS · jamás colores hex inline</li>
+<li>Importar UI: solo desde <code>@smc/ui</code> · nunca Radix directo</li>
+<li>Custom hooks: <code>_hooks/useFeatureX.ts</code> por feature</li>
+<li>Test: vitest · 1 test por ruta crítica mínimo</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>07</span></div>
+</section>
+<section class="page" id="06-workflow-git">
+  <h2><span class="h2-num">06</span>Workflow Git</h2>
+  <pre class="ascii">1. Crear branch desde main
+   git -C path checkout -b feat/nombre-corto
+
+2. Commits descriptivos en español
+   git -C path commit -m "feat: agrega filtro por canal en dashboard"
+
+3. Push y abrir PR
+   git -C path push -u origin feat/nombre-corto
+   gh pr create --title "..." --body "..."
+
+4. Esperar review (1 approver mínimo)
+5. CI debe estar verde (lint · type-check · tests · build)
+6. Merge squash a main → auto-deploy Amplify QAS
+7. Promover a PRD: PR de release-X.Y desde main</pre>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>08</span></div>
+</section>
+<section class="page" id="07-primer-pr-sugerido">
+  <h2><span class="h2-num">07</span>Primer PR sugerido</h2>
+  <p>Pickeá del board uno de estos para arrancar:</p>
+<ul>
+<li>Bug fix &lt;30min (etiqueta <code>good-first-issue</code>)</li>
+<li>Mejorar mensaje error en un endpoint específico</li>
+<li>Agregar test faltante para una función de utilidad</li>
+<li>Mejorar docstring de un componente</li>
+</ul>
+<p>NO arrancar con: feature completa · refactor · cambio arquitectural.</p>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>09</span></div>
+</section>
+<section class="page" id="08-qui-n-pregunta-qu">
+  <h2><span class="h2-num">08</span>Quién pregunta qué</h2>
+  <table>
+<thead><tr>
+<th>Tema</th>
+<th>Preguntar a</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Stack · arquitectura</td>
+<td>Architect</td>
+</tr>
+<tr>
+<td>Frontend · UI · componentes</td>
+<td>Fiori</td>
+</tr>
+<tr>
+<td>Backend · DB · APIs</td>
+<td>Backend</td>
+</tr>
+<tr>
+<td>IA · prompts · agentes</td>
+<td>Hoku</td>
+</tr>
+<tr>
+<td>Deploy · infra · costos</td>
+<td>Pipeline · INFRA-OPS</td>
+</tr>
+<tr>
+<td>Seguridad · vulns</td>
+<td>Security</td>
+</tr>
+<tr>
+<td>Producto · features · roadmap</td>
+<td>PM</td>
+</tr>
+<tr>
+<td>Cliente · onboarding · soporte</td>
+<td>Comercial</td>
+</tr>
+<tr>
+<td>Bug raro inexplicable</td>
+<td>Cerebro (orquesta)</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>10</span></div>
+</section>
+<section class="page" id="09-recursos">
+  <h2><span class="h2-num">09</span>Recursos</h2>
+  <ul>
+<li><code>/Users/guillermogonzalezleon/CLAUDE.md</code> · operating system SMC</li>
+<li>Banco completo: https://smartconnection-codehub.github.io/marketplace-smc-banco/</li>
+<li>Memorias compartidas: <code>~/.claude/projects/-Users-guillermogonzalezleon/memory/</code></li>
+<li>Skills: <code>~/.claude/skills/</code></li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>11</span></div>
+</section>
+<section class="page" id="10-checklist-primer-d-a">
+  <h2><span class="h2-num">10</span>Checklist primer día</h2>
+  <ul>
+<li>[ ] Acceso GitHub org · Supabase · AWS confirmados</li>
+<li>[ ] Repo clonado · npm install OK · dev server arriba</li>
+<li>[ ] Pude conectar a Supabase QAS</li>
+<li>[ ] Conocí los agentes SMC OS · entendí flujo</li>
+<li>[ ] Leí docs 01-Vision · 06-API · 07-Arquitectura del banco</li>
+<li>[ ] Primer PR creado (puede ser bug fix mínimo)</li>
+<li>[ ] Sesión 1:1 con Guillermo y/o TechLead</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>12</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="37-runbook-dr-plan.html">◂ doc anterior</a><span class="nav-center">FIN DOC 38</span><a href="39-api-sdk-postman.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>

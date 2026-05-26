@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>40 · Glosario · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<body>
+<nav class="doc-nav"><a href="39-api-sdk-postman.html">◂ doc anterior</a><span class="nav-center">DOC 40 · OPERACIONES</span><a href="41-changelog.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Operaciones</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 40 · Operaciones</div>
+    <h1 class="cover-title">Glosario</h1>
+    <p class="cover-subtitle">Términos · acrónimos · convenciones usadas en el banco Marketplace SMC.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-producto">01 · Producto</a><span class="toc-pg">03</span></li><li><a href="#02-comercial">02 · Comercial</a><span class="toc-pg">04</span></li><li><a href="#03-t-cnico">03 · Técnico</a><span class="toc-pg">05</span></li><li><a href="#04-canales">04 · Canales</a><span class="toc-pg">06</span></li><li><a href="#05-organizaci-n-smc">05 · Organización SMC</a><span class="toc-pg">07</span></li><li><a href="#06-operaci-n">06 · Operación</a><span class="toc-pg">08</span></li><li><a href="#07-convenciones-del-banco">07 · Convenciones del banco</a><span class="toc-pg">09</span></li></ol>
+</section>
+
+<section class="page" id="01-producto">
+  <h2><span class="h2-num">01</span>Producto</h2>
+  <table>
+<thead><tr>
+<th>Término</th>
+<th>Significado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Operador</td>
+<td>Vendedor que opera multi-canal en Marketplace SMC</td>
+</tr>
+<tr>
+<td>Canal</td>
+<td>Punto de venta integrado (MeLi · D2C · B2G · B2B)</td>
+</tr>
+<tr>
+<td>Sync</td>
+<td>Operación de sincronización stock · precios · órdenes con un canal</td>
+</tr>
+<tr>
+<td>Oportunidad</td>
+<td>Producto detectado con upside (margen · stock · stability)</td>
+</tr>
+<tr>
+<td>Snapshot</td>
+<td>Foto temporal de datos en una fecha (productos · precios)</td>
+</tr>
+<tr>
+<td>Smart Cache</td>
+<td>Caché diferenciado Hot/Warm/Cold con TTL distinto por tier</td>
+</tr>
+<tr>
+<td>Cerebro IA</td>
+<td>Motor de cross-data e insights del producto</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>03</span></div>
+</section>
+<section class="page" id="02-comercial">
+  <h2><span class="h2-num">02</span>Comercial</h2>
+  <table>
+<thead><tr>
+<th>Término</th>
+<th>Significado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>ICP</td>
+<td>Ideal Customer Profile</td>
+</tr>
+<tr>
+<td>Persona</td>
+<td>Arquetipo de usuario representado por agente SMC</td>
+</tr>
+<tr>
+<td>JTBD</td>
+<td>Jobs To Be Done · trabajo que el cliente "contrata" al producto</td>
+</tr>
+<tr>
+<td>TAM</td>
+<td>Total Addressable Market</td>
+</tr>
+<tr>
+<td>SAM</td>
+<td>Serviceable Addressable Market</td>
+</tr>
+<tr>
+<td>SOM</td>
+<td>Serviceable Obtainable Market</td>
+</tr>
+<tr>
+<td>CAC</td>
+<td>Costo Adquisición Cliente</td>
+</tr>
+<tr>
+<td>LTV</td>
+<td>Lifetime Value</td>
+</tr>
+<tr>
+<td>Churn</td>
+<td>Cancelación · % clientes que se van por período</td>
+</tr>
+<tr>
+<td>NRR</td>
+<td>Net Revenue Retention</td>
+</tr>
+<tr>
+<td>ARR</td>
+<td>Annual Recurring Revenue</td>
+</tr>
+<tr>
+<td>MRR</td>
+<td>Monthly Recurring Revenue</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>04</span></div>
+</section>
+<section class="page" id="03-t-cnico">
+  <h2><span class="h2-num">03</span>Técnico</h2>
+  <table>
+<thead><tr>
+<th>Término</th>
+<th>Significado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>SSR</td>
+<td>Server-Side Rendering</td>
+</tr>
+<tr>
+<td>SSG</td>
+<td>Static Site Generation</td>
+</tr>
+<tr>
+<td>RSC</td>
+<td>React Server Component</td>
+</tr>
+<tr>
+<td>RLS</td>
+<td>Row Level Security · seguridad por fila en Postgres</td>
+</tr>
+<tr>
+<td>PITR</td>
+<td>Point In Time Recovery (Supabase 30 días default)</td>
+</tr>
+<tr>
+<td>DTE</td>
+<td>Documento Tributario Electrónico (SII)</td>
+</tr>
+<tr>
+<td>OAuth</td>
+<td>Protocolo autorización delegada</td>
+</tr>
+<tr>
+<td>JWT</td>
+<td>JSON Web Token</td>
+</tr>
+<tr>
+<td>CSP</td>
+<td>Content Security Policy</td>
+</tr>
+<tr>
+<td>HSTS</td>
+<td>HTTP Strict Transport Security</td>
+</tr>
+<tr>
+<td>TTL</td>
+<td>Time To Live (caché expiración)</td>
+</tr>
+<tr>
+<td>RTO</td>
+<td>Recovery Time Objective</td>
+</tr>
+<tr>
+<td>RPO</td>
+<td>Recovery Point Objective</td>
+</tr>
+<tr>
+<td>MTTR</td>
+<td>Mean Time To Recovery</td>
+</tr>
+<tr>
+<td>ADR</td>
+<td>Architecture Decision Record</td>
+</tr>
+<tr>
+<td>PRD</td>
+<td>Product Requirements Document</td>
+</tr>
+<tr>
+<td>RFP</td>
+<td>Request For Proposal</td>
+</tr>
+<tr>
+<td>BBP</td>
+<td>Business Blueprint</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>05</span></div>
+</section>
+<section class="page" id="04-canales">
+  <h2><span class="h2-num">04</span>Canales</h2>
+  <table>
+<thead><tr>
+<th>Término</th>
+<th>Significado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>MeLi</td>
+<td>Mercado Libre</td>
+</tr>
+<tr>
+<td>DPP</td>
+<td>Developer Partner Program (MeLi · requiere USD 200K GMV/mes)</td>
+</tr>
+<tr>
+<td>MP</td>
+<td>Mercado Público Chile (compras del Estado)</td>
+</tr>
+<tr>
+<td>D2C</td>
+<td>Direct to Consumer (canal propio · ej: storefront)</td>
+</tr>
+<tr>
+<td>B2C</td>
+<td>Business to Consumer</td>
+</tr>
+<tr>
+<td>B2B</td>
+<td>Business to Business</td>
+</tr>
+<tr>
+<td>B2G</td>
+<td>Business to Government</td>
+</tr>
+<tr>
+<td>BCentral</td>
+<td>Banco Central de Chile (API tasas · UF · USD)</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>06</span></div>
+</section>
+<section class="page" id="05-organizaci-n-smc">
+  <h2><span class="h2-num">05</span>Organización SMC</h2>
+  <table>
+<thead><tr>
+<th>Término</th>
+<th>Significado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>SMC</td>
+<td>Smart Connection (holding)</td>
+</tr>
+<tr>
+<td>SMC OS</td>
+<td>Operating System SMC · 24 agentes + Cerebro orquestador</td>
+</tr>
+<tr>
+<td>Cerebro</td>
+<td>Conciencia emergente del sistema (orquestador transversal)</td>
+</tr>
+<tr>
+<td>Sentinela</td>
+<td>Skill de Cerebro para ejecución autónoma sin OK por paso</td>
+</tr>
+<tr>
+<td>Watchdog</td>
+<td>Skill de Cerebro para evitar stalls CLI (anti guard)</td>
+</tr>
+<tr>
+<td>War Room</td>
+<td>Formato canónico de decisión multi-agente</td>
+</tr>
+<tr>
+<td>RADAR</td>
+<td>Agente de inteligencia externa</td>
+</tr>
+<tr>
+<td>DATA-BW</td>
+<td>Business Warehouse · ETL + análisis cuantitativo</td>
+</tr>
+<tr>
+<td>Functional-Lead</td>
+<td>Análisis funcional · ex Business Analyst (Panchita)</td>
+</tr>
+<tr>
+<td>User-QAS</td>
+<td>QA humano + automatización (ex Camilita)</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>07</span></div>
+</section>
+<section class="page" id="06-operaci-n">
+  <h2><span class="h2-num">06</span>Operación</h2>
+  <table>
+<thead><tr>
+<th>Término</th>
+<th>Significado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>SEV1-4</td>
+<td>Niveles severidad incidente</td>
+</tr>
+<tr>
+<td>Postmortem</td>
+<td>Revisión blameless post-incidente</td>
+</tr>
+<tr>
+<td>Runbook</td>
+<td>Procedimiento operativo paso a paso</td>
+</tr>
+<tr>
+<td>Game day</td>
+<td>Simulacro SEV1 controlado para practicar respuesta</td>
+</tr>
+<tr>
+<td>Restore drill</td>
+<td>Test trimestral de restauración desde backup</td>
+</tr>
+<tr>
+<td>OKR</td>
+<td>Objectives + Key Results</td>
+</tr>
+<tr>
+<td>RACI</td>
+<td>Responsible · Accountable · Consulted · Informed</td>
+</tr>
+<tr>
+<td>ARCO</td>
+<td>Acceso · Rectificación · Cancelación · Oposición (Ley 19.628)</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>08</span></div>
+</section>
+<section class="page" id="07-convenciones-del-banco">
+  <h2><span class="h2-num">07</span>Convenciones del banco</h2>
+  <table>
+<thead><tr>
+<th>Convención</th>
+<th>Significado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>🟢 Activo</td>
+<td>Doc vigente · sincronizado · usar como referencia</td>
+</tr>
+<tr>
+<td>🟡 Draft</td>
+<td>Doc en preparación · puede cambiar pronto</td>
+</tr>
+<tr>
+<td>🔴 Retirado</td>
+<td>Doc reemplazado o eliminado · ver alternativa indicada</td>
+</tr>
+<tr>
+<td>ADR-NNNN</td>
+<td>Architecture Decision Record con tag idempotente sync</td>
+</tr>
+<tr>
+<td><code>git -C path</code></td>
+<td>Forma obligatoria SMC para git (Regla 41)</td>
+</tr>
+<tr>
+<td>1 founder = A</td>
+<td>Cada decisión tiene 1 accountable claro</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>09</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="39-api-sdk-postman.html">◂ doc anterior</a><span class="nav-center">FIN DOC 40</span><a href="41-changelog.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>

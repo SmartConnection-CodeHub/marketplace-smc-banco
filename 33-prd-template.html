@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>33 · PRD Template · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<body>
+<nav class="doc-nav"><a href="32-incident-response.html">◂ doc anterior</a><span class="nav-center">DOC 33 · PRODUCTO</span><a href="34-okrs-framework.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Producto</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 33 · Producto</div>
+    <h1 class="cover-title">PRD Template</h1>
+    <p class="cover-subtitle">Plantilla PRD para nuevas features Marketplace SMC · qué problema · qué solución · qué se mide.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">PM</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-cu-ndo-usar-este-template">01 · Cuándo usar este template</a><span class="toc-pg">03</span></li><li><a href="#02-estructura-del-prd">02 · Estructura del PRD</a><span class="toc-pg">04</span></li><li><a href="#03-anti-patrones-prd">03 · Anti-patrones PRD</a><span class="toc-pg">05</span></li><li><a href="#04-aprobaci-n">04 · Aprobación</a><span class="toc-pg">06</span></li></ol>
+</section>
+
+<section class="page" id="01-cu-ndo-usar-este-template">
+  <h2><span class="h2-num">01</span>Cuándo usar este template</h2>
+  <p>Usar PRD cuando:</p>
+<ul>
+<li>Feature mayor afecta 2+ áreas (frontend · backend · datos)</li>
+<li>Cambio impacta a más de 10 usuarios</li>
+<li>Implementación &gt;5 días</li>
+<li>Necesita decisión arquitectural o trade-off importante</li>
+</ul>
+<p>NO usar para:</p>
+<ul>
+<li>Bug fixes</li>
+<li>Cambios cosméticos</li>
+<li>Refactor interno sin user impact</li>
+<li>Spikes &lt;1 día (usar nota corta · no PRD)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>03</span></div>
+</section>
+<section class="page" id="02-estructura-del-prd">
+  <h2><span class="h2-num">02</span>Estructura del PRD</h2>
+  <p>Toda PRD debe tener estas 8 secciones · si una está vacía justificar por qué.</p>
+<h3>Sección 01 · One-liner</h3>
+<p>Una línea: qué problema resolvemos · para quién · qué cambia. Ejemplo:</p>
+<blockquote>Permitir al operador ver oportunidades cross-canal en un solo lugar para no tener que abrir MeLi · SoloTodo · Mercado Público uno por uno.</blockquote>
+<h3>Sección 02 · Problema (motivación)</h3>
+<ul>
+<li>¿Qué dolor concreto observamos? (citas usuarios · métricas)</li>
+<li>¿Por qué ahora? (urgencia · oportunidad)</li>
+<li>¿Qué pasa si NO hacemos nada?</li>
+</ul>
+<h3>Sección 03 · Usuario y casos de uso</h3>
+<ul>
+<li>Persona afectada (Cerebro · Comercial · Fiori · etc.)</li>
+<li>Top 3 casos de uso priorizados</li>
+<li>Frecuencia de uso esperada (diario · semanal · mensual)</li>
+</ul>
+<h3>Sección 04 · Solución propuesta</h3>
+<ul>
+<li>Descripción funcional (qué hace el usuario)</li>
+<li>Flujo principal · pasos numerados</li>
+<li>Mockup HTML o wireframe (link a maqueta Business Analyst)</li>
+<li>Edge cases conocidos</li>
+</ul>
+<h3>Sección 05 · Out of scope</h3>
+<ul>
+<li>Qué NO incluye esta versión (explícito)</li>
+<li>Por qué se decidió postergarlo</li>
+<li>Bajo qué condiciones se incluiría futuro</li>
+</ul>
+<h3>Sección 06 · Métricas de éxito</h3>
+<ul>
+<li>1 métrica primaria (la que decide si vale o no)</li>
+<li>2-3 secundarias (sanity check)</li>
+<li>Baseline actual + target</li>
+<li>Cuándo se mide post-lanzamiento</li>
+</ul>
+<h3>Sección 07 · Riesgos y dependencias</h3>
+<ul>
+<li>¿De qué APIs externas depende? (puede caer · changelog)</li>
+<li>¿Qué se rompe si esto no llega a tiempo?</li>
+<li>¿Cuál es el plan B?</li>
+</ul>
+<h3>Sección 08 · Roadmap implementación</h3>
+<ul>
+<li>Fases (MVP · v1 · v2)</li>
+<li>Estimación esfuerzo por fase</li>
+<li>Owner técnico</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>04</span></div>
+</section>
+<section class="page" id="03-anti-patrones-prd">
+  <h2><span class="h2-num">03</span>Anti-patrones PRD</h2>
+  <div class="box box-anti"><div class="box-title">⛔ Evitar</div><ul>
+<li>Solución sin problema · "queremos hacer X" sin justificación</li>
+<li>Métrica vaga · "mejorar UX" sin número</li>
+<li>Scope creep en sección 05 ("incluye todo lo posible")</li>
+<li>Sin alternativas evaluadas (¿por qué esta solución y no otra?)</li>
+<li>Sin dueño técnico definido</li>
+</ul></div>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>05</span></div>
+</section>
+<section class="page" id="04-aprobaci-n">
+  <h2><span class="h2-num">04</span>Aprobación</h2>
+  <p>Antes de empezar implementación:</p>
+<ul>
+<li>PM da OK funcional (problema bien definido)</li>
+<li>TechLead da OK técnico (factible · sin tech debt nuevo)</li>
+<li>Founder da OK comercial (alineado con roadmap trimestral)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto</span><span>06</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="32-incident-response.html">◂ doc anterior</a><span class="nav-center">FIN DOC 33</span><a href="34-okrs-framework.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>

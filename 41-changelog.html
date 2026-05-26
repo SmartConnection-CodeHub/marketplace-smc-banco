@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>41 · Changelog · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<body>
+<nav class="doc-nav"><a href="40-glosario.html">◂ doc anterior</a><span class="nav-center">DOC 41 · OPERACIONES</span><a href="index.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Operaciones</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 41 · Operaciones</div>
+    <h1 class="cover-title">Changelog</h1>
+    <p class="cover-subtitle">Historial público de cambios Marketplace SMC · features · fixes · breaking changes por release.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">PM</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-convenciones">01 · Convenciones</a><span class="toc-pg">03</span></li><li><a href="#02-unreleased">02 · Unreleased</a><span class="toc-pg">04</span></li><li><a href="#03-v0-5-0-2026-05-26-banco-de-documentos">03 · v0.5.0 · 2026-05-26 · Banco de documentos</a><span class="toc-pg">05</span></li><li><a href="#04-v0-4-0-2026-05-15-cerebro-ia">04 · v0.4.0 · 2026-05-15 · Cerebro IA</a><span class="toc-pg">06</span></li><li><a href="#05-v0-3-0-2026-05-01-smart-cache">05 · v0.3.0 · 2026-05-01 · Smart Cache</a><span class="toc-pg">07</span></li><li><a href="#06-v0-2-0-2026-04-15-multi-canal-foundation">06 · v0.2.0 · 2026-04-15 · Multi-canal foundation</a><span class="toc-pg">08</span></li><li><a href="#07-v0-1-0-2026-04-01-mvp-inicial">07 · v0.1.0 · 2026-04-01 · MVP inicial</a><span class="toc-pg">09</span></li><li><a href="#08-v0-0-1-2026-03-15-setup-repo">08 · v0.0.1 · 2026-03-15 · Setup repo</a><span class="toc-pg">10</span></li><li><a href="#09-breaking-changes-futuras-planificadas">09 · Breaking changes futuras (planificadas)</a><span class="toc-pg">11</span></li></ol>
+</section>
+
+<section class="page" id="01-convenciones">
+  <h2><span class="h2-num">01</span>Convenciones</h2>
+  <p>Seguimos <a href="https://keepachangelog.com">Keep a Changelog</a> y SemVer.</p>
+<ul>
+<li><strong>MAJOR</strong> (X.0.0) · breaking changes (rompen API · contratos)</li>
+<li><strong>MINOR</strong> (0.X.0) · features nuevas backwards-compatible</li>
+<li><strong>PATCH</strong> (0.0.X) · bug fixes · sin nuevas features</li>
+</ul>
+<p>Categorías por release:</p>
+<ul>
+<li>✨ Added · features nuevas</li>
+<li>🔧 Changed · cambios a algo existente</li>
+<li>🐛 Fixed · bugs resueltos</li>
+<li>❌ Removed · removido o deprecated</li>
+<li>🔒 Security · vulns parchadas</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>03</span></div>
+</section>
+<section class="page" id="02-unreleased">
+  <h2><span class="h2-num">02</span>Unreleased</h2>
+  <p>Cosas en main que aún no salieron a prod.</p>
+<ul>
+<li>✨ Added: docs banco completo 41 documentos</li>
+<li>🔧 Changed: personas reformuladas como agentes SMC (Cerebro · Comercial · Fiori · Controller · Supply-Chain)</li>
+<li>🔧 Changed: founders correctos (Camila · Javier · Guillermo)</li>
+<li>🔒 Security: PIN gate hoku · drawer nav cross-doc</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>04</span></div>
+</section>
+<section class="page" id="03-v0-5-0-2026-05-26-banco-de-documentos">
+  <h2><span class="h2-num">03</span>v0.5.0 · 2026-05-26 · Banco de documentos</h2>
+  <p>Hito mayor: banco público con 41 docs branded + PIN gate.</p>
+<ul>
+<li>✨ Added: 41 documentos blueprint completos</li>
+<li>✨ Added: Auth gate ligero PIN "hoku" (SHA-256)</li>
+<li>✨ Added: Drawer navigation premium cross-docs</li>
+<li>✨ Added: ADR-0001 Opportunities Architecture sync con tags idempotentes</li>
+<li>✨ Added: Scripts <code>build.py</code> + <code>apply_adr.py</code> + <code>create_doc.py</code></li>
+<li>✨ Added: Config tokens (<code>config.json</code> · 28 variables)</li>
+<li>🔧 Changed: Migrada arquitectura Opportunities sin LLM (free Chilean APIs)</li>
+<li>🔧 Changed: Personas usan agentes SMC (no nombres ficticios)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>05</span></div>
+</section>
+<section class="page" id="04-v0-4-0-2026-05-15-cerebro-ia">
+  <h2><span class="h2-num">04</span>v0.4.0 · 2026-05-15 · Cerebro IA</h2>
+  <ul>
+<li>✨ Added: Endpoint <code>/api/cerebro/chat</code> con SSE streaming</li>
+<li>✨ Added: Fallback chain Groq → Gemini → DeepSeek</li>
+<li>✨ Added: Logger central <code>mkt_api_logs</code> (antes vacío)</li>
+<li>🐛 Fixed: Cookie-first OAuth proxy MeLi (era env var stale)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>06</span></div>
+</section>
+<section class="page" id="05-v0-3-0-2026-05-01-smart-cache">
+  <h2><span class="h2-num">05</span>v0.3.0 · 2026-05-01 · Smart Cache</h2>
+  <ul>
+<li>✨ Added: Smart Cache Hot/Warm/Cold (TTL 6h · 12h · delete 7d)</li>
+<li>✨ Added: Cron refresh MeLi tokens cada 6h</li>
+<li>🔧 Changed: Max 1000 rows en cache (anti-bloat)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>07</span></div>
+</section>
+<section class="page" id="06-v0-2-0-2026-04-15-multi-canal-foundation">
+  <h2><span class="h2-num">06</span>v0.2.0 · 2026-04-15 · Multi-canal foundation</h2>
+  <ul>
+<li>✨ Added: Channel Adapter Pattern (MeLi · D2C · MP · B2B)</li>
+<li>✨ Added: RLS Postgres por tenant_id</li>
+<li>✨ Added: Page Settings con conexión MeLi OAuth</li>
+<li>🐛 Fixed: 401/403 MeLi proxy lectura cookies httpOnly</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>08</span></div>
+</section>
+<section class="page" id="07-v0-1-0-2026-04-01-mvp-inicial">
+  <h2><span class="h2-num">07</span>v0.1.0 · 2026-04-01 · MVP inicial</h2>
+  <p>Primer despliegue público.</p>
+<ul>
+<li>✨ Added: Dashboard con métricas básicas</li>
+<li>✨ Added: Login Supabase Auth</li>
+<li>✨ Added: Búsqueda productos MeLi (proxy)</li>
+<li>✨ Added: Deploy AWS Amplify auto desde push a main</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>09</span></div>
+</section>
+<section class="page" id="08-v0-0-1-2026-03-15-setup-repo">
+  <h2><span class="h2-num">08</span>v0.0.1 · 2026-03-15 · Setup repo</h2>
+  <ul>
+<li>✨ Added: Next.js 16 · TypeScript · Tailwind v4</li>
+<li>✨ Added: Supabase project + RLS templates</li>
+<li>✨ Added: GitHub Actions CI básico</li>
+<li>✨ Added: Estructura monorepo (apps · packages)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>10</span></div>
+</section>
+<section class="page" id="09-breaking-changes-futuras-planificadas">
+  <h2><span class="h2-num">09</span>Breaking changes futuras (planificadas)</h2>
+  <p>Cuando lleguen estas versiones tendrán migración guide:</p>
+<ul>
+<li><strong>v1.0.0</strong>: nueva URL base <code>api.marketplace.smconnection.cl</code> · endpoints versionados <code>/v1/...</code></li>
+<li><strong>v2.0.0</strong>: SDK JS oficial · auth via API keys además de JWT</li>
+<li><strong>v3.0.0</strong>: webhooks firmados HMAC · evento <code>product.synced</code> consolidado</li>
+</ul>
+<div class="box box-info"><div class="box-title">💡 Cómo se anuncian breaking changes</div><p>90 días antes en este changelog · email a todos los clientes activos · banner in-app · migration guide específico.</p></div>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>11</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="40-glosario.html">◂ doc anterior</a><span class="nav-center">FIN DOC 41</span><a href="index.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>

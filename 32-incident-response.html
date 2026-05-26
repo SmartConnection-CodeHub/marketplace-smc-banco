@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>32 · Incident Response Plan · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<body>
+<nav class="doc-nav"><a href="31-security-policy.html">◂ doc anterior</a><span class="nav-center">DOC 32 · OPERACIONES</span><a href="33-prd-template.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Operaciones</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 32 · Operaciones</div>
+    <h1 class="cover-title">Incident Response Plan</h1>
+    <p class="cover-subtitle">Cómo respondemos cuando algo se rompe · severidades · roles · runbook genérico · postmortem.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Security</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-severidades">01 · Severidades</a><span class="toc-pg">03</span></li><li><a href="#02-roles-durante-incidente">02 · Roles durante incidente</a><span class="toc-pg">04</span></li><li><a href="#03-runbook-gen-rico">03 · Runbook genérico</a><span class="toc-pg">05</span></li><li><a href="#04-comunicaci-n-durante-sev1-sev2">04 · Comunicación durante SEV1/SEV2</a><span class="toc-pg">06</span></li><li><a href="#05-template-postmortem">05 · Template postmortem</a><span class="toc-pg">07</span></li><li><a href="#postmortem-incidente-fecha">Postmortem · [Incidente] · [Fecha]</a><span class="toc-pg">08</span></li><li><a href="#06-pr-ctica-continua">06 · Práctica continua</a><span class="toc-pg">09</span></li></ol>
+</section>
+
+<section class="page" id="01-severidades">
+  <h2><span class="h2-num">01</span>Severidades</h2>
+  <table>
+<thead><tr>
+<th>Sev</th>
+<th>Definición</th>
+<th>Tiempo respuesta</th>
+<th>Ejemplo</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>SEV1</td>
+<td>App caída · usuarios no entran · data corruption</td>
+<td>&lt;15 min</td>
+<td>Supabase down · 500 prod en login</td>
+</tr>
+<tr>
+<td>SEV2</td>
+<td>Feature crítica rota · workaround posible</td>
+<td>&lt;1h</td>
+<td>Checkout falla en 1 canal · sync MeLi roto</td>
+</tr>
+<tr>
+<td>SEV3</td>
+<td>Bug visible · sin impacto crítico</td>
+<td>&lt;1 día</td>
+<td>Tipo en email · gráfico no carga</td>
+</tr>
+<tr>
+<td>SEV4</td>
+<td>Bug menor · cosmético</td>
+<td>&lt;1 semana</td>
+<td>Espaciado mal · color off</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>03</span></div>
+</section>
+<section class="page" id="02-roles-durante-incidente">
+  <h2><span class="h2-num">02</span>Roles durante incidente</h2>
+  <ul>
+<li><strong>Commander</strong>: lidera · decide · es el único que habla a clientes</li>
+<li><strong>Operator</strong>: ejecuta · hace rollback · revisa logs</li>
+<li><strong>Communicator</strong>: actualiza status page · responde tickets</li>
+<li><strong>Scribe</strong>: anota timeline · acciones · evidencias para postmortem</li>
+</ul>
+<p>Para Marketplace SMC inicial: 1 persona puede llevar 2-3 roles · ideal 1 persona = 1 rol.</p>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>04</span></div>
+</section>
+<section class="page" id="03-runbook-gen-rico">
+  <h2><span class="h2-num">03</span>Runbook genérico</h2>
+  <pre class="ascii">1. DETECTAR
+   - Alerta (CloudWatch · Sentry · status page)
+   - Reporte usuario en soporte
+   - Detección proactiva monitoring
+
+2. TRIAGE
+   - Asignar severidad (tabla 01)
+   - Activar Commander
+   - Si SEV1/SEV2: notificar equipo en canal #incidents
+
+3. CONTENER
+   - Rollback si deploy reciente (último merge a main)
+   - Disable feature flag si feature específica
+   - Aislar tenant si data corruption (RLS)
+
+4. INVESTIGAR
+   - Logs Amplify · Supabase · Sentry
+   - Reproducir en QAS si posible
+   - Identificar root cause
+
+5. REMEDIAR
+   - Patch + deploy
+   - Verificar fix en prod
+   - Anunciar resolución
+
+6. POSTMORTEM
+   - &lt;48h después
+   - Blameless: foco en sistema · no personas
+   - Acciones de prevención con dueño y fecha</pre>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>05</span></div>
+</section>
+<section class="page" id="04-comunicaci-n-durante-sev1-sev2">
+  <h2><span class="h2-num">04</span>Comunicación durante SEV1/SEV2</h2>
+  <ul>
+<li>Status page actualizado &lt;5 min</li>
+<li>Email a clientes afectados &lt;15 min</li>
+<li>Updates cada 30 min hasta resolver</li>
+<li>Post-resolución: email confirmando + ETA postmortem</li>
+</ul>
+<div class="box box-info"><div class="box-title">💡 Tone honesto</div><p>"Estamos investigando" es mejor que silencio. NUNCA prometer ETA que no se va a cumplir.</p></div>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>06</span></div>
+</section>
+<section class="page" id="05-template-postmortem">
+  <h2><span class="h2-num">05</span>Template postmortem</h2>
+  <pre class="ascii"></pre>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>07</span></div>
+</section>
+<section class="page" id="postmortem-incidente-fecha">
+  <h2><span class="h2-num">06</span>Postmortem · [Incidente] · [Fecha]</h2>
+  <h3>Resumen ejecutivo</h3>
+<ul>
+<li>Severidad: SEV?</li>
+<li>Duración total: ?h ?min</li>
+<li>Clientes afectados: ?</li>
+<li>Impacto: pérdida ventas · downtime · data loss</li>
+</ul>
+<h3>Timeline (UTC-3 Santiago)</h3>
+<ul>
+<li>14:00 · Deploy v1.2.3</li>
+<li>14:15 · Alerta CloudWatch 5xx</li>
+<li>...</li>
+</ul>
+<h3>Root cause</h3>
+<p>[análisis técnico claro · sin asignar culpa]</p>
+<h3>Lo que salió bien</h3>
+<ul>
+<li>[3 cosas mínimo]</li>
+</ul>
+<h3>Lo que salió mal</h3>
+<ul>
+<li>[no más de 5 · accionables]</li>
+</ul>
+<h3>Acciones (cada una con dueño + fecha)</h3>
+<ul>
+<li>[ ] Acción 1 · @owner · 2026-MM-DD</li>
+<li>[ ] Acción 2 · @owner · 2026-MM-DD</li>
+</ul>
+<pre class="ascii"></pre>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>08</span></div>
+</section>
+<section class="page" id="06-pr-ctica-continua">
+  <h2><span class="h2-num">06</span>Práctica continua</h2>
+  <ul>
+<li>Game day cada 2 meses: simular SEV1 · cronometrar respuesta</li>
+<li>Chaos engineering ligero · matar 1 servicio en QAS</li>
+<li>Review trimestral del playbook · actualizar contactos · runbooks</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Operaciones</span><span>09</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="31-security-policy.html">◂ doc anterior</a><span class="nav-center">FIN DOC 32</span><a href="33-prd-template.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>
