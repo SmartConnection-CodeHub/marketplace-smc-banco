@@ -1,0 +1,392 @@
+/* ===========================================================
+   Marketplace SMC · Diagram Kit · v1.0
+   Visio-style interactivo: SVG canvas + zoom + side panel + filtros
+   Reusable para todos los docs que tengan diagramas técnicos
+   =========================================================== */
+
+/* CANVAS WRAPPER */
+.diagram-wrapper {
+  position: relative;
+  background: #FAFBFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 32px 0;
+  min-height: 600px;
+}
+
+.diagram-wrapper.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  border-radius: 0;
+  margin: 0;
+}
+
+/* TÍTULO + FILTROS */
+.diagram-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: white;
+  border-bottom: 1px solid #E2E8F0;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.diagram-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.diagram-subtitle {
+  font-size: 12px;
+  color: #64748B;
+  margin: 2px 0 0;
+}
+
+.diagram-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.diagram-filter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #F1F5F9;
+  color: #475569;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all .15s ease;
+  user-select: none;
+}
+
+.diagram-filter:hover { background: #E2E8F0; }
+.diagram-filter.is-active {
+  background: #0F172A;
+  color: white;
+  border-color: #0F172A;
+}
+.diagram-filter[data-channel="meli"].is-active   { background: #FFE600; color: #1A1A1A; border-color: #FFE600; }
+.diagram-filter[data-channel="d2c"].is-active    { background: #00C1C1; color: white; border-color: #00C1C1; }
+.diagram-filter[data-channel="mp"].is-active     { background: #3B82F6; color: white; border-color: #3B82F6; }
+.diagram-filter[data-channel="b2b"].is-active    { background: #F59E0B; color: white; border-color: #F59E0B; }
+
+/* CANVAS (SVG dentro) */
+.diagram-canvas {
+  position: relative;
+  width: 100%;
+  height: 720px;
+  overflow: hidden;
+  background:
+    linear-gradient(to right, rgba(15,23,42,0.04) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(to bottom, rgba(15,23,42,0.04) 1px, transparent 1px) 0 0 / 32px 32px,
+    #FAFBFC;
+  cursor: grab;
+}
+.diagram-canvas:active { cursor: grabbing; }
+
+.diagram-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0;
+  transition: transform .12s cubic-bezier(.16, 1, .3, 1);
+}
+.diagram-canvas.is-panning .diagram-svg { transition: none; }
+
+/* TOOLBAR ZOOM */
+.diagram-toolbar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 4px;
+  box-shadow: 0 4px 16px rgba(15,23,42,0.08);
+  z-index: 10;
+}
+
+.diagram-toolbar button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all .12s;
+}
+.diagram-toolbar button:hover { background: #F1F5F9; color: #0F172A; }
+.diagram-toolbar button:active { transform: scale(0.92); }
+.diagram-toolbar .divider { height: 1px; background: #E2E8F0; margin: 2px 4px; }
+
+.diagram-zoom-indicator {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: #0F172A;
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  z-index: 10;
+  letter-spacing: 0.5px;
+}
+
+/* BLOQUES SVG (estilo) */
+.diagram-svg .block {
+  cursor: pointer;
+  transition: opacity .2s, filter .2s;
+}
+.diagram-svg .block rect.block-bg {
+  fill: white;
+  stroke: #CBD5E1;
+  stroke-width: 1.5;
+  rx: 10;
+  transition: stroke .15s, fill .15s, filter .15s;
+}
+.diagram-svg .block:hover rect.block-bg {
+  stroke: #00C1C1;
+  stroke-width: 2;
+  filter: drop-shadow(0 6px 14px rgba(0,193,193,0.20));
+}
+.diagram-svg .block.is-highlight rect.block-bg {
+  stroke: #00C1C1;
+  stroke-width: 2.5;
+  fill: #F0FDFA;
+}
+.diagram-svg .block.is-dimmed { opacity: 0.22; }
+.diagram-svg .block .block-title {
+  fill: #0F172A;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Inter', system-ui;
+  pointer-events: none;
+}
+.diagram-svg .block .block-sub {
+  fill: #64748B;
+  font-size: 11px;
+  font-family: 'Inter', system-ui;
+  pointer-events: none;
+}
+.diagram-svg .block .block-code {
+  fill: #00C1C1;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 1px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* COLORES POR TIPO */
+.diagram-svg .block.type-frontend rect.block-bg { fill: #ECFEFF; stroke: #06B6D4; }
+.diagram-svg .block.type-backend  rect.block-bg { fill: #F0F9FF; stroke: #3B82F6; }
+.diagram-svg .block.type-data     rect.block-bg { fill: #F0FDFA; stroke: #10B981; }
+.diagram-svg .block.type-ai       rect.block-bg { fill: #FDF4FF; stroke: #C026D3; }
+.diagram-svg .block.type-channel  rect.block-bg { fill: #FFFBEB; stroke: #F59E0B; }
+.diagram-svg .block.type-payment  rect.block-bg { fill: #FEF2F2; stroke: #EF4444; }
+.diagram-svg .block.type-logistic rect.block-bg { fill: #F5F3FF; stroke: #7C3AED; }
+.diagram-svg .block.type-infra    rect.block-bg { fill: #F8FAFC; stroke: #64748B; }
+.diagram-svg .block.type-actor    rect.block-bg { fill: #FFFFFF; stroke: #0F172A; stroke-width: 2; }
+
+/* GRUPOS dotted */
+.diagram-svg .group-frame {
+  fill: rgba(15,23,42,0.025);
+  stroke: #94A3B8;
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+  rx: 14;
+}
+.diagram-svg .group-label {
+  fill: #475569;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'Inter', system-ui;
+}
+
+/* CONEXIONES */
+.diagram-svg .conn {
+  stroke: #94A3B8;
+  stroke-width: 1.5;
+  fill: none;
+  transition: stroke .15s, stroke-width .15s, opacity .2s;
+}
+.diagram-svg .conn.is-highlight {
+  stroke: #00C1C1;
+  stroke-width: 2.5;
+}
+.diagram-svg .conn.is-dimmed { opacity: 0.15; }
+.diagram-svg .conn-label {
+  fill: #475569;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* SIDE PANEL */
+.diagram-panel {
+  position: absolute;
+  top: 0;
+  right: -440px;
+  bottom: 0;
+  width: 420px;
+  max-width: 90%;
+  background: white;
+  border-left: 1px solid #E2E8F0;
+  box-shadow: -12px 0 32px rgba(15,23,42,0.10);
+  transition: right .3s cubic-bezier(.16, 1, .3, 1);
+  z-index: 20;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.diagram-panel.is-open { right: 0; }
+
+.diagram-panel-header {
+  padding: 24px 24px 18px;
+  border-bottom: 1px solid #F1F5F9;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+}
+
+.diagram-panel-type {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #00C1C1;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.diagram-panel-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 6px;
+  letter-spacing: -0.4px;
+  padding-right: 32px;
+}
+.diagram-panel-sub {
+  font-size: 13px;
+  color: #64748B;
+  margin: 0;
+}
+
+.diagram-panel-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: #F1F5F9;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.diagram-panel-close:hover { background: #E2E8F0; color: #0F172A; }
+
+.diagram-panel-body {
+  padding: 20px 24px 32px;
+  flex: 1;
+}
+
+.panel-section { margin-bottom: 22px; }
+.panel-section-label {
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #94A3B8;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+.panel-section p, .panel-section ul {
+  font-size: 13.5px;
+  color: #334155;
+  line-height: 1.55;
+  margin: 0;
+}
+.panel-section ul { padding-left: 18px; }
+.panel-section li { margin-bottom: 4px; }
+
+.panel-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.panel-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  background: #F1F5F9;
+  color: #475569;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.panel-chip.is-channel-meli   { background: #FEF3C7; color: #92400E; }
+.panel-chip.is-channel-d2c    { background: #CFFAFE; color: #0E7490; }
+.panel-chip.is-channel-mp     { background: #DBEAFE; color: #1E40AF; }
+.panel-chip.is-channel-b2b    { background: #FED7AA; color: #9A3412; }
+
+.panel-related {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.panel-related a {
+  display: block;
+  padding: 10px 12px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #0F172A;
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: all .12s;
+}
+.panel-related a:hover {
+  background: #ECFEFF;
+  border-color: #00C1C1;
+  transform: translateX(2px);
+}
+.panel-related a small {
+  display: block;
+  color: #64748B;
+  font-weight: 400;
+  margin-top: 2px;
+  font-size: 11px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  .diagram-canvas { height: 520px; }
+  .diagram-panel { width: 100%; right: -100%; }
+}

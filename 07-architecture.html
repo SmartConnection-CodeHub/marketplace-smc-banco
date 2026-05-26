@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>07 · Architecture · Marketplace SMC</title>
 <link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
 </head>
 <body>
 <nav class="doc-nav"><a href="06-api-catalog.html">◂ doc 06</a><span class="nav-center">DOCUMENTO 07 DE 09</span><a href="08-roadmap.html">doc 08 · Roadmap ▸</a></nav>
@@ -29,8 +30,9 @@
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
   <ol>
-    <li><a href="#hl">Arquitectura alto nivel · diagrama</a><span class="toc-pg">03</span></li>
-    <li><a href="#stack">Stack técnico decidido</a><span class="toc-pg">04</span></li>
+    <li><a href="#hla-live">Mapa interactivo HLA · Visio-style</a><span class="toc-pg">03</span></li>
+    <li><a href="#hl">Arquitectura alto nivel · diagrama clásico</a><span class="toc-pg">04</span></li>
+    <li><a href="#stack">Stack técnico decidido</a><span class="toc-pg">05</span></li>
     <li><a href="#mono">Estructura monorepo</a><span class="toc-pg">05</span></li>
     <li><a href="#ed">Event-driven · cómo funciona</a><span class="toc-pg">06</span></li>
     <li><a href="#mt">Multi-tenancy técnico (RLS)</a><span class="toc-pg">07</span></li>
@@ -40,6 +42,279 @@
     <li><a href="#scale">Escalabilidad técnica · cuándo refactorizar</a><span class="toc-pg">11</span></li>
     <li><a href="#adr">ADRs · decisiones registradas</a><span class="toc-pg">12</span></li>
   </ol>
+</section>
+
+<section class="page" id="hla-live">
+  <h2><span class="h2-num">00</span>Mapa interactivo HLA · Visio-style</h2>
+  <p style="margin-top:-8px;color:#475569;font-size:14px;line-height:1.6;">
+    Diagrama vivo de la arquitectura Marketplace SMC.
+    <strong>Click en cualquier bloque</strong> para ver detalle · descripción · stack · owner · canales · docs relacionados.
+    <strong>Filtros</strong> arriba para aislar el flujo de un canal específico (MeLi · D2C · MP · B2B).
+    <strong>Hover</strong> destaca la ruta end-to-end que toca ese componente.
+    <strong>Zoom</strong> con la rueda + ⌘/Ctrl o con los botones · arrastrá para hacer pan.
+  </p>
+
+  <div class="diagram-wrapper" id="hla-diagram">
+    <div class="diagram-header">
+      <div>
+        <div class="diagram-title">Marketplace SMC · High Level Architecture</div>
+        <div class="diagram-subtitle">Stack Next.js 16 · Supabase · Channel Adapter Pattern · IA fallback chain</div>
+      </div>
+      <div class="diagram-filters">
+        <button class="diagram-filter" data-channel="meli">MeLi</button>
+        <button class="diagram-filter" data-channel="d2c">D2C</button>
+        <button class="diagram-filter" data-channel="mp">Mercado Público</button>
+        <button class="diagram-filter" data-channel="b2b">B2B</button>
+      </div>
+    </div>
+
+    <div class="diagram-canvas">
+      <div class="diagram-zoom-indicator">100%</div>
+      <div class="diagram-toolbar">
+        <button data-zoom="in" title="Acercar">+</button>
+        <button data-zoom="out" title="Alejar">−</button>
+        <div class="divider"></div>
+        <button data-zoom="reset" title="Reset zoom">⊡</button>
+        <button data-zoom="fullscreen" title="Pantalla completa">⤢</button>
+      </div>
+
+      <svg class="diagram-svg" viewBox="0 0 1720 900" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+          </marker>
+        </defs>
+
+        <!-- GROUPS -->
+        <g>
+          <rect class="group-frame" x="170" y="155" width="620" height="155"/>
+          <text class="group-label" x="190" y="180">FRONTEND</text>
+        </g>
+        <g>
+          <rect class="group-frame" x="70" y="335" width="1140" height="170"/>
+          <text class="group-label" x="90" y="360">BACKEND · CORE</text>
+        </g>
+        <g>
+          <rect class="group-frame" x="170" y="520" width="970" height="150"/>
+          <text class="group-label" x="190" y="545">DATA · SUPABASE</text>
+        </g>
+        <g>
+          <rect class="group-frame" x="1240" y="170" width="460" height="305" rx="14"/>
+          <text class="group-label" x="1260" y="195">INTEGRACIONES · CANALES</text>
+        </g>
+        <g>
+          <rect class="group-frame" x="70" y="700" width="1620" height="170"/>
+          <text class="group-label" x="90" y="725">SERVICIOS EXTERNOS</text>
+        </g>
+
+        <!-- CONEXIONES (atrás de los bloques) -->
+        <path class="conn" data-from="operator"   data-to="cloudfront"  d="M 160 120 C 160 150 320 150 320 180" marker-end="url(#arr)"/>
+        <path class="conn" data-from="cloudfront" data-to="nextjs"      d="M 440 230 L 470 230" marker-end="url(#arr)"/>
+        <path class="conn" data-from="nextjs"     data-to="api-routes"  d="M 620 290 C 620 320 210 320 210 360" marker-end="url(#arr)"/>
+        <path class="conn" data-from="api-routes" data-to="adapter"     d="M 320 420 L 370 420" marker-end="url(#arr)"/>
+        <path class="conn" data-from="api-routes" data-to="cerebro"     d="M 320 410 C 500 410 540 420 720 420" marker-end="url(#arr)"/>
+        <path class="conn" data-from="adapter"    data-to="cron"        d="M 660 410 C 800 410 900 420 1000 420" marker-end="url(#arr)" stroke-dasharray="5 4"/>
+        <path class="conn" data-from="api-routes" data-to="supabase-auth" d="M 210 490 C 210 515 320 515 320 540" marker-end="url(#arr)"/>
+        <path class="conn" data-from="api-routes" data-to="supabase-db"   d="M 210 490 C 210 520 660 520 660 540" marker-end="url(#arr)"/>
+        <path class="conn" data-from="adapter"    data-to="supabase-db"   d="M 520 490 L 520 540" marker-end="url(#arr)"/>
+        <path class="conn" data-from="cerebro"    data-to="supabase-db"   d="M 840 490 C 840 515 700 515 700 540" marker-end="url(#arr)"/>
+        <path class="conn" data-from="cerebro"    data-to="ai-chain"      d="M 840 490 C 840 600 1100 660 1120 700" marker-end="url(#arr)"/>
+        <path class="conn" data-from="adapter"    data-to="meli"          d="M 660 380 C 900 380 1100 240 1260 240" marker-end="url(#arr)" data-channels="meli"/>
+        <path class="conn" data-from="adapter"    data-to="mp"            d="M 660 395 C 1000 395 1200 240 1480 240" marker-end="url(#arr)" data-channels="mp"/>
+        <path class="conn" data-from="adapter"    data-to="d2c"           d="M 660 410 C 900 410 1100 380 1260 380" marker-end="url(#arr)" data-channels="d2c"/>
+        <path class="conn" data-from="adapter"    data-to="b2b"           d="M 660 425 C 1100 425 1100 380 1480 380" marker-end="url(#arr)" data-channels="b2b"/>
+        <path class="conn" data-from="supabase-db" data-to="openfactura"  d="M 660 650 C 660 680 640 700 640 740" marker-end="url(#arr)"/>
+        <path class="conn" data-from="d2c" data-to="mp-pago"              d="M 1260 415 C 1100 415 200 700 200 740" marker-end="url(#arr)" data-channels="d2c"/>
+
+        <!-- LABELS de conexión -->
+        <text class="conn-label" x="950" y="280">OAuth</text>
+        <text class="conn-label" x="1100" y="320">Ticket</text>
+        <text class="conn-label" x="850" y="395">refresh 6h</text>
+
+        <!-- BLOQUES -->
+        <!-- Actores -->
+        <g class="block type-actor" data-id="operator">
+          <rect class="block-bg" x="60" y="40" width="200" height="80"/>
+          <text class="block-code" x="80" y="65">USER · ACTOR</text>
+          <text class="block-title" x="80" y="90">Operador</text>
+          <text class="block-sub" x="80" y="108">marketplace.smconnection.cl</text>
+        </g>
+        <g class="block type-actor" data-id="customer">
+          <rect class="block-bg" x="1460" y="40" width="200" height="80"/>
+          <text class="block-code" x="1480" y="65">USER · ACTOR</text>
+          <text class="block-title" x="1480" y="90">Cliente final</text>
+          <text class="block-sub" x="1480" y="108">B2C · B2G · B2B</text>
+        </g>
+
+        <!-- Frontend -->
+        <g class="block type-frontend" data-id="cloudfront">
+          <rect class="block-bg" x="200" y="180" width="240" height="100"/>
+          <text class="block-code" x="220" y="205">CDN · EDGE</text>
+          <text class="block-title" x="220" y="232">CloudFront + Amplify</text>
+          <text class="block-sub" x="220" y="252">auto-deploy push a main</text>
+          <text class="block-sub" x="220" y="270">cert ACM · WAF</text>
+        </g>
+        <g class="block type-frontend" data-id="nextjs">
+          <rect class="block-bg" x="470" y="180" width="320" height="100"/>
+          <text class="block-code" x="490" y="205">FRONTEND · APP</text>
+          <text class="block-title" x="490" y="232">Next.js 16 · App Router</text>
+          <text class="block-sub" x="490" y="252">React Server Components</text>
+          <text class="block-sub" x="490" y="270">Tailwind v4 + Radix + @smc/ui</text>
+        </g>
+
+        <!-- Core/Backend -->
+        <g class="block type-backend" data-id="api-routes">
+          <rect class="block-bg" x="100" y="360" width="220" height="130"/>
+          <text class="block-code" x="120" y="385">BACKEND · API</text>
+          <text class="block-title" x="120" y="412">API Routes</text>
+          <text class="block-sub" x="120" y="432">Server Actions</text>
+          <text class="block-sub" x="120" y="450">Zod validation</text>
+          <text class="block-sub" x="120" y="468">JWT middleware</text>
+        </g>
+        <g class="block type-backend" data-id="adapter">
+          <rect class="block-bg" x="370" y="360" width="290" height="130"/>
+          <text class="block-code" x="390" y="385">PATTERN · CORE</text>
+          <text class="block-title" x="390" y="412">Channel Adapter Pattern</text>
+          <text class="block-sub" x="390" y="432">interfaz uniforme por canal</text>
+          <text class="block-sub" x="390" y="450">MeLi · D2C · MP · B2B</text>
+          <text class="block-sub" x="390" y="468">orders · stock · pricing sync</text>
+        </g>
+        <g class="block type-ai" data-id="cerebro">
+          <rect class="block-bg" x="720" y="360" width="240" height="130"/>
+          <text class="block-code" x="740" y="385">AI · ORCHESTRATOR</text>
+          <text class="block-title" x="740" y="412">Cerebro IA</text>
+          <text class="block-sub" x="740" y="432">cross-data analytics</text>
+          <text class="block-sub" x="740" y="450">SSE streaming chat</text>
+          <text class="block-sub" x="740" y="468">opportunity scoring</text>
+        </g>
+        <g class="block type-infra" data-id="cron">
+          <rect class="block-bg" x="1000" y="360" width="210" height="130"/>
+          <text class="block-code" x="1020" y="385">SCHEDULER</text>
+          <text class="block-title" x="1020" y="412">Cron Jobs</text>
+          <text class="block-sub" x="1020" y="432">refresh MeLi 6h</text>
+          <text class="block-sub" x="1020" y="450">sync MP diario</text>
+          <text class="block-sub" x="1020" y="468">cache cleanup 7d</text>
+        </g>
+
+        <!-- Data -->
+        <g class="block type-data" data-id="supabase-auth">
+          <rect class="block-bg" x="200" y="540" width="240" height="110"/>
+          <text class="block-code" x="220" y="565">DATA · AUTH</text>
+          <text class="block-title" x="220" y="592">Supabase Auth</text>
+          <text class="block-sub" x="220" y="612">JWT · 2FA · sesiones</text>
+          <text class="block-sub" x="220" y="630">tenant_id en claims</text>
+        </g>
+        <g class="block type-data" data-id="supabase-db">
+          <rect class="block-bg" x="500" y="540" width="320" height="110"/>
+          <text class="block-code" x="520" y="565">DATA · CORE</text>
+          <text class="block-title" x="520" y="592">Postgres + RLS</text>
+          <text class="block-sub" x="520" y="612">multi-tenant · 20+ tablas · pg_cron</text>
+          <text class="block-sub" x="520" y="630">PITR 30d · daily snapshots</text>
+        </g>
+        <g class="block type-data" data-id="supabase-storage">
+          <rect class="block-bg" x="880" y="540" width="260" height="110"/>
+          <text class="block-code" x="900" y="565">DATA · BLOB</text>
+          <text class="block-title" x="900" y="592">Supabase Storage</text>
+          <text class="block-sub" x="900" y="612">imágenes productos · DTE PDF</text>
+          <text class="block-sub" x="900" y="630">signed URLs · RLS por tenant</text>
+        </g>
+
+        <!-- Channels -->
+        <g class="block type-channel" data-id="meli">
+          <rect class="block-bg" x="1260" y="200" width="200" height="120"/>
+          <text class="block-code" x="1278" y="223">CANAL · MELI</text>
+          <text class="block-title" x="1278" y="250">Mercado Libre</text>
+          <text class="block-sub" x="1278" y="270">OAuth 2.0 PKCE</text>
+          <text class="block-sub" x="1278" y="288">tokens cookies httpOnly</text>
+          <text class="block-sub" x="1278" y="306">PolicyAgent aware</text>
+        </g>
+        <g class="block type-channel" data-id="mp">
+          <rect class="block-bg" x="1480" y="200" width="200" height="120"/>
+          <text class="block-code" x="1498" y="223">CANAL · CHILECOMPRA</text>
+          <text class="block-title" x="1498" y="250">Mercado Público</text>
+          <text class="block-sub" x="1498" y="270">Ticket auth · API REST</text>
+          <text class="block-sub" x="1498" y="288">licitaciones diarias</text>
+          <text class="block-sub" x="1498" y="306">budget alerting</text>
+        </g>
+        <g class="block type-channel" data-id="d2c">
+          <rect class="block-bg" x="1260" y="340" width="200" height="120"/>
+          <text class="block-code" x="1278" y="363">CANAL · D2C</text>
+          <text class="block-title" x="1278" y="390">Storefront propio</text>
+          <text class="block-sub" x="1278" y="410">app cliente operador</text>
+          <text class="block-sub" x="1278" y="428">checkout integrado</text>
+          <text class="block-sub" x="1278" y="446">ADS Meta · Google</text>
+        </g>
+        <g class="block type-channel" data-id="b2b">
+          <rect class="block-bg" x="1480" y="340" width="200" height="120"/>
+          <text class="block-code" x="1498" y="363">CANAL · B2B</text>
+          <text class="block-title" x="1498" y="390">B2B custom</text>
+          <text class="block-sub" x="1498" y="410">REST + API key</text>
+          <text class="block-sub" x="1498" y="428">white-label</text>
+          <text class="block-sub" x="1498" y="446">cliente empresa</text>
+        </g>
+
+        <!-- Servicios externos -->
+        <g class="block type-payment" data-id="mp-pago">
+          <rect class="block-bg" x="100" y="740" width="200" height="120"/>
+          <text class="block-code" x="118" y="763">PAGO</text>
+          <text class="block-title" x="118" y="790">MercadoPago</text>
+          <text class="block-sub" x="118" y="810">pasarela MeLi + D2C</text>
+          <text class="block-sub" x="118" y="828">webhook events</text>
+        </g>
+        <g class="block type-payment" data-id="webpay">
+          <rect class="block-bg" x="320" y="740" width="200" height="120"/>
+          <text class="block-code" x="338" y="763">PAGO</text>
+          <text class="block-title" x="338" y="790">WebPay Plus</text>
+          <text class="block-sub" x="338" y="810">Transbank · D2C</text>
+          <text class="block-sub" x="338" y="828">débito + crédito Chile</text>
+        </g>
+        <g class="block type-payment" data-id="openfactura">
+          <rect class="block-bg" x="540" y="740" width="200" height="120"/>
+          <text class="block-code" x="558" y="763">FACTURACIÓN</text>
+          <text class="block-title" x="558" y="790">Open Factura</text>
+          <text class="block-sub" x="558" y="810">DTE 33 · 39 · 61</text>
+          <text class="block-sub" x="558" y="828">SII auto-emisión</text>
+        </g>
+        <g class="block type-logistic" data-id="couriers">
+          <rect class="block-bg" x="760" y="740" width="200" height="120"/>
+          <text class="block-code" x="778" y="763">LOGÍSTICA</text>
+          <text class="block-title" x="778" y="790">Couriers</text>
+          <text class="block-sub" x="778" y="810">Chilexpress · Starken</text>
+          <text class="block-sub" x="778" y="828">tracking webhooks</text>
+        </g>
+        <g class="block type-ai" data-id="ai-chain">
+          <rect class="block-bg" x="980" y="740" width="280" height="120"/>
+          <text class="block-code" x="998" y="763">IA · FALLBACK CHAIN</text>
+          <text class="block-title" x="998" y="790">Groq → Gemini → DeepSeek</text>
+          <text class="block-sub" x="998" y="810">via OpenRouter routing</text>
+          <text class="block-sub" x="998" y="828">NUNCA Claude (regla Hoku)</text>
+        </g>
+        <g class="block type-infra" data-id="monitoring">
+          <rect class="block-bg" x="1280" y="740" width="280" height="120"/>
+          <text class="block-code" x="1298" y="763">OBSERVABILIDAD</text>
+          <text class="block-title" x="1298" y="790">Sentry · PostHog · CW</text>
+          <text class="block-sub" x="1298" y="810">errores · funnels · infra</text>
+          <text class="block-sub" x="1298" y="828">LLMOps log mkt_api_logs</text>
+        </g>
+      </svg>
+    </div>
+
+    <aside class="diagram-panel">
+      <div class="diagram-panel-header">
+        <button class="diagram-panel-close" aria-label="Cerrar">×</button>
+        <div class="diagram-panel-type">Bloque</div>
+        <h3 class="diagram-panel-title">Detalle</h3>
+        <p class="diagram-panel-sub"></p>
+      </div>
+      <div class="diagram-panel-body"></div>
+    </aside>
+  </div>
+
+  <p style="font-size:12px;color:#94A3B8;margin-top:14px;">
+    Tip: click en un bloque para ver detalle · Esc cierra · arrastra el canvas para hacer pan · ⌘/Ctrl + scroll para zoom.
+  </p>
+
+  <div class="page-footer"><span>Banco SMC · Tech</span><span>03</span></div>
 </section>
 
 <section class="page" id="hl">
@@ -466,5 +741,283 @@ ALTER TABLE mk_products FORCE ROW LEVEL SECURITY;
 <nav class="doc-nav"><a href="06-api-catalog.html">◂ doc 06</a><span class="nav-center">FIN DOCUMENTO 07</span><a href="08-roadmap.html">doc 08 · Roadmap ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>
+SMCDiagram.init({
+  id: 'hla-diagram',
+  blocks: {
+    operator: {
+      type: 'USER · ACTOR',
+      title: 'Operador',
+      sub: 'Vendedor que opera multi-canal',
+      desc: 'El operador es el cliente Pro/Business que entra a marketplace.smconnection.cl, conecta sus canales (MeLi · D2C · MP) y gestiona inventario · órdenes · facturación desde un solo panel.',
+      stack: ['Browser', 'MFA opcional', 'cookies httpOnly'],
+      owner: 'Comercial onboarding · Cerebro guía in-app',
+      related: [
+        { href: '10-prospect.html', title: 'Doc 10 · Prospect Definition', sub: 'Quién es el prospecto · señales · triggers' },
+        { href: '12-personas.html', title: 'Doc 12 · Buyer Personas', sub: '5 agentes SMC en roles clave' },
+        { href: '14-customer-journey.html', title: 'Doc 14 · Customer Journey', sub: 'Awareness → Expansion' },
+      ],
+    },
+    customer: {
+      type: 'USER · ACTOR',
+      title: 'Cliente final',
+      sub: 'Comprador en el canal del operador',
+      desc: 'Compradores que llegan vía cualquiera de los canales conectados. Marketplace SMC no expone al cliente final · solo facilita la operación al operador.',
+      channels: ['meli', 'mp', 'd2c', 'b2b'],
+      related: [
+        { href: '13-jtbd.html', title: 'Doc 13 · Jobs to be Done', sub: 'JTBD funcional · emocional · social' },
+      ],
+    },
+    cloudfront: {
+      type: 'CDN · EDGE',
+      title: 'CloudFront + AWS Amplify',
+      sub: 'CDN global + auto-deploy desde main',
+      desc: 'Distribución de la app Next.js vía CloudFront. Amplify hace el build/deploy automático en cada push a main. Cert ACM auto-renovado, headers de seguridad (CSP, HSTS) inyectados en middleware.',
+      stack: ['AWS Amplify', 'CloudFront', 'ACM cert', 'Route 53', 'WAF'],
+      owner: 'Pipeline + INFRA-OPS',
+      notes: 'App ID: d2qam7xccab5t8 · región sa-east-1.',
+      related: [
+        { href: '37-runbook-dr-plan.html', title: 'Doc 37 · Runbook · DR', sub: 'Escenarios E1-E5 · RTO 4h · RPO 1h' },
+        { href: '31-security-policy.html', title: 'Doc 31 · Security Policy', sub: 'CSP · HSTS · headers seguridad' },
+      ],
+    },
+    nextjs: {
+      type: 'FRONTEND · APP',
+      title: 'Next.js 16 · App Router',
+      sub: 'React Server Components + Server Actions',
+      desc: 'App principal con App Router. Server Components por defecto · use client solo en nodos hoja (botones · inputs · modales). Tailwind v4 + Radix abstraído tras @smc/ui. Forms con Zod compartido client + server.',
+      stack: ['Next.js 16', 'React 19', 'TypeScript 5.x', 'Tailwind v4', 'Radix', '@smc/ui', 'Zod'],
+      owner: 'Frontend (Fiori)',
+      endpoints: ['/dashboard', '/oportunidades', '/productos', '/integraciones'],
+      related: [
+        { href: '38-onboarding-dev.html', title: 'Doc 38 · Onboarding Dev', sub: 'Setup &lt;1 día · convenciones' },
+        { href: '27-visual-identity.html', title: 'Doc 27 · Visual Identity', sub: 'Tokens · grid 8pt · paleta' },
+      ],
+    },
+    'api-routes': {
+      type: 'BACKEND · API',
+      title: 'API Routes + Server Actions',
+      sub: 'Capa REST interna + acciones de servidor',
+      desc: 'Endpoints internos consumidos por la UI: auth · productos · oportunidades · sync. Validación Zod en boundary, JWT middleware verifica tenant_id antes de tocar DB. Rate limit 60 req/min user.',
+      stack: ['Next.js Route Handlers', 'Server Actions', 'Zod', 'Supabase JS SDK'],
+      owner: 'Backend',
+      endpoints: ['GET /api/products', 'GET /api/opportunities', 'POST /api/sync/meli', 'GET /api/cerebro/chat'],
+      related: [
+        { href: '06-api-catalog.html', title: 'Doc 06 · API Catalog', sub: '80+ rutas REST · webhooks' },
+        { href: '39-api-sdk-postman.html', title: 'Doc 39 · API SDK · Postman', sub: 'Auth JWT · rate limits · ejemplos' },
+      ],
+    },
+    adapter: {
+      type: 'PATTERN · CORE',
+      title: 'Channel Adapter Pattern',
+      sub: 'Abstracción uniforme sobre cada canal externo',
+      desc: 'Núcleo del producto. Define interfaz ChannelAdapter con métodos uniformes (syncStock, listOrders, publishProduct) y cada canal (MeLi · D2C · MP · B2B) implementa la suya. Permite agregar canales nuevos sin tocar el resto de la app.',
+      stack: ['TypeScript interfaces', 'Strategy pattern', 'Retry con backoff', 'Idempotency keys'],
+      owner: 'Architect + Backend',
+      channels: ['meli', 'mp', 'd2c', 'b2b'],
+      notes: 'Decisión registrada en ADR-0002 Channel Adapter Pattern.',
+      related: [
+        { href: '07-architecture.html#stack', title: 'Stack técnico decidido', sub: 'Sección 02 de este doc' },
+        { href: '06-api-catalog.html', title: 'Doc 06 · API Catalog', sub: 'Channel Adapter routes' },
+      ],
+    },
+    cerebro: {
+      type: 'AI · ORCHESTRATOR',
+      title: 'Cerebro IA',
+      sub: 'Cross-data · insights · SSE streaming',
+      desc: 'Motor IA del producto. Hace scoring de oportunidades (6 señales · sin LLM), responde chat con SSE streaming, genera insights cross-canal. Usa fallback chain Groq → Gemini → DeepSeek vía OpenRouter.',
+      stack: ['OpenRouter SDK', 'SSE streaming', 'pg_cron', 'Smart Cache Hot/Warm/Cold'],
+      owner: 'Hoku (AI Developer)',
+      endpoints: ['POST /api/cerebro/chat (SSE)', 'GET /api/opportunities (scoring)'],
+      notes: 'NUNCA usa Claude como fallback (consume tokens del plan operador) · regla Hoku.',
+      related: [
+        { href: '07-architecture.html#hl-v5', title: 'Arquitectura v5 Opportunities', sub: 'ADR-0001 · 6 capas sin LLM' },
+        { href: '05-data-model.html', title: 'Doc 05 · Data Model', sub: 'tablas mkt_opportunities · cache' },
+      ],
+    },
+    cron: {
+      type: 'SCHEDULER',
+      title: 'Cron Jobs',
+      sub: 'Tareas programadas · refresh tokens · sync diario',
+      desc: 'Jobs cron en Vercel/Amplify. Refresh tokens MeLi cada 6h (antes que caduquen), sync diario Mercado Público a las 8am, cleanup de Smart Cache Cold cada 7 días, daily backup verify.',
+      stack: ['Vercel Cron', 'CRON_SECRET header', 'pg_cron complementario'],
+      owner: 'Pipeline',
+      endpoints: ['POST /api/cron/refresh-meli', 'POST /api/cron/sync-mp', 'POST /api/cron/cache-cleanup'],
+      related: [
+        { href: '37-runbook-dr-plan.html', title: 'Doc 37 · Runbook', sub: 'Op diaria · semanal · trimestral' },
+      ],
+    },
+    'supabase-auth': {
+      type: 'DATA · AUTH',
+      title: 'Supabase Auth',
+      sub: 'JWT · 2FA · tenant_id en claims',
+      desc: 'Autenticación via Supabase Auth. Email/password + 2FA opcional (obligatorio admins). El JWT incluye tenant_id en claims, usado por RLS Postgres para aislar datos por operador.',
+      stack: ['Supabase Auth', 'JWT RS256', 'TOTP 2FA', 'magic links'],
+      owner: 'Security + Backend',
+      related: [
+        { href: '31-security-policy.html', title: 'Doc 31 · Security Policy', sub: 'Auth · roles · MFA · onboarding' },
+      ],
+    },
+    'supabase-db': {
+      type: 'DATA · CORE',
+      title: 'Postgres + RLS',
+      sub: 'Multi-tenant · 20+ tablas · pg_cron',
+      desc: 'Base de datos principal. Postgres con Row Level Security activo por defecto · cada query incluye tenant_id implícito desde el JWT. PITR 30 días, daily snapshots a S3 propio (futuro).',
+      stack: ['Postgres 15', 'Supabase', 'RLS policies', 'pg_cron', 'pg_notify', 'service_role solo servidor'],
+      owner: 'INFRA-OPS + Backend',
+      notes: 'Project ID: yjjtbwfgtoepsevvkzta · región sa-east-1.',
+      related: [
+        { href: '05-data-model.html', title: 'Doc 05 · Data Model', sub: 'Schema 20+ tablas · ERD' },
+        { href: '37-runbook-dr-plan.html', title: 'Doc 37 · Runbook · DR', sub: 'Escenario E3 · DB corruption' },
+      ],
+    },
+    'supabase-storage': {
+      type: 'DATA · BLOB',
+      title: 'Supabase Storage',
+      sub: 'Imágenes productos · DTE PDF · signed URLs',
+      desc: 'Almacenamiento de archivos. Buckets separados por tipo (productos · facturas · uploads). RLS por tenant_id, URLs firmadas con expiración corta para acceso seguro.',
+      stack: ['Supabase Storage', 'S3 underlying', 'signed URLs', 'CDN cache'],
+      owner: 'Backend',
+      related: [
+        { href: '31-security-policy.html', title: 'Doc 31 · Security Policy', sub: 'Cifrado at rest AES-256' },
+      ],
+    },
+    meli: {
+      type: 'CANAL · MELI',
+      title: 'Mercado Libre',
+      sub: 'OAuth 2.0 PKCE · cookies httpOnly · PolicyAgent',
+      desc: 'Canal principal. OAuth 2.0 con PKCE, tokens guardados en cookies httpOnly (no env vars stale). Refresh cada 6h vía cron antes que caduquen. PolicyAgent puede bloquear cuenta · plan B v5 Opportunities sin DPP.',
+      stack: ['OAuth 2.0 PKCE', 'MeLi API v2', 'webhook orders', 'cookies-first proxy'],
+      owner: 'Backend',
+      channels: ['meli'],
+      endpoints: ['POST /api/sync/meli', '/api/meli (proxy OAuth)', '/api/cron/refresh-meli'],
+      notes: 'Bug histórico fixed: cookie-first OAuth proxy (antes leía env var stale).',
+      related: [
+        { href: '16-competitive.html', title: 'Doc 16 · Competitive', sub: '8 competidores · feature matrix' },
+        { href: '37-runbook-dr-plan.html', title: 'Doc 37 · DR Plan', sub: 'Escenario E5 · MeLi PolicyAgent' },
+      ],
+    },
+    mp: {
+      type: 'CANAL · CHILECOMPRA',
+      title: 'Mercado Público',
+      sub: 'Ticket auth · licitaciones diarias B2G',
+      desc: 'Canal B2G. Acceso vía MERCADOPUBLICO_TICKET (env var Amplify). Sync diario de licitaciones a las 8am · filtro por categorías del operador · alerta nuevas oportunidades.',
+      stack: ['Mercado Público API REST', 'Ticket auth', 'sync diario cron'],
+      owner: 'Backend',
+      channels: ['mp'],
+      endpoints: ['POST /api/cron/sync-mp', 'GET /api/mp/licitaciones'],
+      related: [
+        { href: '13-jtbd.html', title: 'Doc 13 · JTBD', sub: 'B2G jobs · cumplir compras del Estado' },
+      ],
+    },
+    d2c: {
+      type: 'CANAL · D2C',
+      title: 'D2C Storefront',
+      sub: 'App propia operador · checkout · ADS',
+      desc: 'Tienda online propia del operador (no marketplace de terceros). Sube productos a la app del operador, integra checkout (MercadoPago + WebPay), corre ADS de Meta/Google/TikTok que apuntan a esa tienda.',
+      stack: ['Storefront Next.js', 'Stripe-compatible checkout', 'ADS pixels'],
+      owner: 'Frontend + Backend',
+      channels: ['d2c'],
+      related: [
+        { href: '15-value-prop.html', title: 'Doc 15 · Value Prop', sub: 'D2C como diferencial multi-canal' },
+      ],
+    },
+    b2b: {
+      type: 'CANAL · B2B',
+      title: 'B2B custom',
+      sub: 'API key · white-label · cliente empresa',
+      desc: 'Canal para empresas que compran al operador (no consumidor final). Acceso vía API key + JWT empresa, white-label en algunos casos, condiciones comerciales diferenciadas (precios, stock reservado).',
+      stack: ['REST API', 'API keys', 'JWT empresa', 'white-label theme'],
+      owner: 'Backend + Comercial',
+      channels: ['b2b'],
+      related: [
+        { href: '17-pricing.html', title: 'Doc 17 · Pricing Strategy', sub: 'Tier Business + Enterprise' },
+      ],
+    },
+    'mp-pago': {
+      type: 'PAGO',
+      title: 'MercadoPago',
+      sub: 'Pasarela MeLi + D2C · webhooks',
+      desc: 'Pasarela de pagos principal. Necesaria para MeLi (es nativa), opcional para D2C. Webhooks notifican estado de orden (approved, rejected, refunded).',
+      stack: ['MercadoPago SDK', 'webhooks firmados', 'Idempotency'],
+      owner: 'Backend',
+      channels: ['meli', 'd2c'],
+      related: [],
+    },
+    webpay: {
+      type: 'PAGO',
+      title: 'WebPay Plus',
+      sub: 'Transbank · D2C · débito + crédito Chile',
+      desc: 'Pasarela Transbank para D2C en Chile. Soporta débito (RedCompra) y crédito. Cumple normativa SBIF, integración estándar via WebPay Plus.',
+      stack: ['Transbank SDK', 'WebPay Plus', 'OneClick opcional'],
+      owner: 'Backend',
+      channels: ['d2c'],
+      related: [],
+    },
+    openfactura: {
+      type: 'FACTURACIÓN',
+      title: 'Open Factura',
+      sub: 'DTE 33 · 39 · 61 · SII auto-emisión',
+      desc: 'Emisión de Documento Tributario Electrónico (DTE) en SII. Soporta Factura electrónica 33, Boleta 39, Nota de crédito 61. Requiere request previa al SII para autorizar tipos.',
+      stack: ['Open Factura API', 'Certificado digital', 'SII Chile'],
+      owner: 'Backend + Controller',
+      notes: 'Status SMC SpA actual (2026-05-18): solo factura exenta autorizada · pedir 33/39/61 al SII.',
+      related: [
+        { href: '32-incident-response.html', title: 'Doc 32 · Incident Response', sub: 'Plan SII rechaza factura DTE' },
+      ],
+    },
+    couriers: {
+      type: 'LOGÍSTICA',
+      title: 'Couriers · Chilexpress · Starken',
+      sub: 'Tracking webhooks',
+      desc: 'Integración con couriers chilenos. Cotización automática por peso/volumen, generación de etiqueta, tracking via webhooks. Adapter Pattern también acá: misma interfaz, distinto courier.',
+      stack: ['Chilexpress API', 'Starken API', 'webhook tracking'],
+      owner: 'Backend',
+      related: [],
+    },
+    'ai-chain': {
+      type: 'IA · FALLBACK CHAIN',
+      title: 'Groq → Gemini → DeepSeek',
+      sub: 'via OpenRouter · NUNCA Claude (regla Hoku)',
+      desc: 'Cadena de fallback para tareas IA del producto. Primary Groq Llama 3.3 70B (rate limit 12K TPM). Fallback 1 Gemini Flash 2.0 (free tier). Fallback 2 DeepSeek V3 (cheap). Claude está prohibido en features de producto.',
+      stack: ['OpenRouter SDK', 'Groq', 'Google Gemini', 'DeepSeek'],
+      owner: 'Hoku',
+      notes: 'Regla absoluta: Claude solo si razonamiento de máxima calidad lo justifica. Default = chain.',
+      related: [],
+    },
+    monitoring: {
+      type: 'OBSERVABILIDAD',
+      title: 'Sentry · PostHog · CloudWatch',
+      sub: 'Errores · funnels · infra · LLMOps',
+      desc: 'Stack de observabilidad. Sentry para errores (frontend + backend), PostHog para funnels y feature flags, CloudWatch para infra AWS. Logs centralizados en tabla mkt_api_logs para LLMOps.',
+      stack: ['Sentry', 'PostHog Cloud', 'CloudWatch', 'mkt_api_logs JSON logger'],
+      owner: 'Pipeline + INFRA-OPS',
+      related: [
+        { href: '37-runbook-dr-plan.html', title: 'Doc 37 · Runbook · DR', sub: 'Op diaria · alertas overnight' },
+      ],
+    },
+  },
+  connections: [
+    { from: 'operator', to: 'cloudfront' },
+    { from: 'cloudfront', to: 'nextjs' },
+    { from: 'nextjs', to: 'api-routes' },
+    { from: 'api-routes', to: 'adapter' },
+    { from: 'api-routes', to: 'cerebro' },
+    { from: 'adapter', to: 'cron' },
+    { from: 'api-routes', to: 'supabase-auth' },
+    { from: 'api-routes', to: 'supabase-db' },
+    { from: 'adapter', to: 'supabase-db' },
+    { from: 'cerebro', to: 'supabase-db' },
+    { from: 'cerebro', to: 'ai-chain' },
+    { from: 'adapter', to: 'meli', channels: ['meli'] },
+    { from: 'adapter', to: 'mp', channels: ['mp'] },
+    { from: 'adapter', to: 'd2c', channels: ['d2c'] },
+    { from: 'adapter', to: 'b2b', channels: ['b2b'] },
+    { from: 'supabase-db', to: 'openfactura' },
+    { from: 'd2c', to: 'mp-pago', channels: ['d2c'] },
+  ],
+});
+</script>
 </body>
 </html>
