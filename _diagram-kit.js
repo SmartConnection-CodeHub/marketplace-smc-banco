@@ -844,6 +844,77 @@
   }
 
   // ===========================================================
+  // JTBD CANVAS · 3 dimensiones + outcomes
+  //   JSON: { title, persona, jobs: { functional:[], emotional:[], social:[] }, outcomes:[] }
+  // ===========================================================
+  function initJTBD(cfg) {
+    const root = document.getElementById(cfg.id);
+    if (!root) return;
+    const jobs = cfg.jobs || {};
+    function dim(slot, name, icon, color) {
+      const items = jobs[slot] || [];
+      return `<div class="jtbd-cell jtbd-${slot}" style="--jtbd-c:${color};">
+        <div class="jtbd-cell-head"><span class="jtbd-cell-icon">${icon}</span><span class="jtbd-cell-title">${name}</span></div>
+        <ul class="jtbd-list">${items.map(j => `<li>${esc(j)}</li>`).join('')}</ul>
+      </div>`;
+    }
+    root.innerHTML = `
+      ${cfg.title ? `<div class="jtbd-title">${esc(cfg.title)}</div>` : ''}
+      ${cfg.persona ? `<div class="jtbd-persona"><strong>Persona:</strong> ${esc(cfg.persona)}</div>` : ''}
+      <div class="jtbd-grid">
+        ${dim('functional', 'Functional Jobs', '⚙️', '#3B82F6')}
+        ${dim('emotional',  'Emotional Jobs',  '💖', '#EC4899')}
+        ${dim('social',     'Social Jobs',     '👥', '#7C3AED')}
+      </div>
+      ${(cfg.outcomes && cfg.outcomes.length) ? `<div class="jtbd-outcomes">
+        <div class="jtbd-cell-head"><span class="jtbd-cell-icon">🎯</span><span class="jtbd-cell-title">Outcome Metrics</span></div>
+        <ul class="jtbd-list">${cfg.outcomes.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+      </div>` : ''}
+    `;
+  }
+
+  // ===========================================================
+  // VALUE PROP CANVAS · Strategyzer 6 zonas
+  //   JSON: { customer: { jobs, pains, gains }, value: { products, painRelievers, gainCreators } }
+  // ===========================================================
+  function initValueProp(cfg) {
+    const root = document.getElementById(cfg.id);
+    if (!root) return;
+    const cust = cfg.customer || {};
+    const val = cfg.value || {};
+    function zone(items, label, icon) {
+      return `<div class="vp-zone">
+        <div class="vp-zone-head"><span class="vp-zone-icon">${icon}</span><span>${label}</span></div>
+        <ul>${(items || []).map(i => `<li>${esc(i)}</li>`).join('')}</ul>
+      </div>`;
+    }
+    root.innerHTML = `
+      ${cfg.title ? `<div class="vp-title">${esc(cfg.title)}</div>` : ''}
+      <div class="vp-shell">
+        <div class="vp-side vp-side-value">
+          <div class="vp-side-label">Value Map (lo que ofrecemos)</div>
+          <div class="vp-side-shape vp-square">
+            ${zone(val.products,       'Products & Services', '📦')}
+            ${zone(val.painRelievers,  'Pain Relievers',      '🩹')}
+            ${zone(val.gainCreators,   'Gain Creators',       '🚀')}
+          </div>
+        </div>
+        <div class="vp-side vp-side-customer">
+          <div class="vp-side-label">Customer Profile (lo que necesita)</div>
+          <div class="vp-side-shape vp-circle">
+            ${zone(cust.jobs,  'Customer Jobs', '⚙️')}
+            ${zone(cust.pains, 'Pains',         '😣')}
+            ${zone(cust.gains, 'Gains',         '🎁')}
+          </div>
+        </div>
+      </div>
+      <div class="vp-fit">
+        <strong>Product-Market Fit</strong> = Value Map ↔ Customer Profile · ${cfg.fit || 'cada elemento del Value Map responde a uno o más del Customer Profile.'}
+      </div>
+    `;
+  }
+
+  // ===========================================================
   // BOOT · escanea [data-kind] y bootea cada uno
   // ===========================================================
   function boot() {
@@ -857,6 +928,7 @@
         catch (ex) { console.warn('SMCDiagram data parse failed for ' + id, ex); }
       }
       data.id = id;
+      // JTBD y value-prop también necesitan que el host esté listo (lo está vacío)
       // Para hla/erd · si el host está vacío, auto-genera skeleton
       function hlaFromHost(d) {
         const r = document.getElementById(d.id);
@@ -909,6 +981,8 @@
         'pi-matrix': initPIMatrix,
         'chart-line': initChartLine,
         'chart-bar': initChartBar,
+        'jtbd': initJTBD,
+        'value-prop': initValueProp,
       };
       const fn = dispatcher[kind];
       if (fn) {
@@ -930,5 +1004,7 @@
   window.SMCDiagram.initPIMatrix = initPIMatrix;
   window.SMCDiagram.initChartLine = initChartLine;
   window.SMCDiagram.initChartBar = initChartBar;
+  window.SMCDiagram.initJTBD = initJTBD;
+  window.SMCDiagram.initValueProp = initValueProp;
   window.SMCDiagram.boot = boot;
 })();

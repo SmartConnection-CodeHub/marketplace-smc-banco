@@ -1,0 +1,33 @@
+{
+  "title": "Jobs To Be Done · Operador multi-canal SMC",
+  "persona": "Vendedor PYME que ya opera 2+ canales y le toma 4-6 horas semanales sincronizar manualmente.",
+  "jobs": {
+    "functional": [
+      "Sincronizar stock en todos mis canales sin oversell",
+      "Recibir notificación de orden nueva &lt;5 min después de venta",
+      "Emitir DTE 39 o 33 automático al cierre",
+      "Cotizar courier y generar etiqueta en 1 click",
+      "Ver oportunidades de producto que aún no vendo"
+    ],
+    "emotional": [
+      "Sentir control sobre mi operación · no que la operación me controle",
+      "Tranquilidad de no perder ventas por descoordinación",
+      "Confianza de que el sistema no se cae cuando MeLi cambia",
+      "Orgullo de operar profesional · no spreadsheets",
+      "Reducir ansiedad de fines de mes (cobranza · DTE · IVA)"
+    ],
+    "social": [
+      "Verme como negocio serio frente a proveedores",
+      "Ser referente en mi gremio · 'el que tiene su sistema'",
+      "Acceder a licitaciones B2G que antes no podía postular",
+      "Atraer empleados que valoran trabajar con tecnología decente"
+    ]
+  },
+  "outcomes": [
+    "Tiempo semanal sincronizando manualmente: de 4-6h → &lt;1h",
+    "Ventas perdidas por oversell: de 5-10/mes → 0",
+    "Tiempo emisión DTE: de 15 min → automático",
+    "Ratio postulación → adjudicación B2G: +30% con Cerebro asistido",
+    "NPS proveedores propios: +20 puntos con stock confiable"
+  ]
+}

@@ -826,3 +826,46 @@
   .canvas9-grid { grid-template-columns: 1fr; }
   .canvas9-bottom { grid-template-columns: 1fr; }
 }
+
+/* ===========================================================
+   JTBD CANVAS · Jobs To Be Done
+   =========================================================== */
+.jtbd-title { font-size: 18px; font-weight: 800; color: #0F172A; margin-bottom: 8px; letter-spacing: -0.3px; }
+.jtbd-persona { font-size: 13px; color: #475569; margin-bottom: 18px; }
+.jtbd-persona strong { color: #0F172A; }
+.jtbd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 16px; }
+.jtbd-cell { background: white; border: 1px solid #E2E8F0; border-top: 4px solid var(--jtbd-c, #00C1C1); border-radius: 12px; padding: 16px 18px; min-height: 200px; }
+.jtbd-cell-head { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #F1F5F9; }
+.jtbd-cell-icon { font-size: 20px; }
+.jtbd-cell-title { font-size: 13px; font-weight: 800; color: #0F172A; letter-spacing: 0.2px; }
+.jtbd-list { list-style: none; padding: 0; margin: 0; }
+.jtbd-list li { font-size: 13px; color: #334155; padding: 5px 0; line-height: 1.45; position: relative; padding-left: 18px; }
+.jtbd-list li::before { content: '◆'; position: absolute; left: 0; color: var(--jtbd-c, #00C1C1); font-size: 9px; top: 8px; }
+.jtbd-outcomes { background: linear-gradient(135deg, #0F172A 0%, #0F766E 100%); color: white; border-radius: 12px; padding: 20px 22px; }
+.jtbd-outcomes .jtbd-cell-head { border-color: rgba(255,255,255,0.15); }
+.jtbd-outcomes .jtbd-cell-title { color: white; }
+.jtbd-outcomes .jtbd-list li { color: rgba(255,255,255,0.92); }
+.jtbd-outcomes .jtbd-list li::before { color: #00C1C1; }
+
+/* ===========================================================
+   VALUE PROP CANVAS · Strategyzer
+   =========================================================== */
+.vp-title { font-size: 18px; font-weight: 800; color: #0F172A; margin-bottom: 18px; letter-spacing: -0.3px; }
+.vp-shell { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 18px; }
+.vp-side-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #475569; font-weight: 800; margin-bottom: 10px; text-align: center; }
+.vp-side-shape { display: grid; gap: 10px; padding: 20px; min-height: 340px; }
+.vp-square { background: linear-gradient(155deg, #ECFEFF 0%, #DBEAFE 100%); border: 2px solid #00C1C1; border-radius: 14px; grid-template-rows: 1fr 1fr 1fr; }
+.vp-circle { background: linear-gradient(155deg, #FEF3C7 0%, #FED7AA 100%); border: 2px solid #F59E0B; border-radius: 50% / 22%; grid-template-rows: 1fr 1fr 1fr; padding: 30px 30px 30px; }
+.vp-zone { background: rgba(255,255,255,0.85); border-radius: 10px; padding: 10px 14px; }
+.vp-zone-head { display: flex; gap: 8px; align-items: center; font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(15,23,42,0.08); }
+.vp-zone-icon { font-size: 16px; }
+.vp-zone ul { list-style: none; padding: 0; margin: 0; }
+.vp-zone li { font-size: 12px; color: #334155; padding: 3px 0; line-height: 1.4; padding-left: 12px; position: relative; }
+.vp-zone li::before { content: '·'; position: absolute; left: 4px; color: #475569; font-weight: 800; }
+.vp-fit { background: #F8FAFC; border-left: 4px solid #10B981; padding: 14px 20px; font-size: 13px; color: #334155; border-radius: 0 12px 12px 0; line-height: 1.55; }
+.vp-fit strong { color: #047857; }
+
+@media (max-width: 800px) {
+  .vp-shell { grid-template-columns: 1fr; }
+  .vp-circle { border-radius: 14px; padding: 20px; }
+}

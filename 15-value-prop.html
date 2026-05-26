@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>15 · Value Prop Canvas · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<head><meta charset="UTF-8"><title>15 · Value Prop Canvas · Marketplace SMC</title><link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css"></head>
 <body>
 <nav class="doc-nav"><a href="14-customer-journey.html">◂ doc 14</a><span class="nav-center">DOC 15 · COMERCIAL</span><a href="16-competitive.html">doc 16 · Competitive ▸</a></nav>
 <div class="doc">
@@ -123,9 +124,19 @@
   <div class="page-footer"><span>Banco SMC · Value Prop</span><span>05</span></div>
 </section>
 
+
+<section class="page" id="vp-canvas-section">
+  <h2><span class="h2-num">00b</span>Value Proposition Canvas Strategyzer</h2>
+  <p style="color:#475569;font-size:14px;line-height:1.6;margin-top:-8px;">Customer Profile (lo que necesita) ↔ Value Map (lo que ofrecemos). Cada elemento del Value Map debe responder a uno o más del Customer Profile.</p>
+  <div class="diagram-host kind-value-prop" id="vp-canvas" data-kind="value-prop"></div>
+  <script type="application/json" data-for="vp-canvas">{"title": "Value Proposition Canvas · Marketplace SMC", "fit": "Cada Pain Reliever del Value Map responde a un Pain concreto del Customer Profile. Cada Gain Creator entrega un Gain esperado. Este mapeo 1:1 es el chequeo de fit.", "customer": {"jobs": ["Operar multi-canal sin oversell", "Emitir DTE SII sin errores", "Detectar oportunidades cross-canal", "Cobrar y conciliar pagos", "Atraer tráfico (ADS D2C · licitaciones B2G)"], "pains": ["Oversell mensual por stock desactualizado", "MeLi cambia API sin aviso · sync se rompe", "DTE rechazada por SII = orden trabada", "4-6 horas/semana sincronizando spreadsheets", "Pasarelas distintas · conciliación manual cobranza"], "gains": ["Volver a quedar dormido tranquilo · sin oversell", "Aumentar ventas con tráfico D2C controlado", "Acceder a licitaciones públicas (revenue extra)", "Reportes contables automatizados (galvarez.cl)", "Sentirse 'negocio serio' frente a stakeholders"]}, "value": {"products": ["Channel Adapter Pattern (MeLi · D2C · MP · B2B)", "Cerebro IA · scoring oportunidades sin LLM", "Open Factura · DTE 33/39/61 auto-emisión", "Storefront D2C con ADS pixels integrados", "Smart Cache · stock real-time cross-canal"], "painRelievers": ["pg_notify · stock se propaga &lt;1s · oversell ≈ 0", "Adapters versionados · cambios MeLi no rompen prod", "Validador DTE pre-emisión · errores SII evitados", "Wizard onboarding 1 día · NO 1 mes implementación", "Webhook + conciliación auto pasarelas · 1 vista única"], "gainCreators": ["Cerebro detecta oportunidad antes que competencia (6 señales)", "Multi-canal nativo + ADS pixels · escala D2C ordenado", "Mercado Público auto-postula con Cerebro asistido (+30% win rate)", "Reporte mensual exportable · contador feliz", "Brand · UI premium · operador se ve serio"]}}</script>
+  <div class="page-footer"><span>Banco SMC</span><span>—</span></div>
+</section>
 </div>
 <nav class="doc-nav"><a href="14-customer-journey.html">◂ doc 14</a><span class="nav-center">FIN DOC 15</span><a href="16-competitive.html">doc 16 · Competitive ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
 </body>
 </html>
