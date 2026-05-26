@@ -30,17 +30,13 @@ El logo de Marketplace SMC se construye sobre el wordmark **Smart Connection** c
 > [!swatch] paleta-smc
 > Click en cualquier swatch copia el hex al portapapeles · cada token mapea a una variable CSS oficial usada en todo el banco y la app.
 
-# 03 · Paleta semántica
+# 03 · Reglas de uso de la paleta
 
-| Token | Hex | Uso |
-|-------|-----|-----|
-| accent-success | `#10B981` | Status ok · validaciones · badge verde |
-| accent-warning | `#F59E0B` | Atención · prevención · badge ámbar |
-| accent-danger | `#EF4444` | Error · destructive · breaking changes |
-| accent-info | `#3B82F6` | Info neutral · enlaces · seguridad |
-| accent-brand-com | `#F472B6` | Bloque comercial (rosa) |
-| accent-brand-biz | `#F59E0B` | Bloque negocio (ámbar) |
-| accent-brand-marca | `#7C3AED` | Bloque marca (violeta) |
+- Mobile-first: contraste WCAG AA mínimo en cuerpo de texto (4.5:1)
+- Dark surfaces (`smc-ink-900` · `smc-ink-700`) NO usar como fondo de párrafos largos
+- Teal (`smc-primary` `#00C1C1`) es accent · NO fondo full · sobre fondo claro
+- Semánticos (success/warning/danger/info) solo para señalización · jamás decoración
+- Colores de bloque (com/biz/marca/legal/sec/gov) solo en marcadores del banco
 
 # 04 · Tipografía
 

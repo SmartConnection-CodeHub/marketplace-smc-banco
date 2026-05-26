@@ -869,3 +869,95 @@
   .vp-shell { grid-template-columns: 1fr; }
   .vp-circle { border-radius: 14px; padding: 20px; }
 }
+
+/* ===========================================================
+   MOBILE responsive tweaks (P3.7)
+   =========================================================== */
+@media (max-width: 800px) {
+  .diagram-canvas { height: 460px; }
+  .diagram-header { padding: 14px 16px; }
+  .diagram-title { font-size: 14px; }
+  .diagram-subtitle { font-size: 11px; }
+  .diagram-filter { font-size: 10px; padding: 5px 9px; }
+  .diagram-svg .block .block-title { font-size: 18px; }
+  .diagram-svg .block .block-sub { font-size: 14px; }
+  .diagram-toolbar { top: 8px; right: 8px; }
+  .diagram-toolbar button { width: 28px; height: 28px; font-size: 15px; }
+  .diagram-zoom-indicator { font-size: 9px; padding: 4px 8px; }
+  .scenario-grid { grid-template-columns: 1fr; padding: 16px; gap: 10px; }
+  .pipeline-stage-head { padding: 14px 10px; }
+  .pipeline-stage-num { font-size: 9px; letter-spacing: 2px; }
+  .pipeline-stage-name { font-size: 13px; }
+  .heatmap-grid { min-height: 220px; }
+  .heatmap-dot { font-size: 9px; padding: 3px 6px; }
+  .swatch-chip { width: 50px; height: 50px; }
+  .canvas9-cell { padding: 10px 12px; min-height: 90px; }
+  .slide-card { min-height: 200px; padding: 18px 16px 14px; }
+  .slide-title { font-size: 18px; }
+  .gantt-shell { font-size: 11px; }
+  .gantt-row { min-height: 38px; }
+  .gantt-label { padding: 6px 10px; }
+  .gantt-task-name { font-size: 11.5px; }
+  .pim-shell { min-height: 280px; }
+  .pim-strategy { font-size: 10px; }
+}
+
+/* ===========================================================
+   PRINT CSS · Cmd+P / Save as PDF (P3.9)
+   =========================================================== */
+@media print {
+  .diagram-toolbar,
+  .diagram-zoom-indicator,
+  .diagram-panel-close { display: none !important; }
+
+  .diagram-canvas {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    page-break-inside: avoid;
+  }
+  .diagram-svg { transform: none !important; }
+  .diagram-wrapper,
+  .process-wrapper {
+    border: 1px solid #94A3B8 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+  .diagram-panel { display: none !important; }
+  .scenario-card { break-inside: avoid; box-shadow: none !important; }
+  .scenario-card.is-active { background: white !important; color: black !important; border: 2px solid black !important; }
+  .scenario-card.is-active .scenario-letter { background: black !important; color: white !important; }
+  .scenario-card.is-active .scenario-title { color: black !important; }
+  .scenario-card.is-active .scenario-sub { color: #475569 !important; }
+  .pipeline-header { background: #0F172A !important; -webkit-print-color-adjust: exact; color-adjust: exact; }
+  .slide-card { -webkit-print-color-adjust: exact; color-adjust: exact; break-inside: avoid; }
+  .int-box { break-inside: avoid; }
+  .heatmap-cell { -webkit-print-color-adjust: exact; color-adjust: exact; }
+  .chart-svg { background: white !important; }
+}
+
+/* ===========================================================
+   ACCESIBILIDAD focus + sr-only (P3.10)
+   =========================================================== */
+.diagram-svg .block:focus,
+.scenario-card:focus,
+.int-box:focus,
+.swatch-card:focus,
+.diagram-filter:focus,
+.diagram-toolbar button:focus,
+.diagram-panel-close:focus {
+  outline: 2px solid #00C1C1;
+  outline-offset: 2px;
+}
+.diagram-svg .block { -webkit-tap-highlight-color: rgba(0,193,193,0.2); }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

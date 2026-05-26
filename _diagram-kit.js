@@ -163,13 +163,28 @@
     }
     panelClose.addEventListener('click', closePanel);
 
-    // click bloque
+    // click bloque + accesibilidad
     svg.querySelectorAll('.block').forEach(el => {
-      el.addEventListener('click', () => {
-        const id = el.getAttribute('data-id');
-        openPanel(id);
+      const id = el.getAttribute('data-id');
+      const data = blocks[id] || {};
+      // ARIA: tratar como botón
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      const ariaLabel = `${data.title || id}${data.sub ? ' · ' + data.sub : ''}`;
+      el.setAttribute('aria-label', ariaLabel);
+      el.addEventListener('click', () => openPanel(id));
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(id); }
       });
     });
+    // ARIA panel
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-label', 'Detalle del bloque');
+    panel.setAttribute('aria-hidden', 'true');
+    const openOrig = openPanel;
+    openPanel = function(id) { openOrig(id); panel.setAttribute('aria-hidden', 'false'); };
+    const closeOrig = closePanel;
+    closePanel = function() { closeOrig(); panel.setAttribute('aria-hidden', 'true'); };
 
     // ESC cierra panel
     document.addEventListener('keydown', (e) => {
