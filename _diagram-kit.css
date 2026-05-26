@@ -1091,12 +1091,13 @@
 }
 .swagger-tag-section-icon { font-size: 22px; }
 .swagger-tag-section-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: #0F172A;
-  letter-spacing: -0.2px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #3b4151;
+  letter-spacing: -0.3px;
   margin: 0;
 }
+.swagger-tag-section-head { border-bottom-color: rgba(59,65,81,0.3); padding-bottom: 8px; }
 
 /* ENDPOINT card */
 .swagger-endpoint {
@@ -1107,16 +1108,52 @@
   overflow: hidden;
   transition: border-color .15s;
 }
-.swagger-endpoint:hover { border-color: #00C1C1; }
-.swagger-endpoint.is-open { border-color: #00C1C1; box-shadow: 0 6px 18px rgba(0,193,193,0.10); }
+.swagger-endpoint:hover { border-color: #94A3B8; }
 
-/* Petstore-style: bar tenue colored por método */
-.swagger-endpoint[data-method="GET"]    { background: linear-gradient(to right, rgba(16,185,129,0.05), transparent 200px); border-left: 4px solid #10B981; }
-.swagger-endpoint[data-method="POST"]   { background: linear-gradient(to right, rgba(59,130,246,0.05), transparent 200px); border-left: 4px solid #3B82F6; }
-.swagger-endpoint[data-method="PUT"]    { background: linear-gradient(to right, rgba(245,158,11,0.05), transparent 200px); border-left: 4px solid #F59E0B; }
-.swagger-endpoint[data-method="PATCH"]  { background: linear-gradient(to right, rgba(249,115,22,0.05), transparent 200px); border-left: 4px solid #F97316; }
-.swagger-endpoint[data-method="DELETE"] { background: linear-gradient(to right, rgba(239,68,68,0.05), transparent 200px); border-left: 4px solid #EF4444; }
-.swagger-endpoint[data-method="SSE"]    { background: linear-gradient(to right, rgba(192,38,211,0.05), transparent 200px); border-left: 4px solid #C026D3; }
+/* Petstore-style: borde + background tenue del color del método (collapsed) */
+.swagger-endpoint[data-method="GET"]    { border-color: #61affe; background: rgba(97,175,254,0.05); }
+.swagger-endpoint[data-method="POST"]   { border-color: #49cc90; background: rgba(73,204,144,0.05); }
+.swagger-endpoint[data-method="PUT"]    { border-color: #fca130; background: rgba(252,161,48,0.05); }
+.swagger-endpoint[data-method="PATCH"]  { border-color: #50e3c2; background: rgba(80,227,194,0.05); }
+.swagger-endpoint[data-method="DELETE"] { border-color: #f93e3e; background: rgba(249,62,62,0.05); }
+.swagger-endpoint[data-method="SSE"]    { border-color: #9012fe; background: rgba(144,18,254,0.05); }
+
+/* Cuando expandido: background más saturado (Petstore look) */
+.swagger-endpoint.is-open { box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.swagger-endpoint.is-open[data-method="GET"]    { background: rgba(97,175,254,0.10);  border-color: #61affe; }
+.swagger-endpoint.is-open[data-method="POST"]   { background: rgba(73,204,144,0.10);  border-color: #49cc90; }
+.swagger-endpoint.is-open[data-method="PUT"]    { background: rgba(252,161,48,0.10);  border-color: #fca130; }
+.swagger-endpoint.is-open[data-method="PATCH"]  { background: rgba(80,227,194,0.10);  border-color: #50e3c2; }
+.swagger-endpoint.is-open[data-method="DELETE"] { background: rgba(249,62,62,0.10);   border-color: #f93e3e; }
+.swagger-endpoint.is-open[data-method="SSE"]    { background: rgba(144,18,254,0.10);  border-color: #9012fe; }
+
+/* Method badge GRANDE estilo Petstore */
+.swagger-method {
+  font-family: 'Source Code Pro', 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: 7px 0;
+  border-radius: 5px;
+  color: white;
+  min-width: 78px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+.swagger-method-get    { background: #61affe; }
+.swagger-method-post   { background: #49cc90; }
+.swagger-method-put    { background: #fca130; }
+.swagger-method-patch  { background: #50e3c2; }
+.swagger-method-delete { background: #f93e3e; }
+.swagger-method-sse    { background: #9012fe; }
+
+/* Body cuando expandido · fondo blanco interno para legibilidad */
+.swagger-endpoint.is-open .swagger-endpoint-body {
+  background: rgba(255,255,255,0.55);
+  border-top: 1px solid rgba(0,0,0,0.08);
+  border-radius: 0 0 8px 8px;
+}
 
 /* Status code grande en response · estilo Petstore */
 .swagger-result-status.is-big {
@@ -1250,20 +1287,37 @@
   line-height: 1.55;
 }
 
+/* Section labels grandes estilo Petstore */
+.swagger-section-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: none;
+  color: #3b4151;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(59,65,81,0.15);
+}
+
 .swagger-params-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12.5px;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  overflow: hidden;
 }
 .swagger-params-table th {
   text-align: left;
-  background: #F8FAFC;
-  padding: 8px 10px;
+  background: #f5f6f7;
+  padding: 10px 12px;
   border-bottom: 1px solid #E2E8F0;
-  font-size: 10.5px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #475569;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #3b4151;
+  text-transform: none;
 }
 .swagger-params-table td {
   padding: 8px 10px;
