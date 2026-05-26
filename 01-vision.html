@@ -219,6 +219,40 @@
   <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>06-07</span></div>
 </section>
 
+<!-- ADR:ADR-0001/pivot-v5 -->
+<section class="page" id="s-v5">
+  <h2><span class="h2-num">04b</span>Pivot v5 · Sistema de Oportunidades</h2>
+  <div class="box box-warning">
+    <div class="box-title">⚠️ Cambio estratégico 2026-05-26</div>
+    <p style="margin:0">MeLi cerró sus APIs públicas detrás de <strong>PolicyAgent</strong>. El Developer Partner Program (DPP) exige USD 200K GMV/mes · imposible arrancar. <strong>Pivot:</strong> ahora somos "co-piloto de operación MeLi" usando APIs gratis chilenas/LATAM.</p>
+  </div>
+  <h3>Nuevo enfoque · 6 capas sin LLM masivo</h3>
+  <table>
+    <thead><tr><th>Capa</th><th>Función</th><th>LLM?</th></tr></thead>
+    <tbody>
+      <tr><td>1 · Sources</td><td>SoloTodo · Mercado Público · OpenFoodFacts · BCentral (gratis)</td><td>❌ HTTP fetch</td></tr>
+      <tr><td>2 · Filters</td><td>Whitelist categorías · blacklist (libros · usados · sin stock)</td><td>❌ Reglas duras</td></tr>
+      <tr><td>3 · Scoring</td><td>6 señales (multistore · spread · availability · stability · premium · meli)</td><td>❌ Math puro JS/SQL</td></tr>
+      <tr><td>4 · Smart Cache</td><td>Tabla <code>mkt_opportunity_cache</code> · max 1000 filas · TTL diferenciado</td><td>❌ Solo storage</td></tr>
+      <tr><td>5 · API</td><td><code>/api/opportunities/list</code> · 1 SQL query</td><td>❌ SQL</td></tr>
+      <tr><td>6 · UI</td><td><code>/dashboard/oportunidades</code> · tabla con scores</td><td>❌ Render directo</td></tr>
+      <tr><td>+ Opt-in</td><td>Click "Explicar" → Groq llama-3.3 · cache 24h</td><td>✅ Solo on-click</td></tr>
+    </tbody>
+  </table>
+  <div class="box box-premise" style="margin-top:14px">
+    <div class="box-title">🎯 Restricciones v5 (no transables)</div>
+    <ul style="margin:0">
+      <li>NO data lake masivo · cache ligero · no clonamos catálogo SoloTodo</li>
+      <li>NO LLM en cada vista · scoring math puro · LLM solo on-click</li>
+      <li>Stack 100% gratis · sin pagar APIs · sin scraping propio</li>
+      <li>Usuario ve scores · NO ve la cocina interna</li>
+    </ul>
+  </div>
+  <p style="margin-top:14px"><strong>Status:</strong> <span class="badge badge-active">design-approved · pending-implementation S1</span> · Ver Doc 07 Architecture · Doc 08 Roadmap · ADR-0001 en repo marketplace.</p>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0 · ADR-0001</span><span>04b</span></div>
+</section>
+<!-- /ADR:ADR-0001/pivot-v5 -->
+
 <!-- ===== 5 Modelo negocio ===== -->
 <section class="page" id="s5">
   <h2><span class="h2-num">05</span>Modelo de negocio · 4 fases</h2>

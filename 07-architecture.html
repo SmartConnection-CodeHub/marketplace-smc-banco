@@ -112,6 +112,54 @@
   <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>03</span></div>
 </section>
 
+<!-- ADR:ADR-0001/v5-architecture -->
+<section class="page" id="hl-v5">
+  <h2><span class="h2-num">01b</span>Arquitectura v5 · Opportunities System</h2>
+  <div class="svg-container">
+    <svg viewBox="0 0 700 540" xmlns="http://www.w3.org/2000/svg" style="background:#FAFAF7">
+      <rect x="40" y="20" width="620" height="80" rx="10" fill="#0F172A"/>
+      <text x="350" y="55" text-anchor="middle" fill="white" font-weight="800" font-size="14">USUARIO en /dashboard/oportunidades</text>
+      <text x="350" y="78" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="11">Tabla top-50 oportunidades · transparencia · sin saber qué hay debajo</text>
+
+      <rect x="40" y="120" width="620" height="60" rx="10" fill="white" stroke="#7C3AED" stroke-width="2"/>
+      <text x="350" y="148" text-anchor="middle" font-weight="700" font-size="13">6 · UI · render directo · cero LLM</text>
+      <text x="350" y="165" text-anchor="middle" fill="#64748B" font-size="11">Tabla scores + filtros + transparencia</text>
+
+      <rect x="40" y="200" width="620" height="60" rx="10" fill="white" stroke="#3B82F6" stroke-width="2"/>
+      <text x="350" y="228" text-anchor="middle" font-weight="700" font-size="13">5 · API /api/opportunities/list · 1 SQL query · cero LLM</text>
+
+      <rect x="40" y="280" width="620" height="60" rx="10" fill="white" stroke="#F472B6" stroke-width="2"/>
+      <text x="350" y="308" text-anchor="middle" font-weight="700" font-size="13">4 · Smart Cache Supabase · max 1000 filas · TTL diferenciado</text>
+
+      <rect x="40" y="360" width="620" height="60" rx="10" fill="white" stroke="#F59E0B" stroke-width="2"/>
+      <text x="350" y="388" text-anchor="middle" font-weight="700" font-size="13">3 · Scoring Engine · 6 señales · math puro JS/SQL · cero LLM</text>
+
+      <rect x="40" y="440" width="620" height="50" rx="10" fill="white" stroke="#22C55E" stroke-width="2"/>
+      <text x="350" y="470" text-anchor="middle" font-weight="700" font-size="13">2 · Filters · whitelist + blacklist (libros · usados · sin stock)</text>
+
+      <rect x="40" y="500" width="620" height="30" rx="6" fill="#0F172A"/>
+      <text x="350" y="520" text-anchor="middle" fill="#00C1C1" font-family="monospace" font-size="12">1 · Sources gratis (SoloTodo · Mercado Público · OFF · BCentral)</text>
+    </svg>
+  </div>
+  <h3>Scoring Engine · 6 señales</h3>
+  <table>
+    <thead><tr><th>#</th><th>Señal</th><th>Cómo se mide</th><th>Peso</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Multistore presence</td><td># stores con mismo SKU canónico</td><td>25%</td></tr>
+      <tr><td>2</td><td>Price spread</td><td>(max - min) / min · &gt;15% = oportunidad</td><td>25%</td></tr>
+      <tr><td>3</td><td>Availability rate</td><td># stores con is_available / total</td><td>15%</td></tr>
+      <tr><td>4</td><td>Price stability</td><td>baja varianza precio 7d (demanda sostenida)</td><td>15%</td></tr>
+      <tr><td>5</td><td>Category premium</td><td>tabla fija <code>mkt_category_premium</code></td><td>10%</td></tr>
+      <tr><td>6</td><td>MeLi presence</td><td>producto también en store MeLi (id=260)?</td><td>10%</td></tr>
+    </tbody>
+  </table>
+  <div class="box box-premise" style="margin-top:14px">
+    <div class="box-title">🎯 Total score 0-10 · 1 SQL query · cero tokens LLM</div>
+  </div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0 · ADR-0001</span><span>03b</span></div>
+</section>
+<!-- /ADR:ADR-0001/v5-architecture -->
+
 <section class="page" id="stack">
   <h2><span class="h2-num">02</span>Stack técnico decidido</h2>
   <table>

@@ -627,6 +627,47 @@ created_at TIMESTAMPTZ</pre>
   <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>12</span></div>
 </section>
 
+<!-- ADR:ADR-0001/smart-cache -->
+<section class="page" id="opp-cache">
+  <h2><span class="h2-num">11</span>Smart Cache v5 · mkt_opportunity_cache</h2>
+  <p>Tabla específica del sistema Opportunities (ADR-0001). NO es data lake · es cache ligero con TTL diferenciado.</p>
+  <table>
+    <thead><tr><th>Aspecto</th><th>Política</th></tr></thead>
+    <tbody>
+      <tr><td>Tamaño máximo</td><td>1.000 filas (~200 KB total)</td></tr>
+      <tr><td>TTL Hot (n_queries&gt;5)</td><td>6h</td></tr>
+      <tr><td>TTL Warm (n_queries 1-5)</td><td>12h</td></tr>
+      <tr><td>TTL Cold (sin query 7d)</td><td>DELETE</td></tr>
+      <tr><td>Cron limpieza</td><td><code>pg_cron</code> diario 3:00 AM</td></tr>
+      <tr><td>Refresh</td><td>NO sync masivo · solo SKUs consultados</td></tr>
+    </tbody>
+  </table>
+  <h3>Schema mkt_opportunity_cache</h3>
+  <pre class="ascii">CREATE TABLE mkt_opportunity_cache (
+  sku_canonico TEXT PRIMARY KEY,
+  score NUMERIC,
+  category TEXT,
+  n_stores INTEGER,
+  price_min NUMERIC,
+  price_max NUMERIC,
+  top_url TEXT,
+  last_synced TIMESTAMPTZ,
+  n_queries INTEGER DEFAULT 1
+);
+
+CREATE TABLE mkt_category_premium (
+  category TEXT PRIMARY KEY,
+  multiplier NUMERIC,  -- ej: accesorios celular 1.3x · línea blanca 0.9x
+  active BOOLEAN DEFAULT true
+);</pre>
+  <div class="box box-info">
+    <div class="box-title">💡 Por qué no data lake</div>
+    <p style="margin:0">SoloTodo tiene 58K productos · clonarlos sería data lake. Solo entra al cache lo que alguien consultó. Si nadie pregunta más · se borra solo.</p>
+  </div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0 · ADR-0001</span><span>11b</span></div>
+</section>
+<!-- /ADR:ADR-0001/smart-cache -->
+
 </div>
 <nav class="doc-nav"><a href="04-rfp.html">◂ doc 04</a><span class="nav-center">FIN DOCUMENTO 05</span><a href="06-api-catalog.html">doc 06 · API Catalog ▸</a></nav>
 <script src="auth.js"></script>

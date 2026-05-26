@@ -265,6 +265,50 @@
   <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>12</span></div>
 </section>
 
+<!-- ADR:ADR-0001/v5-api -->
+<section class="page" id="opp-api">
+  <h2><span class="h2-num">11</span>Endpoints v5 · Opportunities System</h2>
+  <p>Endpoints específicos del sistema Opportunities (ADR-0001). Sources + scoring + cache + render.</p>
+
+  <h3>Sources externas</h3>
+  <div class="endpoint" style="background:white;border:1px solid var(--ink-200);border-radius:10px;padding:16px 20px;margin:10px 0">
+    <span style="background:#DBEAFE;color:#1E40AF;padding:2px 10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;margin-right:10px">GET</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600">/api/solotodo/test</span>
+    <div style="font-size:13px;color:var(--ink-500);margin-top:6px">Test conexión SoloTodo · 58.611 productos MeLi Chile · 564 stores</div>
+  </div>
+  <div class="endpoint" style="background:white;border:1px solid var(--ink-200);border-radius:10px;padding:16px 20px;margin:10px 0">
+    <span style="background:#DBEAFE;color:#1E40AF;padding:2px 10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;margin-right:10px">GET</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600">/api/mercadopublico/test</span>
+    <div style="font-size:13px;color:var(--ink-500);margin-top:6px">Test conexión ChileCompra B2G · requiere ticket env var</div>
+  </div>
+
+  <h3>Opportunities Engine</h3>
+  <div class="endpoint" style="background:white;border:1px solid var(--ink-200);border-radius:10px;padding:16px 20px;margin:10px 0">
+    <span style="background:#D1FAE5;color:#14532D;padding:2px 10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;margin-right:10px">POST</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600">/api/opportunities/build</span>
+    <div style="font-size:13px;color:var(--ink-500);margin-top:6px">Computa scoring · escribe en mkt_opportunity_cache · devuelve {count: 50-200}</div>
+  </div>
+  <div class="endpoint" style="background:white;border:1px solid var(--ink-200);border-radius:10px;padding:16px 20px;margin:10px 0">
+    <span style="background:#DBEAFE;color:#1E40AF;padding:2px 10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;margin-right:10px">GET</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600">/api/opportunities/list?category=X&amp;score_min=Y</span>
+    <div style="font-size:13px;color:var(--ink-500);margin-top:6px">Lee desde cache · agrega filtros user · ordena por score · sin LLM</div>
+  </div>
+  <div class="endpoint" style="background:white;border:1px solid var(--ink-200);border-radius:10px;padding:16px 20px;margin:10px 0">
+    <span style="background:#D1FAE5;color:#14532D;padding:2px 10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;margin-right:10px">POST</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600">/api/opportunities/explain/:sku</span>
+    <div style="font-size:13px;color:var(--ink-500);margin-top:6px">LLM opt-in · Groq llama-3.3 · response cacheado 24h · 1 call/día max por SKU</div>
+  </div>
+
+  <h3>Cron</h3>
+  <div class="endpoint" style="background:white;border:1px solid var(--ink-200);border-radius:10px;padding:16px 20px;margin:10px 0">
+    <span style="background:#FEF3C7;color:#92400E;padding:2px 10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;margin-right:10px">CRON</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600">pg_cron · 3:00 AM diario</span>
+    <div style="font-size:13px;color:var(--ink-500);margin-top:6px">Limpieza TTL · borra cold · si tabla &gt;1000 drop lowest score</div>
+  </div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0 · ADR-0001</span><span>13b</span></div>
+</section>
+<!-- /ADR:ADR-0001/v5-api -->
+
 </div>
 <nav class="doc-nav"><a href="05-data-model.html">◂ doc 05</a><span class="nav-center">FIN DOCUMENTO 06</span><a href="07-architecture.html">doc 07 · Architecture ▸</a></nav>
 <script src="auth.js"></script>

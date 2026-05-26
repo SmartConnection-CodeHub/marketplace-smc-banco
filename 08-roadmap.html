@@ -118,6 +118,47 @@
   <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>03</span></div>
 </section>
 
+<!-- ADR:ADR-0001/v5-roadmap -->
+<section class="page" id="roadmap-v5">
+  <h2><span class="h2-num">03</span>Roadmap v5 · Opportunities Sprints</h2>
+  <div class="box box-warning">
+    <div class="box-title">⚠️ Pivot 2026-05-26 · v4 legacy</div>
+    <p style="margin:0">El roadmap F0-F7 de arriba es la versión v4 (multi-canal full). Tras pivot post-PolicyAgent · se prioriza primero v5 Opportunities (3 sprints) · v4 queda pausado hasta MeLi DPP aprobado.</p>
+  </div>
+  <table>
+    <thead><tr><th>Sprint</th><th>Entregable funcional</th><th>Tokens estimados</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><strong>S1 "tubería"</strong></td><td>Backend completo sin UI · SQL migration · scoring.ts · filters.ts · /api/opportunities/build · /api/opportunities/list · cron pg_cron 3am · curl validable</td><td>15-20% sesión</td><td><span class="badge badge-pending">Pending</span></td></tr>
+      <tr><td><strong>S2 "ducha"</strong></td><td>Página <code>/dashboard/oportunidades</code> tabla básica · top-50 visible · sin filtros aún</td><td>8-10% sesión</td><td><span class="badge badge-future">Próximo</span></td></tr>
+      <tr><td><strong>S3 "grifos finos"</strong></td><td>Filtros UI client-side · botón Explicar con Groq cacheado 24h · tooltips transparencia</td><td>10-12% sesión</td><td><span class="badge badge-future">Después</span></td></tr>
+    </tbody>
+  </table>
+  <p>Cada sesión deja algo funcional. NO hace falta esperar S3 para validar S1.</p>
+
+  <h3>Estado actual</h3>
+  <ul>
+    <li>✅ <code>/api/solotodo/test</code> deployed (commit 876e5c9)</li>
+    <li>✅ <code>/api/mercadopublico/test</code> deployed (commit db51105)</li>
+    <li>✅ Cards en /dashboard/settings con botón Probar conexión</li>
+    <li>⏳ Sprint 1 · SQL migration <code>mkt_opportunity_cache</code> + <code>mkt_category_premium</code></li>
+    <li>⏳ Sprint 1 · <code>lib/scoring.ts</code> · <code>lib/filters.ts</code></li>
+    <li>⏳ Sprint 1 · 2 endpoints + pg_cron</li>
+    <li>⏳ Sprint 2 · página /dashboard/oportunidades</li>
+    <li>⏳ Sprint 3 · filtros + Explicar Groq</li>
+  </ul>
+
+  <div class="box box-info">
+    <div class="box-title">💡 Pendientes humanos (no técnicos)</div>
+    <ul style="margin:0">
+      <li>Configurar env <code>MERCADOPUBLICO_TICKET</code> en Amplify (registro free)</li>
+      <li>Crear cuenta BCentral si se quiere conectar UF oficial</li>
+      <li>Rotar Client Secret MeLi · pegado en chat plano sesión 2026-05-26</li>
+    </ul>
+  </div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0 · ADR-0001</span><span>12b</span></div>
+</section>
+<!-- /ADR:ADR-0001/v5-roadmap -->
+
 <section class="page" id="f0">
   <div class="phase">
     <div class="phase-head">
