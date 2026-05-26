@@ -9,13 +9,13 @@
       "stages": [
         { "num": "01", "name": "Setup", "boxes": [
           { "code": "FJ-01", "label": "Conectar OAuth MeLi + tokens cookies", "kind": "create", "stack": "Guillermo" },
-          { "code": "FJ-02", "label": "Cargar primer producto manual", "kind": "create", "stack": "Camila + Javier" },
+          { "code": "FJ-02", "label": "Cargar primer producto manual", "kind": "create", "stack": "Los 3 (rotación)" },
           { "code": "FJ-03", "label": "Verificar DTE Open Factura emite OK", "kind": "doc", "stack": "Guillermo + Controller" }
         ]},
         { "num": "02", "name": "Primer ciclo", "boxes": [
           { "code": "FJ-04", "label": "Publicar producto en MeLi", "kind": "create", "stack": "Adapter MeLi" },
           { "code": "FJ-05", "label": "Recibir primera orden vía webhook", "kind": "notify", "stack": "Webhook firmado" },
-          { "code": "FJ-06", "label": "Despachar con courier · emitir DTE 39", "kind": "doc", "stack": "Camila + sistema" }
+          { "code": "FJ-06", "label": "Despachar con courier · emitir DTE 39", "kind": "doc", "stack": "Los 3 (quien esté disponible) + sistema" }
         ]},
         { "num": "03", "name": "Aha-moment", "boxes": [
           { "code": "FJ-07", "label": "Orden cerrada sin intervención manual", "kind": "notify", "stack": "Sistema autónomo" }

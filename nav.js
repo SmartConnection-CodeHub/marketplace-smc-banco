@@ -19,7 +19,6 @@
     ]},
     { id: 'found', emoji: '👥', name: 'Founders Operation', color: '#C026D3', docs: [
       { n: '12', t: 'Roles Founders',         f: '12-roles-founders.html',   s: 'ok' },
-      { n: '13', t: 'Founders JTBD',          f: '13-founders-jtbd.html',    s: 'ok' },
       { n: '14', t: 'Founders Journey',       f: '14-founders-journey.html', s: 'ok' },
       { n: '15', t: 'Valor Interno SMC SpA',  f: '15-value-internal.html',   s: 'ok' },
       { n: '16', t: 'Comparativa Tools',      f: '16-comparativa-tools.html',s: 'ok' },

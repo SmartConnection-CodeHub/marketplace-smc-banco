@@ -8,7 +8,7 @@ author: Founders + Cerebro
 version: 2.0
 date: 2026-05-26
 status: 🟢 Activo
-prev: 13-founders-jtbd.html
+prev: 12-roles-founders.html
 next: 15-value-internal.html
 ---
 
