@@ -20,7 +20,7 @@
     { id: 'com', emoji: '💰', name: 'Comercial & Producto', color: '#F472B6', docs: [
       { n: '10', t: 'Prospect Definition',    f: '10-prospect.html',         s: 'ok' },
       { n: '11', t: 'ICP',                    f: '11-icp.html',              s: 'ok' },
-      { n: '12', t: 'Buyer Personas',         f: '12-personas.html',         s: 'ok' },
+      { n: '12', t: 'Buyer Personas (Agentes)',f: '12-personas.html',        s: 'ok' },
       { n: '13', t: 'Jobs to be Done',        f: '13-jtbd.html',             s: 'ok' },
       { n: '14', t: 'Customer Journey',       f: '14-customer-journey.html', s: 'ok' },
       { n: '15', t: 'Value Proposition',      f: '15-value-prop.html',       s: 'ok' },
