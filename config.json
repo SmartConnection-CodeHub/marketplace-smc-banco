@@ -1,0 +1,41 @@
+{
+  "_comment": "Variables globales del Banco · cambio aquí · build regenera todos los HTML",
+  "_updated": "2026-05-26",
+
+  "FOUNDERS": "Camila Bianchi · Javier Bianchi · Guillermo González León",
+  "FOUNDERS_COUNT": "3",
+  "FOUNDERS_LIST_SHORT": "Camila · Javier · Guillermo",
+
+  "COMPANY_CURRENT": "Smart Connection SpA",
+  "COMPANY_CURRENT_RUT": "76.811.863-9",
+  "FUTURE_ENTITY": "Marketplace SMC SpA",
+  "FUTURE_ENTITY_DATE": "Q4 2026",
+
+  "VERSION": "1.0",
+  "DATE_PUBLISHED": "2026-05-26",
+  "YEAR": "2026",
+
+  "PRICING_STARTER_CLP": "$80.000",
+  "PRICING_PRO_CLP": "$180.000",
+  "PRICING_BUSINESS_CLP": "$380.000",
+  "PRICING_ENTERPRISE_CLP": "$800K-2M",
+
+  "ARPU_TARGET_CLP": "$180.000",
+  "CAC_TARGET_CLP": "$45.000",
+  "LTV_TARGET_CLP": "$4.500.000",
+
+  "CAPITAL_INITIAL_CLP": "$50M",
+  "RUNWAY_MONTHS": "18",
+
+  "TARGET_CUSTOMERS_Y1": "10",
+  "TARGET_CUSTOMERS_Y2": "100",
+  "TARGET_CUSTOMERS_Y3": "500",
+
+  "DOMAIN_BANCO": "https://smartconnection-codehub.github.io/marketplace-smc-banco",
+  "DOMAIN_APP": "https://marketplace.smconnection.cl",
+  "PIN_DEMO": "hoku",
+
+  "RADAR_TAM_CLP": "$90.000M",
+  "RADAR_SAM_CLP": "$10.800M",
+  "RADAR_SOM_Y3_CLP": "$1.080M"
+}

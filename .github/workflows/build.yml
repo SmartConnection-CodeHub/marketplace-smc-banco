@@ -1,0 +1,42 @@
+name: Build Banco SMC
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'config.json'
+      - 'docs/**'
+      - 'build.py'
+      - '_template.html'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run build.py
+        run: python3 build.py
+
+      - name: Commit HTML changes if any
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add -A
+            git commit -m "build: regenera HTMLs con tokens de config.json"
+            git push
+          else
+            echo "Sin cambios"
+          fi
