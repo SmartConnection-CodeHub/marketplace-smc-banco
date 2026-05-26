@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>23 · Financial Model · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<body>
+<nav class="doc-nav"><a href="22-tam-sam-som.html">◂ doc 22</a><span class="nav-center">DOC 23 · NEGOCIO</span><a href="24-unit-economics.html">doc 24 · Unit Econ ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Negocio</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 23 · Negocio</div>
+    <h1 class="cover-title">Financial<br>Model 3y</h1>
+    <p class="cover-subtitle">P&amp;L · cash flow · costos · revenue projection 36 meses.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Controller + Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page">
+  <h2><span class="h2-num">01</span>Supuestos clave</h2>
+  <table>
+    <thead><tr><th>Variable</th><th>Y1</th><th>Y2</th><th>Y3</th></tr></thead>
+    <tbody>
+      <tr><td>Clientes activos (fin año)</td><td>10</td><td>100</td><td>500</td></tr>
+      <tr><td>ARPU mensual CLP</td><td>$180K</td><td>$180K</td><td>$200K</td></tr>
+      <tr><td>Churn mensual</td><td>5%</td><td>4%</td><td>3%</td></tr>
+      <tr><td>Equipo dev (FTE)</td><td>1</td><td>3</td><td>6</td></tr>
+      <tr><td>Equipo comercial (FTE)</td><td>0.5</td><td>2</td><td>4</td></tr>
+      <tr><td>Costo infra mensual CLP</td><td>$200K</td><td>$500K</td><td>$1.500K</td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer"><span>Banco SMC · Financial</span><span>03</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="h2-num">02</span>P&amp;L proyectado 3 años (CLP)</h2>
+  <table>
+    <thead><tr><th>Concepto</th><th>Año 1</th><th>Año 2</th><th>Año 3</th></tr></thead>
+    <tbody>
+      <tr style="background:rgba(0,193,193,0.05)"><td><strong>Revenue</strong></td><td>$21M</td><td>$216M</td><td>$1.080M</td></tr>
+      <tr><td>− Costo infra (Supabase · Amplify · APIs)</td><td>($2.4M)</td><td>($6M)</td><td>($18M)</td></tr>
+      <tr><td>− Costo pasarela pagos (2.9%)</td><td>($0.6M)</td><td>($6.3M)</td><td>($31M)</td></tr>
+      <tr style="background:rgba(0,193,193,0.05)"><td><strong>Gross Profit</strong></td><td>$18M (85%)</td><td>$203.7M (94%)</td><td>$1.031M (95%)</td></tr>
+      <tr><td>− Salarios devs</td><td>($30M)</td><td>($90M)</td><td>($180M)</td></tr>
+      <tr><td>− Salarios comerciales</td><td>($12M)</td><td>($50M)</td><td>($100M)</td></tr>
+      <tr><td>− Marketing CAC</td><td>($3M)</td><td>($30M)</td><td>($150M)</td></tr>
+      <tr><td>− Operaciones (Gladys · legal · contadora)</td><td>($3M)</td><td>($8M)</td><td>($20M)</td></tr>
+      <tr style="background:rgba(239,68,68,0.05)"><td><strong>EBITDA</strong></td><td><strong style="color:var(--smc-danger)">($30M)</strong></td><td><strong style="color:var(--smc-warning)">$25.7M</strong></td><td><strong style="color:var(--smc-success)">$581M</strong></td></tr>
+      <tr><td>Margen EBITDA</td><td>−143%</td><td>12%</td><td>54%</td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer"><span>Banco SMC · Financial</span><span>04</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="h2-num">03</span>Cash flow + capital needs</h2>
+  <div class="box box-warning">
+    <div class="box-title">💸 Capital inicial necesario</div>
+    <p style="margin:0">Cubrir 18 meses runway antes de break-even cash · <strong>~$50M CLP capital inicial</strong> mínimo (~USD 55K).</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Mes</th><th>Cash balance estimado</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td>0 (inicio)</td><td>$50M</td><td>Capital inicial inyectado</td></tr>
+      <tr><td>6</td><td>$15M</td><td>Burn rate · primeros clientes paying</td></tr>
+      <tr><td>12</td><td>−$10M (necesita extender)</td><td>Trough · evaluar bridge round</td></tr>
+      <tr><td>18</td><td>$5M</td><td>Break-even cash mensual alcanzado</td></tr>
+      <tr><td>24</td><td>$60M+</td><td>Generación caja positiva</td></tr>
+      <tr><td>36</td><td>$500M+</td><td>Sólido · evalúa expansión LATAM</td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer"><span>Banco SMC · Financial</span><span>05</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="22-tam-sam-som.html">◂ doc 22</a><span class="nav-center">FIN DOC 23</span><a href="24-unit-economics.html">doc 24 · Unit Econ ▸</a></nav>
+</body>
+</html>

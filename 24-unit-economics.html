@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>24 · Unit Economics · Marketplace SMC</title><link rel="stylesheet" href="_styles.css"></head>
+<body>
+<nav class="doc-nav"><a href="23-financial-model.html">◂ doc 23</a><span class="nav-center">DOC 24 · NEGOCIO</span><a href="25-brand-book.html">doc 25 · Brand ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Negocio</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 24 · Negocio</div>
+    <h1 class="cover-title">Unit<br>Economics</h1>
+    <p class="cover-subtitle">CAC · LTV · payback · gross margin · ARPU · ratios SaaS clave.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-26</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Controller + Biz-Dev</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page">
+  <h2><span class="h2-num">01</span>Métricas core SaaS</h2>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-value">$180K</div><div class="kpi-label">ARPU mensual CLP</div></div>
+    <div class="kpi"><div class="kpi-value">$45K</div><div class="kpi-label">CAC blended target</div></div>
+    <div class="kpi"><div class="kpi-value">25 meses</div><div class="kpi-label">LTV (1/churn)</div></div>
+    <div class="kpi"><div class="kpi-value">$4.500K</div><div class="kpi-label">LTV total CLP</div></div>
+    <div class="kpi"><div class="kpi-value">100:1</div><div class="kpi-label">LTV/CAC ratio</div></div>
+    <div class="kpi"><div class="kpi-value">&lt;3 m</div><div class="kpi-label">CAC payback</div></div>
+    <div class="kpi"><div class="kpi-value">85%</div><div class="kpi-label">Gross margin</div></div>
+    <div class="kpi"><div class="kpi-value">110%</div><div class="kpi-label">NRR target</div></div>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Unit Econ</span><span>03</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="h2-num">02</span>Cálculo CAC</h2>
+  <pre class="ascii">CAC = (costo marketing + costo ventas) / nuevos clientes mes
+
+Y1 ejemplo · mes 6:
+  Costo marketing · LinkedIn ads + content    $500K
+  Costo sales · 0.5 FTE                       $400K
+  Total CAC budget                            $900K
+  Nuevos clientes mes                         20
+  ─────────────────────────────────────────
+  CAC                                         $45K CLP por cliente
+
+Por canal:
+  Referral contadora        $10K (mejor)
+  Outbound LinkedIn         $30K
+  Content + inbound         $40K
+  Google Ads                $60K
+  Webinar                   $50K
+  ─────────────────────────
+  Blended                   ~$45K</pre>
+  <div class="page-footer"><span>Banco SMC · Unit Econ</span><span>04</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="h2-num">03</span>Cálculo LTV</h2>
+  <pre class="ascii">LTV = ARPU × (1 / churn mensual)
+
+ARPU mensual                     $180K CLP
+Churn mensual target Y2          4%
+Lifetime expected                25 meses (1/0.04)
+LTV bruto                        $180K × 25 = $4.500K CLP por cliente
+× Gross margin 85%               ────────────
+LTV neto                         $3.825K CLP por cliente
+
+Ratio LTV/CAC                    $3.825K / $45K = 85:1 (excelente · regla &gt;3:1)
+CAC payback                      $45K / $180K = 0.25 meses (&lt;1 mes · target &lt;12)</pre>
+
+  <div class="box box-success">
+    <div class="box-title">✅ Health metrics</div>
+    <p style="margin:0">Ratios sólidos: LTV/CAC 85:1 (industry std &gt;3:1) · payback &lt;1 mes (std &lt;12). <strong>Negocio escalable y saludable.</strong></p>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Unit Econ</span><span>05</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="h2-num">04</span>Análisis de sensibilidad</h2>
+  <table>
+    <thead><tr><th>Escenario</th><th>ARPU</th><th>Churn</th><th>CAC</th><th>LTV/CAC</th><th>Conclusión</th></tr></thead>
+    <tbody>
+      <tr><td>Base</td><td>$180K</td><td>4%</td><td>$45K</td><td>85:1</td><td>✅ Excelente</td></tr>
+      <tr><td>Pesimista</td><td>$120K</td><td>8%</td><td>$80K</td><td>19:1</td><td>✅ Aún saludable</td></tr>
+      <tr><td>Muy pesimista</td><td>$80K</td><td>12%</td><td>$120K</td><td>5.7:1</td><td>🟡 Justo</td></tr>
+      <tr><td>Crítico</td><td>$60K</td><td>15%</td><td>$200K</td><td>2:1</td><td>❌ NO viable</td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer"><span>Banco SMC · Unit Econ</span><span>06</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="23-financial-model.html">◂ doc 23</a><span class="nav-center">FIN DOC 24</span><a href="25-brand-book.html">doc 25 · Brand ▸</a></nav>
+</body>
+</html>

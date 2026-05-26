@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>03 · Requirements · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<style>
+.req-card { padding: 14px 18px; background: white; border: 1px solid var(--ink-200); border-radius: 10px; margin-bottom: 10px; }
+.req-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: var(--ink-900); color: white; padding: 2px 8px; border-radius: 4px; font-weight: 700; margin-right: 10px; }
+.req-prio-1 { border-left: 4px solid var(--smc-danger); }
+.req-prio-2 { border-left: 4px solid var(--smc-warning); }
+.req-prio-3 { border-left: 4px solid var(--smc-info); }
+.req-prio-4 { border-left: 4px solid var(--ink-300); }
+</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="02-bbp.html">◂ doc 02</a>
+  <span class="nav-center">DOCUMENTO 03 DE 09</span>
+  <a href="04-rfp.html">doc 04 · RFP ▸</a>
+</nav>
+
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Blueprint · Marketplace SMC</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 03 de 09</div>
+    <h1 class="cover-title">Requirements</h1>
+    <p class="cover-subtitle">Funcionales + no funcionales · qué debe hacer el sistema y con qué calidad.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-25</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">PM + Architect + Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol>
+    <li><a href="#priority">Sistema de priorización (P1-P4)</a><span class="toc-pg">03</span></li>
+    <li><a href="#fr-inv">Funcionales · Inventario &amp; Catálogo</a><span class="toc-pg">04</span></li>
+    <li><a href="#fr-sales">Funcionales · Ventas Multi-Canal</a><span class="toc-pg">05</span></li>
+    <li><a href="#fr-supply">Funcionales · Sourcing &amp; Supply Chain</a><span class="toc-pg">06</span></li>
+    <li><a href="#fr-fin">Funcionales · Finanzas &amp; Contabilidad</a><span class="toc-pg">07</span></li>
+    <li><a href="#fr-ai">Funcionales · IA &amp; Analytics</a><span class="toc-pg">08</span></li>
+    <li><a href="#nfr-perf">No funcionales · Performance</a><span class="toc-pg">09</span></li>
+    <li><a href="#nfr-sec">No funcionales · Seguridad</a><span class="toc-pg">10</span></li>
+    <li><a href="#nfr-scale">No funcionales · Escalabilidad</a><span class="toc-pg">11</span></li>
+    <li><a href="#nfr-comp">No funcionales · Compliance Chile</a><span class="toc-pg">12</span></li>
+  </ol>
+</section>
+
+<section class="page" id="priority">
+  <h2><span class="h2-num">01</span>Sistema de priorización</h2>
+  <table>
+    <thead><tr><th>Nivel</th><th>Etiqueta</th><th>Significa</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-blocked">P1</span></td><td>Crítico</td><td>Sin esto la plataforma NO funciona · MVP obligatorio</td></tr>
+      <tr><td><span class="badge badge-pending">P2</span></td><td>Importante</td><td>Necesario para producción real · puede esperar 1-2 sprints post MVP</td></tr>
+      <tr><td><span class="badge badge-future">P3</span></td><td>Deseable</td><td>Mejora la UX · agrega valor · planificable fase 2</td></tr>
+      <tr><td><span class="badge badge-future">P4</span></td><td>Opcional</td><td>Nice-to-have · solo si hay capacidad sobrante</td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>03</span></div>
+</section>
+
+<section class="page" id="fr-inv">
+  <h2><span class="h2-num">02</span>Funcionales · Inventario &amp; Catálogo</h2>
+  <div class="req-card req-prio-1"><span class="req-id">FR-INV-01</span><strong>P1</strong> · El sistema debe mantener UN inventario físico maestro por tenant · con stock real-time.</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-INV-02</span><strong>P1</strong> · El sistema debe permitir SKU master con: código interno, EAN/UPC, dimensiones, peso, categorías, variantes (talla/color).</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-INV-03</span><strong>P1</strong> · El sistema debe descontar stock al confirmar venta en CUALQUIER canal · sincronización inmediata cross-canal.</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-INV-04</span><strong>P1</strong> · El sistema debe permitir ajustes manuales con motivo (merma, daño, recuento, devolución).</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-INV-05</span><strong>P2</strong> · El sistema debe soportar reservas (stock asignado a orden pendiente vs físico disponible).</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-INV-06</span><strong>P2</strong> · El sistema debe asignar ubicaciones físicas (rack/pasillo/estante/bin) a cada SKU.</div>
+  <div class="req-card req-prio-3"><span class="req-id">FR-INV-07</span><strong>P3</strong> · El sistema debe soportar múltiples bodegas (Stgo + regiones) con stock por bodega.</div>
+  <div class="req-card req-prio-3"><span class="req-id">FR-INV-08</span><strong>P3</strong> · El sistema debe generar etiquetas barcode imprimibles (Code 128, QR).</div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>04</span></div>
+</section>
+
+<section class="page" id="fr-sales">
+  <h2><span class="h2-num">03</span>Funcionales · Ventas Multi-Canal</h2>
+  <div class="req-card req-prio-1"><span class="req-id">FR-CH-01</span><strong>P1</strong> · El sistema debe publicar 1 SKU en N canales con 1 click (Channel Adapter Pattern).</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-CH-02</span><strong>P1</strong> · El sistema debe aplicar pricing diferenciado por canal (landed + markup + comisión + IVA).</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-CH-03</span><strong>P1</strong> · Cada canal debe implementar interfaz CanalAdapter con métodos: publish, syncStock, fetchOrders, fulfillOrder, syncPrice.</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-CH-04</span><strong>P1</strong> · El sistema debe recibir webhooks de canales externos (MeLi, Falabella futuro) con HMAC validation.</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-CH-05</span><strong>P1</strong> · El sistema debe registrar TODA orden en tabla común <code>orders</code> con columna <code>channel</code> (no tablas separadas).</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-CH-06</span><strong>P2</strong> · El sistema debe soportar quote builder B2B (selección SKUs → PDF cotización → aprobación email).</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-CH-07</span><strong>P2</strong> · El sistema debe monitorear API Mercado Público diariamente · filtrar licitaciones por keywords del operador.</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-CH-08</span><strong>P2</strong> · El sistema debe permitir storefront D2C con checkout propio (carrito + pasarela).</div>
+  <div class="req-card req-prio-3"><span class="req-id">FR-CH-09</span><strong>P3</strong> · El sistema debe soportar canal "manual" (Cencosud · scrape semanal + upload CSV).</div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>05</span></div>
+</section>
+
+<section class="page" id="fr-supply">
+  <h2><span class="h2-num">04</span>Funcionales · Sourcing &amp; Supply Chain</h2>
+  <div class="req-card req-prio-2"><span class="req-id">FR-SUP-01</span><strong>P2</strong> · El sistema debe gestionar proveedores (Nexport · futuros) con CRM ligero.</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-SUP-02</span><strong>P2</strong> · El sistema debe permitir órdenes de compra (PO) con términos de pago (50/50 · 100% adelanto · etc).</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-SUP-03</span><strong>P2</strong> · El sistema debe trackear shipments con ETA · alertas pre-arribo.</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-SUP-04</span><strong>P2</strong> · El sistema debe registrar recepción con match contra PO · detectar discrepancias (cantidad/daños).</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-SUP-05</span><strong>P1</strong> · El sistema debe calcular landed cost por SKU (FOB + flete + IVA + transporte interno).</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-SUP-06</span><strong>P1</strong> · El sistema debe integrarse con couriers (Chilexpress · Starken · Bluexpress) para generar etiquetas envío.</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-SUP-07</span><strong>P2</strong> · El sistema debe permitir reglas de despacho ("MeLi → Chilexpress" · "B2B → Starken").</div>
+  <div class="req-card req-prio-3"><span class="req-id">FR-SUP-08</span><strong>P3</strong> · El sistema debe gestionar devoluciones (RMA) con flujo aprobación + NC.</div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>06</span></div>
+</section>
+
+<section class="page" id="fr-fin">
+  <h2><span class="h2-num">05</span>Funcionales · Finanzas &amp; Contabilidad</h2>
+  <div class="req-card req-prio-1"><span class="req-id">FR-FIN-01</span><strong>P1</strong> · El sistema debe emitir DTE (Factura 33, Boleta 39, NC 61, ND 56, Factura Exenta 34) vía Open Factura o SII MIPYME.</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-FIN-02</span><strong>P1</strong> · El sistema debe generar asientos contables automáticos por cada evento (venta · compra · pago · devolución).</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-FIN-03</span><strong>P1</strong> · El sistema debe mantener cuentas por cobrar (CxC) y por pagar (CxP) con vencimientos.</div>
+  <div class="req-card req-prio-1"><span class="req-id">FR-FIN-04</span><strong>P1</strong> · El sistema debe alertar facturas vencidas: 5 días antes · al día · +7 · +15 · +30.</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-FIN-05</span><strong>P2</strong> · El sistema debe calcular margen real por SKU = Precio − Landed − Comisión canal − Logística − IVA débito.</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-FIN-06</span><strong>P2</strong> · El sistema debe pre-generar resumen para F29 mensual (ventas afectas + IVA débito + IVA crédito).</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-FIN-07</span><strong>P2</strong> · El sistema debe forecastear flujo de caja a 30/60/90 días.</div>
+  <div class="req-card req-prio-3"><span class="req-id">FR-FIN-08</span><strong>P3</strong> · El sistema debe sugerir precio óptimo por canal vía IA (vs competencia · margen target).</div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>07</span></div>
+</section>
+
+<section class="page" id="fr-ai">
+  <h2><span class="h2-num">06</span>Funcionales · IA &amp; Analytics</h2>
+  <div class="req-card req-prio-2"><span class="req-id">FR-AI-01</span><strong>P2</strong> · El sistema debe ofrecer chat IA contextual sobre la data del operador (Cerebro IA).</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-AI-02</span><strong>P2</strong> · El sistema debe generar insights semanales auto-reporte (lunes 9am).</div>
+  <div class="req-card req-prio-3"><span class="req-id">FR-AI-03</span><strong>P3</strong> · El sistema debe sugerir SKUs a re-comprar según rotación + lead time proveedor.</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-AN-01</span><strong>P2</strong> · El sistema debe mostrar dashboard consolidado: revenue · margen · órdenes · ticket promedio · split por canal.</div>
+  <div class="req-card req-prio-2"><span class="req-id">FR-AN-02</span><strong>P2</strong> · El sistema debe permitir drill-down por canal · marca (tenant) · vertical · producto · período.</div>
+  <div class="req-card req-prio-3"><span class="req-id">FR-AN-03</span><strong>P3</strong> · El sistema debe analizar rotación por SKU · top performers · slow movers.</div>
+  <div class="req-card req-prio-3"><span class="req-id">FR-AN-04</span><strong>P3</strong> · El sistema debe medir ROI por canal de venta y por proveedor.</div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>08</span></div>
+</section>
+
+<section class="page" id="nfr-perf">
+  <h2><span class="h2-num">07</span>No funcionales · Performance</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Métrica</th><th>Target</th><th>Prio</th></tr></thead>
+    <tbody>
+      <tr><td>NFR-P-01</td><td>Latencia API GET (p95)</td><td>&lt; 300ms</td><td><span class="badge badge-blocked">P1</span></td></tr>
+      <tr><td>NFR-P-02</td><td>Latencia API POST (p95)</td><td>&lt; 800ms</td><td><span class="badge badge-blocked">P1</span></td></tr>
+      <tr><td>NFR-P-03</td><td>Time-to-interactive Dashboard</td><td>&lt; 2s</td><td><span class="badge badge-pending">P2</span></td></tr>
+      <tr><td>NFR-P-04</td><td>Webhook processing</td><td>&lt; 500ms ack</td><td><span class="badge badge-blocked">P1</span></td></tr>
+      <tr><td>NFR-P-05</td><td>Sync inventory cross-canal</td><td>&lt; 30s end-to-end</td><td><span class="badge badge-blocked">P1</span></td></tr>
+      <tr><td>NFR-P-06</td><td>Generación DTE</td><td>&lt; 3s</td><td><span class="badge badge-pending">P2</span></td></tr>
+      <tr><td>NFR-P-07</td><td>Build app</td><td>&lt; 3 min</td><td><span class="badge badge-future">P3</span></td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>09</span></div>
+</section>
+
+<section class="page" id="nfr-sec">
+  <h2><span class="h2-num">08</span>No funcionales · Seguridad</h2>
+  <div class="req-card req-prio-1"><span class="req-id">NFR-S-01</span><strong>P1</strong> · El sistema debe implementar Row Level Security (RLS) en TODAS las tablas con <code>tenant_id</code>.</div>
+  <div class="req-card req-prio-1"><span class="req-id">NFR-S-02</span><strong>P1</strong> · Las credenciales OAuth de canales externos deben guardarse cifradas at rest (AES-256).</div>
+  <div class="req-card req-prio-1"><span class="req-id">NFR-S-03</span><strong>P1</strong> · Todas las APIs internas deben autenticar con JWT o sesión httpOnly.</div>
+  <div class="req-card req-prio-1"><span class="req-id">NFR-S-04</span><strong>P1</strong> · Los webhooks externos deben validar firma HMAC obligatorio.</div>
+  <div class="req-card req-prio-1"><span class="req-id">NFR-S-05</span><strong>P1</strong> · Los secrets (API keys, DB passwords) NUNCA en código · solo env vars + secret manager.</div>
+  <div class="req-card req-prio-2"><span class="req-id">NFR-S-06</span><strong>P2</strong> · El sistema debe registrar audit log de toda mutación financiera (asientos, DTE, pagos).</div>
+  <div class="req-card req-prio-2"><span class="req-id">NFR-S-07</span><strong>P2</strong> · El sistema debe rotar tokens MeLi/MP automáticamente (cron) antes de expirar.</div>
+  <div class="req-card req-prio-2"><span class="req-id">NFR-S-08</span><strong>P2</strong> · El sistema debe ofrecer 2FA para login operador.</div>
+  <div class="req-card req-prio-3"><span class="req-id">NFR-S-09</span><strong>P3</strong> · El sistema debe permitir export GDPR-style de toda la data de un cliente (B2B/D2C).</div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>10</span></div>
+</section>
+
+<section class="page" id="nfr-scale">
+  <h2><span class="h2-num">09</span>No funcionales · Escalabilidad</h2>
+  <div class="req-card req-prio-1"><span class="req-id">NFR-SC-01</span><strong>P1</strong> · La arquitectura debe ser multi-tenant nativo · soportar N tenants en misma BD con aislamiento RLS.</div>
+  <div class="req-card req-prio-1"><span class="req-id">NFR-SC-02</span><strong>P1</strong> · Cada canal debe ser un adapter independiente · agregar canal nuevo no debe requerir tocar core.</div>
+  <div class="req-card req-prio-2"><span class="req-id">NFR-SC-03</span><strong>P2</strong> · El sistema debe soportar 100 órdenes/hora por tenant sin degradación (MVP).</div>
+  <div class="req-card req-prio-2"><span class="req-id">NFR-SC-04</span><strong>P2</strong> · El sistema debe soportar 100K SKUs por tenant (catálogo grande).</div>
+  <div class="req-card req-prio-3"><span class="req-id">NFR-SC-05</span><strong>P3</strong> · El sistema debe soportar 1.000 órdenes/hora por tenant (escalado fase 3).</div>
+  <div class="req-card req-prio-3"><span class="req-id">NFR-SC-06</span><strong>P3</strong> · El sistema debe ser desplegable en regiones distintas para latencia local.</div>
+  <div class="req-card req-prio-2"><span class="req-id">NFR-SC-07</span><strong>P2</strong> · La BD debe estar en Supabase (Postgres) · permite escalar vertical hasta 10K órdenes/hora antes de necesitar partition.</div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>11</span></div>
+</section>
+
+<section class="page" id="nfr-comp">
+  <h2><span class="h2-num">10</span>No funcionales · Compliance Chile</h2>
+  <div class="req-card req-prio-1"><span class="req-id">NFR-C-01</span><strong>P1</strong> · El sistema debe respetar Ley 19.628 (protección datos personales Chile).</div>
+  <div class="req-card req-prio-1"><span class="req-id">NFR-C-02</span><strong>P1</strong> · El sistema debe emitir DTE válidos SII (estructura XML según normativa).</div>
+  <div class="req-card req-prio-1"><span class="req-id">NFR-C-03</span><strong>P1</strong> · El sistema debe mantener libro IVA digital (ventas + compras) según Resolución SII.</div>
+  <div class="req-card req-prio-2"><span class="req-id">NFR-C-04</span><strong>P2</strong> · El sistema debe permitir inventario anual (Resolución 73 SII).</div>
+  <div class="req-card req-prio-2"><span class="req-id">NFR-C-05</span><strong>P2</strong> · El sistema debe alertar vencimientos: F30 · F30-1 · garantías bancarias · vigencia ChileProveedores.</div>
+  <div class="req-card req-prio-2"><span class="req-id">NFR-C-06</span><strong>P2</strong> · El sistema debe soportar Régimen 14D N°3 Pro-PYME General (cálculo automático).</div>
+  <div class="req-card req-prio-3"><span class="req-id">NFR-C-07</span><strong>P3</strong> · El sistema debe pre-generar F22 anual con saldos contables del año.</div>
+  <div class="req-card req-prio-3"><span class="req-id">NFR-C-08</span><strong>P3</strong> · El sistema debe gestionar accesos auditados (quién vio qué · quién modificó qué).</div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>12</span></div>
+</section>
+
+</div>
+<nav class="doc-nav">
+  <a href="02-bbp.html">◂ doc 02</a>
+  <span class="nav-center">FIN DOCUMENTO 03</span>
+  <a href="04-rfp.html">doc 04 · RFP ▸</a>
+</nav>
+</body>
+</html>

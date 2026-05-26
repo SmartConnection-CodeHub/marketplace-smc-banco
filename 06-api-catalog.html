@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>06 · API Catalog · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<style>
+.endpoint { background: white; border: 1px solid var(--ink-200); border-radius: 10px; padding: 16px 20px; margin: 10px 0; }
+.endpoint-method { display: inline-block; padding: 2px 10px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; margin-right: 10px; }
+.m-get { background: #DBEAFE; color: #1E40AF; }
+.m-post { background: #D1FAE5; color: #14532D; }
+.m-patch { background: #FEF3C7; color: #92400E; }
+.m-delete { background: #FEE2E2; color: #991B1B; }
+.endpoint-path { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: var(--ink-900); }
+.endpoint-desc { font-size: 13px; color: var(--ink-500); margin-top: 6px; }
+.interface-block { background: var(--ink-900); color: #94f0e0; padding: 20px; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; overflow-x: auto; margin: 16px 0; line-height: 1.6; }
+.keyword { color: #FB923C; }
+.string { color: #94f0e0; }
+.comment { color: #64748B; font-style: italic; }
+</style>
+</head>
+<body>
+<nav class="doc-nav"><a href="05-data-model.html">◂ doc 05</a><span class="nav-center">DOCUMENTO 06 DE 09</span><a href="07-architecture.html">doc 07 · Architecture ▸</a></nav>
+
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Blueprint · Marketplace SMC</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 06 de 09</div>
+    <h1 class="cover-title">API<br>Catalog</h1>
+    <p class="cover-subtitle">Endpoints internos + Channel Adapter Pattern · contratos para cada canal externo.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-25</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">TechLead + Backend</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol>
+    <li><a href="#convs">Convenciones REST + versionado</a><span class="toc-pg">03</span></li>
+    <li><a href="#adapter">Channel Adapter Pattern (la clave)</a><span class="toc-pg">04</span></li>
+    <li><a href="#core">Endpoints Core (tenants · users · products)</a><span class="toc-pg">05</span></li>
+    <li><a href="#inv">Endpoints Inventory</a><span class="toc-pg">06</span></li>
+    <li><a href="#orders">Endpoints Orders &amp; Fulfillment</a><span class="toc-pg">07</span></li>
+    <li><a href="#channels">Endpoints Channels (publicar · sync)</a><span class="toc-pg">08</span></li>
+    <li><a href="#supply">Endpoints Sourcing &amp; Suppliers</a><span class="toc-pg">09</span></li>
+    <li><a href="#finance">Endpoints Finance &amp; DTE</a><span class="toc-pg">10</span></li>
+    <li><a href="#ai">Endpoints IA &amp; Analytics</a><span class="toc-pg">11</span></li>
+    <li><a href="#webhooks">Webhooks &amp; integraciones externas</a><span class="toc-pg">12</span></li>
+  </ol>
+</section>
+
+<section class="page" id="convs">
+  <h2><span class="h2-num">01</span>Convenciones REST + versionado</h2>
+  <ul>
+    <li>Base URL: <code>https://api.marketplace.smconnection.cl/v1</code></li>
+    <li>Auth: header <code>Authorization: Bearer &lt;jwt&gt;</code></li>
+    <li>Tenant: header <code>X-Tenant-Id: &lt;uuid&gt;</code> · resuelve scope automático con RLS</li>
+    <li>Content-Type: <code>application/json</code></li>
+    <li>Versionado: prefijo <code>/v1</code> · cambios breaking suben a <code>/v2</code></li>
+    <li>Paginación: <code>?page=1&amp;per_page=50</code> · headers <code>X-Total-Count</code></li>
+    <li>Errores: estructura estándar <code>{error: {code, message, details}}</code></li>
+    <li>Status codes: 200 OK · 201 Created · 204 No Content · 400 Validation · 401 Auth · 403 Forbidden · 404 NotFound · 409 Conflict · 422 BusinessRule · 500 Error</li>
+  </ul>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>03</span></div>
+</section>
+
+<section class="page" id="adapter">
+  <h2><span class="h2-num">02</span>Channel Adapter Pattern · la clave</h2>
+  <p>Esta es la <strong>pieza arquitectónica más importante</strong> del Hub. Cada canal externo (MeLi · MP · D2C · B2B · Falabella futuro) implementa la misma interfaz. El core nunca sabe qué canal es · solo llama métodos estándar.</p>
+
+  <h3>Interfaz que cada canal debe implementar</h3>
+  <div class="interface-block">
+<span class="comment">// TypeScript · interfaz pura · cada canal la implementa</span>
+<span class="keyword">interface</span> <span class="string">ChannelAdapter</span> {
+  <span class="comment">// Metadata</span>
+  type: <span class="string">'meli' | 'mp' | 'd2c' | 'b2b' | 'falabella' | 'cencosud'</span>
+  name: <span class="string">string</span>
+
+  <span class="comment">// === PUBLICAR ===</span>
+  publish(product: Product, price: Price): Promise&lt;ListingResult&gt;
+  unpublish(listing: Listing): Promise&lt;void&gt;
+  updatePrice(listing: Listing, newPrice: Price): Promise&lt;void&gt;
+
+  <span class="comment">// === STOCK ===</span>
+  syncStock(listing: Listing, qty: number): Promise&lt;void&gt;
+
+  <span class="comment">// === ÓRDENES ===</span>
+  fetchOrders(since: Date): Promise&lt;Order[]&gt;
+  fetchOrderById(externalId: string): Promise&lt;Order&gt;
+  cancelOrder(order: Order, reason: string): Promise&lt;void&gt;
+
+  <span class="comment">// === FULFILLMENT ===</span>
+  markShipped(order: Order, tracking: TrackingInfo): Promise&lt;void&gt;
+  markDelivered(order: Order): Promise&lt;void&gt;
+
+  <span class="comment">// === HEALTH ===</span>
+  healthCheck(): Promise&lt;{ ok: boolean, latency_ms: number, last_error?: string }&gt;
+  refreshAuth(): Promise&lt;void&gt;
+}
+  </div>
+
+  <div class="box box-premise">
+    <div class="box-title">🎯 Por qué es la pieza clave</div>
+    <p style="margin:0">Agregar Walmart Chile en 2027 = escribir 1 archivo <code>WalmartAdapter.ts</code> que implementa esta interfaz. <strong>Cero cambios en core, cero cambios en BD, cero cambios en UI.</strong> Plug-and-play real.</p>
+  </div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>04</span></div>
+</section>
+
+<section class="page" id="core">
+  <h2><span class="h2-num">03</span>Endpoints Core</h2>
+  <h3>Tenants &amp; Users</h3>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/tenants/me</span><div class="endpoint-desc">Datos del tenant actual (basado en X-Tenant-Id)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-patch">PATCH</span><span class="endpoint-path">/tenants/me</span><div class="endpoint-desc">Actualizar settings tenant</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/users</span><div class="endpoint-desc">Listar usuarios con acceso al tenant</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/users/invite</span><div class="endpoint-desc">Invitar usuario nuevo al tenant</div></div>
+
+  <h3>Catalog (productos)</h3>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/products</span><div class="endpoint-desc">Listar productos (?search · ?category · ?status · paginado)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/products</span><div class="endpoint-desc">Crear producto nuevo · valida SKU único</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/products/:id</span><div class="endpoint-desc">Detalle producto + listings activos + stock</div></div>
+  <div class="endpoint"><span class="endpoint-method m-patch">PATCH</span><span class="endpoint-path">/products/:id</span><div class="endpoint-desc">Actualizar campos · re-sincroniza en canales activos</div></div>
+  <div class="endpoint"><span class="endpoint-method m-delete">DELETE</span><span class="endpoint-path">/products/:id</span><div class="endpoint-desc">Marca como discontinued · no borra (audit)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/products/bulk-import</span><div class="endpoint-desc">Importar CSV/Excel masivo</div></div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>05</span></div>
+</section>
+
+<section class="page" id="inv">
+  <h2><span class="h2-num">04</span>Endpoints Inventory</h2>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/inventory/stock</span><div class="endpoint-desc">Vista consolidada stock por SKU + bodega</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/inventory/adjustments</span><div class="endpoint-desc">Ajuste manual stock (motivo: damage · count · loss)</div></div>
+  <div class="endpoint"><span class="endpoke-method m-get">GET</span><span class="endpoint-path">/inventory/movements</span><div class="endpoint-desc">Log movimientos (filtros: SKU · fecha · tipo)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/inventory/reserve</span><div class="endpoint-desc">Reservar stock para orden (internal · llamado por canales)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/inventory/release-reserve</span><div class="endpoint-desc">Liberar reserva (orden cancelada)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/warehouses</span><div class="endpoint-desc">Listar bodegas del tenant</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/warehouses</span><div class="endpoint-desc">Crear bodega nueva (P3 · multi-bodega)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/inventory/recepcion</span><div class="endpoint-desc">Registrar recepción contra PO · genera movimientos IN + asiento contable</div></div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>06</span></div>
+</section>
+
+<section class="page" id="orders">
+  <h2><span class="h2-num">05</span>Endpoints Orders &amp; Fulfillment</h2>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/orders</span><div class="endpoint-desc">Listar TODAS las órdenes (cualquier canal) · filtros ?channel · ?status · ?date</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/orders/:id</span><div class="endpoint-desc">Detalle orden completa + items + customer + shipments + DTE</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/orders</span><div class="endpoint-desc">Crear orden manual (típicamente B2B desde quote aprobada)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-patch">PATCH</span><span class="endpoint-path">/orders/:id/cancel</span><div class="endpoint-desc">Cancelar orden · libera stock · notifica canal</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/fulfillment/pending</span><div class="endpoint-desc">Cola de órdenes pendientes despacho · priorizadas</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/fulfillment/:order_id/pick</span><div class="endpoint-desc">Marcar picking completo · genera picking list</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/fulfillment/:order_id/pack</span><div class="endpoint-desc">Marcar packing · peso · medidas</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/fulfillment/:order_id/ship</span><div class="endpoint-desc">Generar etiqueta envío (courier según regla) · notifica canal</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/shipments/:id/tracking</span><div class="endpoint-desc">Estado tracking actual del courier</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/returns</span><div class="endpoint-desc">Crear RMA (devolución)</div></div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>07</span></div>
+</section>
+
+<section class="page" id="channels">
+  <h2><span class="h2-num">06</span>Endpoints Channels</h2>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/channels</span><div class="endpoint-desc">Listar canales configurados del tenant</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/channels</span><div class="endpoint-desc">Conectar canal nuevo (OAuth flow start)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-patch">PATCH</span><span class="endpoint-path">/channels/:id</span><div class="endpoint-desc">Actualizar config · refresh tokens</div></div>
+  <div class="endpoint"><span class="endpoint-method m-delete">DELETE</span><span class="endpoint-path">/channels/:id</span><div class="endpoint-desc">Desconectar canal (no borra · disable)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/products/:id/publish</span><div class="endpoint-desc">Publicar producto en N canales (1 click) · body: {channel_ids: []}</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/products/:id/unpublish</span><div class="endpoint-desc">Despublicar de canales</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/listings</span><div class="endpoint-desc">Estado de TODAS las publicaciones cross-canal</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/listings/:id/sync</span><div class="endpoint-desc">Forzar re-sync con canal externo</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/channels/:id/health</span><div class="endpoint-desc">Health check del adapter (auth · latencia · errores recientes)</div></div>
+
+  <h3>Mercado Público específico</h3>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/mp/tenders</span><div class="endpoint-desc">Licitaciones abiertas que matchean filtros tenant</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/mp/offers</span><div class="endpoint-desc">Crear oferta a licitación (form completo)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/mp/awards</span><div class="endpoint-desc">Adjudicaciones recibidas</div></div>
+
+  <h3>B2B específico</h3>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/b2b/quotes</span><div class="endpoint-desc">Generar cotización (PDF + email cliente)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/b2b/quotes/:id/approve</span><div class="endpoint-desc">Cliente aprueba · convierte a orden</div></div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>08</span></div>
+</section>
+
+<section class="page" id="supply">
+  <h2><span class="h2-num">07</span>Endpoints Sourcing &amp; Suppliers</h2>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/suppliers</span><div class="endpoint-desc">Listar proveedores</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/suppliers</span><div class="endpoint-desc">Crear proveedor (Nexport · futuros)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/purchase-orders</span><div class="endpoint-desc">Listar PO (filtros: supplier · status · fecha)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/purchase-orders</span><div class="endpoint-desc">Crear PO · genera correlativo · CxP</div></div>
+  <div class="endpoint"><span class="endpoint-method m-patch">PATCH</span><span class="endpoint-path">/purchase-orders/:id/confirm</span><div class="endpoint-desc">Proveedor confirma · update ETA</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/purchase-orders/:id/payment</span><div class="endpoint-desc">Registrar pago parcial/total · genera asiento</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/purchase-orders/:id/receive</span><div class="endpoint-desc">Marcar recibida · va a /inventory/recepcion</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/sourcing/landed-cost/:product_id</span><div class="endpoint-desc">Calcular landed cost actualizado</div></div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>09</span></div>
+</section>
+
+<section class="page" id="finance">
+  <h2><span class="h2-num">08</span>Endpoints Finance &amp; DTE</h2>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/finance/accounts</span><div class="endpoint-desc">Plan de cuentas con saldos</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/finance/journal</span><div class="endpoint-desc">Libro diario · asientos por fecha</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/finance/journal/:id</span><div class="endpoint-desc">Detalle asiento + líneas debe/haber</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/finance/journal</span><div class="endpoint-desc">Asiento manual (solo admin · raro · audit log)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/finance/reports/f29</span><div class="endpoint-desc">Pre-F29 mes seleccionado · ventas + IVA débito + IVA crédito</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/finance/reports/balance</span><div class="endpoint-desc">Balance general · activo · pasivo · patrimonio</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/finance/cxc</span><div class="endpoint-desc">Cuentas por cobrar · vencimientos · canal</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/finance/cxp</span><div class="endpoint-desc">Cuentas por pagar · proveedores</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/finance/payments</span><div class="endpoint-desc">Registrar pago recibido/emitido · concilia</div></div>
+
+  <h3>DTE (Open Factura · SII)</h3>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/dte/issue</span><div class="endpoint-desc">Emitir DTE (33 · 34 · 39 · 56 · 61) vía Open Factura</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/dte/documents</span><div class="endpoint-desc">Listar DTE emitidos · filtros</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/dte/documents/:id/pdf</span><div class="endpoint-desc">PDF del DTE</div></div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>10</span></div>
+</section>
+
+<section class="page" id="ai">
+  <h2><span class="h2-num">09</span>Endpoints IA &amp; Analytics</h2>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/ai/chat</span><div class="endpoint-desc">Cerebro IA · pregunta con contexto tenant · Groq/OpenRouter</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/ai/insights/weekly</span><div class="endpoint-desc">Resumen IA semanal generado lunes 9am</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/ai/suggestions/restock</span><div class="endpoint-desc">SKUs a re-comprar según rotación + lead time</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/ai/suggestions/pricing/:product_id</span><div class="endpoint-desc">Precio óptimo sugerido por canal</div></div>
+
+  <h3>Analytics</h3>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/analytics/dashboard</span><div class="endpoint-desc">KPIs consolidados (revenue · margen · órdenes)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/analytics/revenue-by-channel</span><div class="endpoint-desc">Revenue desagregado por canal y período</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/analytics/margin-by-product</span><div class="endpoint-desc">Margen real por SKU</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/analytics/rotation</span><div class="endpoint-desc">Rotación SKUs · top performers · slow movers</div></div>
+  <div class="endpoint"><span class="endpoint-method m-get">GET</span><span class="endpoint-path">/analytics/forecast/cash-flow</span><div class="endpoint-desc">Forecast flujo caja 30/60/90 días</div></div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>11</span></div>
+</section>
+
+<section class="page" id="webhooks">
+  <h2><span class="h2-num">10</span>Webhooks &amp; integraciones externas</h2>
+
+  <h3>Inbound (recibimos)</h3>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/webhooks/meli</span><div class="endpoint-desc">MeLi: orders · stock · questions · claims (HMAC validation)</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/webhooks/mp</span><div class="endpoint-desc">Mercado Público: adjudicaciones · status</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/webhooks/mercadopago</span><div class="endpoint-desc">Pagos D2C confirmados</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/webhooks/webpay</span><div class="endpoint-desc">Pagos D2C Transbank</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/webhooks/chilexpress</span><div class="endpoint-desc">Updates tracking</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/webhooks/starken</span><div class="endpoint-desc">Updates tracking</div></div>
+  <div class="endpoint"><span class="endpoint-method m-post">POST</span><span class="endpoint-path">/webhooks/open-factura</span><div class="endpoint-desc">DTE aceptado/rechazado por SII</div></div>
+
+  <h3>Outbound (emitimos)</h3>
+  <p>Implementación cliente · cada adapter:</p>
+  <ul>
+    <li>Llamadas REST a APIs externas con auth manejado por adapter</li>
+    <li>Retry policy: 3 reintentos exponencial backoff · circuit breaker</li>
+    <li>Rate limiting respetando límites por API (MeLi: 1.5K/min con OAuth · MP: variable)</li>
+    <li>Logger central <code>mk_api_logs</code> registra todo</li>
+  </ul>
+
+  <h3>Cron jobs (Amplify / Vercel schedule)</h3>
+  <table>
+    <thead><tr><th>Cron</th><th>Endpoint</th><th>Frecuencia</th></tr></thead>
+    <tbody>
+      <tr><td>refresh-channel-tokens</td><td><code>/cron/refresh-tokens</code></td><td>Cada 5h</td></tr>
+      <tr><td>sync-mp-tenders</td><td><code>/cron/mp-tenders</code></td><td>Diario 7am</td></tr>
+      <tr><td>weekly-insights</td><td><code>/cron/ai-weekly</code></td><td>Lunes 9am</td></tr>
+      <tr><td>cxc-reminders</td><td><code>/cron/cxc-reminders</code></td><td>Diario 9am</td></tr>
+      <tr><td>cash-flow-forecast</td><td><code>/cron/cash-flow</code></td><td>Diario madrugada</td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>12</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="05-data-model.html">◂ doc 05</a><span class="nav-center">FIN DOCUMENTO 06</span><a href="07-architecture.html">doc 07 · Architecture ▸</a></nav>
+</body>
+</html>

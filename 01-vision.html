@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>01 · Vision & Prospect · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="index.html">◂ índice</a>
+  <span class="nav-center">DOCUMENTO 01 DE 09</span>
+  <a href="02-bbp.html">doc 02 · BBP ▸</a>
+</nav>
+
+<div class="doc">
+
+<!-- ===== PORTADA ===== -->
+<section class="cover">
+  <div class="cover-header">
+    <div class="cover-brand">SMART CONNECTION</div>
+    <div>Blueprint · Marketplace SMC</div>
+  </div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 01 de 09</div>
+    <h1 class="cover-title">Vision &<br>Prospect</h1>
+    <p class="cover-subtitle">Plataforma operativa unificada multi-canal · qué somos, para quién y qué resolvemos.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Versión</div>
+        <div class="cover-meta-value">1.0</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Fecha</div>
+        <div class="cover-meta-value">2026-05-25</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Autor</div>
+        <div class="cover-meta-value">Cerebro + PRM + War Room SMC</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Status</div>
+        <div class="cover-meta-value">🟢 Activo</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-footer">
+    <div>Smart Connection SpA · Rut 76.811.863-9</div>
+    <div>Confidencial · uso interno</div>
+  </div>
+</section>
+
+<!-- ===== ÍNDICE ===== -->
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol>
+    <li><a href="#s1">¿Qué es Marketplace SMC?</a><span class="toc-pg">03</span></li>
+    <li><a href="#s2">North Star Metric</a><span class="toc-pg">04</span></li>
+    <li><a href="#s3">Stakeholders</a><span class="toc-pg">05</span></li>
+    <li><a href="#s4">Problemas que resolvemos</a><span class="toc-pg">06</span></li>
+    <li><a href="#s5">Modelo de negocio · 4 fases</a><span class="toc-pg">08</span></li>
+    <li><a href="#s6">Valores de diseño (no transables)</a><span class="toc-pg">10</span></li>
+    <li><a href="#s7">Decisiones diferidas a docs siguientes</a><span class="toc-pg">11</span></li>
+    <li><a href="#s8">Criterios de éxito</a><span class="toc-pg">12</span></li>
+    <li><a href="#s9">Anti-alcance</a><span class="toc-pg">13</span></li>
+    <li><a href="#s10">Analogía Stripe</a><span class="toc-pg">14</span></li>
+  </ol>
+</section>
+
+<!-- ===== 1 ===== -->
+<section class="page" id="s1">
+  <h2><span class="h2-num">01</span>¿Qué es Marketplace SMC?</h2>
+
+  <p><strong>Marketplace SMC es UNA SOLA plataforma operativa que centraliza compra, inventario, venta multi-canal, fulfillment, contabilidad y analytics</strong> para un vendedor que opera en Chile a través de canales B2C, B2G y B2B simultáneamente.</p>
+
+  <div class="box box-anti">
+    <div class="box-title">⛔ No es</div>
+    <ul>
+      <li>NO es un ERP genérico tipo Defontana o Bsale</li>
+      <li>NO es un marketplace público (no se cobra a vendedores terceros)</li>
+      <li>NO es un single-channel manager (no es Helium 10 ni Channable)</li>
+      <li>NO es una tienda online individual (no es Kanki standalone)</li>
+    </ul>
+  </div>
+
+  <div class="box box-premise">
+    <div class="box-title">✅ Sí es</div>
+    <ul>
+      <li>Cockpit operativo del vendedor · todo bajo un mismo techo</li>
+      <li>Plataforma multi-tenant que puede operar N marcas/canales sobre la misma base</li>
+      <li>Source-of-truth único de inventario, clientes, pedidos, asientos contables</li>
+      <li>Orquestador de adapters por canal (MeLi · Mercado Público · D2C · B2B · futuros)</li>
+    </ul>
+  </div>
+
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>03</span></div>
+</section>
+
+<!-- ===== 2 North Star ===== -->
+<section class="page" id="s2">
+  <h2><span class="h2-num">02</span>North Star Metric</h2>
+
+  <blockquote>
+    % de ingresos del usuario que se gestionan dentro de la plataforma (vs fuera de ella).
+  </blockquote>
+
+  <p>Si el usuario factura $10M/mes y solo $2M pasan por SMC Marketplace → North Star = 20%. Si todos los $10M pasan → North Star = 100%.</p>
+
+  <div class="box box-info">
+    <div class="box-title">💡 Por qué importa</div>
+    <p style="margin:0">Esta métrica obliga a que la plataforma sea ÚTIL para TODOS los canales del usuario, no solo el más fácil. Si solo cubrimos MeLi, el usuario seguirá usando 3 herramientas más afuera · North Star bajo · cliente no se apropia del Hub.</p>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-value">100%</div>
+      <div class="kpi-label">Meta NS · año 2</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">≥80%</div>
+      <div class="kpi-label">Meta NS · año 1</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">4+</div>
+      <div class="kpi-label">Canales operados</div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>04</span></div>
+</section>
+
+<!-- ===== 3 Stakeholders ===== -->
+<section class="page" id="s3">
+  <h2><span class="h2-num">03</span>Stakeholders</h2>
+
+  <h3>Stakeholder principal · "el operador"</h3>
+  <table>
+    <thead><tr><th>Atributo</th><th>Detalle</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Perfil</strong></td><td>Vendedor PYME chileno que opera 2+ canales simultáneamente</td></tr>
+      <tr><td><strong>Facturación</strong></td><td>Entre $5M y $200M CLP/mes</td></tr>
+      <tr><td><strong>Hoy usa</strong></td><td>Excel + 4-5 herramientas separadas (MeLi seller center + Shopify + Excel + ChileCompra + Defontana)</td></tr>
+      <tr><td><strong>Dolor</strong></td><td>Pierde tiempo conciliando data · no tiene visibilidad cross-canal</td></tr>
+      <tr><td><strong>Caso primario</strong></td><td>Guillermo (Smart Connection SpA → futuro Marketplace SMC SpA)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Stakeholder secundario · "los socios"</h3>
+  <ul>
+    <li>Co-founder potencial (Javier · equity TBD)</li>
+    <li>Contadora externa (galvarez.cl) que necesita exportar data para F29/F22</li>
+    <li>Operador de bodega (futuro · cuando exista bodega física)</li>
+  </ul>
+
+  <h3>Stakeholder terciario · "los integradores"</h3>
+  <p>APIs externas: MeLi, Mercado Público, Open Factura, MercadoPago, couriers, Groq IA. La plataforma debe ser AMIGABLE para integrar nuevas APIs sin refactor.</p>
+
+  <div class="box box-warning">
+    <div class="box-title">🚫 Anti-stakeholders (NO son nuestro usuario)</div>
+    <ul style="margin:0">
+      <li>Vendedores grandes (&gt;$500M/mes) · ellos usan Oracle / SAP B1 / Microsoft Dynamics</li>
+      <li>Vendedores de un solo canal · ellos no necesitan unificación</li>
+      <li>Personas naturales sin SII activo · no podemos atenderlos legalmente</li>
+    </ul>
+  </div>
+
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>05</span></div>
+</section>
+
+<!-- ===== 4 Problemas ===== -->
+<section class="page" id="s4">
+  <h2><span class="h2-num">04</span>Problemas que resolvemos</h2>
+
+  <div class="flow-diagram">
+    <div class="flow-step">
+      <div class="flow-step-num">1</div>
+      <div class="flow-step-content">
+        <div class="flow-step-title">"Excel paralelo"</div>
+        <div class="flow-step-desc">3-5 sistemas de inventario distintos. Vende en MeLi y olvida bajar stock en Shopify. Resultado: oversell, multas, descontento.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">2</div>
+      <div class="flow-step-content">
+        <div class="flow-step-title">"Ceguera cross-canal"</div>
+        <div class="flow-step-desc">No sabe cuál canal vende más, dónde gana más margen, qué SKU rota mejor. Decide a ciegas dónde invertir publicidad.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">3</div>
+      <div class="flow-step-content">
+        <div class="flow-step-title">"Facturación rota"</div>
+        <div class="flow-step-desc">Vende en 4 canales · factura en 1 sistema · concilia mensual a mano · F29 mal · multas SII. Contadora cobra extra por desorden.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">4</div>
+      <div class="flow-step-content">
+        <div class="flow-step-title">"Publicación duplicada"</div>
+        <div class="flow-step-desc">Crear el mismo producto en 4 canales requiere subir título, fotos, precio, stock 4 veces. Cambio de precio = 4 updates.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">5</div>
+      <div class="flow-step-content">
+        <div class="flow-step-title">"Cobranza ciega"</div>
+        <div class="flow-step-desc">No sabe cuánto le debe MeLi · ChileCompra · sus clientes B2B. Cash flow es adivinanza.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">6</div>
+      <div class="flow-step-content">
+        <div class="flow-step-title">"Supply chain a ciegas"</div>
+        <div class="flow-step-desc">No sabe cuándo llega el próximo lote · cuánto stock real tiene · cuándo quedará sin SKU X. Decide compras por feeling.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>06-07</span></div>
+</section>
+
+<!-- ===== 5 Modelo negocio ===== -->
+<section class="page" id="s5">
+  <h2><span class="h2-num">05</span>Modelo de negocio · 4 fases</h2>
+
+  <table>
+    <thead>
+      <tr><th>Fase</th><th>Cuándo</th><th>Qué pasa</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Fase 1</strong><br>Uso interno SMC</td>
+        <td>2026 Q2-Q3</td>
+        <td>Herramienta interna del propio Guillermo · operada bajo SMC SpA (ampliando giro) o Marketplace SMC SpA cuando se constituya · sin facturación a terceros</td>
+        <td><span class="badge badge-active">En curso</span></td>
+      </tr>
+      <tr>
+        <td><strong>Fase 2</strong><br>Marca propia única</td>
+        <td>2026 Q4 - 2027 Q1</td>
+        <td>Migrar back-office de Kanki al Hub · validar arquitectura multi-tenant con caso real · sin cambiar front kanki.smconnection.cl</td>
+        <td><span class="badge badge-pending">Próxima</span></td>
+      </tr>
+      <tr>
+        <td><strong>Fase 3</strong><br>2-3 marcas internas</td>
+        <td>2027</td>
+        <td>Operar Marketplace SMC con Kanki + otra marca propia + caso vertical X · validar plug-and-play de nuevos canales</td>
+        <td><span class="badge badge-future">Futura</span></td>
+      </tr>
+      <tr>
+        <td><strong>Fase 4</strong><br>SaaS para PYMEs</td>
+        <td>2028+</td>
+        <td>Si fases 1-3 funcionan · ofrecer a otros vendedores PYME · modelo subscription $100-300K CLP/mes por tenant</td>
+        <td><span class="badge badge-future">Opcional</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box box-info">
+    <div class="box-title">💡 Nota importante</div>
+    <p style="margin:0">La fase 4 es opcional. La plataforma puede vivir feliz solo como uso interno de Marketplace SMC SpA. No se condiciona el diseño a que se convierta en SaaS · pero la arquitectura multi-tenant permite hacerlo sin refactor cuando se decida.</p>
+  </div>
+
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>08-09</span></div>
+</section>
+
+<!-- ===== 6 Valores ===== -->
+<section class="page" id="s6">
+  <h2><span class="h2-num">06</span>Valores de diseño · qué NO transamos</h2>
+
+  <table>
+    <thead><tr><th>#</th><th>Valor</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>1</strong></td>
+        <td><strong>Single Source of Truth</strong></td>
+        <td>1 inventario · 1 catálogo clientes · 1 catálogo productos · 1 chart of accounts. Cualquier duplicación = anti-patrón.</td>
+      </tr>
+      <tr>
+        <td><strong>2</strong></td>
+        <td><strong>Channel Adapter Pattern</strong></td>
+        <td>Cada canal externo (MeLi, MP, etc.) se conecta vía adapter que implementa interfaz estándar. Agregar canal nuevo = escribir 1 adapter · no tocar core.</td>
+      </tr>
+      <tr>
+        <td><strong>3</strong></td>
+        <td><strong>Event-driven Accounting</strong></td>
+        <td>Cada operación (venta · compra · devolución) emite evento que el módulo contable consume automático. NO existe "registro manual de asiento".</td>
+      </tr>
+      <tr>
+        <td><strong>4</strong></td>
+        <td><strong>Multi-tenant desde día 1</strong></td>
+        <td>tenant_id en TODAS las tablas. Aunque hoy haya 1 tenant · arquitectura soporta N. Permite migrar Kanki + agregar marcas sin refactor.</td>
+      </tr>
+      <tr>
+        <td><strong>5</strong></td>
+        <td><strong>Honestidad UI</strong></td>
+        <td>Si una pantalla muestra data MOCK · etiqueta visible "mock". Si un cron pendiente · etiqueta "pendiente". Cero teatro. Cero Math.random.</td>
+      </tr>
+      <tr>
+        <td><strong>6</strong></td>
+        <td><strong>Escalable gradualmente</strong></td>
+        <td>Empezar simple (1 bodega · 1 marca · 2 canales) pero SIN cementar decisiones que impidan crecer (multi-bodega · multi-marca · N canales).</td>
+      </tr>
+      <tr>
+        <td><strong>7</strong></td>
+        <td><strong>Compliance Chile nativo</strong></td>
+        <td>F29 · F22 · DTE · libro IVA · F30 · F30-1 · todo respetando normativa SII desde el primer día. Sin parches "cuando crezca lo agrego".</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>10</span></div>
+</section>
+
+<!-- ===== 7 Decisiones diferidas ===== -->
+<section class="page" id="s7">
+  <h2><span class="h2-num">07</span>Decisiones diferidas a docs siguientes</h2>
+
+  <table>
+    <thead><tr><th>Decisión</th><th>Documento donde se resuelve</th></tr></thead>
+    <tbody>
+      <tr><td>Cuáles 12 procesos exactos</td><td><a href="02-bbp.html">Doc 02 · BBP</a></td></tr>
+      <tr><td>Qué tablas exactas</td><td>Doc 05 · Data Model</td></tr>
+      <tr><td>Qué stack técnico (Next? Rails? Django?)</td><td>Doc 07 · Architecture</td></tr>
+      <tr><td>Cuándo se construye qué</td><td>Doc 08 · Roadmap</td></tr>
+      <tr><td>Cómo se ve cada pantalla</td><td>Doc 09 · Maquetas</td></tr>
+      <tr><td>Pricing del SaaS futuro</td><td>Documento aparte cuando se decida Fase 4</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>11</span></div>
+</section>
+
+<!-- ===== 8 Criterios de éxito ===== -->
+<section class="page" id="s8">
+  <h2><span class="h2-num">08</span>Criterios de éxito</h2>
+
+  <h4>Fase 1 · Uso interno SMC</h4>
+  <ul>
+    <li>Cierre mensual F29 desde Hub sin Excel paralelo</li>
+    <li>&gt;80% órdenes cross-canal vistas en 1 dashboard</li>
+    <li>0 oversell por desync de inventario</li>
+    <li>Tiempo conciliación mensual reducido 70% vs hoy</li>
+  </ul>
+
+  <h4>Fase 2 · Kanki migrado</h4>
+  <ul>
+    <li>Kanki opera 100% desde el Hub · solo storefront vive aparte</li>
+    <li>Stock unificado · venta en Kanki descuenta de inventario maestro</li>
+    <li>Cierre contable Kanki + SMC mismo balance</li>
+  </ul>
+
+  <h4>Fase 3 · 2-3 marcas</h4>
+  <ul>
+    <li>Plug nuevo tenant en &lt;1 día (no semanas)</li>
+    <li>Plug nuevo canal externo en &lt;1 sprint</li>
+    <li>Métricas por marca + consolidadas (drill-down)</li>
+  </ul>
+
+  <h4>Fase 4 · SaaS</h4>
+  <ul>
+    <li>Onboarding cliente PYME en &lt;2 horas (no consulting)</li>
+    <li>Churn &lt;5% anual · CAC &lt; 3 meses de MRR</li>
+  </ul>
+
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>12</span></div>
+</section>
+
+<!-- ===== 9 Anti-alcance ===== -->
+<section class="page" id="s9">
+  <h2><span class="h2-num">09</span>Anti-alcance · lo que NO promete</h2>
+
+  <div class="box box-anti">
+    <div class="box-title">⛔ Este documento NO promete</div>
+    <ul style="margin:0">
+      <li>NO promete que será SaaS comercial (es opcional)</li>
+      <li>NO promete reemplazar al contador (asiste pero no decide tributario)</li>
+      <li>NO promete vender por canales que no tienen API (Cencosud · supplier portals)</li>
+      <li>NO promete construirse en 1 mes (es proyecto enterprise · ver Doc 08 Roadmap)</li>
+    </ul>
+  </div>
+
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>13</span></div>
+</section>
+
+<!-- ===== 10 Analogía ===== -->
+<section class="page" id="s10">
+  <h2><span class="h2-num">10</span>Una analogía para alinear</h2>
+
+  <blockquote style="font-size: 18px; line-height: 1.7;">
+    <strong>Marketplace SMC es el "Stripe del vendedor multi-canal chileno":</strong><br><br>
+    Stripe unifica el cobro · cualquier integración · una sola API.<br>
+    Marketplace SMC unifica la operación · cualquier canal · una sola plataforma.<br><br>
+    Stripe escondió la complejidad de Visa/Mastercard/Amex bajo <code>/charge</code>.<br>
+    Marketplace SMC esconde MeLi/MP/B2B/D2C bajo <code>/sell</code>.
+  </blockquote>
+
+  <div class="svg-container">
+    <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#00C1C1"/>
+        </marker>
+      </defs>
+      <rect x="320" y="100" width="160" height="60" rx="12" fill="#0F172A"/>
+      <text x="400" y="135" text-anchor="middle" fill="#00C1C1" font-family="Inter" font-weight="700" font-size="16">/sell</text>
+      <text x="400" y="170" text-anchor="middle" fill="#94A3B8" font-family="Inter" font-size="10">Marketplace SMC API</text>
+
+      <rect x="20" y="20" width="140" height="50" rx="8" fill="#FFE4E6" stroke="#F472B6" stroke-width="2"/>
+      <text x="90" y="50" text-anchor="middle" fill="#831843" font-weight="600" font-size="13">MeLi adapter</text>
+
+      <rect x="20" y="190" width="140" height="50" rx="8" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+      <text x="90" y="220" text-anchor="middle" fill="#92400E" font-weight="600" font-size="13">Mercado Público</text>
+
+      <rect x="640" y="20" width="140" height="50" rx="8" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
+      <text x="710" y="50" text-anchor="middle" fill="#1E40AF" font-weight="600" font-size="13">D2C Storefront</text>
+
+      <rect x="640" y="190" width="140" height="50" rx="8" fill="#D1FAE5" stroke="#22C55E" stroke-width="2"/>
+      <text x="710" y="220" text-anchor="middle" fill="#14532D" font-weight="600" font-size="13">B2B Quote</text>
+
+      <line x1="160" y1="45" x2="320" y2="115" stroke="#00C1C1" stroke-width="2" marker-end="url(#arr)"/>
+      <line x1="160" y1="215" x2="320" y2="145" stroke="#00C1C1" stroke-width="2" marker-end="url(#arr)"/>
+      <line x1="480" y1="115" x2="640" y2="45" stroke="#00C1C1" stroke-width="2" marker-end="url(#arr)"/>
+      <line x1="480" y1="145" x2="640" y2="215" stroke="#00C1C1" stroke-width="2" marker-end="url(#arr)"/>
+    </svg>
+  </div>
+
+  <p style="text-align:center; color: var(--ink-500); font-size: 13px; margin-top: -16px;">
+    <em>1 API · N adapters · N canales · operador NO ve la complejidad</em>
+  </p>
+
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>14</span></div>
+</section>
+
+</div>
+
+<nav class="doc-nav">
+  <a href="index.html">◂ índice</a>
+  <span class="nav-center">FIN DOCUMENTO 01</span>
+  <a href="02-bbp.html">doc 02 · BBP ▸</a>
+</nav>
+</body>
+</html>
