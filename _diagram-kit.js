@@ -275,4 +275,200 @@
   }
 
   window.SMCDiagram.init = init;
+
+  // ===========================================================
+  // PIPELINE · selector de escenarios + etapas + INT boxes
+  // ===========================================================
+
+  /**
+   * @param {object} cfg
+   *   id          · id del .process-wrapper (vacío · se renderiza completo desde JS)
+   *   scenarios   · { A: {letter, title, sub, tags, callout, stages:[{num,name,boxes:[{code,label,kind,stack,desc,notes,doc}]}]}, B:{...}, ... }
+   *   default     · letra del escenario activo inicial
+   */
+  function initPipeline(cfg) {
+    const root = document.getElementById(cfg.id);
+    if (!root) return;
+
+    const scenarios = cfg.scenarios || {};
+    const letters = Object.keys(scenarios);
+    let active = cfg.default || letters[0];
+
+    function esc(s) {
+      return (s == null ? '' : String(s))
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function renderScenarios() {
+      return `<div class="scenario-grid">
+        ${letters.map(L => {
+          const s = scenarios[L];
+          return `<div class="scenario-card ${L === active ? 'is-active' : ''}" data-letter="${L}">
+            <div class="scenario-letter">${L}</div>
+            <div class="scenario-title">${esc(s.title)}</div>
+            <div class="scenario-sub">${esc(s.sub || '')}</div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
+
+    function renderDetail() {
+      const s = scenarios[active];
+      const total = (s.stages || []).reduce((acc, st) => acc + (st.boxes || []).length, 0);
+      return `<div class="scenario-detail">
+        <strong>Escenario activo: ${esc(s.title)} (${active})</strong> · ${esc(s.callout || s.sub || '')}
+        ${s.tags ? `<br><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#475569;">${s.tags.join(' · ')} · ${s.stages.length} etapas · ${total} pasos</span>` : ''}
+      </div>`;
+    }
+
+    function renderPipeline() {
+      const s = scenarios[active];
+      const stages = s.stages || [];
+      const head = stages.map((st, i) => {
+        const isLast = i === stages.length - 1;
+        return `<div class="pipeline-stage-head ${isLast ? 'is-last' : ''}">
+          <div class="pipeline-stage-num">Etapa ${st.num}</div>
+          <h4 class="pipeline-stage-name">${esc(st.name)}</h4>
+        </div>`;
+      }).join('');
+      const body = stages.map((st, i) => {
+        const isLast = i === stages.length - 1;
+        const boxes = (st.boxes || []).map((b, j) => `
+          <div class="int-box kind-${b.kind || 'search'}" data-stage="${i}" data-box="${j}">
+            <span class="int-code">${esc(b.code || '')}</span>
+            <p class="int-label">${esc(b.label || '')}</p>
+            ${b.stack ? `<span class="int-stack">${esc(b.stack)}</span>` : ''}
+          </div>`).join('');
+        return `<div class="pipeline-stage-col ${isLast ? 'is-last' : ''}">
+          <div class="pipeline-stage-col-inner">${boxes}</div>
+        </div>`;
+      }).join('');
+      return `<div class="pipeline-shell">
+        <div class="pipeline-header">${head}</div>
+        <div class="pipeline-body">${body}</div>
+        <div class="pipeline-meta">
+          <strong>${esc(s.title)}</strong> · ${esc(s.sub || '')}
+          ${s.notes ? ' · ' + esc(s.notes) : ''}
+        </div>
+      </div>`;
+    }
+
+    function renderPanel() {
+      return `<aside class="diagram-panel">
+        <div class="diagram-panel-header">
+          <button class="diagram-panel-close" aria-label="Cerrar">×</button>
+          <div class="diagram-panel-type">Paso</div>
+          <h3 class="diagram-panel-title">Detalle</h3>
+          <p class="diagram-panel-sub"></p>
+        </div>
+        <div class="diagram-panel-body"></div>
+      </aside>`;
+    }
+
+    function render() {
+      root.innerHTML = renderScenarios() + renderDetail() + renderPipeline() + renderPanel();
+      bind();
+    }
+
+    function openBoxPanel(stageIdx, boxIdx) {
+      const s = scenarios[active];
+      const st = s.stages[stageIdx];
+      const b = st.boxes[boxIdx];
+      const panel = root.querySelector('.diagram-panel');
+      const panelType = root.querySelector('.diagram-panel-type');
+      const panelTitle = root.querySelector('.diagram-panel-title');
+      const panelSub = root.querySelector('.diagram-panel-sub');
+      const panelBody = root.querySelector('.diagram-panel-body');
+
+      panelType.textContent = `${b.code || ''} · Etapa ${st.num} · ${st.name}`;
+      panelTitle.textContent = b.label || b.code || 'Paso';
+      panelSub.textContent = `Escenario ${active} · ${s.title}`;
+
+      let html = '';
+      if (b.desc) {
+        html += `<div class="panel-section">
+          <div class="panel-section-label">Descripción</div>
+          <p>${esc(b.desc)}</p>
+        </div>`;
+      }
+      if (b.stack) {
+        html += `<div class="panel-section">
+          <div class="panel-section-label">Stack · tecnología</div>
+          <p>${esc(b.stack)}</p>
+        </div>`;
+      }
+      if (b.endpoints && b.endpoints.length) {
+        html += `<div class="panel-section">
+          <div class="panel-section-label">Endpoints / referencia</div>
+          <ul>${b.endpoints.map(e => `<li><code>${esc(e)}</code></li>`).join('')}</ul>
+        </div>`;
+      }
+      if (b.payload) {
+        html += `<div class="panel-section">
+          <div class="panel-section-label">Sample payload</div>
+          <pre class="ascii" style="font-size:11px;background:#0F172A;color:#A7F3D0;padding:12px;border-radius:8px;overflow-x:auto;">${esc(b.payload)}</pre>
+        </div>`;
+      }
+      if (b.errors && b.errors.length) {
+        html += `<div class="panel-section">
+          <div class="panel-section-label">Errores comunes</div>
+          <ul>${b.errors.map(e => `<li>${esc(e)}</li>`).join('')}</ul>
+        </div>`;
+      }
+      if (b.notes) {
+        html += `<div class="panel-section">
+          <div class="panel-section-label">Notas</div>
+          <p>${esc(b.notes)}</p>
+        </div>`;
+      }
+      if (b.doc) {
+        const docs = Array.isArray(b.doc) ? b.doc : [b.doc];
+        html += `<div class="panel-section">
+          <div class="panel-section-label">Docs relacionados</div>
+          <div class="panel-related">${docs.map(d => `<a href="${esc(d.href)}">${esc(d.title)}<small>${esc(d.sub || '')}</small></a>`).join('')}</div>
+        </div>`;
+      }
+      panelBody.innerHTML = html;
+
+      root.querySelectorAll('.int-box').forEach(el => el.classList.remove('is-active'));
+      root.querySelector(`.int-box[data-stage="${stageIdx}"][data-box="${boxIdx}"]`)?.classList.add('is-active');
+      panel.classList.add('is-open');
+    }
+
+    function bind() {
+      // scenario click
+      root.querySelectorAll('.scenario-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const L = card.getAttribute('data-letter');
+          if (L === active) return;
+          active = L;
+          render();
+        });
+      });
+      // INT box click
+      root.querySelectorAll('.int-box').forEach(box => {
+        box.addEventListener('click', () => {
+          openBoxPanel(parseInt(box.getAttribute('data-stage')), parseInt(box.getAttribute('data-box')));
+        });
+      });
+      // panel close
+      root.querySelector('.diagram-panel-close')?.addEventListener('click', () => {
+        root.querySelector('.diagram-panel').classList.remove('is-open');
+        root.querySelectorAll('.int-box').forEach(el => el.classList.remove('is-active'));
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const panel = root.querySelector('.diagram-panel');
+      if (panel && panel.classList.contains('is-open')) {
+        panel.classList.remove('is-open');
+        root.querySelectorAll('.int-box').forEach(el => el.classList.remove('is-active'));
+      }
+    });
+
+    render();
+  }
+
+  window.SMCDiagram.initPipeline = initPipeline;
 })();

@@ -31,8 +31,9 @@
   <h1>Índice</h1>
   <ol>
     <li><a href="#hla-live">Mapa interactivo HLA · Visio-style</a><span class="toc-pg">03</span></li>
-    <li><a href="#hl">Arquitectura alto nivel · diagrama clásico</a><span class="toc-pg">04</span></li>
-    <li><a href="#stack">Stack técnico decidido</a><span class="toc-pg">05</span></li>
+    <li><a href="#process-dyn">Procesos dinámicos · 5 escenarios</a><span class="toc-pg">04</span></li>
+    <li><a href="#hl">Arquitectura alto nivel · diagrama clásico</a><span class="toc-pg">05</span></li>
+    <li><a href="#stack">Stack técnico decidido</a><span class="toc-pg">06</span></li>
     <li><a href="#mono">Estructura monorepo</a><span class="toc-pg">05</span></li>
     <li><a href="#ed">Event-driven · cómo funciona</a><span class="toc-pg">06</span></li>
     <li><a href="#mt">Multi-tenancy técnico (RLS)</a><span class="toc-pg">07</span></li>
@@ -315,6 +316,23 @@
   </p>
 
   <div class="page-footer"><span>Banco SMC · Tech</span><span>03</span></div>
+</section>
+
+<section class="page" id="process-dyn">
+  <h2><span class="h2-num">00b</span>Procesos dinámicos · 5 escenarios</h2>
+  <p style="margin-top:-8px;color:#475569;font-size:14px;line-height:1.6;">
+    Cómo recorre el sistema un caso real paso a paso. <strong>Seleccioná un escenario</strong> (A · B · C · D · E) para ver su pipeline
+    horizontal con etapas y pasos integración (INT-XXX). <strong>Click en un paso</strong> para ver descripción · stack · sample payload ·
+    errores comunes · docs relacionados.
+  </p>
+
+  <div class="process-wrapper" id="process-pipeline"></div>
+
+  <p style="font-size:12px;color:#94A3B8;margin-top:14px;">
+    Tip: cambiar escenario re-renderiza el pipeline · click en cualquier INT-XXX abre detalle del paso · Esc cierra.
+  </p>
+
+  <div class="page-footer"><span>Banco SMC · Tech</span><span>04</span></div>
 </section>
 
 <section class="page" id="hl">
@@ -1017,6 +1035,223 @@ SMCDiagram.init({
     { from: 'supabase-db', to: 'openfactura' },
     { from: 'd2c', to: 'mp-pago', channels: ['d2c'] },
   ],
+});
+
+SMCDiagram.initPipeline({
+  id: 'process-pipeline',
+  default: 'A',
+  scenarios: {
+    A: {
+      title: 'Venta MeLi end-to-end',
+      sub: 'Sourcing → Listing → Venta → Fulfillment → Factura',
+      callout: 'Flujo completo de una orden Mercado Libre desde el sourcing del producto hasta la factura electrónica emitida en SII.',
+      tags: ['MeLi · OAuth 2.0', 'Venta B2C', 'Despacho'],
+      notes: 'Es el flujo más alto en volumen Y1. Cada paso tiene retry + idempotency.',
+      stages: [
+        { num: '01', name: 'Sourcing', boxes: [
+          { code: 'INT-A01', label: 'Búsqueda producto', kind: 'search', stack: 'SoloTodo API · Open Food Facts',
+            desc: 'Busca productos candidatos por categoría · marca · precio mercado. Datos de SoloTodo (58K productos chilenos) y Open Food Facts si aplica.',
+            endpoints: ['GET /api/sources/solotodo?q=...'],
+            doc: { href: '07-architecture.html#hl-v5', title: 'Arquitectura v5 Opportunities', sub: '6 capas sin LLM · ADR-0001' } },
+          { code: 'INT-A02', label: 'Scoring oportunidad', kind: 'search', stack: 'Cerebro · 6 señales sin LLM',
+            desc: 'Score 0-100 basado en multistore · spread · availability · stability · premium · meli. Top oportunidades se sugieren al operador.',
+            doc: { href: '07-architecture.html#hl-v5', title: 'Arquitectura v5 · scoring', sub: 'Cómo se calcula el score' } },
+        ]},
+        { num: '02', name: 'Listing MeLi', boxes: [
+          { code: 'INT-A03', label: 'Crear publicación', kind: 'create', stack: 'MeLi API · POST /items',
+            desc: 'Publica el producto en MeLi con título · descripción · fotos · precio · stock inicial.',
+            endpoints: ['POST /api/sync/meli (publish)'],
+            payload: '{\n  "title": "Producto X",\n  "category_id": "MLC123",\n  "price": 19990,\n  "available_quantity": 10,\n  "pictures": ["..."]\n}',
+            errors: ['401 token expirado → refresh cron 6h', 'PolicyAgent bloqueo → plan B v5'] },
+          { code: 'INT-A04', label: 'Sync stock inicial', kind: 'update', stack: 'MeLi API · PUT /items/{id}',
+            desc: 'Sincroniza stock real desde Postgres a MeLi. Cron diferencial cada 30 min para mantener stock al día.',
+            endpoints: ['POST /api/sync/meli (stock)'] },
+        ]},
+        { num: '03', name: 'Recepción orden', boxes: [
+          { code: 'INT-A05', label: 'Webhook MeLi', kind: 'notify', stack: 'MeLi webhook orders',
+            desc: 'MeLi notifica nueva orden vía webhook firmado. Validamos firma · idempotency key · escribimos a mkt_orders.',
+            endpoints: ['POST /api/webhooks/meli'],
+            errors: ['Firma inválida → 401', 'Duplicate webhook → idempotency key'] },
+        ]},
+        { num: '04', name: 'Aceptación', boxes: [
+          { code: 'INT-A06', label: 'Verificar stock', kind: 'search', stack: 'Postgres + RLS',
+            desc: 'Verifica stock disponible en tabla mkt_inventory. Si no alcanza, marca orden como pendiente y notifica operador.',
+            errors: ['Stock 0 → cancel orden auto si flag activo'] },
+          { code: 'INT-A07', label: 'Reservar inventario', kind: 'update', stack: 'Postgres lock row',
+            desc: 'Resta stock reservado en mkt_inventory dentro de transacción. Evita oversell con SELECT FOR UPDATE.' },
+        ]},
+        { num: '05', name: 'Despacho', boxes: [
+          { code: 'INT-A08', label: 'Cotizar courier', kind: 'search', stack: 'Chilexpress / Starken API',
+            desc: 'Cotización auto por peso/volumen/destino. Adapter Pattern elige courier según reglas operador.' },
+          { code: 'INT-A09', label: 'Generar etiqueta', kind: 'doc', stack: 'Courier API · PDF',
+            desc: 'Genera etiqueta de despacho + número de seguimiento. Guarda PDF en Supabase Storage.' },
+        ]},
+        { num: '06', name: 'Notificación', boxes: [
+          { code: 'INT-A10', label: 'Email tracking cliente', kind: 'notify', stack: 'Supabase email · Resend fallback',
+            desc: 'Email transaccional al comprador con número de seguimiento y enlace al courier.' },
+        ]},
+        { num: '07', name: 'Facturación', boxes: [
+          { code: 'INT-A11', label: 'Emitir DTE 39 boleta', kind: 'doc', stack: 'Open Factura · SII',
+            desc: 'Emite Boleta Electrónica (DTE 39) al cliente final. Adjunta PDF al evento mkt_invoices.',
+            errors: ['SII rechaza → reintentar con backoff', 'RUT inválido → fallback DTE genérico'] },
+        ]},
+      ],
+    },
+
+    B: {
+      title: 'Licitación Mercado Público B2G',
+      sub: 'Detección → Postulación → Adjudicación → Entrega → Factura institucional',
+      callout: 'Flujo B2G donde Marketplace SMC detecta licitaciones públicas afines al catálogo del operador, postula automatizado y opera el despacho a entidad pública.',
+      tags: ['ChileCompra · Ticket auth', 'Venta B2G', 'Factura 33'],
+      notes: 'Margen menor pero ticket alto · volumen estable mensual.',
+      stages: [
+        { num: '01', name: 'Detección', boxes: [
+          { code: 'INT-B01', label: 'Sync licitaciones diarias', kind: 'search', stack: 'Mercado Público API · cron 8am',
+            desc: 'Cron diario trae licitaciones nuevas. Filtra por categorías afines al operador y descarta las vencidas.',
+            endpoints: ['POST /api/cron/sync-mp'] },
+          { code: 'INT-B02', label: 'Matching catálogo', kind: 'search', stack: 'Postgres pg_trgm',
+            desc: 'Match fuzzy entre items pedidos en licitación y catálogo del operador. Score de compatibilidad.' },
+        ]},
+        { num: '02', name: 'Postulación', boxes: [
+          { code: 'INT-B03', label: 'Generar oferta', kind: 'create', stack: 'Cerebro IA · template oferta',
+            desc: 'Genera oferta con precios · plazos · descripción técnica. Operador revisa y aprueba.' },
+          { code: 'INT-B04', label: 'Enviar a ChileCompra', kind: 'notify', stack: 'Mercado Público API · POST',
+            desc: 'Envía la oferta al portal Mercado Público. Recibe ticket de confirmación.' },
+        ]},
+        { num: '03', name: 'Adjudicación', boxes: [
+          { code: 'INT-B05', label: 'Webhook resultado', kind: 'notify', stack: 'Mercado Público webhook',
+            desc: 'Recibe resultado: adjudicado, rechazado o desierto. Si adjudicado dispara siguiente etapa.',
+            errors: ['Adjudicación parcial → handle manual operador'] },
+        ]},
+        { num: '04', name: 'Despacho institucional', boxes: [
+          { code: 'INT-B06', label: 'Generar guía despacho', kind: 'doc', stack: 'Open Factura · DTE 52',
+            desc: 'Guía electrónica con OC asociada. Despacho a dirección institucional.' },
+          { code: 'INT-B07', label: 'Confirmación recepción', kind: 'update', stack: 'Mercado Público acta',
+            desc: 'Acta de recepción firmada por la entidad pública. Sube imagen/PDF a Storage.' },
+        ]},
+        { num: '05', name: 'Factura', boxes: [
+          { code: 'INT-B08', label: 'Emitir Factura DTE 33', kind: 'doc', stack: 'Open Factura · SII',
+            desc: 'Factura electrónica 33 a institución pública. Pago a 30/60 días según contrato.' },
+          { code: 'INT-B09', label: 'Conciliar pago', kind: 'pay', stack: 'Banco · conciliación manual fase 1',
+            desc: 'Conciliación del pago institucional cuando llega (típico 30-60 días).' },
+        ]},
+      ],
+    },
+
+    C: {
+      title: 'D2C storefront + ADS',
+      sub: 'Setup → Lanzamiento ADS → Conversión → Checkout → Despacho → Post-venta',
+      callout: 'Tienda online propia del operador (no marketplace de terceros). Tráfico vía Meta/Google/TikTok ADS · checkout integrado · post-venta automática.',
+      tags: ['D2C · storefront propio', 'ADS · pixels', 'Checkout MercadoPago/WebPay'],
+      notes: 'Mayor margen por ausencia de comisión MeLi · requiere inversión ADS y skills marketing.',
+      stages: [
+        { num: '01', name: 'Setup storefront', boxes: [
+          { code: 'INT-C01', label: 'Crear tienda', kind: 'create', stack: 'Next.js storefront template',
+            desc: 'Operador configura nombre · dominio · branding · catálogo desde panel admin.' },
+          { code: 'INT-C02', label: 'Conectar pasarela', kind: 'pay', stack: 'MercadoPago + WebPay',
+            desc: 'Operador conecta cuentas de pago. WebPay requiere certificado Transbank, MercadoPago credenciales OAuth.' },
+        ]},
+        { num: '02', name: 'ADS launch', boxes: [
+          { code: 'INT-C03', label: 'Pixels Meta/Google/TikTok', kind: 'notify', stack: 'GTM · pixels nativos',
+            desc: 'Embed pixels en storefront. Tracking conversión, eventos clave (view, add to cart, purchase).' },
+          { code: 'INT-C04', label: 'Sync catálogo Meta', kind: 'update', stack: 'Meta Catalog Feed XML',
+            desc: 'Feed XML del catálogo a Meta para dynamic ads. Update diario por cron.' },
+        ]},
+        { num: '03', name: 'Conversión', boxes: [
+          { code: 'INT-C05', label: 'Landing → Add to cart', kind: 'search', stack: 'Server Component · UI',
+            desc: 'Página de producto con CTA claro. Variantes (talla, color), reseñas, stock real-time.' },
+        ]},
+        { num: '04', name: 'Checkout', boxes: [
+          { code: 'INT-C06', label: 'Iniciar pago', kind: 'pay', stack: 'WebPay Plus · MercadoPago',
+            desc: 'Operador elige pasarela. Redirección o iframe según UX deseada.',
+            errors: ['Pasarela down → fallback otra', 'Timeout → revertir orden'] },
+          { code: 'INT-C07', label: 'Webhook confirmación', kind: 'notify', stack: 'Pasarela webhook firmado',
+            desc: 'Confirmación del pago. Marca orden como paid en Postgres.' },
+        ]},
+        { num: '05', name: 'Despacho', boxes: [
+          { code: 'INT-C08', label: 'Cotizar + etiqueta', kind: 'doc', stack: 'Chilexpress · Starken',
+            desc: 'Mismo flujo Adapter Pattern courier que Escenario A.' },
+        ]},
+        { num: '06', name: 'Post-venta', boxes: [
+          { code: 'INT-C09', label: 'NPS automático', kind: 'notify', stack: 'Cerebro · email + in-app',
+            desc: 'Email NPS 7 días después de recibir el pedido. Score se loguea para analytics.' },
+          { code: 'INT-C10', label: 'Reseña producto', kind: 'create', stack: 'Storefront review form',
+            desc: 'Cliente deja reseña que vuelve al catálogo. Modera Cerebro previo a publicar.' },
+        ]},
+      ],
+    },
+
+    D: {
+      title: 'B2B cotización + aprobación',
+      sub: 'RFQ → Cotización → Aprobación cliente → Confirmación → Despacho + factura',
+      callout: 'Cliente empresa pide cotización custom (RFQ). El sistema soporta flujo de aprobación multi-step antes de cerrar la orden y emitir factura 33.',
+      tags: ['B2B · API key', 'Cotización custom', 'Factura DTE 33'],
+      notes: 'Ticket alto · ciclo de venta más largo (días/semanas) · requiere historial de cuentas y precios negociados.',
+      stages: [
+        { num: '01', name: 'Solicitud RFQ', boxes: [
+          { code: 'INT-D01', label: 'Cliente envía RFQ', kind: 'create', stack: 'B2B API · POST /rfq',
+            desc: 'Empresa cliente envía RFQ con items + cantidades + plazo deseado.',
+            endpoints: ['POST /api/b2b/rfq'] },
+        ]},
+        { num: '02', name: 'Cotización', boxes: [
+          { code: 'INT-D02', label: 'Generar cotización', kind: 'create', stack: 'Cerebro · pricing engine',
+            desc: 'Calcula precios con descuentos por volumen y precios negociados del cliente. Genera PDF.' },
+          { code: 'INT-D03', label: 'Enviar a cliente', kind: 'notify', stack: 'Email + portal B2B',
+            desc: 'Email con PDF + link al portal donde puede aprobar online.' },
+        ]},
+        { num: '03', name: 'Aprobación cliente', boxes: [
+          { code: 'INT-D04', label: 'Click aprobación', kind: 'update', stack: 'Portal B2B · signed link',
+            desc: 'Cliente firma electrónicamente (HMAC link). Estado pasa a approved_by_buyer.',
+            errors: ['Link expirado → regenerar', 'Aprobación parcial → handle manual'] },
+        ]},
+        { num: '04', name: 'Confirmación', boxes: [
+          { code: 'INT-D05', label: 'Reservar stock', kind: 'update', stack: 'Postgres lock',
+            desc: 'Reserva stock como Escenario A. Crítico evitar overselling B2B (penalty contractual).' },
+          { code: 'INT-D06', label: 'Confirmar al cliente', kind: 'notify', stack: 'Email · API webhook cliente',
+            desc: 'Confirmación firme. Cliente puede tener su propio webhook de recepción.' },
+        ]},
+        { num: '05', name: 'Despacho + Factura', boxes: [
+          { code: 'INT-D07', label: 'Despacho institucional', kind: 'doc', stack: 'Chilexpress · LTL si bulto grande',
+            desc: 'Despacho a dirección bodega cliente. Para bultos grandes usa Less Than Truckload.' },
+          { code: 'INT-D08', label: 'Factura DTE 33', kind: 'doc', stack: 'Open Factura',
+            desc: 'Factura electrónica 33. Pago acordado (30/60/90 días según contrato).' },
+        ]},
+      ],
+    },
+
+    E: {
+      title: 'Sync inventario multi-canal',
+      sub: 'Cambio fuente → Trigger evento → Propagación adapter → Confirmación cross-canal',
+      callout: 'Cuando hay cambio de stock en una fuente (orden recibida en MeLi · alta producto · ajuste manual operador) · se propaga a todos los canales activos para evitar oversell.',
+      tags: ['Event-driven', 'Multi-canal sync', 'pg_notify · adapter pattern'],
+      notes: 'Es el cross-cutting concern más crítico técnico. Si esto falla · operador over-vende y paga penalidades.',
+      stages: [
+        { num: '01', name: 'Cambio fuente', boxes: [
+          { code: 'INT-E01', label: 'Orden recibida MeLi', kind: 'notify', stack: 'MeLi webhook · INT-A05',
+            desc: 'Webhook MeLi notifica orden nueva. Trigger del cambio de stock.' },
+          { code: 'INT-E02', label: 'Update manual operador', kind: 'update', stack: 'Panel admin · UI',
+            desc: 'Operador ajusta stock manualmente (reposición · merma · auditoría).' },
+        ]},
+        { num: '02', name: 'Trigger evento', boxes: [
+          { code: 'INT-E03', label: 'pg_notify inventory_changed', kind: 'notify', stack: 'Postgres LISTEN/NOTIFY',
+            desc: 'Trigger Postgres dispara notify cuando mkt_inventory.stock cambia. Cualquier proceso suscrito reacciona.' },
+        ]},
+        { num: '03', name: 'Propagación adapter', boxes: [
+          { code: 'INT-E04', label: 'MeLi sync stock', kind: 'update', stack: 'MeLi API · PUT /items',
+            desc: 'Adapter MeLi actualiza stock en la publicación.' },
+          { code: 'INT-E05', label: 'D2C storefront', kind: 'update', stack: 'Storefront ISR revalidate',
+            desc: 'Storefront revalida la página del producto. Stock real-time visible al comprador.' },
+          { code: 'INT-E06', label: 'B2B portal sync', kind: 'update', stack: 'B2B API · cache invalidation',
+            desc: 'Invalida cache del portal B2B. Empresa cliente ve stock actualizado en su próxima query.' },
+        ]},
+        { num: '04', name: 'Confirmación', boxes: [
+          { code: 'INT-E07', label: 'Logger mkt_api_logs', kind: 'notify', stack: 'JSON logger central',
+            desc: 'Loguea sync con timestamp y resultado por canal. Alerta Slack si algún canal falla.',
+            errors: ['Canal devuelve 500 → retry con backoff', 'Retry exceed → marca canal degraded'] },
+        ]},
+      ],
+    },
+  },
 });
 </script>
 </body>
