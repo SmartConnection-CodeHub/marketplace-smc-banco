@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>06 · API Catalog · Marketplace SMC</title>
+<head><meta charset="UTF-8"><title>06 · API Catalog · Marketplace SMC</title>
 <link rel="stylesheet" href="_styles.css">
 <link rel="stylesheet" href="_diagram-kit.css">
 </head>
@@ -26,7 +26,7 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-listado-completo-30-endpoints">01 · Listado completo · 30 endpoints</a><span class="toc-pg">03</span></li><li><a href="#02-mapa-de-interacciones-qui-n-llama-a-qui-n">02 · Mapa de interacciones · quién llama a quién</a><span class="toc-pg">04</span></li><li><a href="#03-detalle-expandible-estilo-swagger-interactivo">03 · Detalle expandible · estilo Swagger interactivo</a><span class="toc-pg">05</span></li><li><a href="#02-convenciones-del-api">02 · Convenciones del API</a><span class="toc-pg">06</span></li><li><a href="#03-c-digos-de-error-estandarizados">03 · Códigos de error estandarizados</a><span class="toc-pg">07</span></li><li><a href="#04-authentication-flow">04 · Authentication flow</a><span class="toc-pg">08</span></li><li><a href="#05-anti-patrones-reportados">05 · Anti-patrones reportados</a><span class="toc-pg">09</span></li><li><a href="#06-versionado-y-breaking-changes">06 · Versionado y breaking changes</a><span class="toc-pg">10</span></li><li><a href="#07-performance-esperada">07 · Performance esperada</a><span class="toc-pg">11</span></li></ol>
+  <ol><li><a href="#01-listado-completo-30-endpoints">01 · Listado completo · 30 endpoints</a><span class="toc-pg">03</span></li><li><a href="#02-mapa-de-interacciones-qui-n-llama-a-qui-n">02 · Mapa de interacciones · quién llama a quién</a><span class="toc-pg">04</span></li><li><a href="#03-detalle-expandible-estilo-swagger-interactivo">03 · Detalle expandible · estilo Swagger interactivo</a><span class="toc-pg">05</span></li><li><a href="#02-convenciones-del-api">02 · Convenciones del API</a><span class="toc-pg">06</span></li><li><a href="#03-c-digos-de-error-estandarizados">03 · Códigos de error estandarizados</a><span class="toc-pg">07</span></li><li><a href="#04-authentication-flow">04 · Authentication flow</a><span class="toc-pg">08</span></li><li><a href="#05-anti-patrones-reportados">05 · Anti-patrones reportados</a><span class="toc-pg">09</span></li><li><a href="#06-versionado-y-breaking-changes">06 · Versionado y breaking changes</a><span class="toc-pg">10</span></li><li><a href="#07-performance-esperada">07 · Performance esperada</a><span class="toc-pg">11</span></li><li><a href="#08-detalle-endpoints-suppliers-doc-13-08-adr-0003">08 · Detalle endpoints Suppliers (Doc 13 §08 · ADR-0003)</a><span class="toc-pg">12</span></li><li><a href="#09-detalle-endpoints-ads-doc-02-bbp-p14">09 · Detalle endpoints Ads (Doc 02 BBP P14)</a><span class="toc-pg">13</span></li></ol>
 </section>
 
 <section class="page" id="01-listado-completo-30-endpoints">
@@ -281,6 +281,134 @@
 <td>público</td>
 <td>Health check uptime</td>
 </tr>
+<tr>
+<td>31</td>
+<td>GET</td>
+<td><code>/api/suppliers</code></td>
+<td>Suppliers</td>
+<td>JWT</td>
+<td>Lista proveedores dropship activos</td>
+</tr>
+<tr>
+<td>32</td>
+<td>POST</td>
+<td><code>/api/suppliers</code></td>
+<td>Suppliers</td>
+<td>JWT</td>
+<td>Crea proveedor con auth_mode</td>
+</tr>
+<tr>
+<td>33</td>
+<td>PATCH</td>
+<td><code>/api/suppliers/:id</code></td>
+<td>Suppliers</td>
+<td>JWT</td>
+<td>Update credentials / payment_terms / status</td>
+</tr>
+<tr>
+<td>34</td>
+<td>POST</td>
+<td><code>/api/suppliers/:id/sync-catalog</code></td>
+<td>Suppliers</td>
+<td>JWT</td>
+<td>Sync catálogo proveedor → mkt_supplier_products</td>
+</tr>
+<tr>
+<td>35</td>
+<td>POST</td>
+<td><code>/api/suppliers/:id/purchase-orders</code></td>
+<td>Suppliers</td>
+<td>JWT</td>
+<td>Crea OC al proveedor (propagación dropship)</td>
+</tr>
+<tr>
+<td>36</td>
+<td>GET</td>
+<td><code>/api/suppliers/:id/purchase-orders/:po_id</code></td>
+<td>Suppliers</td>
+<td>JWT</td>
+<td>Estado + tracking OC</td>
+</tr>
+<tr>
+<td>37</td>
+<td>POST</td>
+<td><code>/api/webhooks/supplier/:supplier_code</code></td>
+<td>Webhooks</td>
+<td>HMAC</td>
+<td>Webhook proveedor (tracking · stock · cancellation)</td>
+</tr>
+<tr>
+<td>38</td>
+<td>GET</td>
+<td><code>/api/ads/accounts</code></td>
+<td>Ads</td>
+<td>JWT</td>
+<td>Cuentas publicitarias (Mercado/Meta/Google/TikTok)</td>
+</tr>
+<tr>
+<td>39</td>
+<td>POST</td>
+<td><code>/api/ads/accounts</code></td>
+<td>Ads</td>
+<td>JWT</td>
+<td>Conectar nueva cuenta con OAuth</td>
+</tr>
+<tr>
+<td>40</td>
+<td>GET</td>
+<td><code>/api/ads/campaigns</code></td>
+<td>Ads</td>
+<td>JWT</td>
+<td>Lista campañas con filtros + ROAS actual</td>
+</tr>
+<tr>
+<td>41</td>
+<td>POST</td>
+<td><code>/api/ads/campaigns</code></td>
+<td>Ads</td>
+<td>JWT</td>
+<td>Crea campaña multi-canal</td>
+</tr>
+<tr>
+<td>42</td>
+<td>PATCH</td>
+<td><code>/api/ads/campaigns/:id</code></td>
+<td>Ads</td>
+<td>JWT</td>
+<td>Pausar · ajustar presupuesto · status</td>
+</tr>
+<tr>
+<td>43</td>
+<td>GET</td>
+<td><code>/api/ads/metrics</code></td>
+<td>Ads</td>
+<td>JWT</td>
+<td>Time series spend/clicks/conv/roas por campaña</td>
+</tr>
+<tr>
+<td>44</td>
+<td>POST</td>
+<td><code>/api/ads/events</code></td>
+<td>Ads</td>
+<td>JWT</td>
+<td>Envía conversion event a Meta CAPI / Google EC / TikTok Events</td>
+</tr>
+<tr>
+<td>45</td>
+<td>POST</td>
+<td><code>/api/cron/ads-sync-metrics</code></td>
+<td>Cron</td>
+<td>CRON_SECRET</td>
+<td>Sync diario métricas desde providers</td>
+</tr>
+<tr>
+<td>46</td>
+<td>POST</td>
+<td><code>/api/cron/ads-events-batch</code></td>
+<td>Cron</td>
+<td>CRON_SECRET</td>
+<td>Envía conversion events pendientes batch 5min</td>
+</tr>
 </tbody></table>
   <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>03</span></div>
 </section>
@@ -482,8 +610,171 @@
 <td>200 ms first token</td>
 <td>600 ms first token</td>
 </tr>
+<tr>
+<td>Suppliers sync-catalog</td>
+<td>5-15 s</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Ads metrics fetch</td>
+<td>1-3 s</td>
+<td>8 s</td>
+</tr>
+<tr>
+<td>Ads events POST (CAPI)</td>
+<td>80 ms</td>
+<td>200 ms</td>
+</tr>
 </tbody></table>
   <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>11</span></div>
+</section>
+<section class="page" id="08-detalle-endpoints-suppliers-doc-13-08-adr-0003">
+  <h2><span class="h2-num">08</span>Detalle endpoints Suppliers (Doc 13 §08 · ADR-0003)</h2>
+  <h3>POST /api/suppliers</h3>
+<p>Crea un proveedor dropship. Soporta 4 auth modes: api_key · oauth · email_automated · whatsapp_business.</p>
+<pre class="ascii">// Request
+{
+  "supplier_code": "proveedor-x",
+  "display_name": "Proveedor X SpA",
+  "rut": "76.123.456-7",
+  "auth_mode": "api_key",
+  "credentials": { "api_key": "..." },
+  "contact_email": "ventas@proveedor.cl",
+  "payment_terms": "7d post-venta · transferencia CLP"
+}
+
+// Response 201
+{
+  "id": "uuid",
+  "supplier_code": "proveedor-x",
+  "status": "active"
+}</pre>
+<p>Validation Zod: <code>supplier_code</code> slug · <code>auth_mode</code> enum · <code>credentials</code> matches schema según auth_mode.</p>
+<h3>POST /api/suppliers/:id/sync-catalog</h3>
+<p>Dispara <code>SupplierAdapter.syncCatalog()</code> · upsert en <code>mkt_supplier_products</code>.</p>
+<pre class="ascii">// Response 200
+{
+  "synced_count": 342,
+  "new_count": 28,
+  "updated_count": 314,
+  "deactivated_count": 0,
+  "duration_ms": 8432
+}</pre>
+<h3>POST /api/suppliers/:id/purchase-orders</h3>
+<p>Crea OC dropship (uso interno desde flujo orden) o manual desde dashboard.</p>
+<pre class="ascii">// Request
+{
+  "items": [{ "supplier_sku": "SKU-X-001", "qty": 2 }],
+  "ship_to": {
+    "full_name": "Juan Pérez",
+    "rut": "12.345.678-9",
+    "street": "Av. Providencia 1234",
+    "city": "Santiago",
+    "region": "RM",
+    "phone": "+56912345678"
+  },
+  "order_id": "uuid-orden-marketplace"  // opcional · NULL si manual
+}
+
+// Response 201
+{
+  "id": "uuid-po",
+  "external_po_id": "PROV-X-99887",
+  "status": "created",
+  "total_clp": 45000,
+  "expected_shipped_at": "2026-05-30T00:00:00Z"
+}</pre>
+<h3>POST /api/webhooks/supplier/:supplier_code</h3>
+<p>Recibe webhook de proveedor (HMAC firmado). Eventos: shipped · delivered · cancelled · stock_changed.</p>
+<pre class="ascii">// Request (firma en header X-Supplier-Signature)
+{
+  "event_type": "shipped",
+  "external_po_id": "PROV-X-99887",
+  "tracking_number": "CHX-12345",
+  "courier": "Chilexpress",
+  "occurred_at": "2026-05-28T14:23:00Z"
+}
+
+// Response 200
+{ "ok": true, "event_id": "uuid" }</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>12</span></div>
+</section>
+<section class="page" id="09-detalle-endpoints-ads-doc-02-bbp-p14">
+  <h2><span class="h2-num">09</span>Detalle endpoints Ads (Doc 02 BBP P14)</h2>
+  <h3>POST /api/ads/accounts</h3>
+<p>Conecta cuenta publicitaria con OAuth. Tokens cifrados en Supabase Vault.</p>
+<pre class="ascii">// Request
+{
+  "provider": "mercado_ads",   // o "meta" | "google_ads" | "tiktok"
+  "oauth_code": "...",          // recibido del flow OAuth callback
+  "display_name": "SMC SpA · Mercado Ads",
+  "monthly_budget_clp": 500000
+}
+
+// Response 201
+{
+  "id": "uuid",
+  "provider": "mercado_ads",
+  "external_account_id": "MLA123456",
+  "is_active": true
+}</pre>
+<h3>POST /api/ads/campaigns</h3>
+<p>Crea campaña en provider remoto + sincroniza row local.</p>
+<pre class="ascii">// Request
+{
+  "account_id": "uuid",
+  "name": "Black Friday 2026",
+  "product_ids": ["uuid-sku-1", "uuid-sku-2"],
+  "budget_clp": 100000,
+  "start_date": "2026-11-25",
+  "end_date": "2026-11-30"
+}
+
+// Response 201
+{
+  "id": "uuid",
+  "external_campaign_id": "ADS-99887",
+  "status": "active"
+}</pre>
+<h3>GET /api/ads/metrics</h3>
+<p>Time series spend/clicks/conv/roas. Filtro por campaign_id · date_range.</p>
+<pre class="ascii">GET /api/ads/metrics?campaign_id=uuid&date_from=2026-05-01&date_to=2026-05-27</pre>
+<pre class="ascii">// Response 200
+{
+  "campaign_id": "uuid",
+  "rows": [
+    { "date": "2026-05-27", "impressions": 4523, "clicks": 89, "conversions": 7, "spend_clp": 12000, "revenue_clp": 84000, "roas": 7.0 }
+  ],
+  "summary": {
+    "total_spend": 240000,
+    "total_revenue": 1820000,
+    "average_roas": 7.58,
+    "alerts": []
+  }
+}</pre>
+<p>Si ROAS &lt;1.5 últimos 7 días · <code>summary.alerts</code> incluye <code>{ "type": "low_roas", "suggestion": "pausar o cambiar creatividad" }</code>.</p>
+<h3>POST /api/ads/events</h3>
+<p>Envía conversion event server-side (Meta CAPI · Google Enhanced Conversions · TikTok Events). Hashed PII según provider spec.</p>
+<pre class="ascii">// Request
+{
+  "provider": "meta_capi",
+  "event_type": "purchase",
+  "event_id": "uuid-order-1",   // idempotency
+  "user_data": {
+    "em": "sha256-hash-email",
+    "ph": "sha256-hash-phone"
+  },
+  "custom_data": {
+    "value": 45000,
+    "currency": "CLP",
+    "content_ids": ["sku-1"]
+  }
+}
+
+// Response 200
+{ "ok": true, "queued_for_provider": true }</pre>
+<p>Cron <code>/api/cron/ads-events-batch</code> (5min) envía batch pendientes a cada provider.</p>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>13</span></div>
 </section>
 
 </div>

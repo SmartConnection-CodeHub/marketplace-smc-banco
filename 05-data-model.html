@@ -1,29 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>05 · Data Model · Marketplace SMC</title>
+<head><meta charset="UTF-8"><title>05 · Data Model · Marketplace SMC</title>
 <link rel="stylesheet" href="_styles.css">
 <link rel="stylesheet" href="_diagram-kit.css">
-<style>
-.table-card { background: white; border: 1px solid var(--ink-200); border-radius: 12px; padding: 20px; margin: 16px 0; }
-.table-name { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 800; color: var(--smc-primary-dark); margin: 0 0 6px; }
-.table-purpose { font-size: 13px; color: var(--ink-500); margin-bottom: 14px; }
-.cols { font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; background: var(--ink-50); padding: 14px 18px; border-radius: 8px; }
-.col-pk { color: var(--smc-danger); font-weight: 700; }
-.col-fk { color: var(--smc-info); }
-.col-tenant { color: var(--smc-purple); font-weight: 700; }
-.col-event { color: var(--smc-success); }
-</style>
 </head>
 <body>
-<nav class="doc-nav"><a href="04-rfp.html">◂ doc 04</a><span class="nav-center">DOCUMENTO 05 DE 09</span><a href="06-api-catalog.html">doc 06 · API Catalog ▸</a></nav>
-
+<nav class="doc-nav"><a href="04-rfp.html">◂ doc anterior</a><span class="nav-center">DOC 05 · MARKETPLACE SMC</span><a href="06-api-catalog.html">doc siguiente ▸</a></nav>
 <div class="doc">
 <section class="cover">
-  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Blueprint · Marketplace SMC</div></div>
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Marketplace SMC</div></div>
   <div class="cover-center">
-    <div class="cover-doc-num">Documento 05 de 09</div>
+    <div class="cover-doc-num">Documento 05 · Marketplace SMC</div>
     <h1 class="cover-title">Data Model</h1>
     <p class="cover-subtitle">Schema único multi-tenant · Single Source of Truth · cero duplicación.</p>
     <div class="cover-meta">
@@ -39,647 +26,769 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol>
-    <li><a href="#data-erd-section">00b · ERD interactivo · click tabla ve columnas + RLS</a><span class="toc-pg">—</span></li>
-    <li><a href="#convs">Convenciones y prefijos</a><span class="toc-pg">03</span></li>
-    <li><a href="#mt">Multi-tenancy · pieza central</a><span class="toc-pg">04</span></li>
-    <li><a href="#core">Tablas Core (tenants · users · catalog)</a><span class="toc-pg">05</span></li>
-    <li><a href="#inv">Tablas Inventory</a><span class="toc-pg">06</span></li>
-    <li><a href="#channels">Tablas Channels &amp; Adapters</a><span class="toc-pg">07</span></li>
-    <li><a href="#orders">Tablas Orders &amp; Fulfillment</a><span class="toc-pg">08</span></li>
-    <li><a href="#supply">Tablas Sourcing &amp; Suppliers</a><span class="toc-pg">09</span></li>
-    <li><a href="#finance">Tablas Finance &amp; Accounting</a><span class="toc-pg">10</span></li>
-    <li><a href="#events">Tablas Eventos &amp; Audit</a><span class="toc-pg">11</span></li>
-    <li><a href="#erd">Diagrama ERD simplificado</a><span class="toc-pg">12</span></li>
-  </ol>
+  <ol><li><a href="#01-convenciones-y-prefijos">01 · Convenciones y prefijos</a><span class="toc-pg">03</span></li><li><a href="#data-erd-section">data-erd-section</a><span class="toc-pg">04</span></li><li><a href="#02-multi-tenancy-pieza-central">02 · Multi-tenancy · pieza central</a><span class="toc-pg">05</span></li><li><a href="#03-tablas-core">03 · Tablas Core</a><span class="toc-pg">06</span></li><li><a href="#04-tablas-inventory-el-coraz-n">04 · Tablas Inventory · el corazón</a><span class="toc-pg">07</span></li><li><a href="#05-tablas-channels-amp-adapters">05 · Tablas Channels &amp; Adapters</a><span class="toc-pg">08</span></li><li><a href="#06-tablas-orders-amp-fulfillment">06 · Tablas Orders &amp; Fulfillment</a><span class="toc-pg">09</span></li><li><a href="#07-tablas-sourcing-amp-suppliers">07 · Tablas Sourcing &amp; Suppliers</a><span class="toc-pg">10</span></li><li><a href="#08-tablas-finance-amp-accounting">08 · Tablas Finance &amp; Accounting</a><span class="toc-pg">11</span></li><li><a href="#09-tablas-eventos-amp-audit">09 · Tablas Eventos &amp; Audit</a><span class="toc-pg">12</span></li><li><a href="#10-diagrama-erd-simplificado">10 · Diagrama ERD simplificado</a><span class="toc-pg">13</span></li><li><a href="#11-smart-cache-v5-mkt-opportunity-cache">11 · Smart Cache v5 · mkt_opportunity_cache</a><span class="toc-pg">14</span></li><li><a href="#12-tablas-supplier-dropshipping-adr-0003">12 · Tablas Supplier (dropshipping · ADR-0003)</a><span class="toc-pg">15</span></li><li><a href="#13-tablas-ads-publicidad-multicanal-doc-02-bbp-p14">13 · Tablas ADS (publicidad multicanal · Doc 02 BBP P14)</a><span class="toc-pg">16</span></li></ol>
 </section>
 
-<section class="page" id="convs">
+<section class="page" id="01-convenciones-y-prefijos">
   <h2><span class="h2-num">01</span>Convenciones y prefijos</h2>
-  <table>
-    <thead><tr><th>Prefijo</th><th>Significa</th><th>Ejemplo</th></tr></thead>
-    <tbody>
-      <tr><td><code>mk_</code></td><td>Marketplace core (tablas operativas)</td><td><code>mk_products</code> · <code>mk_orders</code></td></tr>
-      <tr><td><code>mk_ch_</code></td><td>Specific de canal (adapter data)</td><td><code>mk_ch_meli_listings</code></td></tr>
-      <tr><td><code>mk_fin_</code></td><td>Finanzas / contabilidad</td><td><code>mk_fin_journal_entries</code></td></tr>
-      <tr><td><code>mk_evt_</code></td><td>Eventos / event sourcing</td><td><code>mk_evt_operations</code></td></tr>
-      <tr><td><code>mk_audit_</code></td><td>Logs de auditoría</td><td><code>mk_audit_changes</code></td></tr>
-    </tbody>
-  </table>
-  <div class="box box-premise">
-    <div class="box-title">🎯 Reglas obligatorias toda tabla</div>
-    <ul style="margin:0">
-      <li><code>id UUID PRIMARY KEY DEFAULT gen_random_uuid()</code></li>
-      <li><code>tenant_id UUID NOT NULL REFERENCES mk_tenants(id)</code> (excepto <code>mk_tenants</code>)</li>
-      <li><code>created_at TIMESTAMPTZ DEFAULT NOW()</code></li>
-      <li><code>updated_at TIMESTAMPTZ DEFAULT NOW()</code></li>
-      <li><code>created_by UUID REFERENCES mk_users(id)</code> (auditoría)</li>
-      <li>Index sobre <code>(tenant_id, created_at)</code> obligatorio</li>
-      <li>RLS policy: <code>USING (tenant_id = current_setting('app.current_tenant')::uuid)</code></li>
-    </ul>
-  </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>03</span></div>
+  <p><table></p>
+<p><thead><tr><th>Prefijo</th><th>Significa</th><th>Ejemplo</th></tr></thead></p>
+<p><tbody></p>
+<p><tr><td><code>mk_</code></td><td>Marketplace core (tablas operativas)</td><td><code>mk_products</code> · <code>mk_orders</code></td></tr></p>
+<p><tr><td><code>mk_ch_</code></td><td>Specific de canal (adapter data)</td><td><code>mk_ch_meli_listings</code></td></tr></p>
+<p><tr><td><code>mk_fin_</code></td><td>Finanzas / contabilidad</td><td><code>mk_fin_journal_entries</code></td></tr></p>
+<p><tr><td><code>mk_evt_</code></td><td>Eventos / event sourcing</td><td><code>mk_evt_operations</code></td></tr></p>
+<p><tr><td><code>mk_audit_</code></td><td>Logs de auditoría</td><td><code>mk_audit_changes</code></td></tr></p>
+<p></tbody></p>
+<p></table></p>
+<p><div class="box box-premise"></p>
+<p><div class="box-title">🎯 Reglas obligatorias toda tabla</div></p>
+<p><ul style="margin:0"></p>
+<p><li><code>id UUID PRIMARY KEY DEFAULT gen_random_uuid()</code></li></p>
+<p><li><code>tenant_id UUID NOT NULL REFERENCES mk_tenants(id)</code> (excepto <code>mk_tenants</code>)</li></p>
+<p><li><code>created_at TIMESTAMPTZ DEFAULT NOW()</code></li></p>
+<p><li><code>updated_at TIMESTAMPTZ DEFAULT NOW()</code></li></p>
+<p><li><code>created_by UUID REFERENCES mk_users(id)</code> (auditoría)</li></p>
+<p><li>Index sobre <code>(tenant_id, created_at)</code> obligatorio</li></p>
+<p><li>RLS policy: <code>USING (tenant_id = current_setting('app.current_tenant')::uuid)</code></li></p>
+<p></ul></p>
+<p></div></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>03</span></div>
 </section>
 <section class="page" id="data-erd-section">
-  <h2><span class="h2-num">00b</span>ERD interactivo · click tabla ve columnas + RLS</h2>
-  <p style="color:#475569;font-size:14px;line-height:1.6;margin-top:-8px;">20 tablas core del schema Marketplace SMC. Click en cualquier tabla revela columnas · RLS policy · relaciones FK. Zoom para detalle.</p>
-  <div class="diagram-host kind-hla" id="data-erd" data-kind="hla"></div>
-  <script type="application/json" data-for="data-erd">{"title": "Marketplace SMC · Entity Relationship Diagram", "sub": "20 tablas core con tenant_id · RLS Postgres · click bloque ve columnas + RLS policy", "svg": "<g><rect class='group-frame' x='40' y='40' width='400' height='340'/><text class='group-label' x='60' y='66'>TENANT · AUTH</text></g><g><rect class='group-frame' x='460' y='40' width='800' height='240'/><text class='group-label' x='480' y='66'>CATÁLOGO · INVENTARIO</text></g><g><rect class='group-frame' x='460' y='300' width='800' height='320'/><text class='group-label' x='480' y='326'>ÓRDENES · PAGOS · DTE</text></g><g><rect class='group-frame' x='1280' y='40' width='340' height='580'/><text class='group-label' x='1300' y='66'>INTEGRACIONES · LOGS</text></g><path class='conn' data-from='tenants' data-to='users' d='M 240 175 L 240 215' marker-end='url(#arr)'/><path class='conn' data-from='tenants' data-to='products' d='M 320 145 C 460 145 480 165 530 165' marker-end='url(#arr)'/><path class='conn' data-from='users' data-to='orders' d='M 320 280 C 460 280 480 380 530 380' marker-end='url(#arr)'/><path class='conn' data-from='products' data-to='inventory' d='M 720 230 L 770 230' marker-end='url(#arr)'/><path class='conn' data-from='products' data-to='channels' d='M 720 165 L 970 165' marker-end='url(#arr)'/><path class='conn' data-from='inventory' data-to='order_items' d='M 870 290 C 870 380 870 380 870 420' marker-end='url(#arr)'/><path class='conn' data-from='orders' data-to='order_items' d='M 720 380 L 770 425' marker-end='url(#arr)'/><path class='conn' data-from='orders' data-to='payments' d='M 660 440 L 660 490' marker-end='url(#arr)'/><path class='conn' data-from='orders' data-to='invoices' d='M 720 430 C 850 430 850 510 970 510' marker-end='url(#arr)'/><path class='conn' data-from='payments' data-to='invoices' d='M 770 510 L 970 510' marker-end='url(#arr)'/><path class='conn' data-from='channels' data-to='channel_tokens' d='M 1170 165 L 1320 165' marker-end='url(#arr)'/><path class='conn' data-from='channels' data-to='channel_logs' d='M 1170 220 L 1320 220' marker-end='url(#arr)'/><path class='conn' data-from='orders' data-to='channel_logs' d='M 720 360 C 1280 320 1280 280 1320 220' marker-end='url(#arr)' data-channels='meli'/><path class='conn' data-from='tenants' data-to='audit_logs' d='M 320 100 C 1280 100 1280 380 1320 380' marker-end='url(#arr)'/><g class='block type-actor' data-id='tenants'><rect class='block-bg' x='160' y='90' width='160' height='90'/><text class='block-code' x='178' y='115'>CORE · TABLE</text><text class='block-title' x='178' y='138'>tenants</text><text class='block-sub' x='178' y='158'>Operadores · uno por SMC SpA cliente</text></g><g class='block type-actor' data-id='users'><rect class='block-bg' x='160' y='215' width='160' height='80'/><text class='block-code' x='178' y='240'>AUTH · TABLE</text><text class='block-title' x='178' y='263'>users</text><text class='block-sub' x='178' y='283'>tenant_id + role</text></g><g class='block type-data' data-id='products'><rect class='block-bg' x='530' y='100' width='190' height='90'/><text class='block-code' x='548' y='125'>CATALOG</text><text class='block-title' x='548' y='148'>products</text><text class='block-sub' x='548' y='168'>SKU · nombre · precio base</text></g><g class='block type-data' data-id='inventory'><rect class='block-bg' x='770' y='190' width='180' height='100'/><text class='block-code' x='788' y='215'>STOCK</text><text class='block-title' x='788' y='238'>inventory</text><text class='block-sub' x='788' y='258'>stock_real · reserved</text><text class='block-sub' x='788' y='276'>SELECT FOR UPDATE</text></g><g class='block type-channel' data-id='channels'><rect class='block-bg' x='970' y='120' width='200' height='90'/><text class='block-code' x='988' y='145'>CHANNELS</text><text class='block-title' x='988' y='168'>channels</text><text class='block-sub' x='988' y='188'>meli · d2c · mp · b2b</text></g><g class='block type-channel' data-id='channel_tokens'><rect class='block-bg' x='1320' y='130' width='200' height='80'/><text class='block-code' x='1338' y='155'>AUTH · CHANNEL</text><text class='block-title' x='1338' y='178'>channel_tokens</text><text class='block-sub' x='1338' y='198'>OAuth refresh httpOnly</text></g><g class='block type-channel' data-id='channel_logs'><rect class='block-bg' x='1320' y='220' width='200' height='80'/><text class='block-code' x='1338' y='245'>OBSERV</text><text class='block-title' x='1338' y='268'>channel_logs</text><text class='block-sub' x='1338' y='288'>sync events + errors</text></g><g class='block type-backend' data-id='orders'><rect class='block-bg' x='530' y='340' width='190' height='100'/><text class='block-code' x='548' y='365'>CORE · TX</text><text class='block-title' x='548' y='388'>orders</text><text class='block-sub' x='548' y='408'>status · channel_id · total</text></g><g class='block type-backend' data-id='order_items'><rect class='block-bg' x='770' y='400' width='180' height='90'/><text class='block-code' x='788' y='425'>DETAIL</text><text class='block-title' x='788' y='448'>order_items</text><text class='block-sub' x='788' y='468'>qty · price · sku</text></g><g class='block type-payment' data-id='payments'><rect class='block-bg' x='530' y='490' width='190' height='90'/><text class='block-code' x='548' y='515'>PAYMENTS</text><text class='block-title' x='548' y='538'>payments</text><text class='block-sub' x='548' y='558'>gateway · amount · status</text></g><g class='block type-payment' data-id='invoices'><rect class='block-bg' x='970' y='470' width='200' height='90'/><text class='block-code' x='988' y='495'>DTE · SII</text><text class='block-title' x='988' y='518'>invoices</text><text class='block-sub' x='988' y='538'>tipo 33/39/61 · folio</text></g><g class='block type-infra' data-id='audit_logs'><rect class='block-bg' x='1320' y='340' width='200' height='80'/><text class='block-code' x='1338' y='365'>OBSERV</text><text class='block-title' x='1338' y='388'>audit_logs</text><text class='block-sub' x='1338' y='408'>who · what · when</text></g>", "blocks": {"tenants": {"type": "CORE · TABLE", "title": "tenants", "sub": "Operadores SMC · raíz multi-tenant", "desc": "Cada operador tiene 1 row aquí. tenant_id se propaga a TODAS las demás tablas vía RLS. service_role solo puede operar con tenant_id implícito desde JWT.", "stack": ["id (uuid)", "rut · razón_social", "tier (starter/pro/business/enterprise)", "status (active/suspended/churn)"], "owner": "Backend", "notes": "RLS: ningún query sin tenant_id implícito desde JWT. Solo service_role bypass para admin SMC."}, "users": {"type": "AUTH · TABLE", "title": "users", "sub": "Personas con acceso al tenant", "desc": "Usuarios humanos del operador. Roles: admin · operator · readonly · soporte. JWT incluye tenant_id + role en claims.", "stack": ["id (uuid) = auth.users.id", "tenant_id (FK)", "role · email · 2fa_enabled"], "owner": "Security"}, "products": {"type": "CATALOG", "title": "products", "sub": "Catálogo maestro · 1 producto por SKU", "desc": "Producto único independiente del canal. Las publicaciones a MeLi · D2C · MP usan este maestro como fuente única.", "stack": ["id · tenant_id · sku · name", "description · base_price · category_id", "images (jsonb) · attributes (jsonb)"], "owner": "Backend", "channels": ["meli", "d2c", "mp", "b2b"]}, "inventory": {"type": "STOCK", "title": "inventory", "sub": "Stock real-time · cross-canal único", "desc": "Stock físico real. Reservado vía SELECT FOR UPDATE para evitar overselling. pg_notify emite evento al cambiar para que adapters sincronicen canales.", "stack": ["product_id (FK)", "stock_real · stock_reserved", "warehouse_location · updated_at"], "owner": "Backend", "notes": "Cross-cutting con Escenario E del Doc 07 · sync multi-canal disparado por pg_notify."}, "channels": {"type": "CHANNELS", "title": "channels", "sub": "Canales activos por operador", "desc": "Cada operador habilita/deshabilita los canales que quiere (meli · d2c · mp · b2b). Adapter Pattern usa este registro.", "stack": ["id · tenant_id · type (enum)", "config (jsonb) · is_active"], "channels": ["meli", "d2c", "mp", "b2b"]}, "channel_tokens": {"type": "AUTH · CHANNEL", "title": "channel_tokens", "sub": "OAuth tokens por canal · httpOnly", "desc": "Tokens de acceso/refresh por canal. NUNCA expuestos al cliente · solo service_role los lee. Refresh automatic cron 6h.", "stack": ["channel_id (FK)", "access_token · refresh_token", "expires_at · scope"]}, "channel_logs": {"type": "OBSERV", "title": "channel_logs", "sub": "Sync events + errors por canal", "desc": "Logger central de operaciones por canal. Usado para LLMOps y troubleshooting. Tabla mkt_api_logs equivalente.", "stack": ["channel_id (FK)", "event_type · payload (jsonb)", "duration_ms · status · error_msg"]}, "orders": {"type": "CORE · TX", "title": "orders", "sub": "Transacción · status workflow", "desc": "Una orden por venta · de cualquier canal. status transiciona: created → accepted → shipped → delivered. canceled posible en cualquier momento antes de shipped.", "stack": ["id · tenant_id · channel_id (FK)", "external_order_id · status (enum)", "total · currency · created_at"], "owner": "Backend"}, "order_items": {"type": "DETAIL", "title": "order_items", "sub": "Items por orden (1:N)", "desc": "Líneas de detalle por orden. Permite N items por orden con qty + price snapshot al momento de la compra.", "stack": ["order_id (FK) · product_id (FK)", "qty · price_snapshot", "discount · sku_snapshot"]}, "payments": {"type": "PAYMENTS", "title": "payments", "sub": "Pagos asociados a orders", "desc": "Una orden puede tener N pagos (parciales). gateway: webpay · mercadopago · transferencia · contado. status: pending → approved → settled.", "stack": ["order_id (FK) · gateway", "amount · external_id · status", "webhook_received_at"]}, "invoices": {"type": "DTE · SII", "title": "invoices", "sub": "DTE 33 · 39 · 61 emitido en SII", "desc": "Documento Tributario Electrónico emitido. Asociado a orden y pago. Folio único del SII. PDF guardado en Supabase Storage.", "stack": ["order_id (FK)", "tipo_dte (33/39/61) · folio_sii", "pdf_url · emitted_at"], "notes": "SMC SpA solo tiene exenta autorizada actualmente · falta pedir 33/39/61 al SII."}, "audit_logs": {"type": "OBSERV", "title": "audit_logs", "sub": "Quién hizo qué · cuándo", "desc": "Tabla append-only de auditoría. Cada operación sensible queda registrada con user_id · action · resource · timestamp · metadata.", "stack": ["user_id · tenant_id", "action · resource_type · resource_id", "metadata (jsonb) · created_at"]}}, "connections": [{"from": "tenants", "to": "users"}, {"from": "tenants", "to": "products"}, {"from": "users", "to": "orders"}, {"from": "products", "to": "inventory"}, {"from": "products", "to": "channels"}, {"from": "inventory", "to": "order_items"}, {"from": "orders", "to": "order_items"}, {"from": "orders", "to": "payments"}, {"from": "orders", "to": "invoices"}, {"from": "payments", "to": "invoices"}, {"from": "channels", "to": "channel_tokens"}, {"from": "channels", "to": "channel_logs"}, {"from": "orders", "to": "channel_logs", "channels": ["meli"]}, {"from": "tenants", "to": "audit_logs"}]}</script>
-  <div class="page-footer"><span>Banco SMC</span><span>—</span></div>
+  <h2><span class="h2-num">02</span>data-erd-section</h2>
+  <p><h2><span class="h2-num">00b</span>ERD interactivo · click tabla ve columnas + RLS</h2></p>
+<p><p style="color:#475569;font-size:14px;line-height:1.6;margin-top:-8px;">20 tablas core del schema Marketplace SMC. Click en cualquier tabla revela columnas · RLS policy · relaciones FK. Zoom para detalle.</p></p>
+<p><div class="diagram-host kind-hla" id="data-erd" data-kind="hla"></div></p>
+<p><script type="application/json" data-for="data-erd">{"title": "Marketplace SMC · Entity Relationship Diagram", "sub": "20 tablas core con tenant_id · RLS Postgres · click bloque ve columnas + RLS policy", "svg": "<g><rect class='group-frame' x='40' y='40' width='400' height='340'/><text class='group-label' x='60' y='66'>TENANT · AUTH</text></g><g><rect class='group-frame' x='460' y='40' width='800' height='240'/><text class='group-label' x='480' y='66'>CATÁLOGO · INVENTARIO</text></g><g><rect class='group-frame' x='460' y='300' width='800' height='320'/><text class='group-label' x='480' y='326'>ÓRDENES · PAGOS · DTE</text></g><g><rect class='group-frame' x='1280' y='40' width='340' height='580'/><text class='group-label' x='1300' y='66'>INTEGRACIONES · LOGS</text></g><path class='conn' data-from='tenants' data-to='users' d='M 240 175 L 240 215' marker-end='url(#arr)'/><path class='conn' data-from='tenants' data-to='products' d='M 320 145 C 460 145 480 165 530 165' marker-end='url(#arr)'/><path class='conn' data-from='users' data-to='orders' d='M 320 280 C 460 280 480 380 530 380' marker-end='url(#arr)'/><path class='conn' data-from='products' data-to='inventory' d='M 720 230 L 770 230' marker-end='url(#arr)'/><path class='conn' data-from='products' data-to='channels' d='M 720 165 L 970 165' marker-end='url(#arr)'/><path class='conn' data-from='inventory' data-to='order_items' d='M 870 290 C 870 380 870 380 870 420' marker-end='url(#arr)'/><path class='conn' data-from='orders' data-to='order_items' d='M 720 380 L 770 425' marker-end='url(#arr)'/><path class='conn' data-from='orders' data-to='payments' d='M 660 440 L 660 490' marker-end='url(#arr)'/><path class='conn' data-from='orders' data-to='invoices' d='M 720 430 C 850 430 850 510 970 510' marker-end='url(#arr)'/><path class='conn' data-from='payments' data-to='invoices' d='M 770 510 L 970 510' marker-end='url(#arr)'/><path class='conn' data-from='channels' data-to='channel_tokens' d='M 1170 165 L 1320 165' marker-end='url(#arr)'/><path class='conn' data-from='channels' data-to='channel_logs' d='M 1170 220 L 1320 220' marker-end='url(#arr)'/><path class='conn' data-from='orders' data-to='channel_logs' d='M 720 360 C 1280 320 1280 280 1320 220' marker-end='url(#arr)' data-channels='meli'/><path class='conn' data-from='tenants' data-to='audit_logs' d='M 320 100 C 1280 100 1280 380 1320 380' marker-end='url(#arr)'/><g class='block type-actor' data-id='tenants'><rect class='block-bg' x='160' y='90' width='160' height='90'/><text class='block-code' x='178' y='115'>CORE · TABLE</text><text class='block-title' x='178' y='138'>tenants</text><text class='block-sub' x='178' y='158'>Operadores · uno por SMC SpA cliente</text></g><g class='block type-actor' data-id='users'><rect class='block-bg' x='160' y='215' width='160' height='80'/><text class='block-code' x='178' y='240'>AUTH · TABLE</text><text class='block-title' x='178' y='263'>users</text><text class='block-sub' x='178' y='283'>tenant_id + role</text></g><g class='block type-data' data-id='products'><rect class='block-bg' x='530' y='100' width='190' height='90'/><text class='block-code' x='548' y='125'>CATALOG</text><text class='block-title' x='548' y='148'>products</text><text class='block-sub' x='548' y='168'>SKU · nombre · precio base</text></g><g class='block type-data' data-id='inventory'><rect class='block-bg' x='770' y='190' width='180' height='100'/><text class='block-code' x='788' y='215'>STOCK</text><text class='block-title' x='788' y='238'>inventory</text><text class='block-sub' x='788' y='258'>stock_real · reserved</text><text class='block-sub' x='788' y='276'>SELECT FOR UPDATE</text></g><g class='block type-channel' data-id='channels'><rect class='block-bg' x='970' y='120' width='200' height='90'/><text class='block-code' x='988' y='145'>CHANNELS</text><text class='block-title' x='988' y='168'>channels</text><text class='block-sub' x='988' y='188'>meli · d2c · mp · b2b</text></g><g class='block type-channel' data-id='channel_tokens'><rect class='block-bg' x='1320' y='130' width='200' height='80'/><text class='block-code' x='1338' y='155'>AUTH · CHANNEL</text><text class='block-title' x='1338' y='178'>channel_tokens</text><text class='block-sub' x='1338' y='198'>OAuth refresh httpOnly</text></g><g class='block type-channel' data-id='channel_logs'><rect class='block-bg' x='1320' y='220' width='200' height='80'/><text class='block-code' x='1338' y='245'>OBSERV</text><text class='block-title' x='1338' y='268'>channel_logs</text><text class='block-sub' x='1338' y='288'>sync events + errors</text></g><g class='block type-backend' data-id='orders'><rect class='block-bg' x='530' y='340' width='190' height='100'/><text class='block-code' x='548' y='365'>CORE · TX</text><text class='block-title' x='548' y='388'>orders</text><text class='block-sub' x='548' y='408'>status · channel_id · total</text></g><g class='block type-backend' data-id='order_items'><rect class='block-bg' x='770' y='400' width='180' height='90'/><text class='block-code' x='788' y='425'>DETAIL</text><text class='block-title' x='788' y='448'>order_items</text><text class='block-sub' x='788' y='468'>qty · price · sku</text></g><g class='block type-payment' data-id='payments'><rect class='block-bg' x='530' y='490' width='190' height='90'/><text class='block-code' x='548' y='515'>PAYMENTS</text><text class='block-title' x='548' y='538'>payments</text><text class='block-sub' x='548' y='558'>gateway · amount · status</text></g><g class='block type-payment' data-id='invoices'><rect class='block-bg' x='970' y='470' width='200' height='90'/><text class='block-code' x='988' y='495'>DTE · SII</text><text class='block-title' x='988' y='518'>invoices</text><text class='block-sub' x='988' y='538'>tipo 33/39/61 · folio</text></g><g class='block type-infra' data-id='audit_logs'><rect class='block-bg' x='1320' y='340' width='200' height='80'/><text class='block-code' x='1338' y='365'>OBSERV</text><text class='block-title' x='1338' y='388'>audit_logs</text><text class='block-sub' x='1338' y='408'>who · what · when</text></g>", "blocks": {"tenants": {"type": "CORE · TABLE", "title": "tenants", "sub": "Operadores SMC · raíz multi-tenant", "desc": "Cada operador tiene 1 row aquí. tenant_id se propaga a TODAS las demás tablas vía RLS. service_role solo puede operar con tenant_id implícito desde JWT.", "stack": ["id (uuid)", "rut · razón_social", "tier (starter/pro/business/enterprise)", "status (active/suspended/churn)"], "owner": "Backend", "notes": "RLS: ningún query sin tenant_id implícito desde JWT. Solo service_role bypass para admin SMC."}, "users": {"type": "AUTH · TABLE", "title": "users", "sub": "Personas con acceso al tenant", "desc": "Usuarios humanos del operador. Roles: admin · operator · readonly · soporte. JWT incluye tenant_id + role en claims.", "stack": ["id (uuid) = auth.users.id", "tenant_id (FK)", "role · email · 2fa_enabled"], "owner": "Security"}, "products": {"type": "CATALOG", "title": "products", "sub": "Catálogo maestro · 1 producto por SKU", "desc": "Producto único independiente del canal. Las publicaciones a MeLi · D2C · MP usan este maestro como fuente única.", "stack": ["id · tenant_id · sku · name", "description · base_price · category_id", "images (jsonb) · attributes (jsonb)"], "owner": "Backend", "channels": ["meli", "d2c", "mp", "b2b"]}, "inventory": {"type": "STOCK", "title": "inventory", "sub": "Stock real-time · cross-canal único", "desc": "Stock físico real. Reservado vía SELECT FOR UPDATE para evitar overselling. pg_notify emite evento al cambiar para que adapters sincronicen canales.", "stack": ["product_id (FK)", "stock_real · stock_reserved", "warehouse_location · updated_at"], "owner": "Backend", "notes": "Cross-cutting con Escenario E del Doc 07 · sync multi-canal disparado por pg_notify."}, "channels": {"type": "CHANNELS", "title": "channels", "sub": "Canales activos por operador", "desc": "Cada operador habilita/deshabilita los canales que quiere (meli · d2c · mp · b2b). Adapter Pattern usa este registro.", "stack": ["id · tenant_id · type (enum)", "config (jsonb) · is_active"], "channels": ["meli", "d2c", "mp", "b2b"]}, "channel_tokens": {"type": "AUTH · CHANNEL", "title": "channel_tokens", "sub": "OAuth tokens por canal · httpOnly", "desc": "Tokens de acceso/refresh por canal. NUNCA expuestos al cliente · solo service_role los lee. Refresh automatic cron 6h.", "stack": ["channel_id (FK)", "access_token · refresh_token", "expires_at · scope"]}, "channel_logs": {"type": "OBSERV", "title": "channel_logs", "sub": "Sync events + errors por canal", "desc": "Logger central de operaciones por canal. Usado para LLMOps y troubleshooting. Tabla mkt_api_logs equivalente.", "stack": ["channel_id (FK)", "event_type · payload (jsonb)", "duration_ms · status · error_msg"]}, "orders": {"type": "CORE · TX", "title": "orders", "sub": "Transacción · status workflow", "desc": "Una orden por venta · de cualquier canal. status transiciona: created → accepted → shipped → delivered. canceled posible en cualquier momento antes de shipped.", "stack": ["id · tenant_id · channel_id (FK)", "external_order_id · status (enum)", "total · currency · created_at"], "owner": "Backend"}, "order_items": {"type": "DETAIL", "title": "order_items", "sub": "Items por orden (1:N)", "desc": "Líneas de detalle por orden. Permite N items por orden con qty + price snapshot al momento de la compra.", "stack": ["order_id (FK) · product_id (FK)", "qty · price_snapshot", "discount · sku_snapshot"]}, "payments": {"type": "PAYMENTS", "title": "payments", "sub": "Pagos asociados a orders", "desc": "Una orden puede tener N pagos (parciales). gateway: webpay · mercadopago · transferencia · contado. status: pending → approved → settled.", "stack": ["order_id (FK) · gateway", "amount · external_id · status", "webhook_received_at"]}, "invoices": {"type": "DTE · SII", "title": "invoices", "sub": "DTE 33 · 39 · 61 emitido en SII", "desc": "Documento Tributario Electrónico emitido. Asociado a orden y pago. Folio único del SII. PDF guardado en Supabase Storage.", "stack": ["order_id (FK)", "tipo_dte (33/39/61) · folio_sii", "pdf_url · emitted_at"], "notes": "SMC SpA solo tiene exenta autorizada actualmente · falta pedir 33/39/61 al SII."}, "audit_logs": {"type": "OBSERV", "title": "audit_logs", "sub": "Quién hizo qué · cuándo", "desc": "Tabla append-only de auditoría. Cada operación sensible queda registrada con user_id · action · resource · timestamp · metadata.", "stack": ["user_id · tenant_id", "action · resource_type · resource_id", "metadata (jsonb) · created_at"]}}, "connections": [{"from": "tenants", "to": "users"}, {"from": "tenants", "to": "products"}, {"from": "users", "to": "orders"}, {"from": "products", "to": "inventory"}, {"from": "products", "to": "channels"}, {"from": "inventory", "to": "order_items"}, {"from": "orders", "to": "order_items"}, {"from": "orders", "to": "payments"}, {"from": "orders", "to": "invoices"}, {"from": "payments", "to": "invoices"}, {"from": "channels", "to": "channel_tokens"}, {"from": "channels", "to": "channel_logs"}, {"from": "orders", "to": "channel_logs", "channels": ["meli"]}, {"from": "tenants", "to": "audit_logs"}]}</script></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>04</span></div>
 </section>
-
-
-<section class="page" id="mt">
+<section class="page" id="02-multi-tenancy-pieza-central">
   <h2><span class="h2-num">02</span>Multi-tenancy · pieza central</h2>
   <p>Cada tenant = una "empresa operadora" dentro del Hub. Hoy hay 1 tenant (Smart Connection / Marketplace SMC SpA). Futuro: N marcas propias adicionales.</p>
-
-  <div class="svg-container">
-    <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg" style="background:#FAFAF7">
-      <rect x="20" y="20" width="200" height="160" rx="12" fill="#0F172A"/>
-      <text x="120" y="50" text-anchor="middle" fill="#00C1C1" font-weight="800" font-size="16">PostgreSQL</text>
-      <text x="120" y="68" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10">Supabase + RLS</text>
-      <rect x="40" y="85" width="160" height="80" rx="8" fill="#1E293B"/>
-      <text x="120" y="105" text-anchor="middle" fill="white" font-size="12">Tablas únicas con</text>
-      <text x="120" y="120" text-anchor="middle" fill="#7C3AED" font-family="monospace" font-size="11">tenant_id</text>
-      <text x="120" y="140" text-anchor="middle" fill="white" font-size="12">+ políticas RLS</text>
-      <text x="120" y="155" text-anchor="middle" fill="#94f0e0" font-family="monospace" font-size="10">USING (tenant_id = ...)</text>
-
-      <rect x="300" y="20" width="140" height="60" rx="10" fill="#FFE4E6" stroke="#F472B6" stroke-width="2"/>
-      <text x="370" y="48" text-anchor="middle" font-weight="700" font-size="13">Tenant: SMC</text>
-      <text x="370" y="65" text-anchor="middle" font-size="10" fill="#831843">RUT 76811863-9</text>
-
-      <rect x="300" y="100" width="140" height="60" rx="10" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
-      <text x="370" y="128" text-anchor="middle" font-weight="700" font-size="13">Tenant: Marca-2</text>
-      <text x="370" y="145" text-anchor="middle" font-size="10" fill="#1E40AF">Futuro</text>
-
-      <rect x="500" y="60" width="140" height="60" rx="10" fill="#D1FAE5" stroke="#22C55E" stroke-width="2" stroke-dasharray="3,3"/>
-      <text x="570" y="88" text-anchor="middle" font-weight="700" font-size="13" fill="#14532D">Tenant: Marca N</text>
-      <text x="570" y="105" text-anchor="middle" font-size="10" fill="#14532D">Futuro · plug-and-play</text>
-
-      <line x1="220" y1="100" x2="300" y2="50" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/>
-      <line x1="220" y1="100" x2="300" y2="130" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/>
-      <line x1="220" y1="100" x2="500" y2="90" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/>
-    </svg>
-  </div>
-
-  <p>Beneficios concretos:</p>
-  <ul>
-    <li>1 sola BD · 1 sola app desplegada</li>
-    <li>Aislamiento garantizado via RLS Postgres (tenant A NUNCA ve data tenant B)</li>
-    <li>Agregar tenant nuevo = 1 INSERT en <code>mk_tenants</code> · no es deploy nuevo</li>
-    <li>Métricas consolidadas posibles (admin del Hub puede ver todos)</li>
-  </ul>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>04</span></div>
+<p><div class="svg-container"></p>
+<p><svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg" style="background:#FAFAF7"></p>
+<p><rect x="20" y="20" width="200" height="160" rx="12" fill="#0F172A"/></p>
+<p><text x="120" y="50" text-anchor="middle" fill="#00C1C1" font-weight="800" font-size="16">PostgreSQL</text></p>
+<p><text x="120" y="68" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10">Supabase + RLS</text></p>
+<p><rect x="40" y="85" width="160" height="80" rx="8" fill="#1E293B"/></p>
+<p><text x="120" y="105" text-anchor="middle" fill="white" font-size="12">Tablas únicas con</text></p>
+<p><text x="120" y="120" text-anchor="middle" fill="#7C3AED" font-family="monospace" font-size="11">tenant_id</text></p>
+<p><text x="120" y="140" text-anchor="middle" fill="white" font-size="12">+ políticas RLS</text></p>
+<p><text x="120" y="155" text-anchor="middle" fill="#94f0e0" font-family="monospace" font-size="10">USING (tenant_id = ...)</text></p>
+<p><rect x="300" y="20" width="140" height="60" rx="10" fill="#FFE4E6" stroke="#F472B6" stroke-width="2"/></p>
+<p><text x="370" y="48" text-anchor="middle" font-weight="700" font-size="13">Tenant: SMC</text></p>
+<p><text x="370" y="65" text-anchor="middle" font-size="10" fill="#831843">RUT 76811863-9</text></p>
+<p><rect x="300" y="100" width="140" height="60" rx="10" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/></p>
+<p><text x="370" y="128" text-anchor="middle" font-weight="700" font-size="13">Tenant: Marca-2</text></p>
+<p><text x="370" y="145" text-anchor="middle" font-size="10" fill="#1E40AF">Futuro</text></p>
+<p><rect x="500" y="60" width="140" height="60" rx="10" fill="#D1FAE5" stroke="#22C55E" stroke-width="2" stroke-dasharray="3,3"/></p>
+<p><text x="570" y="88" text-anchor="middle" font-weight="700" font-size="13" fill="#14532D">Tenant: Marca N</text></p>
+<p><text x="570" y="105" text-anchor="middle" font-size="10" fill="#14532D">Futuro · plug-and-play</text></p>
+<p><line x1="220" y1="100" x2="300" y2="50" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/></p>
+<p><line x1="220" y1="100" x2="300" y2="130" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/></p>
+<p><line x1="220" y1="100" x2="500" y2="90" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/></p>
+<p></svg></p>
+<p></div></p>
+<p>Beneficios concretos:</p>
+<ul>
+<li>1 sola BD · 1 sola app desplegada</li>
+<li>Aislamiento garantizado via RLS Postgres (tenant A NUNCA ve data tenant B)</li>
+<li>Agregar tenant nuevo = 1 INSERT en <code>mk_tenants</code> · no es deploy nuevo</li>
+<li>Métricas consolidadas posibles (admin del Hub puede ver todos)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>05</span></div>
 </section>
-
-<section class="page" id="core">
+<section class="page" id="03-tablas-core">
   <h2><span class="h2-num">03</span>Tablas Core</h2>
-
-  <div class="table-card">
-    <div class="table-name">mk_tenants</div>
-    <div class="table-purpose">Una fila = una empresa operadora dentro del Hub.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-slug TEXT UNIQUE              -- 'smc' · 'marca-1' · 'marca-x'
-name TEXT                     -- razón social legal
-rut TEXT                      -- RUT empresa
-giro TEXT                     -- giro principal SII
-domicilio JSONB               -- dirección estructurada
-plan TEXT                     -- 'mvp' · 'standard' · 'enterprise'
-settings JSONB                -- configuración tenant-específica
-active BOOLEAN DEFAULT true
-created_at TIMESTAMPTZ
-updated_at TIMESTAMPTZ</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_users</div>
-    <div class="table-purpose">Operadores del Hub. Pueden tener acceso a múltiples tenants.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-email TEXT UNIQUE
-full_name TEXT
-auth_id UUID                  -- ref Supabase Auth
-role TEXT                     -- 'admin' · 'operator' · 'viewer' · 'accountant'
-active BOOLEAN DEFAULT true
-created_at TIMESTAMPTZ</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_user_tenants</div>
-    <div class="table-purpose">Many-to-many · qué usuarios acceden a qué tenants con qué rol.</div>
-    <pre class="cols">user_id UUID <span class="col-fk">FK → mk_users</span>
-tenant_id UUID <span class="col-fk">FK → mk_tenants</span>
-role TEXT                     -- rol específico en este tenant
-PRIMARY KEY (user_id, tenant_id)</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_categories</div>
-    <div class="table-purpose">Categorías de productos · jerarquía padre-hijo · compartida cross-tenant si flag.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>           -- NULL si es categoría global SMC
-slug TEXT
-name TEXT
-parent_id UUID                -- self-ref para jerarquía
-meta JSONB</pre>
-  </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>05</span></div>
+  <p><div class="table-card"></p>
+<p><div class="table-name">mk_tenants</div></p>
+<p><div class="table-purpose">Una fila = una empresa operadora dentro del Hub.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p>slug TEXT UNIQUE              -- 'smc' · 'marca-1' · 'marca-x'</p>
+<p>name TEXT                     -- razón social legal</p>
+<p>rut TEXT                      -- RUT empresa</p>
+<p>giro TEXT                     -- giro principal SII</p>
+<p>domicilio JSONB               -- dirección estructurada</p>
+<p>plan TEXT                     -- 'mvp' · 'standard' · 'enterprise'</p>
+<p>settings JSONB                -- configuración tenant-específica</p>
+<p>active BOOLEAN DEFAULT true</p>
+<p>created_at TIMESTAMPTZ</p>
+<p>updated_at TIMESTAMPTZ</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_users</div></p>
+<p><div class="table-purpose">Operadores del Hub. Pueden tener acceso a múltiples tenants.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p>email TEXT UNIQUE</p>
+<p>full_name TEXT</p>
+<p>auth_id UUID                  -- ref Supabase Auth</p>
+<p>role TEXT                     -- 'admin' · 'operator' · 'viewer' · 'accountant'</p>
+<p>active BOOLEAN DEFAULT true</p>
+<p>created_at TIMESTAMPTZ</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_user_tenants</div></p>
+<p><div class="table-purpose">Many-to-many · qué usuarios acceden a qué tenants con qué rol.</div></p>
+<p><pre class="cols">user_id UUID <span class="col-fk">FK → mk_users</span></p>
+<p>tenant_id UUID <span class="col-fk">FK → mk_tenants</span></p>
+<p>role TEXT                     -- rol específico en este tenant</p>
+<p>PRIMARY KEY (user_id, tenant_id)</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_categories</div></p>
+<p><div class="table-purpose">Categorías de productos · jerarquía padre-hijo · compartida cross-tenant si flag.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span>           -- NULL si es categoría global SMC</p>
+<p>slug TEXT</p>
+<p>name TEXT</p>
+<p>parent_id UUID                -- self-ref para jerarquía</p>
+<p>meta JSONB</pre></p>
+<p></div></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>06</span></div>
 </section>
-
-<section class="page" id="inv">
+<section class="page" id="04-tablas-inventory-el-coraz-n">
   <h2><span class="h2-num">04</span>Tablas Inventory · el corazón</h2>
-
-  <div class="table-card">
-    <div class="table-name">mk_products</div>
-    <div class="table-purpose">SKU master. UN producto = UNA fila aquí. Se publica en N canales.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID NOT NULL</span>
-sku TEXT NOT NULL             -- código interno
-ean_upc TEXT                  -- código barras
-title TEXT NOT NULL
-description TEXT
-brand TEXT
-category_id UUID <span class="col-fk">FK</span>
-weight_grams INTEGER
-dim_cm JSONB                  -- {length, width, height}
-images JSONB                  -- array URLs
-attributes JSONB              -- {color, size, ...}
-parent_sku UUID               -- self-ref para variantes
-landed_cost NUMERIC           -- costo real puesto en bodega
-status TEXT                   -- 'active' · 'discontinued' · 'draft'
-UNIQUE (tenant_id, sku)</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_warehouses</div>
-    <div class="table-purpose">Bodegas físicas del tenant. Hoy 1 · Y2 múltiples.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-name TEXT                     -- 'Casa Matriz' · 'Bodega Sur'
-address JSONB
-active BOOLEAN</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_inventory_stock</div>
-    <div class="table-purpose">Stock físico por SKU por bodega. SSoT del inventario.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-product_id UUID <span class="col-fk">FK</span>
-warehouse_id UUID <span class="col-fk">FK</span>
-location TEXT                 -- 'rack-A-3-bin-12'
-physical_qty INTEGER          -- stock real contado
-reserved_qty INTEGER          -- asignado a órdenes pendientes
-available_qty INTEGER         -- generated: physical - reserved
-updated_at TIMESTAMPTZ
-UNIQUE (tenant_id, product_id, warehouse_id)</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_inventory_movements</div>
-    <div class="table-purpose">Log de TODO movimiento de stock. Auditable. Event-sourced.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-product_id UUID <span class="col-fk">FK</span>
-warehouse_id UUID <span class="col-fk">FK</span>
-direction TEXT                -- 'IN' · 'OUT' · 'ADJUST'
-quantity INTEGER              -- positivo siempre · direction indica signo
-reason TEXT                   -- 'purchase' · 'sale' · 'return' · 'damage' · 'count'
-reference_type TEXT           -- 'order' · 'po' · 'manual'
-reference_id UUID             -- FK polimórfico
-notes TEXT
-<span class="col-event">created_at TIMESTAMPTZ</span></pre>
-  </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>06</span></div>
+  <p><div class="table-card"></p>
+<p><div class="table-name">mk_products</div></p>
+<p><div class="table-purpose">SKU master. UN producto = UNA fila aquí. Se publica en N canales.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID NOT NULL</span></p>
+<p>sku TEXT NOT NULL             -- código interno</p>
+<p>ean_upc TEXT                  -- código barras</p>
+<p>title TEXT NOT NULL</p>
+<p>description TEXT</p>
+<p>brand TEXT</p>
+<p>category_id UUID <span class="col-fk">FK</span></p>
+<p>weight_grams INTEGER</p>
+<p>dim_cm JSONB                  -- {length, width, height}</p>
+<p>images JSONB                  -- array URLs</p>
+<p>attributes JSONB              -- {color, size, ...}</p>
+<p>parent_sku UUID               -- self-ref para variantes</p>
+<p>landed_cost NUMERIC           -- costo real puesto en bodega</p>
+<p>status TEXT                   -- 'active' · 'discontinued' · 'draft'</p>
+<p>UNIQUE (tenant_id, sku)</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_warehouses</div></p>
+<p><div class="table-purpose">Bodegas físicas del tenant. Hoy 1 · Y2 múltiples.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>name TEXT                     -- 'Casa Matriz' · 'Bodega Sur'</p>
+<p>address JSONB</p>
+<p>active BOOLEAN</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_inventory_stock</div></p>
+<p><div class="table-purpose">Stock físico por SKU por bodega. SSoT del inventario.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>product_id UUID <span class="col-fk">FK</span></p>
+<p>warehouse_id UUID <span class="col-fk">FK</span></p>
+<p>location TEXT                 -- 'rack-A-3-bin-12'</p>
+<p>physical_qty INTEGER          -- stock real contado</p>
+<p>reserved_qty INTEGER          -- asignado a órdenes pendientes</p>
+<p>available_qty INTEGER         -- generated: physical - reserved</p>
+<p>updated_at TIMESTAMPTZ</p>
+<p>UNIQUE (tenant_id, product_id, warehouse_id)</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_inventory_movements</div></p>
+<p><div class="table-purpose">Log de TODO movimiento de stock. Auditable. Event-sourced.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>product_id UUID <span class="col-fk">FK</span></p>
+<p>warehouse_id UUID <span class="col-fk">FK</span></p>
+<p>direction TEXT                -- 'IN' · 'OUT' · 'ADJUST'</p>
+<p>quantity INTEGER              -- positivo siempre · direction indica signo</p>
+<p>reason TEXT                   -- 'purchase' · 'sale' · 'return' · 'damage' · 'count'</p>
+<p>reference_type TEXT           -- 'order' · 'po' · 'manual'</p>
+<p>reference_id UUID             -- FK polimórfico</p>
+<p>notes TEXT</p>
+<p><span class="col-event">created_at TIMESTAMPTZ</span></pre></p>
+<p></div></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>07</span></div>
 </section>
-
-<section class="page" id="channels">
+<section class="page" id="05-tablas-channels-amp-adapters">
   <h2><span class="h2-num">05</span>Tablas Channels &amp; Adapters</h2>
-
-  <div class="table-card">
-    <div class="table-name">mk_channels</div>
-    <div class="table-purpose">Canales configurados por el tenant.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-type TEXT                     -- 'meli' · 'mp' · 'd2c' · 'b2b' · 'falabella' · 'cencosud'
-name TEXT                     -- alias amigable
-credentials JSONB             -- OAuth tokens · API keys (cifrado at rest)
-config JSONB                  -- pricing rules · default markup · etc
-active BOOLEAN
-last_sync_at TIMESTAMPTZ</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_listings</div>
-    <div class="table-purpose">Una publicación de UN producto en UN canal. N:M entre products y channels.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-product_id UUID <span class="col-fk">FK</span>
-channel_id UUID <span class="col-fk">FK</span>
-external_id TEXT              -- ID del producto en el canal (MLC123 · MP456)
-status TEXT                   -- 'active' · 'paused' · 'error' · 'pending'
-price_clp NUMERIC             -- precio aplicado en este canal
-last_synced_at TIMESTAMPTZ
-sync_error TEXT               -- último error si status='error'
-external_data JSONB           -- payload completo del canal
-UNIQUE (tenant_id, product_id, channel_id)</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_price_rules</div>
-    <div class="table-purpose">Reglas de pricing por canal · usadas en publicación.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-channel_type TEXT             -- 'meli' · 'mp' etc.
-formula JSONB                 -- {markup_pct, commission_pct, iva_pct, ...}
-applies_to JSONB              -- {category_ids: [], product_ids: []}
-priority INTEGER              -- regla más específica gana
-active BOOLEAN</pre>
-  </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>07</span></div>
+  <p><div class="table-card"></p>
+<p><div class="table-name">mk_channels</div></p>
+<p><div class="table-purpose">Canales configurados por el tenant.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>type TEXT                     -- 'meli' · 'mp' · 'd2c' · 'b2b' · 'falabella' · 'cencosud'</p>
+<p>name TEXT                     -- alias amigable</p>
+<p>credentials JSONB             -- OAuth tokens · API keys (cifrado at rest)</p>
+<p>config JSONB                  -- pricing rules · default markup · etc</p>
+<p>active BOOLEAN</p>
+<p>last_sync_at TIMESTAMPTZ</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_listings</div></p>
+<p><div class="table-purpose">Una publicación de UN producto en UN canal. N:M entre products y channels.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>product_id UUID <span class="col-fk">FK</span></p>
+<p>channel_id UUID <span class="col-fk">FK</span></p>
+<p>external_id TEXT              -- ID del producto en el canal (MLC123 · MP456)</p>
+<p>status TEXT                   -- 'active' · 'paused' · 'error' · 'pending'</p>
+<p>price_clp NUMERIC             -- precio aplicado en este canal</p>
+<p>last_synced_at TIMESTAMPTZ</p>
+<p>sync_error TEXT               -- último error si status='error'</p>
+<p>external_data JSONB           -- payload completo del canal</p>
+<p>UNIQUE (tenant_id, product_id, channel_id)</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_price_rules</div></p>
+<p><div class="table-purpose">Reglas de pricing por canal · usadas en publicación.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>channel_type TEXT             -- 'meli' · 'mp' etc.</p>
+<p>formula JSONB                 -- {markup_pct, commission_pct, iva_pct, ...}</p>
+<p>applies_to JSONB              -- {category_ids: [], product_ids: []}</p>
+<p>priority INTEGER              -- regla más específica gana</p>
+<p>active BOOLEAN</pre></p>
+<p></div></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>08</span></div>
 </section>
-
-<section class="page" id="orders">
+<section class="page" id="06-tablas-orders-amp-fulfillment">
   <h2><span class="h2-num">06</span>Tablas Orders &amp; Fulfillment</h2>
-
-  <div class="table-card">
-    <div class="table-name">mk_orders</div>
-    <div class="table-purpose">UNA orden = UNA fila aquí. Cualquier canal. <strong>NO hay mk_orders_meli vs mk_orders_d2c</strong>.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-channel_id UUID <span class="col-fk">FK</span>          -- de qué canal vino
-external_order_id TEXT        -- ID en canal origen (orden MeLi · folio MP)
-customer_id UUID <span class="col-fk">FK</span>
-status TEXT                   -- 'pending' · 'paid' · 'fulfilled' · 'delivered' · 'cancelled'
-total_clp NUMERIC
-paid_clp NUMERIC
-currency TEXT DEFAULT 'CLP'
-placed_at TIMESTAMPTZ
-shipped_at TIMESTAMPTZ
-delivered_at TIMESTAMPTZ
-meta JSONB                    -- payload original del canal
-INDEX (tenant_id, channel_id, status, placed_at)</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_order_items</div>
-    <div class="table-purpose">Líneas de cada orden · qué SKUs · cuánto · precio.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-order_id UUID <span class="col-fk">FK</span>
-product_id UUID <span class="col-fk">FK</span>
-quantity INTEGER
-unit_price_clp NUMERIC
-subtotal_clp NUMERIC</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_customers</div>
-    <div class="table-purpose">Catálogo único de clientes cross-canal.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-type TEXT                     -- 'person' · 'company' · 'public-org'
-name TEXT
-rut TEXT
-email TEXT
-phone TEXT
-address JSONB
-is_meli_anonymous BOOLEAN
-external_ids JSONB            -- {meli: 'XXX', mp: 'YYY'}
-created_at TIMESTAMPTZ</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_shipments</div>
-    <div class="table-purpose">Despachos · 1 orden puede tener N shipments (envío parcial).</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-order_id UUID <span class="col-fk">FK</span>
-courier TEXT                  -- 'chilexpress' · 'starken' · 'bluexpress'
-tracking_number TEXT
-label_url TEXT
-status TEXT                   -- 'pending' · 'in-transit' · 'delivered' · 'returned'
-cost_clp NUMERIC
-shipped_at TIMESTAMPTZ
-delivered_at TIMESTAMPTZ</pre>
-  </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>08</span></div>
+  <p><div class="table-card"></p>
+<p><div class="table-name">mk_orders</div></p>
+<p><div class="table-purpose">UNA orden = UNA fila aquí. Cualquier canal. <strong>NO hay mk_orders_meli vs mk_orders_d2c</strong>.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>channel_id UUID <span class="col-fk">FK</span>          -- de qué canal vino</p>
+<p>external_order_id TEXT        -- ID en canal origen (orden MeLi · folio MP)</p>
+<p>customer_id UUID <span class="col-fk">FK</span></p>
+<p>status TEXT                   -- 'pending' · 'paid' · 'fulfilled' · 'delivered' · 'cancelled'</p>
+<p>total_clp NUMERIC</p>
+<p>paid_clp NUMERIC</p>
+<p>currency TEXT DEFAULT 'CLP'</p>
+<p>placed_at TIMESTAMPTZ</p>
+<p>shipped_at TIMESTAMPTZ</p>
+<p>delivered_at TIMESTAMPTZ</p>
+<p>meta JSONB                    -- payload original del canal</p>
+<p>INDEX (tenant_id, channel_id, status, placed_at)</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_order_items</div></p>
+<p><div class="table-purpose">Líneas de cada orden · qué SKUs · cuánto · precio.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>order_id UUID <span class="col-fk">FK</span></p>
+<p>product_id UUID <span class="col-fk">FK</span></p>
+<p>quantity INTEGER</p>
+<p>unit_price_clp NUMERIC</p>
+<p>subtotal_clp NUMERIC</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_customers</div></p>
+<p><div class="table-purpose">Catálogo único de clientes cross-canal.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>type TEXT                     -- 'person' · 'company' · 'public-org'</p>
+<p>name TEXT</p>
+<p>rut TEXT</p>
+<p>email TEXT</p>
+<p>phone TEXT</p>
+<p>address JSONB</p>
+<p>is_meli_anonymous BOOLEAN</p>
+<p>external_ids JSONB            -- {meli: 'XXX', mp: 'YYY'}</p>
+<p>created_at TIMESTAMPTZ</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_shipments</div></p>
+<p><div class="table-purpose">Despachos · 1 orden puede tener N shipments (envío parcial).</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>order_id UUID <span class="col-fk">FK</span></p>
+<p>courier TEXT                  -- 'chilexpress' · 'starken' · 'bluexpress'</p>
+<p>tracking_number TEXT</p>
+<p>label_url TEXT</p>
+<p>status TEXT                   -- 'pending' · 'in-transit' · 'delivered' · 'returned'</p>
+<p>cost_clp NUMERIC</p>
+<p>shipped_at TIMESTAMPTZ</p>
+<p>delivered_at TIMESTAMPTZ</pre></p>
+<p></div></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>09</span></div>
 </section>
-
-<section class="page" id="supply">
+<section class="page" id="07-tablas-sourcing-amp-suppliers">
   <h2><span class="h2-num">07</span>Tablas Sourcing &amp; Suppliers</h2>
-
-  <div class="table-card">
-    <div class="table-name">mk_suppliers</div>
-    <div class="table-purpose">Proveedores · Nexport + futuros.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-name TEXT
-rut TEXT
-contact JSONB                 -- {email, phone, whatsapp}
-country TEXT                  -- 'CL' · 'CN' · etc
-lead_time_days INTEGER
-default_terms TEXT            -- 'NET-30' · '50/50'
-rating NUMERIC                -- 1-5
-active BOOLEAN</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_purchase_orders</div>
-    <div class="table-purpose">Órdenes de compra a proveedores.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-supplier_id UUID <span class="col-fk">FK</span>
-status TEXT                   -- 'draft' · 'sent' · 'confirmed' · 'shipped' · 'received'
-po_number TEXT                -- correlativo legible
-total_clp NUMERIC
-terms TEXT
-eta_date DATE
-notes TEXT
-created_at TIMESTAMPTZ
-received_at TIMESTAMPTZ</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_po_items</div>
-    <div class="table-purpose">Líneas de cada PO · qué SKU · cuánto · precio unitario.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-po_id UUID <span class="col-fk">FK</span>
-product_id UUID <span class="col-fk">FK</span>
-quantity INTEGER
-unit_cost_clp NUMERIC
-landed_cost_clp NUMERIC       -- post recepción · incluye costos asociados</pre>
-  </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>09</span></div>
+  <p><div class="table-card"></p>
+<p><div class="table-name">mk_suppliers</div></p>
+<p><div class="table-purpose">Proveedores · Nexport + futuros.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>name TEXT</p>
+<p>rut TEXT</p>
+<p>contact JSONB                 -- {email, phone, whatsapp}</p>
+<p>country TEXT                  -- 'CL' · 'CN' · etc</p>
+<p>lead_time_days INTEGER</p>
+<p>default_terms TEXT            -- 'NET-30' · '50/50'</p>
+<p>rating NUMERIC                -- 1-5</p>
+<p>active BOOLEAN</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_purchase_orders</div></p>
+<p><div class="table-purpose">Órdenes de compra a proveedores.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>supplier_id UUID <span class="col-fk">FK</span></p>
+<p>status TEXT                   -- 'draft' · 'sent' · 'confirmed' · 'shipped' · 'received'</p>
+<p>po_number TEXT                -- correlativo legible</p>
+<p>total_clp NUMERIC</p>
+<p>terms TEXT</p>
+<p>eta_date DATE</p>
+<p>notes TEXT</p>
+<p>created_at TIMESTAMPTZ</p>
+<p>received_at TIMESTAMPTZ</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_po_items</div></p>
+<p><div class="table-purpose">Líneas de cada PO · qué SKU · cuánto · precio unitario.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>po_id UUID <span class="col-fk">FK</span></p>
+<p>product_id UUID <span class="col-fk">FK</span></p>
+<p>quantity INTEGER</p>
+<p>unit_cost_clp NUMERIC</p>
+<p>landed_cost_clp NUMERIC       -- post recepción · incluye costos asociados</pre></p>
+<p></div></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>10</span></div>
 </section>
-
-<section class="page" id="finance">
+<section class="page" id="08-tablas-finance-amp-accounting">
   <h2><span class="h2-num">08</span>Tablas Finance &amp; Accounting</h2>
-
-  <div class="table-card">
-    <div class="table-name">mk_fin_accounts (chart of accounts)</div>
-    <div class="table-purpose">Plan de cuentas · jerarquía estándar Chile.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-code TEXT                     -- '1.1.01.001'
-name TEXT                     -- 'Bancos · Cuenta Corriente Bci'
-type TEXT                     -- 'asset' · 'liability' · 'equity' · 'revenue' · 'expense'
-parent_id UUID                -- jerarquía
-is_iva_relevant BOOLEAN
-balance_clp NUMERIC           -- saldo calculado (vista materializada)</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_fin_journal_entries</div>
-    <div class="table-purpose">Asientos contables. Generados automático por eventos. NO se editan a mano.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-entry_date DATE
-description TEXT
-source_type TEXT              -- 'order' · 'po' · 'payment' · 'manual'
-source_id UUID
-total_debit_clp NUMERIC       -- debe sumar igual al haber
-total_credit_clp NUMERIC
-status TEXT                   -- 'draft' · 'posted' · 'reversed'
-<span class="col-event">created_at TIMESTAMPTZ</span></pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_fin_journal_lines</div>
-    <div class="table-purpose">Líneas del asiento · debe + haber.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-entry_id UUID <span class="col-fk">FK</span>
-account_id UUID <span class="col-fk">FK</span>
-debit_clp NUMERIC DEFAULT 0
-credit_clp NUMERIC DEFAULT 0
-description TEXT
-CHECK (debit_clp = 0 OR credit_clp = 0)  -- una sola dirección por línea</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_fin_documents (DTE)</div>
-    <div class="table-purpose">Documentos tributarios emitidos · Factura · Boleta · NC · ND.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-type INTEGER                  -- 33 · 34 · 39 · 56 · 61
-folio TEXT                    -- correlativo SII
-status TEXT                   -- 'issued' · 'rejected' · 'cancelled'
-issued_at TIMESTAMPTZ
-receiver_rut TEXT
-total_clp NUMERIC
-iva_clp NUMERIC
-xml TEXT                      -- XML firmado SII
-pdf_url TEXT
-related_order_id UUID         -- nullable · si nace de una orden
-external_provider_id TEXT     -- ID en Open Factura o SII</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_fin_payments</div>
-    <div class="table-purpose">Pagos recibidos (de clientes) o emitidos (a proveedores).</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-direction TEXT                -- 'inbound' (cobro) · 'outbound' (pago)
-method TEXT                   -- 'webpay' · 'mercadopago' · 'transfer' · 'cash'
-amount_clp NUMERIC
-related_document_id UUID      -- FK al DTE relacionado
-related_po_id UUID            -- FK al PO si es outbound
-reference TEXT                -- nro transferencia · authcode
-received_at TIMESTAMPTZ</pre>
-  </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>10</span></div>
+  <p><div class="table-card"></p>
+<p><div class="table-name">mk_fin_accounts (chart of accounts)</div></p>
+<p><div class="table-purpose">Plan de cuentas · jerarquía estándar Chile.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>code TEXT                     -- '1.1.01.001'</p>
+<p>name TEXT                     -- 'Bancos · Cuenta Corriente Bci'</p>
+<p>type TEXT                     -- 'asset' · 'liability' · 'equity' · 'revenue' · 'expense'</p>
+<p>parent_id UUID                -- jerarquía</p>
+<p>is_iva_relevant BOOLEAN</p>
+<p>balance_clp NUMERIC           -- saldo calculado (vista materializada)</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_fin_journal_entries</div></p>
+<p><div class="table-purpose">Asientos contables. Generados automático por eventos. NO se editan a mano.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>entry_date DATE</p>
+<p>description TEXT</p>
+<p>source_type TEXT              -- 'order' · 'po' · 'payment' · 'manual'</p>
+<p>source_id UUID</p>
+<p>total_debit_clp NUMERIC       -- debe sumar igual al haber</p>
+<p>total_credit_clp NUMERIC</p>
+<p>status TEXT                   -- 'draft' · 'posted' · 'reversed'</p>
+<p><span class="col-event">created_at TIMESTAMPTZ</span></pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_fin_journal_lines</div></p>
+<p><div class="table-purpose">Líneas del asiento · debe + haber.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>entry_id UUID <span class="col-fk">FK</span></p>
+<p>account_id UUID <span class="col-fk">FK</span></p>
+<p>debit_clp NUMERIC DEFAULT 0</p>
+<p>credit_clp NUMERIC DEFAULT 0</p>
+<p>description TEXT</p>
+<p>CHECK (debit_clp = 0 OR credit_clp = 0)  -- una sola dirección por línea</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_fin_documents (DTE)</div></p>
+<p><div class="table-purpose">Documentos tributarios emitidos · Factura · Boleta · NC · ND.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>type INTEGER                  -- 33 · 34 · 39 · 56 · 61</p>
+<p>folio TEXT                    -- correlativo SII</p>
+<p>status TEXT                   -- 'issued' · 'rejected' · 'cancelled'</p>
+<p>issued_at TIMESTAMPTZ</p>
+<p>receiver_rut TEXT</p>
+<p>total_clp NUMERIC</p>
+<p>iva_clp NUMERIC</p>
+<p>xml TEXT                      -- XML firmado SII</p>
+<p>pdf_url TEXT</p>
+<p>related_order_id UUID         -- nullable · si nace de una orden</p>
+<p>external_provider_id TEXT     -- ID en Open Factura o SII</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_fin_payments</div></p>
+<p><div class="table-purpose">Pagos recibidos (de clientes) o emitidos (a proveedores).</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>direction TEXT                -- 'inbound' (cobro) · 'outbound' (pago)</p>
+<p>method TEXT                   -- 'webpay' · 'mercadopago' · 'transfer' · 'cash'</p>
+<p>amount_clp NUMERIC</p>
+<p>related_document_id UUID      -- FK al DTE relacionado</p>
+<p>related_po_id UUID            -- FK al PO si es outbound</p>
+<p>reference TEXT                -- nro transferencia · authcode</p>
+<p>received_at TIMESTAMPTZ</pre></p>
+<p></div></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>11</span></div>
 </section>
-
-<section class="page" id="events">
+<section class="page" id="09-tablas-eventos-amp-audit">
   <h2><span class="h2-num">09</span>Tablas Eventos &amp; Audit</h2>
-
-  <div class="table-card">
-    <div class="table-name">mk_evt_operations (event store)</div>
-    <div class="table-purpose">Log de TODOS los eventos operativos. Sirve como event-source para reconstruir estado · alimenta IA · audita procesos.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-event_type TEXT               -- 'order.created' · 'inventory.received' · etc
-aggregate_type TEXT           -- 'order' · 'po' · 'inventory'
-aggregate_id UUID             -- ID del objeto principal
-actor_id UUID                 -- user o 'system'
-payload JSONB                 -- datos del evento
-<span class="col-event">created_at TIMESTAMPTZ</span>
-INDEX (tenant_id, event_type, created_at DESC)</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_audit_changes</div>
-    <div class="table-purpose">Audit trail · quién modificó qué fila · cuándo · valor antes/después. Compliance.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-table_name TEXT
-row_id UUID
-action TEXT                   -- 'INSERT' · 'UPDATE' · 'DELETE'
-changed_by UUID
-diff JSONB                    -- {field: {before, after}}
-created_at TIMESTAMPTZ</pre>
-  </div>
-
-  <div class="table-card">
-    <div class="table-name">mk_api_logs (logger central)</div>
-    <div class="table-purpose">Log llamadas API externas e internas. Reusa concepto actual de app marketplace.</div>
-    <pre class="cols">id UUID <span class="col-pk">PK</span>
-<span class="col-tenant">tenant_id UUID</span>
-endpoint TEXT
-method TEXT
-status_code INTEGER
-duration_ms INTEGER
-source TEXT                   -- 'meli' · 'mp' · 'groq' · 'open-factura' · 'internal'
-error_message TEXT
-request_params JSONB
-created_at TIMESTAMPTZ</pre>
-  </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>11</span></div>
+  <p><div class="table-card"></p>
+<p><div class="table-name">mk_evt_operations (event store)</div></p>
+<p><div class="table-purpose">Log de TODOS los eventos operativos. Sirve como event-source para reconstruir estado · alimenta IA · audita procesos.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>event_type TEXT               -- 'order.created' · 'inventory.received' · etc</p>
+<p>aggregate_type TEXT           -- 'order' · 'po' · 'inventory'</p>
+<p>aggregate_id UUID             -- ID del objeto principal</p>
+<p>actor_id UUID                 -- user o 'system'</p>
+<p>payload JSONB                 -- datos del evento</p>
+<p><span class="col-event">created_at TIMESTAMPTZ</span></p>
+<p>INDEX (tenant_id, event_type, created_at DESC)</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_audit_changes</div></p>
+<p><div class="table-purpose">Audit trail · quién modificó qué fila · cuándo · valor antes/después. Compliance.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>table_name TEXT</p>
+<p>row_id UUID</p>
+<p>action TEXT                   -- 'INSERT' · 'UPDATE' · 'DELETE'</p>
+<p>changed_by UUID</p>
+<p>diff JSONB                    -- {field: {before, after}}</p>
+<p>created_at TIMESTAMPTZ</pre></p>
+<p></div></p>
+<p><div class="table-card"></p>
+<p><div class="table-name">mk_api_logs (logger central)</div></p>
+<p><div class="table-purpose">Log llamadas API externas e internas. Reusa concepto actual de app marketplace.</div></p>
+<p><pre class="cols">id UUID <span class="col-pk">PK</span></p>
+<p><span class="col-tenant">tenant_id UUID</span></p>
+<p>endpoint TEXT</p>
+<p>method TEXT</p>
+<p>status_code INTEGER</p>
+<p>duration_ms INTEGER</p>
+<p>source TEXT                   -- 'meli' · 'mp' · 'groq' · 'open-factura' · 'internal'</p>
+<p>error_message TEXT</p>
+<p>request_params JSONB</p>
+<p>created_at TIMESTAMPTZ</pre></p>
+<p></div></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>12</span></div>
 </section>
-
-<section class="page" id="erd">
+<section class="page" id="10-diagrama-erd-simplificado">
   <h2><span class="h2-num">10</span>Diagrama ERD simplificado</h2>
-  <div class="svg-container">
-    <svg viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" style="background:#FAFAF7">
-      <defs>
-        <marker id="rel" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0 0,8 4,0 8" fill="#64748B"/></marker>
-      </defs>
-
-      <!-- tenant central -->
-      <rect x="380" y="20" width="140" height="50" rx="8" fill="#7C3AED" stroke="#5B21B6" stroke-width="2"/>
-      <text x="450" y="42" text-anchor="middle" fill="white" font-weight="800" font-size="14">mk_tenants</text>
-      <text x="450" y="58" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">multi-tenant root</text>
-
-      <!-- products -->
-      <rect x="40" y="120" width="140" height="50" rx="8" fill="white" stroke="#00C1C1" stroke-width="2"/>
-      <text x="110" y="142" text-anchor="middle" font-weight="700" font-size="13">mk_products</text>
-      <text x="110" y="158" text-anchor="middle" fill="#64748B" font-size="10">SKU master</text>
-
-      <!-- inventory stock -->
-      <rect x="40" y="200" width="140" height="50" rx="8" fill="white" stroke="#00C1C1" stroke-width="2"/>
-      <text x="110" y="222" text-anchor="middle" font-weight="700" font-size="13">mk_inventory_stock</text>
-      <text x="110" y="238" text-anchor="middle" fill="#64748B" font-size="10">stock por bodega</text>
-
-      <!-- listings -->
-      <rect x="220" y="120" width="140" height="50" rx="8" fill="white" stroke="#F472B6" stroke-width="2"/>
-      <text x="290" y="142" text-anchor="middle" font-weight="700" font-size="13">mk_listings</text>
-      <text x="290" y="158" text-anchor="middle" fill="#64748B" font-size="10">producto × canal</text>
-
-      <!-- channels -->
-      <rect x="400" y="120" width="140" height="50" rx="8" fill="white" stroke="#F472B6" stroke-width="2"/>
-      <text x="470" y="142" text-anchor="middle" font-weight="700" font-size="13">mk_channels</text>
-      <text x="470" y="158" text-anchor="middle" fill="#64748B" font-size="10">configurados</text>
-
-      <!-- orders -->
-      <rect x="580" y="120" width="140" height="50" rx="8" fill="white" stroke="#3B82F6" stroke-width="2"/>
-      <text x="650" y="142" text-anchor="middle" font-weight="700" font-size="13">mk_orders</text>
-      <text x="650" y="158" text-anchor="middle" fill="#64748B" font-size="10">cross-canal</text>
-
-      <!-- order items -->
-      <rect x="580" y="200" width="140" height="50" rx="8" fill="white" stroke="#3B82F6" stroke-width="2"/>
-      <text x="650" y="222" text-anchor="middle" font-weight="700" font-size="13">mk_order_items</text>
-      <text x="650" y="238" text-anchor="middle" fill="#64748B" font-size="10">líneas</text>
-
-      <!-- customers -->
-      <rect x="760" y="120" width="120" height="50" rx="8" fill="white" stroke="#3B82F6" stroke-width="2"/>
-      <text x="820" y="142" text-anchor="middle" font-weight="700" font-size="13">mk_customers</text>
-
-      <!-- shipments -->
-      <rect x="580" y="280" width="140" height="50" rx="8" fill="white" stroke="#22C55E" stroke-width="2"/>
-      <text x="650" y="302" text-anchor="middle" font-weight="700" font-size="13">mk_shipments</text>
-
-      <!-- suppliers -->
-      <rect x="40" y="300" width="140" height="50" rx="8" fill="white" stroke="#F59E0B" stroke-width="2"/>
-      <text x="110" y="322" text-anchor="middle" font-weight="700" font-size="13">mk_suppliers</text>
-
-      <!-- POs -->
-      <rect x="220" y="300" width="140" height="50" rx="8" fill="white" stroke="#F59E0B" stroke-width="2"/>
-      <text x="290" y="322" text-anchor="middle" font-weight="700" font-size="13">mk_purchase_orders</text>
-
-      <!-- accounts -->
-      <rect x="220" y="420" width="140" height="50" rx="8" fill="white" stroke="#EF4444" stroke-width="2"/>
-      <text x="290" y="442" text-anchor="middle" font-weight="700" font-size="13">mk_fin_accounts</text>
-      <text x="290" y="458" text-anchor="middle" fill="#64748B" font-size="10">plan cuentas</text>
-
-      <!-- journal entries -->
-      <rect x="400" y="420" width="140" height="50" rx="8" fill="white" stroke="#EF4444" stroke-width="2"/>
-      <text x="470" y="442" text-anchor="middle" font-weight="700" font-size="13">mk_fin_journal_entries</text>
-
-      <!-- DTE -->
-      <rect x="580" y="420" width="140" height="50" rx="8" fill="white" stroke="#EF4444" stroke-width="2"/>
-      <text x="650" y="442" text-anchor="middle" font-weight="700" font-size="13">mk_fin_documents</text>
-      <text x="650" y="458" text-anchor="middle" fill="#64748B" font-size="10">DTE SII</text>
-
-      <!-- events -->
-      <rect x="380" y="500" width="160" height="30" rx="6" fill="#0F172A"/>
-      <text x="460" y="520" text-anchor="middle" fill="#00C1C1" font-family="monospace" font-size="12">mk_evt_operations (event store)</text>
-
-      <!-- Líneas key -->
-      <line x1="450" y1="70" x2="110" y2="120" stroke="#7C3AED" stroke-width="1" stroke-dasharray="3,3"/>
-      <line x1="450" y1="70" x2="290" y2="120" stroke="#7C3AED" stroke-width="1" stroke-dasharray="3,3"/>
-      <line x1="450" y1="70" x2="650" y2="120" stroke="#7C3AED" stroke-width="1" stroke-dasharray="3,3"/>
-      <line x1="450" y1="70" x2="820" y2="120" stroke="#7C3AED" stroke-width="1" stroke-dasharray="3,3"/>
-      <line x1="110" y1="170" x2="110" y2="200" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/>
-      <line x1="180" y1="145" x2="220" y2="145" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/>
-      <line x1="360" y1="145" x2="400" y2="145" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/>
-      <line x1="540" y1="145" x2="580" y2="145" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/>
-      <line x1="720" y1="145" x2="760" y2="145" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/>
-      <line x1="650" y1="170" x2="650" y2="200" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/>
-      <line x1="650" y1="250" x2="650" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/>
-      <line x1="180" y1="325" x2="220" y2="325" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/>
-      <line x1="290" y1="350" x2="290" y2="420" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/>
-      <line x1="360" y1="445" x2="400" y2="445" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/>
-      <line x1="540" y1="445" x2="580" y2="445" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/>
-    </svg>
-  </div>
-  <p style="text-align:center; color: var(--ink-500); font-size: 12px;"><em>ERD simplificado · líneas continuas = FK directa · líneas punteadas = relación via tenant_id o evento</em></p>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>12</span></div>
+  <p><div class="svg-container"></p>
+<p><svg viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" style="background:#FAFAF7"></p>
+<p><defs></p>
+<p><marker id="rel" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0 0,8 4,0 8" fill="#64748B"/></marker></p>
+<p></defs></p>
+<p><!-- tenant central --></p>
+<p><rect x="380" y="20" width="140" height="50" rx="8" fill="#7C3AED" stroke="#5B21B6" stroke-width="2"/></p>
+<p><text x="450" y="42" text-anchor="middle" fill="white" font-weight="800" font-size="14">mk_tenants</text></p>
+<p><text x="450" y="58" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">multi-tenant root</text></p>
+<p><!-- products --></p>
+<p><rect x="40" y="120" width="140" height="50" rx="8" fill="white" stroke="#00C1C1" stroke-width="2"/></p>
+<p><text x="110" y="142" text-anchor="middle" font-weight="700" font-size="13">mk_products</text></p>
+<p><text x="110" y="158" text-anchor="middle" fill="#64748B" font-size="10">SKU master</text></p>
+<p><!-- inventory stock --></p>
+<p><rect x="40" y="200" width="140" height="50" rx="8" fill="white" stroke="#00C1C1" stroke-width="2"/></p>
+<p><text x="110" y="222" text-anchor="middle" font-weight="700" font-size="13">mk_inventory_stock</text></p>
+<p><text x="110" y="238" text-anchor="middle" fill="#64748B" font-size="10">stock por bodega</text></p>
+<p><!-- listings --></p>
+<p><rect x="220" y="120" width="140" height="50" rx="8" fill="white" stroke="#F472B6" stroke-width="2"/></p>
+<p><text x="290" y="142" text-anchor="middle" font-weight="700" font-size="13">mk_listings</text></p>
+<p><text x="290" y="158" text-anchor="middle" fill="#64748B" font-size="10">producto × canal</text></p>
+<p><!-- channels --></p>
+<p><rect x="400" y="120" width="140" height="50" rx="8" fill="white" stroke="#F472B6" stroke-width="2"/></p>
+<p><text x="470" y="142" text-anchor="middle" font-weight="700" font-size="13">mk_channels</text></p>
+<p><text x="470" y="158" text-anchor="middle" fill="#64748B" font-size="10">configurados</text></p>
+<p><!-- orders --></p>
+<p><rect x="580" y="120" width="140" height="50" rx="8" fill="white" stroke="#3B82F6" stroke-width="2"/></p>
+<p><text x="650" y="142" text-anchor="middle" font-weight="700" font-size="13">mk_orders</text></p>
+<p><text x="650" y="158" text-anchor="middle" fill="#64748B" font-size="10">cross-canal</text></p>
+<p><!-- order items --></p>
+<p><rect x="580" y="200" width="140" height="50" rx="8" fill="white" stroke="#3B82F6" stroke-width="2"/></p>
+<p><text x="650" y="222" text-anchor="middle" font-weight="700" font-size="13">mk_order_items</text></p>
+<p><text x="650" y="238" text-anchor="middle" fill="#64748B" font-size="10">líneas</text></p>
+<p><!-- customers --></p>
+<p><rect x="760" y="120" width="120" height="50" rx="8" fill="white" stroke="#3B82F6" stroke-width="2"/></p>
+<p><text x="820" y="142" text-anchor="middle" font-weight="700" font-size="13">mk_customers</text></p>
+<p><!-- shipments --></p>
+<p><rect x="580" y="280" width="140" height="50" rx="8" fill="white" stroke="#22C55E" stroke-width="2"/></p>
+<p><text x="650" y="302" text-anchor="middle" font-weight="700" font-size="13">mk_shipments</text></p>
+<p><!-- suppliers --></p>
+<p><rect x="40" y="300" width="140" height="50" rx="8" fill="white" stroke="#F59E0B" stroke-width="2"/></p>
+<p><text x="110" y="322" text-anchor="middle" font-weight="700" font-size="13">mk_suppliers</text></p>
+<p><!-- POs --></p>
+<p><rect x="220" y="300" width="140" height="50" rx="8" fill="white" stroke="#F59E0B" stroke-width="2"/></p>
+<p><text x="290" y="322" text-anchor="middle" font-weight="700" font-size="13">mk_purchase_orders</text></p>
+<p><!-- accounts --></p>
+<p><rect x="220" y="420" width="140" height="50" rx="8" fill="white" stroke="#EF4444" stroke-width="2"/></p>
+<p><text x="290" y="442" text-anchor="middle" font-weight="700" font-size="13">mk_fin_accounts</text></p>
+<p><text x="290" y="458" text-anchor="middle" fill="#64748B" font-size="10">plan cuentas</text></p>
+<p><!-- journal entries --></p>
+<p><rect x="400" y="420" width="140" height="50" rx="8" fill="white" stroke="#EF4444" stroke-width="2"/></p>
+<p><text x="470" y="442" text-anchor="middle" font-weight="700" font-size="13">mk_fin_journal_entries</text></p>
+<p><!-- DTE --></p>
+<p><rect x="580" y="420" width="140" height="50" rx="8" fill="white" stroke="#EF4444" stroke-width="2"/></p>
+<p><text x="650" y="442" text-anchor="middle" font-weight="700" font-size="13">mk_fin_documents</text></p>
+<p><text x="650" y="458" text-anchor="middle" fill="#64748B" font-size="10">DTE SII</text></p>
+<p><!-- events --></p>
+<p><rect x="380" y="500" width="160" height="30" rx="6" fill="#0F172A"/></p>
+<p><text x="460" y="520" text-anchor="middle" fill="#00C1C1" font-family="monospace" font-size="12">mk_evt_operations (event store)</text></p>
+<p><!-- Líneas key --></p>
+<p><line x1="450" y1="70" x2="110" y2="120" stroke="#7C3AED" stroke-width="1" stroke-dasharray="3,3"/></p>
+<p><line x1="450" y1="70" x2="290" y2="120" stroke="#7C3AED" stroke-width="1" stroke-dasharray="3,3"/></p>
+<p><line x1="450" y1="70" x2="650" y2="120" stroke="#7C3AED" stroke-width="1" stroke-dasharray="3,3"/></p>
+<p><line x1="450" y1="70" x2="820" y2="120" stroke="#7C3AED" stroke-width="1" stroke-dasharray="3,3"/></p>
+<p><line x1="110" y1="170" x2="110" y2="200" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/></p>
+<p><line x1="180" y1="145" x2="220" y2="145" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/></p>
+<p><line x1="360" y1="145" x2="400" y2="145" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/></p>
+<p><line x1="540" y1="145" x2="580" y2="145" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/></p>
+<p><line x1="720" y1="145" x2="760" y2="145" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/></p>
+<p><line x1="650" y1="170" x2="650" y2="200" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/></p>
+<p><line x1="650" y1="250" x2="650" y2="280" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/></p>
+<p><line x1="180" y1="325" x2="220" y2="325" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/></p>
+<p><line x1="290" y1="350" x2="290" y2="420" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/></p>
+<p><line x1="360" y1="445" x2="400" y2="445" stroke="#64748B" stroke-width="2" marker-end="url(#rel)"/></p>
+<p><line x1="540" y1="445" x2="580" y2="445" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/></p>
+<p></svg></p>
+<p></div></p>
+<p><p style="text-align:center; color: var(--ink-500); font-size: 12px;"><em>ERD simplificado · líneas continuas = FK directa · líneas punteadas = relación via tenant_id o evento</em></p></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>13</span></div>
 </section>
-
-<!-- ADR:ADR-0001/smart-cache -->
-<section class="page" id="opp-cache">
+<section class="page" id="11-smart-cache-v5-mkt-opportunity-cache">
   <h2><span class="h2-num">11</span>Smart Cache v5 · mkt_opportunity_cache</h2>
   <p>Tabla específica del sistema Opportunities (ADR-0001). NO es data lake · es cache ligero con TTL diferenciado.</p>
-  <table>
-    <thead><tr><th>Aspecto</th><th>Política</th></tr></thead>
-    <tbody>
-      <tr><td>Tamaño máximo</td><td>1.000 filas (~200 KB total)</td></tr>
-      <tr><td>TTL Hot (n_queries&gt;5)</td><td>6h</td></tr>
-      <tr><td>TTL Warm (n_queries 1-5)</td><td>12h</td></tr>
-      <tr><td>TTL Cold (sin query 7d)</td><td>DELETE</td></tr>
-      <tr><td>Cron limpieza</td><td><code>pg_cron</code> diario 3:00 AM</td></tr>
-      <tr><td>Refresh</td><td>NO sync masivo · solo SKUs consultados</td></tr>
-    </tbody>
-  </table>
-  <h3>Schema mkt_opportunity_cache</h3>
-  <pre class="ascii">CREATE TABLE mkt_opportunity_cache (
-  sku_canonico TEXT PRIMARY KEY,
-  score NUMERIC,
-  category TEXT,
-  n_stores INTEGER,
-  price_min NUMERIC,
-  price_max NUMERIC,
-  top_url TEXT,
-  last_synced TIMESTAMPTZ,
-  n_queries INTEGER DEFAULT 1
+<p><table></p>
+<p><thead><tr><th>Aspecto</th><th>Política</th></tr></thead></p>
+<p><tbody></p>
+<p><tr><td>Tamaño máximo</td><td>1.000 filas (~200 KB total)</td></tr></p>
+<p><tr><td>TTL Hot (n_queries&gt;5)</td><td>6h</td></tr></p>
+<p><tr><td>TTL Warm (n_queries 1-5)</td><td>12h</td></tr></p>
+<p><tr><td>TTL Cold (sin query 7d)</td><td>DELETE</td></tr></p>
+<p><tr><td>Cron limpieza</td><td><code>pg_cron</code> diario 3:00 AM</td></tr></p>
+<p><tr><td>Refresh</td><td>NO sync masivo · solo SKUs consultados</td></tr></p>
+<p></tbody></p>
+<p></table></p>
+<h3>Schema mkt_opportunity_cache</h3>
+<p><pre class="ascii">CREATE TABLE mkt_opportunity_cache (</p>
+<p>sku_canonico TEXT PRIMARY KEY,</p>
+<p>score NUMERIC,</p>
+<p>category TEXT,</p>
+<p>n_stores INTEGER,</p>
+<p>price_min NUMERIC,</p>
+<p>price_max NUMERIC,</p>
+<p>top_url TEXT,</p>
+<p>last_synced TIMESTAMPTZ,</p>
+<p>n_queries INTEGER DEFAULT 1</p>
+<p>);</p>
+<p>CREATE TABLE mkt_category_premium (</p>
+<p>category TEXT PRIMARY KEY,</p>
+<p>multiplier NUMERIC,  -- ej: accesorios celular 1.3x · línea blanca 0.9x</p>
+<p>active BOOLEAN DEFAULT true</p>
+<p>);</pre></p>
+<p><div class="box box-info"></p>
+<p><div class="box-title">💡 Por qué no data lake</div></p>
+<p><p style="margin:0">SoloTodo tiene 58K productos · clonarlos sería data lake. Solo entra al cache lo que alguien consultó. Si nadie pregunta más · se borra solo.</p></p>
+<p></div></p>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>14</span></div>
+</section>
+<section class="page" id="12-tablas-supplier-dropshipping-adr-0003">
+  <h2><span class="h2-num">12</span>Tablas Supplier (dropshipping · ADR-0003)</h2>
+  <p>Soporte para modo dropshipping Y1 · cada proveedor tiene su adapter (Supplier Adapter Pattern · ADR-0003 · ver Doc 13 §08).</p>
+<h3>Schema</h3>
+<pre class="ascii">CREATE TABLE mkt_suppliers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL,
+  supplier_code TEXT NOT NULL,            -- ej: 'proveedor-x'
+  display_name TEXT NOT NULL,
+  rut TEXT,                                -- RUT chileno
+  auth_mode TEXT NOT NULL CHECK (auth_mode IN ('api_key','oauth','email_automated','whatsapp_business')),
+  credentials JSONB,                       -- cifrado en repo de Supabase Vault
+  contact_email TEXT,
+  contact_phone TEXT,
+  payment_terms TEXT,                      -- ej: '7d post-venta · transferencia CLP'
+  status TEXT DEFAULT 'active' CHECK (status IN ('active','paused','suspended')),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (tenant_id, supplier_code)
 );
 
-CREATE TABLE mkt_category_premium (
-  category TEXT PRIMARY KEY,
-  multiplier NUMERIC,  -- ej: accesorios celular 1.3x · línea blanca 0.9x
-  active BOOLEAN DEFAULT true
-);</pre>
-  <div class="box box-info">
-    <div class="box-title">💡 Por qué no data lake</div>
-    <p style="margin:0">SoloTodo tiene 58K productos · clonarlos sería data lake. Solo entra al cache lo que alguien consultó. Si nadie pregunta más · se borra solo.</p>
-  </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0 · ADR-0001</span><span>11b</span></div>
+ALTER TABLE mkt_suppliers ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_suppliers
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE TABLE mkt_supplier_products (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL,
+  supplier_id UUID NOT NULL REFERENCES mkt_suppliers(id) ON DELETE CASCADE,
+  product_id UUID REFERENCES products(id),  -- NULL si solo catálogo proveedor · no publicado aún
+  supplier_sku TEXT NOT NULL,
+  supplier_name TEXT,
+  cost_clp INTEGER NOT NULL,
+  available_qty INTEGER DEFAULT 0,
+  last_synced_at TIMESTAMPTZ DEFAULT NOW(),
+  margin_pct NUMERIC,
+  is_active BOOLEAN DEFAULT true,
+  UNIQUE (supplier_id, supplier_sku)
+);
+
+ALTER TABLE mkt_supplier_products ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_supplier_products
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE TABLE mkt_purchase_orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL,
+  supplier_id UUID NOT NULL REFERENCES mkt_suppliers(id),
+  order_id UUID REFERENCES mkt_orders(id),  -- venta que disparó esta OC (dropship)
+  status TEXT DEFAULT 'created' CHECK (status IN ('created','confirmed','shipped','delivered','cancelled')),
+  items JSONB NOT NULL,                     -- [{supplier_sku, qty, unit_cost}]
+  ship_to JSONB NOT NULL,                   -- dirección destino final
+  external_po_id TEXT,                       -- ID en sistema del proveedor
+  tracking_number TEXT,
+  total_clp INTEGER NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  shipped_at TIMESTAMPTZ,
+  delivered_at TIMESTAMPTZ,
+  cancelled_at TIMESTAMPTZ,
+  cancel_reason TEXT
+);
+
+ALTER TABLE mkt_purchase_orders ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_purchase_orders
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE INDEX idx_supp_products_supplier ON mkt_supplier_products(supplier_id);
+CREATE INDEX idx_supp_products_active ON mkt_supplier_products(is_active) WHERE is_active = true;
+CREATE INDEX idx_po_order ON mkt_purchase_orders(order_id);
+CREATE INDEX idx_po_status ON mkt_purchase_orders(status, created_at DESC);</pre>
+<h3>Trigger migración dropship → stock local</h3>
+<pre class="ascii">-- Materialized view que detecta SKUs >$5K/mes 2 meses seguidos
+CREATE MATERIALIZED VIEW mkt_dropship_migration_candidates AS
+SELECT
+  sp.product_id,
+  sp.supplier_id,
+  SUM(oi.qty * oi.unit_price) FILTER (WHERE o.created_at > NOW() - INTERVAL '60 days') AS revenue_60d,
+  COUNT(DISTINCT o.id) FILTER (WHERE o.created_at > NOW() - INTERVAL '60 days') AS orders_60d
+FROM mkt_supplier_products sp
+JOIN mkt_order_items oi ON oi.product_id = sp.product_id
+JOIN mkt_orders o ON o.id = oi.order_id
+GROUP BY sp.product_id, sp.supplier_id
+HAVING SUM(oi.qty * oi.unit_price) FILTER (WHERE o.created_at > NOW() - INTERVAL '60 days') > 10000000;
+-- $10M CLP / 2 meses = $5M/mes promedio
+
+REFRESH MATERIALIZED VIEW CONCURRENTLY mkt_dropship_migration_candidates;
+-- Cron 6am diario</pre>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>15</span></div>
 </section>
-<!-- /ADR:ADR-0001/smart-cache -->
+<section class="page" id="13-tablas-ads-publicidad-multicanal-doc-02-bbp-p14">
+  <h2><span class="h2-num">13</span>Tablas ADS (publicidad multicanal · Doc 02 BBP P14)</h2>
+  <p>Soporte para campañas publicitarias cross-canal (Mercado Ads · Meta · Google · TikTok). Fase 2 Y1 · escala D2C Y2.</p>
+<h3>Schema</h3>
+<pre class="ascii">CREATE TABLE mkt_ads_accounts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL,
+  provider TEXT NOT NULL CHECK (provider IN ('mercado_ads','meta','google_ads','tiktok')),
+  external_account_id TEXT NOT NULL,         -- ID cuenta en el provider
+  display_name TEXT,
+  credentials JSONB,                          -- OAuth tokens cifrados
+  is_active BOOLEAN DEFAULT true,
+  monthly_budget_clp INTEGER,                 -- presupuesto mensual
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (tenant_id, provider, external_account_id)
+);
+
+ALTER TABLE mkt_ads_accounts ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_ads_accounts
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE TABLE mkt_ads_campaigns (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL,
+  account_id UUID NOT NULL REFERENCES mkt_ads_accounts(id) ON DELETE CASCADE,
+  external_campaign_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  product_ids UUID[] DEFAULT '{}',           -- SKUs promocionados
+  status TEXT DEFAULT 'active' CHECK (status IN ('draft','active','paused','ended')),
+  budget_clp INTEGER NOT NULL,
+  start_date DATE,
+  end_date DATE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (account_id, external_campaign_id)
+);
+
+ALTER TABLE mkt_ads_campaigns ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_ads_campaigns
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE TABLE mkt_ads_metrics (
+  id BIGSERIAL PRIMARY KEY,
+  tenant_id UUID NOT NULL,
+  campaign_id UUID NOT NULL REFERENCES mkt_ads_campaigns(id) ON DELETE CASCADE,
+  date DATE NOT NULL,
+  impressions INTEGER DEFAULT 0,
+  clicks INTEGER DEFAULT 0,
+  conversions INTEGER DEFAULT 0,
+  spend_clp INTEGER DEFAULT 0,
+  revenue_clp INTEGER DEFAULT 0,             -- atribución revenue
+  roas NUMERIC GENERATED ALWAYS AS (
+    CASE WHEN spend_clp > 0 THEN revenue_clp::numeric / spend_clp ELSE 0 END
+  ) STORED,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (campaign_id, date)
+);
+
+ALTER TABLE mkt_ads_metrics ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_ads_metrics
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE INDEX idx_ads_metrics_campaign_date ON mkt_ads_metrics(campaign_id, date DESC);
+CREATE INDEX idx_ads_metrics_roas ON mkt_ads_metrics(roas) WHERE roas < 1.5;
+-- Indexa campañas con ROAS bajo para alertas</pre>
+<h3>Pixels conversion API (Y2 escalado D2C)</h3>
+<pre class="ascii">CREATE TABLE mkt_ads_events (
+  id BIGSERIAL PRIMARY KEY,
+  tenant_id UUID NOT NULL,
+  provider TEXT NOT NULL CHECK (provider IN ('meta_capi','google_enhanced','tiktok_events')),
+  event_type TEXT NOT NULL,                  -- 'purchase' · 'add_to_cart' · 'view_content'
+  event_id TEXT NOT NULL,                    -- idempotency
+  event_time TIMESTAMPTZ DEFAULT NOW(),
+  user_data JSONB,                            -- hashed PII per provider spec
+  custom_data JSONB,                          -- {value, currency, content_ids}
+  sent_to_provider BOOLEAN DEFAULT false,
+  provider_response JSONB,
+  UNIQUE (provider, event_id)
+);
+
+ALTER TABLE mkt_ads_events ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_ads_events
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE INDEX idx_ads_events_unsent ON mkt_ads_events(provider) WHERE sent_to_provider = false;
+-- Cron 5min envía batch pendientes a cada provider</pre>
+<h3>Triggers alertas ROAS</h3>
+<pre class="ascii">-- Trigger alert si ROAS < 1.5 por 7 días seguidos en campaña activa
+CREATE OR REPLACE FUNCTION fn_alert_low_roas() RETURNS TRIGGER AS $$
+BEGIN
+  IF (
+    SELECT AVG(roas) FROM mkt_ads_metrics
+    WHERE campaign_id = NEW.campaign_id
+      AND date > NOW() - INTERVAL '7 days'
+  ) < 1.5 THEN
+    PERFORM pg_notify('ads_roas_low', NEW.campaign_id::text);
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_alert_low_roas
+  AFTER INSERT ON mkt_ads_metrics
+  FOR EACH ROW EXECUTE FUNCTION fn_alert_low_roas();</pre>
+  <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>16</span></div>
+</section>
 
 </div>
-<nav class="doc-nav"><a href="04-rfp.html">◂ doc 04</a><span class="nav-center">FIN DOCUMENTO 05</span><a href="06-api-catalog.html">doc 06 · API Catalog ▸</a></nav>
+<nav class="doc-nav"><a href="04-rfp.html">◂ doc anterior</a><span class="nav-center">FIN DOC 05</span><a href="06-api-catalog.html">doc siguiente ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
 <script src="_diagram-kit.js"></script>

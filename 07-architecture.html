@@ -316,9 +316,87 @@
   </p>
 
   <div class="box box-info" style="margin-top: 24px;">
-    <div class="box-title">💡 Supplier Adapter Pattern (no renderizado arriba)</div>
-    <p>Análogo al Channel Adapter Pattern del HLA · existe un <strong>Supplier Adapter Pattern</strong> para integrarse con proveedores externos que despachan directamente al cliente final (modo on-demand del Doc 21 · escenario P13 del Doc 02 BBP).</p>
-    <p>Interfaz uniforme: <code>SupplierAdapter</code> con métodos <code>syncCatalog()</code> · <code>checkStock(sku)</code> · <code>createPurchaseOrder(items)</code> · <code>trackShipment(po_id)</code> · <code>handleReturn(order_id)</code>. Cada proveedor implementa la suya según su API (REST · feed XML · email automatizado).</p>
+    <div class="box-title">💡 Supplier Adapter Pattern · ADR-0003</div>
+    <p>Análogo al Channel Adapter del HLA principal · existe un <strong>Supplier Adapter Pattern</strong> para integrarse con proveedores externos que despachan directamente al cliente final (modo dropshipping · Doc 02 BBP P13).</p>
+    <p>Interfaz uniforme: <code>SupplierAdapter</code> con métodos <code>syncCatalog()</code> · <code>checkStock(sku)</code> · <code>createPurchaseOrder(items, shipTo)</code> · <code>trackShipment(po_id)</code> · <code>handleReturn(order_id)</code>. Cada proveedor implementa según su API.</p>
+
+    <div class="svg-container" style="margin-top: 20px;">
+      <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" style="background:#FAFAF7; border-radius: 8px;">
+        <defs>
+          <marker id="arr-s" viewBox="0 -5 10 10" refX="9" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,-5 L10,0 L0,5" fill="#64748B"/>
+          </marker>
+        </defs>
+
+        <text x="450" y="25" text-anchor="middle" font-weight="800" font-size="15" fill="#0F172A">Supplier Adapter Pattern · ADR-0003</text>
+        <text x="450" y="44" text-anchor="middle" font-size="11" fill="#64748B">Interface única · N implementaciones · 4 auth modes</text>
+
+        <rect x="280" y="60" width="340" height="60" rx="10" fill="#0F172A"/>
+        <text x="450" y="86" text-anchor="middle" fill="white" font-weight="700" font-size="13">Backend Core · Next.js orchestrator</text>
+        <text x="450" y="105" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="11">getSupplierAdapter(supplierId)</text>
+
+        <line x1="450" y1="120" x2="450" y2="155" stroke="#00C1C1" stroke-width="2" marker-end="url(#arr-s)"/>
+
+        <rect x="220" y="160" width="460" height="80" rx="10" fill="white" stroke="#00C1C1" stroke-width="2.5"/>
+        <text x="450" y="186" text-anchor="middle" font-weight="800" font-size="14" fill="#00C1C1">interface SupplierAdapter</text>
+        <text x="450" y="208" text-anchor="middle" font-size="11" fill="#475569">syncCatalog() · checkStock() · createPurchaseOrder()</text>
+        <text x="450" y="225" text-anchor="middle" font-size="11" fill="#475569">trackShipment() · handleReturn() · ping()</text>
+
+        <line x1="320" y1="240" x2="120" y2="290" stroke="#64748B" stroke-width="1.5" marker-end="url(#arr-s)"/>
+        <line x1="400" y1="240" x2="340" y2="290" stroke="#64748B" stroke-width="1.5" marker-end="url(#arr-s)"/>
+        <line x1="500" y1="240" x2="560" y2="290" stroke="#64748B" stroke-width="1.5" marker-end="url(#arr-s)"/>
+        <line x1="580" y1="240" x2="780" y2="290" stroke="#64748B" stroke-width="1.5" marker-end="url(#arr-s)"/>
+
+        <rect x="40" y="290" width="170" height="100" rx="8" fill="#EFF6FF" stroke="#1D4ED8" stroke-width="1.5"/>
+        <text x="125" y="313" text-anchor="middle" font-weight="700" font-size="12" fill="#1D4ED8">API_KEY mode</text>
+        <text x="125" y="333" text-anchor="middle" font-size="10" fill="#475569">REST API estándar</text>
+        <text x="125" y="350" text-anchor="middle" font-size="10" fill="#475569">Header X-API-Key</text>
+        <text x="125" y="367" text-anchor="middle" font-size="10" fill="#475569">ej: proveedor con SDK</text>
+        <text x="125" y="384" text-anchor="middle" font-size="10" fill="#94A3B8">~70% proveedores</text>
+
+        <rect x="260" y="290" width="170" height="100" rx="8" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+        <text x="345" y="313" text-anchor="middle" font-weight="700" font-size="12" fill="#B45309">OAUTH mode</text>
+        <text x="345" y="333" text-anchor="middle" font-size="10" fill="#475569">OAuth 2.0 flow</text>
+        <text x="345" y="350" text-anchor="middle" font-size="10" fill="#475569">Refresh token</text>
+        <text x="345" y="367" text-anchor="middle" font-size="10" fill="#475569">ej: marketplace mayorista</text>
+        <text x="345" y="384" text-anchor="middle" font-size="10" fill="#94A3B8">~15% proveedores</text>
+
+        <rect x="480" y="290" width="170" height="100" rx="8" fill="#FCE7F3" stroke="#BE185D" stroke-width="1.5"/>
+        <text x="565" y="313" text-anchor="middle" font-weight="700" font-size="12" fill="#BE185D">EMAIL automated</text>
+        <text x="565" y="333" text-anchor="middle" font-size="10" fill="#475569">Email parser IMAP</text>
+        <text x="565" y="350" text-anchor="middle" font-size="10" fill="#475569">PDF/CSV adjuntos</text>
+        <text x="565" y="367" text-anchor="middle" font-size="10" fill="#475569">ej: proveedor sin API</text>
+        <text x="565" y="384" text-anchor="middle" font-size="10" fill="#94A3B8">~10% proveedores</text>
+
+        <rect x="700" y="290" width="170" height="100" rx="8" fill="#DCFCE7" stroke="#15803D" stroke-width="1.5"/>
+        <text x="785" y="313" text-anchor="middle" font-weight="700" font-size="12" fill="#15803D">WHATSAPP biz</text>
+        <text x="785" y="333" text-anchor="middle" font-size="10" fill="#475569">WhatsApp Business API</text>
+        <text x="785" y="350" text-anchor="middle" font-size="10" fill="#475569">Templates aprobados</text>
+        <text x="785" y="367" text-anchor="middle" font-size="10" fill="#475569">ej: pyme local</text>
+        <text x="785" y="384" text-anchor="middle" font-size="10" fill="#94A3B8">~5% proveedores</text>
+
+        <rect x="200" y="420" width="500" height="60" rx="10" fill="white" stroke="#00C1C1" stroke-width="2"/>
+        <text x="450" y="445" text-anchor="middle" font-weight="700" font-size="13" fill="#0F172A">Postgres · mkt_suppliers + mkt_supplier_products + mkt_purchase_orders</text>
+        <text x="450" y="465" text-anchor="middle" font-size="11" fill="#64748B">RLS por tenant_id · pg_notify on stock_changed</text>
+
+        <line x1="125" y1="390" x2="290" y2="420" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="345" y1="390" x2="400" y2="420" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="565" y1="390" x2="500" y2="420" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="785" y1="390" x2="600" y2="420" stroke="#64748B" stroke-width="1" stroke-dasharray="3,3"/>
+      </svg>
+    </div>
+
+    <p style="font-size: 12px; color: var(--ink-500); margin-top: 12px;">
+      Beneficio: agregar proveedor nuevo = 1 archivo nuevo + entry en registry. NO refactor del core.
+      Implementación en repo: <code>lib/adapters/suppliers/{supplier-x}.ts</code>.
+      Tests en <code>__tests__/adapters/suppliers-registry.test.ts</code>.
+    </p>
+
+    <p style="font-size: 12px; color: var(--ink-500); margin-top: 8px;">
+      Trigger migración a stock local: SQL materialized view <code>mkt_dropship_migration_candidates</code>
+      detecta SKUs con revenue &gt;$10M CLP en 60 días · sugiere comprar stock para subir margen 15-25pp.
+      Ver Doc 05 §12 schema completo + Doc 21 §03c estrategia migración.
+    </p>
   </div>
 
   <div class="page-footer"><span>Banco SMC · Tech</span><span>03</span></div>

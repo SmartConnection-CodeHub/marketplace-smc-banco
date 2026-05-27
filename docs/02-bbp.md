@@ -426,6 +426,74 @@ HABER: Clientes (CxC) por monto recibido</pre>
     </div>
   </div>
 
+# p13
+
+<h2><span class="h2-num">P13</span>Dropshipping multi-proveedor (Fase 3+)</h2>
+  <div class="proc-card">
+    
+### Flujo
+
+    <ol class="steps-list">
+      <li>Founder registra proveedor con auth_mode (api_key · oauth · email · whatsapp) vía POST /api/suppliers</li>
+      <li>Cron 6h sync catálogo proveedor → mkt_supplier_products</li>
+      <li>SKUs filtrados por margen 15%+ entran al catálogo SMC con is_dropship=true</li>
+      <li>Publicación a canales (MeLi · D2C · MP) marca producto como dropship internamente</li>
+      <li>Venta entra por cualquier canal → webhook procesado igual</li>
+      <li>Si is_dropship=true → POST /api/suppliers/:id/purchase-orders propaga OC al proveedor</li>
+      <li>Confirmar stock disponible real-time · si stock=0 refund + email comprador automático</li>
+      <li>Proveedor despacha directo al cliente final · webhook tracking sync con order SMC</li>
+      <li>Cobro a cliente final · DTE emitido a nombre SMC SpA · proveedor cobra a SMC 7-15d después</li>
+      <li>Cerebro monitor: si SKU > $5M CLP/mes 2 meses → alerta migración stock local</li>
+    </ol>
+    <div class="box box-decision">
+      <div class="box-title">📒 Modelo dropshipping vs stock local</div>
+      <ul style="margin:0; font-size:12px;">
+        <li><strong>Dropshipping</strong>: margen 10-25% · sin capital atado · escala catálogo rápido</li>
+        <li><strong>Stock local</strong>: margen 28-40% · capital atado · ciclo despacho propio</li>
+        <li><strong>Estrategia</strong>: dropship para PROBAR · stock local cuando funciona</li>
+      </ul>
+    </div>
+  </div>
+
+# p14
+
+<h2><span class="h2-num">P14</span>Publicidad multicanal (Mercado Ads · Meta · Google · TikTok)</h2>
+  <div class="proc-card">
+    
+### Flujo
+
+    <ol class="steps-list">
+      <li>Founder conecta cuentas publicitarias con OAuth vía POST /api/ads/accounts (4 providers)</li>
+      <li>Crea campaña multi-canal con presupuesto + SKUs promocionados vía POST /api/ads/campaigns</li>
+      <li>Cron diario sync métricas de cada provider → mkt_ads_metrics (impressions · clicks · conv · spend · revenue)</li>
+      <li>Trigger Postgres calcula ROAS auto · si &lt;1.5 por 7 días → pg_notify('ads_roas_low')</li>
+      <li>Listener dispara alerta UI founder · sugerencia pausa o cambio creatividad</li>
+      <li>Conversion events server-side: cada venta → POST /api/ads/events con event_id idempotente</li>
+      <li>Cron 5min envía batch events a Meta CAPI · Google Enhanced Conversions · TikTok Events</li>
+      <li>Cada provider devuelve attribution · sync con campaign metrics</li>
+      <li>Dashboard ROAS consolidado cross-provider · drill-down por SKU/canal</li>
+      <li>Y2 escalado: pixels client-side D2C storefront + retargeting audiences custom</li>
+    </ol>
+    <div class="box box-decision">
+      <div class="box-title">📒 Por qué server-side (CAPI/Enhanced/Events)</div>
+      <ul style="margin:0; font-size:12px;">
+        <li><strong>iOS 14.5+ tracking</strong>: pixels client-side perdieron 60% accuracy · CAPI recupera</li>
+        <li><strong>Ad blockers</strong>: 20-30% usuarios bloquean pixels · server-side bypass</li>
+        <li><strong>Idempotency</strong>: event_id evita doble counting cuando ambos pixel+CAPI activos</li>
+        <li><strong>Privacy</strong>: hashed PII (SHA-256 email/phone) sigue Ley 19.628 + GDPR</li>
+      </ul>
+    </div>
+    <div class="box box-anti">
+      <div class="box-title">🚫 Anti-patrones</div>
+      <ul style="margin:0; font-size:12px;">
+        <li>Activar todos los providers desde día 1 · empezar 1 (Mercado Ads · ya conectado a MeLi)</li>
+        <li>Subir presupuesto sin medir 14 días · esperar señal ROAS estable</li>
+        <li>Olvidar pausar campañas obsoletas · presupuesto sigue corriendo</li>
+        <li>Atribución last-click solo · usar multi-touch en Y2</li>
+      </ul>
+    </div>
+  </div>
+
 # tr
 
 <h2><span class="h2-num">T</span>Procesos transversales</h2>

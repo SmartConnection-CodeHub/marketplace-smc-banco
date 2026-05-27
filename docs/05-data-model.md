@@ -607,3 +607,216 @@ CREATE TABLE mkt_category_premium (
     <div class="box-title">💡 Por qué no data lake</div>
     <p style="margin:0">SoloTodo tiene 58K productos · clonarlos sería data lake. Solo entra al cache lo que alguien consultó. Si nadie pregunta más · se borra solo.</p>
   </div>
+
+# 12 · Tablas Supplier (dropshipping · ADR-0003)
+
+Soporte para modo dropshipping Y1 · cada proveedor tiene su adapter (Supplier Adapter Pattern · ADR-0003 · ver Doc 13 §08).
+
+## Schema
+
+```sql
+CREATE TABLE mkt_suppliers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL,
+  supplier_code TEXT NOT NULL,            -- ej: 'proveedor-x'
+  display_name TEXT NOT NULL,
+  rut TEXT,                                -- RUT chileno
+  auth_mode TEXT NOT NULL CHECK (auth_mode IN ('api_key','oauth','email_automated','whatsapp_business')),
+  credentials JSONB,                       -- cifrado en repo de Supabase Vault
+  contact_email TEXT,
+  contact_phone TEXT,
+  payment_terms TEXT,                      -- ej: '7d post-venta · transferencia CLP'
+  status TEXT DEFAULT 'active' CHECK (status IN ('active','paused','suspended')),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (tenant_id, supplier_code)
+);
+
+ALTER TABLE mkt_suppliers ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_suppliers
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE TABLE mkt_supplier_products (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL,
+  supplier_id UUID NOT NULL REFERENCES mkt_suppliers(id) ON DELETE CASCADE,
+  product_id UUID REFERENCES products(id),  -- NULL si solo catálogo proveedor · no publicado aún
+  supplier_sku TEXT NOT NULL,
+  supplier_name TEXT,
+  cost_clp INTEGER NOT NULL,
+  available_qty INTEGER DEFAULT 0,
+  last_synced_at TIMESTAMPTZ DEFAULT NOW(),
+  margin_pct NUMERIC,
+  is_active BOOLEAN DEFAULT true,
+  UNIQUE (supplier_id, supplier_sku)
+);
+
+ALTER TABLE mkt_supplier_products ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_supplier_products
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE TABLE mkt_purchase_orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL,
+  supplier_id UUID NOT NULL REFERENCES mkt_suppliers(id),
+  order_id UUID REFERENCES mkt_orders(id),  -- venta que disparó esta OC (dropship)
+  status TEXT DEFAULT 'created' CHECK (status IN ('created','confirmed','shipped','delivered','cancelled')),
+  items JSONB NOT NULL,                     -- [{supplier_sku, qty, unit_cost}]
+  ship_to JSONB NOT NULL,                   -- dirección destino final
+  external_po_id TEXT,                       -- ID en sistema del proveedor
+  tracking_number TEXT,
+  total_clp INTEGER NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  shipped_at TIMESTAMPTZ,
+  delivered_at TIMESTAMPTZ,
+  cancelled_at TIMESTAMPTZ,
+  cancel_reason TEXT
+);
+
+ALTER TABLE mkt_purchase_orders ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_purchase_orders
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE INDEX idx_supp_products_supplier ON mkt_supplier_products(supplier_id);
+CREATE INDEX idx_supp_products_active ON mkt_supplier_products(is_active) WHERE is_active = true;
+CREATE INDEX idx_po_order ON mkt_purchase_orders(order_id);
+CREATE INDEX idx_po_status ON mkt_purchase_orders(status, created_at DESC);
+```
+
+## Trigger migración dropship → stock local
+
+```sql
+-- Materialized view que detecta SKUs >$5K/mes 2 meses seguidos
+CREATE MATERIALIZED VIEW mkt_dropship_migration_candidates AS
+SELECT
+  sp.product_id,
+  sp.supplier_id,
+  SUM(oi.qty * oi.unit_price) FILTER (WHERE o.created_at > NOW() - INTERVAL '60 days') AS revenue_60d,
+  COUNT(DISTINCT o.id) FILTER (WHERE o.created_at > NOW() - INTERVAL '60 days') AS orders_60d
+FROM mkt_supplier_products sp
+JOIN mkt_order_items oi ON oi.product_id = sp.product_id
+JOIN mkt_orders o ON o.id = oi.order_id
+GROUP BY sp.product_id, sp.supplier_id
+HAVING SUM(oi.qty * oi.unit_price) FILTER (WHERE o.created_at > NOW() - INTERVAL '60 days') > 10000000;
+-- $10M CLP / 2 meses = $5M/mes promedio
+
+REFRESH MATERIALIZED VIEW CONCURRENTLY mkt_dropship_migration_candidates;
+-- Cron 6am diario
+```
+
+# 13 · Tablas ADS (publicidad multicanal · Doc 02 BBP P14)
+
+Soporte para campañas publicitarias cross-canal (Mercado Ads · Meta · Google · TikTok). Fase 2 Y1 · escala D2C Y2.
+
+## Schema
+
+```sql
+CREATE TABLE mkt_ads_accounts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL,
+  provider TEXT NOT NULL CHECK (provider IN ('mercado_ads','meta','google_ads','tiktok')),
+  external_account_id TEXT NOT NULL,         -- ID cuenta en el provider
+  display_name TEXT,
+  credentials JSONB,                          -- OAuth tokens cifrados
+  is_active BOOLEAN DEFAULT true,
+  monthly_budget_clp INTEGER,                 -- presupuesto mensual
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (tenant_id, provider, external_account_id)
+);
+
+ALTER TABLE mkt_ads_accounts ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_ads_accounts
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE TABLE mkt_ads_campaigns (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL,
+  account_id UUID NOT NULL REFERENCES mkt_ads_accounts(id) ON DELETE CASCADE,
+  external_campaign_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  product_ids UUID[] DEFAULT '{}',           -- SKUs promocionados
+  status TEXT DEFAULT 'active' CHECK (status IN ('draft','active','paused','ended')),
+  budget_clp INTEGER NOT NULL,
+  start_date DATE,
+  end_date DATE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (account_id, external_campaign_id)
+);
+
+ALTER TABLE mkt_ads_campaigns ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_ads_campaigns
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE TABLE mkt_ads_metrics (
+  id BIGSERIAL PRIMARY KEY,
+  tenant_id UUID NOT NULL,
+  campaign_id UUID NOT NULL REFERENCES mkt_ads_campaigns(id) ON DELETE CASCADE,
+  date DATE NOT NULL,
+  impressions INTEGER DEFAULT 0,
+  clicks INTEGER DEFAULT 0,
+  conversions INTEGER DEFAULT 0,
+  spend_clp INTEGER DEFAULT 0,
+  revenue_clp INTEGER DEFAULT 0,             -- atribución revenue
+  roas NUMERIC GENERATED ALWAYS AS (
+    CASE WHEN spend_clp > 0 THEN revenue_clp::numeric / spend_clp ELSE 0 END
+  ) STORED,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (campaign_id, date)
+);
+
+ALTER TABLE mkt_ads_metrics ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_ads_metrics
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE INDEX idx_ads_metrics_campaign_date ON mkt_ads_metrics(campaign_id, date DESC);
+CREATE INDEX idx_ads_metrics_roas ON mkt_ads_metrics(roas) WHERE roas < 1.5;
+-- Indexa campañas con ROAS bajo para alertas
+```
+
+## Pixels conversion API (Y2 escalado D2C)
+
+```sql
+CREATE TABLE mkt_ads_events (
+  id BIGSERIAL PRIMARY KEY,
+  tenant_id UUID NOT NULL,
+  provider TEXT NOT NULL CHECK (provider IN ('meta_capi','google_enhanced','tiktok_events')),
+  event_type TEXT NOT NULL,                  -- 'purchase' · 'add_to_cart' · 'view_content'
+  event_id TEXT NOT NULL,                    -- idempotency
+  event_time TIMESTAMPTZ DEFAULT NOW(),
+  user_data JSONB,                            -- hashed PII per provider spec
+  custom_data JSONB,                          -- {value, currency, content_ids}
+  sent_to_provider BOOLEAN DEFAULT false,
+  provider_response JSONB,
+  UNIQUE (provider, event_id)
+);
+
+ALTER TABLE mkt_ads_events ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_tenant_isolation ON mkt_ads_events
+  USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid);
+
+CREATE INDEX idx_ads_events_unsent ON mkt_ads_events(provider) WHERE sent_to_provider = false;
+-- Cron 5min envía batch pendientes a cada provider
+```
+
+## Triggers alertas ROAS
+
+```sql
+-- Trigger alert si ROAS < 1.5 por 7 días seguidos en campaña activa
+CREATE OR REPLACE FUNCTION fn_alert_low_roas() RETURNS TRIGGER AS $$
+BEGIN
+  IF (
+    SELECT AVG(roas) FROM mkt_ads_metrics
+    WHERE campaign_id = NEW.campaign_id
+      AND date > NOW() - INTERVAL '7 days'
+  ) < 1.5 THEN
+    PERFORM pg_notify('ads_roas_low', NEW.campaign_id::text);
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_alert_low_roas
+  AFTER INSERT ON mkt_ads_metrics
+  FOR EACH ROW EXECUTE FUNCTION fn_alert_low_roas();
+```

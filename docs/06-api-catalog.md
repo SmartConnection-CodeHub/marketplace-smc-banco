@@ -46,6 +46,22 @@ next: 07-architecture.html
 | 28 | POST | `/api/cron/cache-cleanup` | Cron | CRON_SECRET | Limpia Smart Cache Cold 7d |
 | 29 | GET | `/api/logs/api` | Logs | JWT founders | Logs centralizados LLMOps |
 | 30 | GET | `/api/health` | Logs | público | Health check uptime |
+| 31 | GET | `/api/suppliers` | Suppliers | JWT | Lista proveedores dropship activos |
+| 32 | POST | `/api/suppliers` | Suppliers | JWT | Crea proveedor con auth_mode |
+| 33 | PATCH | `/api/suppliers/:id` | Suppliers | JWT | Update credentials / payment_terms / status |
+| 34 | POST | `/api/suppliers/:id/sync-catalog` | Suppliers | JWT | Sync catálogo proveedor → mkt_supplier_products |
+| 35 | POST | `/api/suppliers/:id/purchase-orders` | Suppliers | JWT | Crea OC al proveedor (propagación dropship) |
+| 36 | GET | `/api/suppliers/:id/purchase-orders/:po_id` | Suppliers | JWT | Estado + tracking OC |
+| 37 | POST | `/api/webhooks/supplier/:supplier_code` | Webhooks | HMAC | Webhook proveedor (tracking · stock · cancellation) |
+| 38 | GET | `/api/ads/accounts` | Ads | JWT | Cuentas publicitarias (Mercado/Meta/Google/TikTok) |
+| 39 | POST | `/api/ads/accounts` | Ads | JWT | Conectar nueva cuenta con OAuth |
+| 40 | GET | `/api/ads/campaigns` | Ads | JWT | Lista campañas con filtros + ROAS actual |
+| 41 | POST | `/api/ads/campaigns` | Ads | JWT | Crea campaña multi-canal |
+| 42 | PATCH | `/api/ads/campaigns/:id` | Ads | JWT | Pausar · ajustar presupuesto · status |
+| 43 | GET | `/api/ads/metrics` | Ads | JWT | Time series spend/clicks/conv/roas por campaña |
+| 44 | POST | `/api/ads/events` | Ads | JWT | Envía conversion event a Meta CAPI / Google EC / TikTok Events |
+| 45 | POST | `/api/cron/ads-sync-metrics` | Cron | CRON_SECRET | Sync diario métricas desde providers |
+| 46 | POST | `/api/cron/ads-events-batch` | Cron | CRON_SECRET | Envía conversion events pendientes batch 5min |
 
 # 02 · Mapa de interacciones · quién llama a quién
 
@@ -123,3 +139,196 @@ next: 07-architecture.html
 | Mutaciones (POST/PATCH) | 200 ms | 600 ms |
 | Sync canales (POST /channels/*/sync) | 1-3 s | 8 s |
 | Cerebro SSE chat | 200 ms first token | 600 ms first token |
+| Suppliers sync-catalog | 5-15 s | 30 s |
+| Ads metrics fetch | 1-3 s | 8 s |
+| Ads events POST (CAPI) | 80 ms | 200 ms |
+
+# 08 · Detalle endpoints Suppliers (Doc 13 §08 · ADR-0003)
+
+## POST /api/suppliers
+
+Crea un proveedor dropship. Soporta 4 auth modes: api_key · oauth · email_automated · whatsapp_business.
+
+```json
+// Request
+{
+  "supplier_code": "proveedor-x",
+  "display_name": "Proveedor X SpA",
+  "rut": "76.123.456-7",
+  "auth_mode": "api_key",
+  "credentials": { "api_key": "..." },
+  "contact_email": "ventas@proveedor.cl",
+  "payment_terms": "7d post-venta · transferencia CLP"
+}
+
+// Response 201
+{
+  "id": "uuid",
+  "supplier_code": "proveedor-x",
+  "status": "active"
+}
+```
+
+Validation Zod: `supplier_code` slug · `auth_mode` enum · `credentials` matches schema según auth_mode.
+
+## POST /api/suppliers/:id/sync-catalog
+
+Dispara `SupplierAdapter.syncCatalog()` · upsert en `mkt_supplier_products`.
+
+```json
+// Response 200
+{
+  "synced_count": 342,
+  "new_count": 28,
+  "updated_count": 314,
+  "deactivated_count": 0,
+  "duration_ms": 8432
+}
+```
+
+## POST /api/suppliers/:id/purchase-orders
+
+Crea OC dropship (uso interno desde flujo orden) o manual desde dashboard.
+
+```json
+// Request
+{
+  "items": [{ "supplier_sku": "SKU-X-001", "qty": 2 }],
+  "ship_to": {
+    "full_name": "Juan Pérez",
+    "rut": "12.345.678-9",
+    "street": "Av. Providencia 1234",
+    "city": "Santiago",
+    "region": "RM",
+    "phone": "+56912345678"
+  },
+  "order_id": "uuid-orden-marketplace"  // opcional · NULL si manual
+}
+
+// Response 201
+{
+  "id": "uuid-po",
+  "external_po_id": "PROV-X-99887",
+  "status": "created",
+  "total_clp": 45000,
+  "expected_shipped_at": "2026-05-30T00:00:00Z"
+}
+```
+
+## POST /api/webhooks/supplier/:supplier_code
+
+Recibe webhook de proveedor (HMAC firmado). Eventos: shipped · delivered · cancelled · stock_changed.
+
+```json
+// Request (firma en header X-Supplier-Signature)
+{
+  "event_type": "shipped",
+  "external_po_id": "PROV-X-99887",
+  "tracking_number": "CHX-12345",
+  "courier": "Chilexpress",
+  "occurred_at": "2026-05-28T14:23:00Z"
+}
+
+// Response 200
+{ "ok": true, "event_id": "uuid" }
+```
+
+# 09 · Detalle endpoints Ads (Doc 02 BBP P14)
+
+## POST /api/ads/accounts
+
+Conecta cuenta publicitaria con OAuth. Tokens cifrados en Supabase Vault.
+
+```json
+// Request
+{
+  "provider": "mercado_ads",   // o "meta" | "google_ads" | "tiktok"
+  "oauth_code": "...",          // recibido del flow OAuth callback
+  "display_name": "SMC SpA · Mercado Ads",
+  "monthly_budget_clp": 500000
+}
+
+// Response 201
+{
+  "id": "uuid",
+  "provider": "mercado_ads",
+  "external_account_id": "MLA123456",
+  "is_active": true
+}
+```
+
+## POST /api/ads/campaigns
+
+Crea campaña en provider remoto + sincroniza row local.
+
+```json
+// Request
+{
+  "account_id": "uuid",
+  "name": "Black Friday 2026",
+  "product_ids": ["uuid-sku-1", "uuid-sku-2"],
+  "budget_clp": 100000,
+  "start_date": "2026-11-25",
+  "end_date": "2026-11-30"
+}
+
+// Response 201
+{
+  "id": "uuid",
+  "external_campaign_id": "ADS-99887",
+  "status": "active"
+}
+```
+
+## GET /api/ads/metrics
+
+Time series spend/clicks/conv/roas. Filtro por campaign_id · date_range.
+
+```bash
+GET /api/ads/metrics?campaign_id=uuid&date_from=2026-05-01&date_to=2026-05-27
+```
+
+```json
+// Response 200
+{
+  "campaign_id": "uuid",
+  "rows": [
+    { "date": "2026-05-27", "impressions": 4523, "clicks": 89, "conversions": 7, "spend_clp": 12000, "revenue_clp": 84000, "roas": 7.0 }
+  ],
+  "summary": {
+    "total_spend": 240000,
+    "total_revenue": 1820000,
+    "average_roas": 7.58,
+    "alerts": []
+  }
+}
+```
+
+Si ROAS &lt;1.5 últimos 7 días · `summary.alerts` incluye `{ "type": "low_roas", "suggestion": "pausar o cambiar creatividad" }`.
+
+## POST /api/ads/events
+
+Envía conversion event server-side (Meta CAPI · Google Enhanced Conversions · TikTok Events). Hashed PII según provider spec.
+
+```json
+// Request
+{
+  "provider": "meta_capi",
+  "event_type": "purchase",
+  "event_id": "uuid-order-1",   // idempotency
+  "user_data": {
+    "em": "sha256-hash-email",
+    "ph": "sha256-hash-phone"
+  },
+  "custom_data": {
+    "value": 45000,
+    "currency": "CLP",
+    "content_ids": ["sku-1"]
+  }
+}
+
+// Response 200
+{ "ok": true, "queued_for_provider": true }
+```
+
+Cron `/api/cron/ads-events-batch` (5min) envía batch pendientes a cada provider.
