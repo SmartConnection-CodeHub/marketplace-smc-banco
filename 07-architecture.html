@@ -509,8 +509,8 @@
 │   │   │       ├── cron/       # refresh-tokens · mp-tenders
 │   │   │       └── v1/         # APIs internas REST
 │   │   └── package.json
-│   └── storefronts/            # Kanki + futuras marcas
-│       └── kanki/              # actual kanki.smconnection.cl migrado
+│   └── storefronts/            # marcas propias futuras
+│       └── marca-1/            # primera marca migrada al Hub
 │
 ├── packages/
 │   ├── core/                   # @smc/core · dominio puro
@@ -755,7 +755,7 @@ ALTER TABLE mk_products FORCE ROW LEVEL SECURITY;
       <tr><td>ADR-007</td><td>Open Factura para DTE (no SII directo)</td><td><span class="badge badge-active">Aceptado</span></td></tr>
       <tr><td>ADR-008</td><td>Groq como IA primaria · OpenRouter fallback</td><td><span class="badge badge-active">Aceptado</span></td></tr>
       <tr><td>ADR-009</td><td>RLS Postgres como defensa de aislamiento multi-tenant</td><td><span class="badge badge-active">Aceptado</span></td></tr>
-      <tr><td>ADR-010</td><td>Kanki migra back-office al Hub · front sigue separado</td><td><span class="badge badge-pending">Propuesto</span></td></tr>
+      <tr><td>ADR-010</td><td>Primera marca propia migra back-office al Hub · storefront sigue separado</td><td><span class="badge badge-pending">Propuesto</span></td></tr>
     </tbody>
   </table>
   <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>12</span></div>

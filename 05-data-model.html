@@ -91,7 +91,7 @@
 
 <section class="page" id="mt">
   <h2><span class="h2-num">02</span>Multi-tenancy · pieza central</h2>
-  <p>Cada tenant = una "empresa operadora" dentro del Hub. Hoy hay 1 tenant (Smart Connection / Marketplace SMC SpA). Futuro: Kanki + N marcas adicionales.</p>
+  <p>Cada tenant = una "empresa operadora" dentro del Hub. Hoy hay 1 tenant (Smart Connection / Marketplace SMC SpA). Futuro: N marcas propias adicionales.</p>
 
   <div class="svg-container">
     <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg" style="background:#FAFAF7">
@@ -109,7 +109,7 @@
       <text x="370" y="65" text-anchor="middle" font-size="10" fill="#831843">RUT 76811863-9</text>
 
       <rect x="300" y="100" width="140" height="60" rx="10" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
-      <text x="370" y="128" text-anchor="middle" font-weight="700" font-size="13">Tenant: Kanki</text>
+      <text x="370" y="128" text-anchor="middle" font-weight="700" font-size="13">Tenant: Marca-2</text>
       <text x="370" y="145" text-anchor="middle" font-size="10" fill="#1E40AF">Futuro</text>
 
       <rect x="500" y="60" width="140" height="60" rx="10" fill="#D1FAE5" stroke="#22C55E" stroke-width="2" stroke-dasharray="3,3"/>
@@ -139,7 +139,7 @@
     <div class="table-name">mk_tenants</div>
     <div class="table-purpose">Una fila = una empresa operadora dentro del Hub.</div>
     <pre class="cols">id UUID <span class="col-pk">PK</span>
-slug TEXT UNIQUE              -- 'smc' · 'kanki' · 'marca-x'
+slug TEXT UNIQUE              -- 'smc' · 'marca-1' · 'marca-x'
 name TEXT                     -- razón social legal
 rut TEXT                      -- RUT empresa
 giro TEXT                     -- giro principal SII
