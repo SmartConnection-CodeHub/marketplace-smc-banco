@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>13 · Especificación Técnica · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+</head>
+<body>
+<nav class="doc-nav"><a href="11-especificacion-funcional.html">◂ doc anterior</a><span class="nav-center">DOC 13 · PRODUCTO TÉCNICO</span><a href="14-founders-journey.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Producto Técnico</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 13 · Producto Técnico</div>
+    <h1 class="cover-title">Especificación Técnica</h1>
+    <p class="cover-subtitle">Cómo se construye · stack confirmado · ADRs · performance budgets · observabilidad.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-27</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Architect + Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 Draft · pendiente review founders</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-stack-confirmado">02 · Stack confirmado</a><span class="toc-pg">04</span></li><li><a href="#03-architectural-decision-records-adrs">03 · Architectural Decision Records (ADRs)</a><span class="toc-pg">05</span></li><li><a href="#04-performance-budgets-targets-y1">04 · Performance budgets (targets Y1)</a><span class="toc-pg">06</span></li><li><a href="#05-security-requirements">05 · Security requirements</a><span class="toc-pg">07</span></li><li><a href="#06-observabilidad-llmops">06 · Observabilidad + LLMOps</a><span class="toc-pg">08</span></li><li><a href="#07-decisiones-de-implementaci-n">07 · Decisiones de implementación</a><span class="toc-pg">09</span></li><li><a href="#08-cosas-que-dej-fuera-por-ahora">08 · Cosas que dejé fuera (por ahora)</a><span class="toc-pg">10</span></li><li><a href="#09-pr-ximos-pasos-t-cnicos">09 · Próximos pasos técnicos</a><span class="toc-pg">11</span></li></ol>
+</section>
+
+<section class="page" id="01-premisa">
+  <h2><span class="h2-num">01</span>Premisa</h2>
+  <p>Documento define <strong>cómo se construye</strong> Marketplace SMC. Complementa Doc 07 Architecture (HLA + escenarios) con detalle de decisiones técnicas + ADRs + performance budgets + observabilidad.</p>
+<div class="box box-info"><div class="box-title">💡 Hilo conductor</div><p>Doc 10 dice qué hace · Doc 11 dice cómo se construye · Doc 18 dice cuándo y con qué equipo. Los 3 son complementarios · NO redundantes.</p></div>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>03</span></div>
+</section>
+<section class="page" id="02-stack-confirmado">
+  <h2><span class="h2-num">02</span>Stack confirmado</h2>
+  <table>
+<thead><tr>
+<th>Capa</th>
+<th>Tecnología</th>
+<th>Justificación</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Runtime</td>
+<td>Node.js 22 LTS</td>
+<td>Estable hasta 2027-04 · familiarity Guillermo</td>
+</tr>
+<tr>
+<td>Framework</td>
+<td>Next.js 16 (App Router)</td>
+<td>SSR + RSC + Server Actions + ISR · DX excelente</td>
+</tr>
+<tr>
+<td>TypeScript</td>
+<td>5.x strict</td>
+<td>Type safety · catch bugs en build</td>
+</tr>
+<tr>
+<td>UI</td>
+<td>React 19 + Tailwind v4 + Radix + @smc/ui</td>
+<td>Component-driven · accesible · branded</td>
+</tr>
+<tr>
+<td>State Y1</td>
+<td>URL params + Server Components</td>
+<td>Sin Zustand/Redux Y1 · YAGNI</td>
+</tr>
+<tr>
+<td>DB</td>
+<td>Supabase Postgres (sa-east-1)</td>
+<td>RLS · pg_cron · pg_notify · backups PITR 30d</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Supabase Auth + JWT con tenant_id</td>
+<td>Single tenant Y1 · multi-tenant ready arch</td>
+</tr>
+<tr>
+<td>ORM</td>
+<td>Drizzle ORM</td>
+<td>Type-safe · zero runtime · migrations versionadas</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>Zod (client + server)</td>
+<td>Single source of truth schemas</td>
+</tr>
+<tr>
+<td>Forms</td>
+<td>React Hook Form + Zod resolver</td>
+<td>Performance · UX · validación shared</td>
+</tr>
+<tr>
+<td>Pagos</td>
+<td>MercadoPago + WebPay Plus</td>
+<td>MercadoPago para MeLi · WebPay para D2C Chile</td>
+</tr>
+<tr>
+<td>Logística</td>
+<td>Chilexpress + Starken APIs</td>
+<td>Couriers locales Chile principales</td>
+</tr>
+<tr>
+<td>DTE</td>
+<td>Open Factura</td>
+<td>DTE 33 · 39 · 61 · cumplimiento SII</td>
+</tr>
+<tr>
+<td>IA</td>
+<td>OpenRouter (chain)</td>
+<td>Groq · Gemini · DeepSeek fallback · NUNCA Claude</td>
+</tr>
+<tr>
+<td>Hosting</td>
+<td>AWS Amplify</td>
+<td>Auto-deploy push · CDN CloudFront · build optimizado</td>
+</tr>
+<tr>
+<td>Domain</td>
+<td>marketplace.smconnection.cl</td>
+<td>Custom domain · cert ACM</td>
+</tr>
+<tr>
+<td>Observabilidad</td>
+<td>Sentry + PostHog + CloudWatch</td>
+<td>Errores · funnels · infra · cost dashboards</td>
+</tr>
+<tr>
+<td>Cron</td>
+<td>Vercel Cron + pg_cron</td>
+<td>Refresh MeLi 6h · sync MP diario · cache cleanup 7d</td>
+</tr>
+<tr>
+<td>CI/CD</td>
+<td>GitHub Actions</td>
+<td>Lint · type-check · build · auto-tag deploy</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>04</span></div>
+</section>
+<section class="page" id="03-architectural-decision-records-adrs">
+  <h2><span class="h2-num">03</span>Architectural Decision Records (ADRs)</h2>
+  <h3>ADR-0001 · v5 Opportunities sin LLM (existente)</h3>
+<p>Status: ✅ Accepted (2026-05-15)</p>
+<p>Context: MeLi DPP requiere USD 200K GMV · imposible Y1.</p>
+<p>Decision: 6 capas Opportunities · scoring sin LLM · usar SoloTodo + Mercado Público + Open Food Facts + BCentral.</p>
+<p>Consequences: Cero costo IA por scoring · sin dependencia DPP · catálogo amplio Chile.</p>
+<h3>ADR-0002 · Channel Adapter Pattern (existente)</h3>
+<p>Status: ✅ Accepted (2026-05-10)</p>
+<p>Context: 4+ canales (MeLi · MP · D2C · B2B) con APIs muy distintas. Sin abstracción se vuelve unmaintainable.</p>
+<p>Decision: Interface uniforme <code>ChannelAdapter</code> con métodos <code>syncStock()</code>, <code>listOrders()</code>, <code>publishProduct()</code>. Cada canal implementa su adapter.</p>
+<p>Consequences: Agregar canal nuevo = 1 archivo nuevo · NO refactor del resto.</p>
+<h3>ADR-0003 · Supplier Adapter Pattern 🆕</h3>
+<p>Status: 🟡 Proposed (2026-05-27)</p>
+<p>Context: Modo dropshipping (Doc 02 P13) requiere integración con proveedores externos. Cada proveedor tiene API/feed/método distinto. Sin abstracción = misma plaga que Channel.</p>
+<p>Decision: Interface uniforme <code>SupplierAdapter</code> con métodos <code>syncCatalog()</code>, <code>checkStock(sku)</code>, <code>createPurchaseOrder(items)</code>, <code>trackShipment(po_id)</code>, <code>handleReturn(order_id)</code>. Cada proveedor implementa el suyo.</p>
+<p>Consequences: Agregar proveedor dropship = 1 archivo · NO refactor.</p>
+<p>Alternativas descartadas: webhooks ad-hoc por proveedor (mantenimiento caro · escalado lineal).</p>
+<h3>ADR-0004 · ADS multicanal automation 🆕</h3>
+<p>Status: 🟡 Proposed (2026-05-27)</p>
+<p>Context: D2C Y2+ requiere ADS (Meta + Google + TikTok). Sin automation · tiempo founder por campaign sale del presupuesto.</p>
+<p>Decision: Construir AdsManager que abstrae las 3 plataformas. Métricas comunes (CTR · CPC · ROAS). Pixels server-side (Meta Conversions API + Google Ads Enhanced Conversions + TikTok Events API) para deprecation cookie-less.</p>
+<p>Consequences: 1 panel · 3 plataformas. Server-side mejor measurement.</p>
+<p>Alternativas descartadas: usar tool tercero (Triple Whale · Northbeam) · costo $300+/mes innecesario Y2.</p>
+<h3>ADR-0005 · Versionado banco v3 ↔ v4 🆕</h3>
+<p>Status: 🟡 Proposed (2026-05-27)</p>
+<p>Context: v3.0.0 estable · v4 en construcción. Necesidad de navegar entre versiones (founders + tú quieres comparar).</p>
+<p>Decision: 2 builds paralelos · <code>/v3</code> y <code>/v4</code> paths en mismo repo o subdomains separados. Switcher UI visible. NO se borra v3 cuando v4 sale.</p>
+<p>Consequences: Mantenimiento 2 versiones temporal · OK. Cuando v4 estable · v3 archivado pero accesible.</p>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>05</span></div>
+</section>
+<section class="page" id="04-performance-budgets-targets-y1">
+  <h2><span class="h2-num">04</span>Performance budgets (targets Y1)</h2>
+  <table>
+<thead><tr>
+<th>Métrica</th>
+<th>Budget</th>
+<th>Trigger alarma</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>LCP (Largest Contentful Paint)</td>
+<td>&lt; 2.5s</td>
+<td>&gt; 4s</td>
+</tr>
+<tr>
+<td>INP (Interaction to Next Paint)</td>
+<td>&lt; 200ms</td>
+<td>&gt; 500ms</td>
+</tr>
+<tr>
+<td>CLS (Cumulative Layout Shift)</td>
+<td>&lt; 0.1</td>
+<td>&gt; 0.25</td>
+</tr>
+<tr>
+<td>API p50 lectura</td>
+<td>&lt; 120ms</td>
+<td>&gt; 300ms</td>
+</tr>
+<tr>
+<td>API p95 lectura</td>
+<td>&lt; 350ms</td>
+<td>&gt; 800ms</td>
+</tr>
+<tr>
+<td>API p95 mutación</td>
+<td>&lt; 600ms</td>
+<td>&gt; 1.5s</td>
+</tr>
+<tr>
+<td>Cerebro chat first token (SSE)</td>
+<td>&lt; 600ms</td>
+<td>&gt; 2s</td>
+</tr>
+<tr>
+<td>Sync MeLi p95</td>
+<td>&lt; 8s</td>
+<td>&gt; 30s</td>
+</tr>
+<tr>
+<td>Build time CI</td>
+<td>&lt; 3min</td>
+<td>&gt; 8min</td>
+</tr>
+<tr>
+<td>Bundle size cliente</td>
+<td>&lt; 250KB gzipped</td>
+<td>&gt; 500KB</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>06</span></div>
+</section>
+<section class="page" id="05-security-requirements">
+  <h2><span class="h2-num">05</span>Security requirements</h2>
+  <table>
+<thead><tr>
+<th>#</th>
+<th>Requerimiento</th>
+<th>Implementación</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>SR-1</td>
+<td>TLS 1.3 obligatorio</td>
+<td>Amplify default + HSTS preload</td>
+</tr>
+<tr>
+<td>SR-2</td>
+<td>AES-256 at rest</td>
+<td>Supabase default</td>
+</tr>
+<tr>
+<td>SR-3</td>
+<td>RLS Postgres siempre activo</td>
+<td>tenant_id implícito desde JWT</td>
+</tr>
+<tr>
+<td>SR-4</td>
+<td>service_role solo backend</td>
+<td>NUNCA exposed a client</td>
+</tr>
+<tr>
+<td>SR-5</td>
+<td>2FA obligatorio admins</td>
+<td>Supabase Auth TOTP</td>
+</tr>
+<tr>
+<td>SR-6</td>
+<td>Cookies httpOnly + SameSite=lax</td>
+<td>Default Next.js + custom config</td>
+</tr>
+<tr>
+<td>SR-7</td>
+<td>CSP headers estrictos</td>
+<td>next.config.ts headers()</td>
+</tr>
+<tr>
+<td>SR-8</td>
+<td>Rate limit 60 req/min user</td>
+<td>Middleware Next.js + Upstash Redis</td>
+</tr>
+<tr>
+<td>SR-9</td>
+<td>Idempotency keys en POST críticos</td>
+<td>UUIDs · tabla <code>mkt_idempotency</code></td>
+</tr>
+<tr>
+<td>SR-10</td>
+<td>Audit logs append-only</td>
+<td>Tabla <code>audit_logs</code> + RLS</td>
+</tr>
+<tr>
+<td>SR-11</td>
+<td>Secrets en Amplify env vars</td>
+<td>NUNCA en repo · rotación trimestral</td>
+</tr>
+<tr>
+<td>SR-12</td>
+<td>HMAC SHA-256 en webhooks</td>
+<td>Validar firma antes de procesar</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>07</span></div>
+</section>
+<section class="page" id="06-observabilidad-llmops">
+  <h2><span class="h2-num">06</span>Observabilidad + LLMOps</h2>
+  <pre class="ascii">LOGS estructurados (JSON) por evento
+─────────────────────────────────────────────────────
+{ timestamp · level · feature · user_id · tenant_id ·
+  duration_ms · status · error_msg · metadata }
+
+→ stdout (CloudWatch) + tabla mkt_api_logs (consultable)
+
+LLMOps específico Cerebro
+─────────────────────────────────────────────────────
+{ provider · model · prompt_version · tokens_in · tokens_out ·
+  cost_usd · latency_ms · cache_hit · feature · hallucination_flag }
+
+→ tabla mkt_ai_logs · dashboards costo/feature/día
+
+ALERTAS (CloudWatch + Sentry)
+─────────────────────────────────────────────────────
+- Error rate > 1% por 5 min → email founders
+- p95 API > 800ms por 10 min → email
+- Costo IA diario > 80% budget → email
+- Sync canal fallido > 3 retries → email
+- DTE SII rechazo → email inmediato</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>08</span></div>
+</section>
+<section class="page" id="07-decisiones-de-implementaci-n">
+  <h2><span class="h2-num">07</span>Decisiones de implementación</h2>
+  <div class="box box-premise"><div class="box-title">🎯 Filosofía técnica</div><p>Hacer lo mínimo que entregue valor · NO sobre-diseñar.</p></div>
+<ul>
+<li><strong>Sin tests E2E Y1</strong>: foco unit + integration. E2E (Playwright) en Y2 si hay capacidad.</li>
+<li><strong>Sin GraphQL</strong>: REST endpoints simples. GraphQL si complejidad data fetching lo justifica Y2.</li>
+<li><strong>Sin WebSockets Y1</strong>: SSE para streaming Cerebro. WS solo si voz/colab requiere bidireccional Y2.</li>
+<li><strong>Sin micro-frontends</strong>: single Next.js app. Split si equipo crece a 5+ devs.</li>
+<li><strong>Sin Kubernetes</strong>: Amplify suficiente. K8s solo si self-hosting · NO el caso.</li>
+<li><strong>Sin Kafka / event streaming externo</strong>: pg_notify suficiente Y1. RabbitMQ/Kafka si volumen >100K eventos/día.</li>
+<li><strong>Sin Sentry custom dashboards</strong>: usar defaults. Custom solo si patrón específico emerge.</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>09</span></div>
+</section>
+<section class="page" id="08-cosas-que-dej-fuera-por-ahora">
+  <h2><span class="h2-num">08</span>Cosas que dejé fuera (por ahora)</h2>
+  <ul>
+<li>Schema completo DB → ver Doc 05 Data Model</li>
+<li>Endpoints detallados → ver Doc 06 API Catalog (Swagger live)</li>
+<li>HLA + 5 escenarios → ver Doc 07 Architecture</li>
+<li>Setup dev local · convenciones · workflow Git → ver Doc 38 Onboarding Dev</li>
+<li>Performance perfiles real → se construyen post-MVP con data real</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>10</span></div>
+</section>
+<section class="page" id="09-pr-ximos-pasos-t-cnicos">
+  <h2><span class="h2-num">09</span>Próximos pasos técnicos</h2>
+  <ul>
+<li>Implementar ADR-0003 Supplier Adapter Pattern (estimate: 16h)</li>
+<li>Implementar ADR-0004 ADS Manager (estimate: 40h · Y2)</li>
+<li>Setup observabilidad LLMOps tabla <code>mkt_ai_logs</code> (4h)</li>
+<li>Performance audit Lighthouse · alinear a budgets (8h)</li>
+<li>Audit security checklist 12 items SR-1 a SR-12 (4h)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>11</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="11-especificacion-funcional.html">◂ doc anterior</a><span class="nav-center">FIN DOC 13</span><a href="14-founders-journey.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
+</body>
+</html>

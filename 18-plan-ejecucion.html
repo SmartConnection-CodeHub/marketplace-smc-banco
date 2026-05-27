@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>18 · Plan Ejecución v4 · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+</head>
+<body>
+<nav class="doc-nav"><a href="17-estrategia-y1.html">◂ doc anterior</a><span class="nav-center">DOC 18 · FOUNDERS OPERATION</span><a href="21-business-comercio.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Founders Operation</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 18 · Founders Operation</div>
+    <h1 class="cover-title">Plan Ejecución v4</h1>
+    <p class="cover-subtitle">Gantt detallado · agentes SMC OS asignados · costo por entrega · roadmap operacional ejecutable.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-27</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">PM + Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 Draft · pendiente OK founders</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-gantt-q4-26-q3-27-y1-completo">02 · Gantt Q4-26 → Q3-27 (Y1 completo)</a><span class="toc-pg">04</span></li><li><a href="#03-cat-logo-de-agentes-smc-os-asignaci-n-recursos">03 · Catálogo de agentes SMC OS (asignación recursos)</a><span class="toc-pg">05</span></li><li><a href="#04-entregables-y1-costo-por-agente-monto-total">04 · Entregables Y1 · costo por agente + monto total</a><span class="toc-pg">06</span></li><li><a href="#05-resumen-econ-mico-y1">05 · Resumen económico Y1</a><span class="toc-pg">07</span></li><li><a href="#06-dependencias-cr-ticas-orden-ineludible">06 · Dependencias críticas (orden ineludible)</a><span class="toc-pg">08</span></li><li><a href="#07-hitos-cuantificables-lo-que-se-mide">07 · Hitos cuantificables (lo que se mide)</a><span class="toc-pg">09</span></li><li><a href="#08-riesgos-de-ejecuci-n-plan-b">08 · Riesgos de ejecución + plan B</a><span class="toc-pg">10</span></li><li><a href="#09-cadencia-operativa-de-seguimiento">09 · Cadencia operativa de seguimiento</a><span class="toc-pg">11</span></li><li><a href="#10-pr-ximos-pasos-inmediatos">10 · Próximos pasos inmediatos</a><span class="toc-pg">12</span></li></ol>
+</section>
+
+<section class="page" id="01-premisa">
+  <h2><span class="h2-num">01</span>Premisa</h2>
+  <p>Doc 17 dice <strong>qué hacer</strong> (estrategia). Doc 10 dice <strong>qué hace</strong> el sistema (funcional). Doc 11 dice <strong>cómo</strong> se construye (técnico). Este doc dice <strong>cuándo · con quién · cuánto</strong>.</p>
+<div class="box box-info"><div class="box-title">💡 Hilo conductor del banco</div><p>17 Estrategia → 10 Funcional → 11 Técnico → 18 Ejecución → 19 UAT</p>
+<p>Cada doc responde una pregunta distinta · juntos cubren el ciclo completo.</p></div>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>03</span></div>
+</section>
+<section class="page" id="02-gantt-q4-26-q3-27-y1-completo">
+  <h2><span class="h2-num">02</span>Gantt Q4-26 → Q3-27 (Y1 completo)</h2>
+  <div class="diagram-section">
+  <p class="diagram-caption">Roadmap operacional · cada barra = entregable concreto · color por agente owner.</p>
+  <div class="diagram-host kind-gantt" id="plan-ejecucion-gantt" data-kind="gantt"></div>
+  <script type="application/json" data-for="plan-ejecucion-gantt">{"title": "Plan Ejecución Y1 · entregables + agente owner + costo · Q4-26 → Q3-27", "months": ["Q4-26", "Q1-27", "Q2-27", "Q3-27"], "tasks": [{"id": "setup", "name": "Setup repo + Amplify + Supabase", "owner": "🛠️ Pipeline + 🔧 Backend", "start": 0, "dur": 1, "color": "#94A3B8"}, {"id": "auth", "name": "Auth + JWT + RLS Postgres", "owner": "🔧 Backend + 🔍 Architect", "start": 0, "dur": 1, "color": "#3B82F6"}, {"id": "meli", "name": "Channel Adapter MeLi · OAuth · webhook", "owner": "🔧 Backend", "start": 0, "dur": 1, "color": "#EF4444"}, {"id": "dte", "name": "DTE Open Factura · DTE 39 boleta", "owner": "🔧 Backend + 🧮 Controller", "start": 0, "dur": 1, "color": "#F59E0B"}, {"id": "ui-q4", "name": "Dashboard founder · listings + orders", "owner": "🎨 Fiori", "start": 0, "dur": 1, "color": "#06B6D4"}, {"id": "cer-mvp", "name": "Cerebro chat MVP · SSE + fallback chain", "owner": "🐾 Hoku", "start": 0, "dur": 1, "color": "#C026D3"}, {"id": "ads", "name": "Mercado Ads integration · ROAS tracking", "owner": "🔧 Backend + 🐾 Hoku", "start": 1, "dur": 1, "color": "#F59E0B"}, {"id": "scoring", "name": "Cerebro scoring oportunidades v5 (6 señales)", "owner": "🐾 Hoku", "start": 1, "dur": 1, "color": "#C026D3"}, {"id": "sync", "name": "pg_notify cross-canal sync + Smart Cache", "owner": "🔧 Backend", "start": 1, "dur": 1, "color": "#3B82F6"}, {"id": "qa-q1", "name": "Tests integración Channel Adapter MeLi", "owner": "👩 User-QAS", "start": 1, "dur": 1, "color": "#10B981"}, {"id": "mp", "name": "Channel Adapter Mercado Público · B2G", "owner": "🔧 Backend", "start": 2, "dur": 1, "color": "#F59E0B"}, {"id": "b2b", "name": "Channel Adapter B2B custom · portal RFQ", "owner": "🔧 Backend + 🎨 Fiori", "start": 2, "dur": 1, "color": "#10B981"}, {"id": "supplier", "name": "Supplier Adapter Pattern · 1er dropship", "owner": "🔧 Backend + 🔍 Architect", "start": 2, "dur": 1, "color": "#7C3AED"}, {"id": "d2c", "name": "D2C storefront MVP (Y2 prep)", "owner": "🎨 Fiori + 🔧 Backend", "start": 3, "dur": 1, "color": "#00C1C1"}, {"id": "conc", "name": "Conciliación pagos + reporte galvarez.cl", "owner": "🔧 Backend + 🧮 Controller", "start": 3, "dur": 1, "color": "#F59E0B"}, {"id": "obs", "name": "Observabilidad LLMOps + dashboards", "owner": "🐾 Hoku + 🛠️ Pipeline", "start": 3, "dur": 1, "color": "#94A3B8"}, {"id": "audit", "name": "Performance + Security audit final Y1", "owner": "🔍 Architect + 🎨 Fiori", "start": 3, "dur": 1, "color": "#EF4444"}]}</script>
+</div>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>04</span></div>
+</section>
+<section class="page" id="03-cat-logo-de-agentes-smc-os-asignaci-n-recursos">
+  <h2><span class="h2-num">03</span>Catálogo de agentes SMC OS (asignación recursos)</h2>
+  <p>Los agentes son skills de Claude Code · NO personas. Cada agente tiene tarifa horaria equivalente (= horas humanas que ahorra · proxy de valor).</p>
+<table>
+<thead><tr>
+<th>Agente</th>
+<th>Capacidad</th>
+<th>Tarifa equivalente CLP/h</th>
+<th>Uso en Y1</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>🧠 Cerebro</td>
+<td>Síntesis · planning · orquestación</td>
+<td>$25K/h</td>
+<td>Decisiones estratégicas · refactor docs</td>
+</tr>
+<tr>
+<td>🐾 Hoku</td>
+<td>AI dev · prompts · RAG · agentes</td>
+<td>$35K/h</td>
+<td>Cerebro IA · scoring · chat SSE</td>
+</tr>
+<tr>
+<td>🔧 Backend</td>
+<td>APIs · DB · auth · integraciones</td>
+<td>$30K/h</td>
+<td>Channel Adapter · Supplier Adapter · DTE</td>
+</tr>
+<tr>
+<td>🎨 Fiori</td>
+<td>Frontend · CSS · @smc/ui · accesibilidad</td>
+<td>$25K/h</td>
+<td>Dashboard · listings · D2C storefront</td>
+</tr>
+<tr>
+<td>🐕 Functional-Lead</td>
+<td>Maquetas · UX · BPMN · specs</td>
+<td>$25K/h</td>
+<td>Wireframes · workflows · onboarding</td>
+</tr>
+<tr>
+<td>🔍 Architect</td>
+<td>Estándares · ADRs · integraciones</td>
+<td>$30K/h</td>
+<td>Decisiones técnicas · code review</td>
+</tr>
+<tr>
+<td>👩 User-QAS</td>
+<td>QA · smoke · Playwright</td>
+<td>$20K/h</td>
+<td>Pre-release validation · regression</td>
+</tr>
+<tr>
+<td>🛠️ Pipeline</td>
+<td>DevOps · CI/CD · Amplify</td>
+<td>$20K/h</td>
+<td>Deploys · monitoring · alertas</td>
+</tr>
+<tr>
+<td>💰 Comercial</td>
+<td>Onboarding · pricing · retención</td>
+<td>$25K/h</td>
+<td>NO aplica Y1 (uso interno · sin clientes)</td>
+</tr>
+<tr>
+<td>🧮 Controller</td>
+<td>Tributario · F29 · F22 · galvarez</td>
+<td>$30K/h</td>
+<td>DTE setup · conciliación · reportes SII</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>05</span></div>
+</section>
+<section class="page" id="04-entregables-y1-costo-por-agente-monto-total">
+  <h2><span class="h2-num">04</span>Entregables Y1 · costo por agente + monto total</h2>
+  <h3>Q4-26 · Fase 1 Reputación (12 semanas)</h3>
+<table>
+<thead><tr>
+<th>Entregable</th>
+<th>Agente owner</th>
+<th>Horas</th>
+<th>Costo CLP</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Setup repo + Amplify + Supabase</td>
+<td>🔧 Backend + 🛠️ Pipeline</td>
+<td>16h</td>
+<td>$480K</td>
+</tr>
+<tr>
+<td>Auth + tenant_id JWT + RLS</td>
+<td>🔧 Backend + 🔍 Architect</td>
+<td>12h</td>
+<td>$400K</td>
+</tr>
+<tr>
+<td>Channel Adapter MeLi · OAuth + tokens cookies</td>
+<td>🔧 Backend</td>
+<td>24h</td>
+<td>$720K</td>
+</tr>
+<tr>
+<td>Webhook receiver MeLi · validación HMAC</td>
+<td>🔧 Backend</td>
+<td>8h</td>
+<td>$240K</td>
+</tr>
+<tr>
+<td>DTE Open Factura integration · DTE 39</td>
+<td>🔧 Backend + 🧮 Controller</td>
+<td>12h</td>
+<td>$400K</td>
+</tr>
+<tr>
+<td>Dashboard founder · listings + orders</td>
+<td>🎨 Fiori</td>
+<td>32h</td>
+<td>$800K</td>
+</tr>
+<tr>
+<td>Cerebro chat MVP · SSE + fallback chain</td>
+<td>🐾 Hoku</td>
+<td>20h</td>
+<td>$700K</td>
+</tr>
+<tr>
+<td>Wireframes flujo onboarding founder</td>
+<td>🐕 Functional-Lead</td>
+<td>8h</td>
+<td>$200K</td>
+</tr>
+<tr>
+<td><strong>Q4-26 subtotal</strong></td>
+<td></td>
+<td><strong>132h</strong></td>
+<td><strong>$3.94M CLP</strong></td>
+</tr>
+</tbody></table>
+<h3>Q1-27 · Fase 2 Escala MeLi (12 semanas)</h3>
+<table>
+<thead><tr>
+<th>Entregable</th>
+<th>Agente owner</th>
+<th>Horas</th>
+<th>Costo CLP</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Mercado Ads integration · campaigns + ROI tracking</td>
+<td>🔧 Backend + 🐾 Hoku</td>
+<td>28h</td>
+<td>$880K</td>
+</tr>
+<tr>
+<td>Full Fulfillment MeLi migration flow</td>
+<td>🔧 Backend</td>
+<td>12h</td>
+<td>$360K</td>
+</tr>
+<tr>
+<td>Cerebro scoring oportunidades v5 (sin LLM · 6 señales)</td>
+<td>🐾 Hoku</td>
+<td>32h</td>
+<td>$1.12M</td>
+</tr>
+<tr>
+<td>Panel oportunidades UI</td>
+<td>🎨 Fiori</td>
+<td>16h</td>
+<td>$400K</td>
+</tr>
+<tr>
+<td>pg_notify cross-canal sync</td>
+<td>🔧 Backend</td>
+<td>16h</td>
+<td>$480K</td>
+</tr>
+<tr>
+<td>Smart Cache Hot/Warm/Cold</td>
+<td>🔧 Backend</td>
+<td>12h</td>
+<td>$360K</td>
+</tr>
+<tr>
+<td>Cron jobs (refresh MeLi 6h · cleanup 7d)</td>
+<td>🔧 Backend + 🛠️ Pipeline</td>
+<td>8h</td>
+<td>$250K</td>
+</tr>
+<tr>
+<td>Tests integración Channel Adapter MeLi</td>
+<td>👩 User-QAS</td>
+<td>12h</td>
+<td>$240K</td>
+</tr>
+<tr>
+<td><strong>Q1-27 subtotal</strong></td>
+<td></td>
+<td><strong>136h</strong></td>
+<td><strong>$4.09M CLP</strong></td>
+</tr>
+</tbody></table>
+<h3>Q2-27 · Fase 3 Diversificación (12 semanas)</h3>
+<table>
+<thead><tr>
+<th>Entregable</th>
+<th>Agente owner</th>
+<th>Horas</th>
+<th>Costo CLP</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Channel Adapter Mercado Público · Ticket auth</td>
+<td>🔧 Backend</td>
+<td>24h</td>
+<td>$720K</td>
+</tr>
+<tr>
+<td>Cerebro postulación licitaciones · template + AI</td>
+<td>🐾 Hoku</td>
+<td>24h</td>
+<td>$840K</td>
+</tr>
+<tr>
+<td>Panel B2G dashboard · licitaciones + ofertas</td>
+<td>🎨 Fiori</td>
+<td>20h</td>
+<td>$500K</td>
+</tr>
+<tr>
+<td>Channel Adapter B2B custom · portal RFQ</td>
+<td>🔧 Backend + 🎨 Fiori</td>
+<td>32h</td>
+<td>$880K</td>
+</tr>
+<tr>
+<td>Pricing engine B2B · descuentos volumen</td>
+<td>🔧 Backend</td>
+<td>16h</td>
+<td>$480K</td>
+</tr>
+<tr>
+<td>Supplier Adapter Pattern · 1er proveedor dropship</td>
+<td>🔧 Backend + 🔍 Architect</td>
+<td>28h</td>
+<td>$880K</td>
+</tr>
+<tr>
+<td>Workflow on-demand orden → OC proveedor</td>
+<td>🔧 Backend</td>
+<td>16h</td>
+<td>$480K</td>
+</tr>
+<tr>
+<td>Tests integración multi-canal</td>
+<td>👩 User-QAS</td>
+<td>16h</td>
+<td>$320K</td>
+</tr>
+<tr>
+<td><strong>Q2-27 subtotal</strong></td>
+<td></td>
+<td><strong>176h</strong></td>
+<td><strong>$5.10M CLP</strong></td>
+</tr>
+</tbody></table>
+<h3>Q3-27 · Fase 4 Consolidación (12 semanas)</h3>
+<table>
+<thead><tr>
+<th>Entregable</th>
+<th>Agente owner</th>
+<th>Horas</th>
+<th>Costo CLP</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>D2C storefront MVP (Y2 prep)</td>
+<td>🎨 Fiori + 🔧 Backend</td>
+<td>40h</td>
+<td>$1.20M</td>
+</tr>
+<tr>
+<td>Conciliación pagos vs DTE automática</td>
+<td>🔧 Backend + 🧮 Controller</td>
+<td>16h</td>
+<td>$480K</td>
+</tr>
+<tr>
+<td>Reporte mensual galvarez.cl auto</td>
+<td>🧮 Controller + 🔧 Backend</td>
+<td>8h</td>
+<td>$240K</td>
+</tr>
+<tr>
+<td>Observabilidad LLMOps · dashboards</td>
+<td>🐾 Hoku + 🛠️ Pipeline</td>
+<td>12h</td>
+<td>$360K</td>
+</tr>
+<tr>
+<td>Performance audit + budget alinear</td>
+<td>🎨 Fiori + 🔍 Architect</td>
+<td>16h</td>
+<td>$480K</td>
+</tr>
+<tr>
+<td>Security audit checklist SR-1 a SR-12</td>
+<td>🔍 Architect</td>
+<td>8h</td>
+<td>$240K</td>
+</tr>
+<tr>
+<td>Evaluación Nexport (decisión Y2 sí/no)</td>
+<td>Los 3 founders</td>
+<td>4h</td>
+<td>$100K</td>
+</tr>
+<tr>
+<td>Cierre Y1 · postmortem · plan Y2</td>
+<td>🧠 Cerebro + Founders</td>
+<td>8h</td>
+<td>$200K</td>
+</tr>
+<tr>
+<td><strong>Q3-27 subtotal</strong></td>
+<td></td>
+<td><strong>112h</strong></td>
+<td><strong>$3.30M CLP</strong></td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>06</span></div>
+</section>
+<section class="page" id="05-resumen-econ-mico-y1">
+  <h2><span class="h2-num">05</span>Resumen económico Y1</h2>
+  <table>
+<thead><tr>
+<th>Concepto</th>
+<th>CLP</th>
+<th>USD aprox</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Total horas equivalentes IA · 4 trimestres</td>
+<td>556h</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Total costo agentes (proxy valor)</td>
+<td><strong>$16.43M CLP</strong></td>
+<td>~$18.5K</td>
+</tr>
+<tr>
+<td>Costo real cash · solo Guillermo dev</td>
+<td>$0 (founder · sin sueldo Y1)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>Costos cash externos (Amplify · Supabase · APIs IA · Open Factura)</td>
+<td>$3-5M Y1</td>
+<td>$3.5-5.7K</td>
+</tr>
+<tr>
+<td>Inversión inicial inventory stock local</td>
+<td>$20M</td>
+<td>$22.7K</td>
+</tr>
+<tr>
+<td><strong>Cash out Y1 estimado</strong></td>
+<td><strong>$23-25M CLP</strong></td>
+<td><strong>~$26-28K USD</strong></td>
+</tr>
+</tbody></table>
+<div class="box box-info"><div class="box-title">💡 Lectura</div><p>$16.43M es valor entregado (horas IA · si las hiciera humano costaría eso). Cash out real es ~$23-25M (mayoritariamente inventory). Recupero esperado vía revenue Y1: $20-50M según mix MeLi+MP+B2B.</p></div>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>07</span></div>
+</section>
+<section class="page" id="06-dependencias-cr-ticas-orden-ineludible">
+  <h2><span class="h2-num">06</span>Dependencias críticas (orden ineludible)</h2>
+  <pre class="ascii">Setup repo + Auth + DB
+  ↓ (bloquea todo)
+Channel Adapter MeLi + DTE
+  ↓ (sin esto · Fase 1 imposible)
+Dashboard founder + webhook handling
+  ↓ (sin esto · operación manual eterna)
+Cerebro chat MVP
+  ↓ (sin esto · cero diferencial vs competencia)
+Mercado Ads integration
+  ↓ (Fase 2 requiere reputación previa)
+Scoring oportunidades sin LLM
+  ↓ (lo que vende SMC vs solo MeLi)
+Mercado Público + B2B
+  ↓ (Fase 3 · diversificación)
+Supplier Adapter Pattern
+  ↓ (dropshipping habilitado)
+D2C storefront prep
+  ↓ (Y2 launch ready)
+Consolidación + postmortem Y1</pre>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>08</span></div>
+</section>
+<section class="page" id="07-hitos-cuantificables-lo-que-se-mide">
+  <h2><span class="h2-num">07</span>Hitos cuantificables (lo que se mide)</h2>
+  <table>
+<thead><tr>
+<th>Mes</th>
+<th>Hito</th>
+<th>Métrica</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>M1 (Q4-26 Oct)</td>
+<td>Repo + Amplify + Supabase live</td>
+<td>URL responde 200 · auth funcional</td>
+</tr>
+<tr>
+<td>M2 (Q4-26 Nov)</td>
+<td>Primera publicación MeLi · 5 SKUs</td>
+<td>5 listings activos en MeLi</td>
+</tr>
+<tr>
+<td>M3 (Q4-26 Dic)</td>
+<td>10 ventas verdes MeLi · cierre Fase 1</td>
+<td><code>count(orders) ≥ 10 AND reputation=green</code></td>
+</tr>
+<tr>
+<td>M4 (Q1-27 Ene)</td>
+<td>Mercado Ads activo · ROI &gt; 1.5</td>
+<td>ROAS mensual ≥ 1.5x</td>
+</tr>
+<tr>
+<td>M6 (Q1-27 Mar)</td>
+<td>30 órdenes/mes sostenidas</td>
+<td>Threshold mensual 2x consecutivo</td>
+</tr>
+<tr>
+<td>M7 (Q2-27 Abr)</td>
+<td>1ra adjudicación Mercado Público</td>
+<td>Evento adjudicación en DB</td>
+</tr>
+<tr>
+<td>M9 (Q2-27 Jun)</td>
+<td>1ra venta B2B</td>
+<td>Evento ventas B2B en DB</td>
+</tr>
+<tr>
+<td>M10 (Q3-27 Jul)</td>
+<td>Supplier Adapter activo · 1+ dropship</td>
+<td>Producto vendido vía supplier</td>
+</tr>
+<tr>
+<td>M12 (Q3-27 Sep)</td>
+<td>$5M+/mes sostenido 2 meses · break-even Y1</td>
+<td>Revenue mensual + cash flow</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>09</span></div>
+</section>
+<section class="page" id="08-riesgos-de-ejecuci-n-plan-b">
+  <h2><span class="h2-num">08</span>Riesgos de ejecución + plan B</h2>
+  <table>
+<thead><tr>
+<th>Riesgo</th>
+<th>P × I</th>
+<th>Mitigación</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Guillermo capacidad técnica saturada (E2 Risk Register)</td>
+<td>9</td>
+<td>Scope realista · 20% buffer por trimestre · contratar dev Y2</td>
+</tr>
+<tr>
+<td>Fase 1 no llega a 10 ventas (C1)</td>
+<td>6</td>
+<td>Acelerar primeras ventas regalando · revisar fotos · escalado MeLi</td>
+</tr>
+<tr>
+<td>Sub-estimación horas por entregable</td>
+<td>6</td>
+<td>+25% buffer cada estimate · review semanal real vs plan</td>
+</tr>
+<tr>
+<td>Dependencia bloqueante 1 agente saturado</td>
+<td>4</td>
+<td>Paralelizar · agentes IA pueden hacer múltiples streams simultáneos</td>
+</tr>
+<tr>
+<td>Build/deploy issues bloquean entregable</td>
+<td>4</td>
+<td>CI obligatorio · rollback rápido · canary deploys</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>10</span></div>
+</section>
+<section class="page" id="09-cadencia-operativa-de-seguimiento">
+  <h2><span class="h2-num">09</span>Cadencia operativa de seguimiento</h2>
+  <pre class="ascii">Lunes 9am · standup 15min
+  · Qué entregó cada agente semana pasada
+  · Qué entrega esta semana
+  · Bloqueos
+  · Decisiones rápidas pendientes
+
+Viernes último mes · cierre mensual
+  · Hito mes alcanzado sí/no
+  · Costo real vs plan
+  · Ajustes mes siguiente
+  · Update Doc 41 Changelog
+
+Trimestral · cierre fase
+  · Hito fase alcanzado sí/no
+  · Postmortem fase
+  · Risk register review
+  · Ajuste plan trimestre siguiente</pre>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>11</span></div>
+</section>
+<section class="page" id="10-pr-ximos-pasos-inmediatos">
+  <h2><span class="h2-num">10</span>Próximos pasos inmediatos</h2>
+  <ul>
+<li>✅ Doc 18 creado (este doc)</li>
+<li>⏭️ Tu OK final del plan (assessment + 10 + 11 + 18)</li>
+<li>⏭️ Empezar ejecución Q4-26 · primer entregable: Setup repo + Amplify + Supabase</li>
+<li>⏭️ Doc 19 UAT en paralelo (criterios validación cuando empiece a haber qué validar)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>12</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="17-estrategia-y1.html">◂ doc anterior</a><span class="nav-center">FIN DOC 18</span><a href="21-business-comercio.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
+</body>
+</html>

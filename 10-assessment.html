@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>10 · Assessment v1 → v2 · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+</head>
+<body>
+<nav class="doc-nav"><a href="09-opportunities-system.html">◂ doc anterior</a><span class="nav-center">DOC 10 · PRODUCTO TÉCNICO</span><a href="11-especificacion-funcional.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Producto Técnico</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 10 · Producto Técnico</div>
+    <h1 class="cover-title">Assessment v1 → v2</h1>
+    <p class="cover-subtitle">Auditoría honesta del banco v3.0.0 · qué funciona · qué falta · qué rediseñar · ruta a v4.0.0.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-27</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Cerebro + Founders</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 Draft · pendiente review founders</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-premisa-del-assessment">01 · Premisa del assessment</a><span class="toc-pg">03</span></li><li><a href="#02-alcance-del-assessment-16-de-32-docs">02 · Alcance del assessment (16 de 32 docs)</a><span class="toc-pg">04</span></li><li><a href="#03-evaluaci-n-por-documento">03 · Evaluación por documento</a><span class="toc-pg">05</span></li><li><a href="#04-lo-que-funciona-se-mantiene-tal-cual-8-docs">04 · Lo que FUNCIONA · se mantiene tal cual (8 docs)</a><span class="toc-pg">06</span></li><li><a href="#05-lo-que-falta-agregar-al-banco-v4-secciones-nuevas">05 · Lo que FALTA agregar al banco v4 (secciones nuevas)</a><span class="toc-pg">07</span></li><li><a href="#06-lo-que-redise-ar-profundo-4-docs">06 · Lo que REDISEÑAR profundo (4 docs)</a><span class="toc-pg">08</span></li><li><a href="#07-navegaci-n-propuesta-v4">07 · Navegación propuesta v4</a><span class="toc-pg">09</span></li><li><a href="#08-versionado-c-mo-navegamos-entre-versiones">08 · Versionado · cómo navegamos entre versiones</a><span class="toc-pg">10</span></li><li><a href="#09-backlog-priorizado-para-v4">09 · Backlog priorizado para v4</a><span class="toc-pg">11</span></li><li><a href="#10-pr-ximos-pasos-inmediatos-cola-sentinela">10 · Próximos pasos inmediatos (cola Sentinela)</a><span class="toc-pg">12</span></li></ol>
+</section>
+
+<section class="page" id="01-premisa-del-assessment">
+  <h2><span class="h2-num">01</span>Premisa del assessment</h2>
+  <p>Después de 3 versiones (v1 SaaS · v2 uso interno · v3 Reputation First) el banco tiene 32 documentos vivos. Antes de seguir construyendo · alto y pregunto: <strong>¿qué está bien · qué falta · qué hay que rediseñar?</strong></p>
+<div class="box box-premise"><div class="box-title">🎯 Filosofía v4</div><p>NO se borra nada de v3. Todo lo trabajado sirve como base. v4 trabaja SOBRE v3 · agrega lo que falta · rediseña lo que no encaja con el modelo más amplio · mantiene navegable v3 vía git tags. Versionado paralelo.</p></div>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>03</span></div>
+</section>
+<section class="page" id="02-alcance-del-assessment-16-de-32-docs">
+  <h2><span class="h2-num">02</span>Alcance del assessment (16 de 32 docs)</h2>
+  <pre class="ascii">📦 PRODUCTO TÉCNICO (8)         👥 FOUNDERS OPERATION (4)
+   01 Vision                       12 Roles
+   02 BBP                          14 Journey
+   03 Requirements                 15 Valor Interno
+   04 RFP                          16 Comparativa Tools
+   05 Data Model
+   06 API Catalog               💼 ESTRATEGIA (1)
+   07 Architecture                 17 ⭐ Reputation First Y1
+   08 Roadmap
+
+👔 GOBERNANZA selectiva (3)    ⛔ FUERA DE SCOPE
+   38 Onboarding Dev              25·26·27 Marca · 30 Legal
+   39 API SDK Postman             31·32 Seguridad
+   41 Changelog                   21·23·24 Negocio · resto gobernanza</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>04</span></div>
+</section>
+<section class="page" id="03-evaluaci-n-por-documento">
+  <h2><span class="h2-num">03</span>Evaluación por documento</h2>
+  <table>
+<thead><tr>
+<th>#</th>
+<th>Doc</th>
+<th>Veredicto</th>
+<th>Acción v4</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>Vision</td>
+<td>🟢 Funciona</td>
+<td>Mantener · agregar 1 sección "Cómo leer este banco" al inicio</td>
+</tr>
+<tr>
+<td>02</td>
+<td>BBP</td>
+<td>🟡 Falta proceso publicidad/ADS</td>
+<td>Agregar P14 ADS multicanal (Meta/Google/TikTok)</td>
+</tr>
+<tr>
+<td>03</td>
+<td>Requirements</td>
+<td>🔵 Rediseñar</td>
+<td>Priorización Y1 OK pero falta FR/NFR por fase · matrix actual confusa</td>
+</tr>
+<tr>
+<td>04</td>
+<td>RFP</td>
+<td>🟢 Funciona</td>
+<td>Mantener · revisar montos post-pivot (CLP no USD)</td>
+</tr>
+<tr>
+<td>05</td>
+<td>Data Model</td>
+<td>🟡 Falta tablas supplier</td>
+<td>Agregar tablas: <code>suppliers</code>, <code>supplier_products</code>, <code>ads_campaigns</code>, <code>ads_pixels</code>, <code>marketing_events</code></td>
+</tr>
+<tr>
+<td>06</td>
+<td>API Catalog</td>
+<td>🟡 Falta endpoints supplier + ADS</td>
+<td>Sección nueva: <code>/api/suppliers/<em></code> y <code>/api/ads/</em></code> (Meta/Google)</td>
+</tr>
+<tr>
+<td>07</td>
+<td>Architecture</td>
+<td>🔵 Rediseñar parcial</td>
+<td>HLA bien · falta zoom sobre Supplier Adapter Pattern · falta zona ADS pixels</td>
+</tr>
+<tr>
+<td>08</td>
+<td>Roadmap</td>
+<td>🟢 Funciona post-fix</td>
+<td>2 dimensiones OK · agregar Doc 18 Plan ejecución detallado</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Roles Founders</td>
+<td>🟢 Funciona</td>
+<td>Mantener · agregar sección "Decisiones que tomó cada uno" (registro histórico)</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Founders Journey</td>
+<td>🟡 Falta journey error</td>
+<td>Agregar escenario "cuando algo se rompe Y1" (qué hace cada uno)</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Valor Interno</td>
+<td>🟢 Funciona</td>
+<td>Mantener</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Comparativa Tools</td>
+<td>🟢 Funciona</td>
+<td>Mantener · update trimestral (próximo 2026-08)</td>
+</tr>
+<tr>
+<td>17</td>
+<td>⭐ Estrategia Y1</td>
+<td>🔵 Rediseñar levemente</td>
+<td>Doc central · agregar "Cómo medimos el avance semanal" + "Qué hacer si fase no llega a hito"</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Onboarding Dev</td>
+<td>🟡 Falta onboarding founders no-dev</td>
+<td>Agregar onboarding para Camila y Javier (operación · NO técnico)</td>
+</tr>
+<tr>
+<td>39</td>
+<td>API SDK Postman</td>
+<td>🟢 Funciona</td>
+<td>Mantener · ampliar cuando se construya supplier adapter</td>
+</tr>
+<tr>
+<td>41</td>
+<td>Changelog</td>
+<td>🟢 Funciona</td>
+<td>Mantener · agregar entrada por cada release v4.x</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>05</span></div>
+</section>
+<section class="page" id="04-lo-que-funciona-se-mantiene-tal-cual-8-docs">
+  <h2><span class="h2-num">04</span>Lo que FUNCIONA · se mantiene tal cual (8 docs)</h2>
+  <p>🟢 <strong>Verde · cero cambios</strong>:</p>
+<ul>
+<li>Doc 01 Vision (premisa Reputation First clara)</li>
+<li>Doc 04 RFP (especificación contractual sólida)</li>
+<li>Doc 08 Roadmap (post-fix de 2 dimensiones)</li>
+<li>Doc 12 Roles Founders (cross-funcional explícito)</li>
+<li>Doc 15 Valor Interno (ROI cuantificable bien argumentado)</li>
+<li>Doc 16 Comparativa Tools (referente operativo)</li>
+<li>Doc 39 API SDK Postman (consistente · funcional)</li>
+<li>Doc 41 Changelog (formato Keep a Changelog · OK)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>06</span></div>
+</section>
+<section class="page" id="05-lo-que-falta-agregar-al-banco-v4-secciones-nuevas">
+  <h2><span class="h2-num">05</span>Lo que FALTA agregar al banco v4 (secciones nuevas)</h2>
+  <p>🟡 <strong>Amarillo · construir</strong>:</p>
+<table>
+<thead><tr>
+<th>Sección nueva</th>
+<th>Dónde</th>
+<th>Por qué</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><strong>P14 Publicidad / ADS multicanal</strong></td>
+<td>Doc 02 BBP escenario nuevo</td>
+<td>Meta + Google + TikTok pixels · escalado D2C Y2</td>
+</tr>
+<tr>
+<td><strong>Tablas suppliers + ads</strong></td>
+<td>Doc 05 Data Model · sidecar ERD ampliado</td>
+<td>Supplier Adapter Pattern + ADS analytics necesitan estos</td>
+</tr>
+<tr>
+<td><strong>Endpoints /api/suppliers + /api/ads</strong></td>
+<td>Doc 06 API Catalog · Swagger ampliado</td>
+<td>Que el API soporte modo on-demand + ADS automation</td>
+</tr>
+<tr>
+<td><strong>Zoom Supplier Adapter Pattern</strong></td>
+<td>Doc 07 Architecture · diagrama secundario</td>
+<td>Hoy solo se menciona · falta diagramar</td>
+</tr>
+<tr>
+<td><strong>"Cómo leer este banco"</strong></td>
+<td>Doc 01 Vision · sección 0</td>
+<td>Reduce fricción · navegación clara desde el primer doc</td>
+</tr>
+<tr>
+<td><strong>"Decisiones founder históricas"</strong></td>
+<td>Doc 12 Roles · sección nueva</td>
+<td>Registro · evitar re-discutir lo ya decidido</td>
+</tr>
+<tr>
+<td><strong>"Journey cuando algo se rompe"</strong></td>
+<td>Doc 14 Founders Journey · escenario nuevo</td>
+<td>Resiliencia Y1 · qué hace cada uno en SEV1</td>
+</tr>
+<tr>
+<td><strong>"Cómo medir avance semanal"</strong></td>
+<td>Doc 17 Estrategia · sección nueva</td>
+<td>Operacionalizar · de estrategia a acción concreta</td>
+</tr>
+<tr>
+<td><strong>"Onboarding no-dev Camila y Javier"</strong></td>
+<td>Doc 38 Onboarding · sección nueva</td>
+<td>Hoy es solo para Guillermo técnico</td>
+</tr>
+<tr>
+<td><strong>🆕 Doc 10 Especificación Funcional</strong></td>
+<td>Bloque Producto Técnico</td>
+<td>Casos de uso + reglas negocio + criterios aceptación</td>
+</tr>
+<tr>
+<td><strong>🆕 Doc 11 Especificación Técnica</strong></td>
+<td>Bloque Producto Técnico</td>
+<td>Decisiones arquitecturales + ADRs + performance budgets</td>
+</tr>
+<tr>
+<td><strong>🆕 Doc 18 Plan Ejecución Gantt</strong></td>
+<td>Bloque Founders Operation</td>
+<td>Gantt detallado + agentes SMC OS asignados + costos</td>
+</tr>
+<tr>
+<td><strong>🆕 Doc 19 UAT pruebas integrales</strong></td>
+<td>Bloque Producto Técnico</td>
+<td>Validación end-to-end · post-build</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>07</span></div>
+</section>
+<section class="page" id="06-lo-que-redise-ar-profundo-4-docs">
+  <h2><span class="h2-num">06</span>Lo que REDISEÑAR profundo (4 docs)</h2>
+  <p>🔵 <strong>Azul · rework</strong>:</p>
+<pre class="ascii">Doc 03 Requirements · rediseño
+─────────────────────────────────────────────────────
+Actual: tabla genérica FR/NFR sin agrupación clara.
+Propuesta v4:
+  · FR-Y1F1 (features Fase 1 Reputación)
+  · FR-Y1F2 (features Fase 2 Escala MeLi)
+  · FR-Y1F3 (features Fase 3 Diversificación)
+  · FR-Y1F4 (features Fase 4 Consolidación)
+  · FR-CROSS (cross-cutting: auth · DB · adapter · cerebro)
+  · NFR-Y1 (performance · seguridad · uptime targets Y1)
+
+Doc 07 Architecture · rediseño parcial
+─────────────────────────────────────────────────────
+Actual: HLA muy bueno · 5 escenarios pipeline · ADRs.
+Falta:
+  · Sub-diagrama Supplier Adapter Pattern (paralelo a Channel)
+  · Zona ADS pixels (Meta Conversions API · Google Ads · TikTok Events)
+  · ADR-0002 Supplier Adapter Pattern formal
+  · ADR-0003 ADS automation strategy
+
+Doc 17 Estrategia Y1 · rediseño leve
+─────────────────────────────────────────────────────
+Actual: 4 fases + tácticas + KPIs · sólido.
+Agregar:
+  · Sección "Avance semanal" (review lunes · qué medimos)
+  · Sección "Qué hacer si fase no llega a hito" (decisión tree)
+  · Sección "Cómo se relaciona con Doc 18 Plan Ejecución"
+
+Doc 14 Founders Journey · rediseño leve
+─────────────────────────────────────────────────────
+Actual: 3 scenarios (ONBOARDING · MP_FIRST · EVOLVE).
+Agregar:
+  · Scenario "BREAKDOWN" · cuando algo se rompe (orden duplicada · stock 0 · SII rechaza DTE · etc) · quién toma qué decisión</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>08</span></div>
+</section>
+<section class="page" id="07-navegaci-n-propuesta-v4">
+  <h2><span class="h2-num">07</span>Navegación propuesta v4</h2>
+  <p>Hoy hay un index plano con 7 bloques. <strong>v4 propone navegación por intención del lector</strong>:</p>
+<pre class="ascii">Lector tipo A · "tengo 5 min · quiero entender SMC"
+─────────────────────────────────────────────────────
+  → Doc 01 Vision (5 min lectura)
+  → Doc 17 ⭐ Estrategia Y1 (10 min · doc central)
+  → STOP · tiene el panorama
+
+Lector tipo B · "soy founder · necesito operar"
+─────────────────────────────────────────────────────
+  → Doc 12 Roles Founders (mi rol específico)
+  → Doc 14 Founders Journey (qué hago día 1 al 90)
+  → Doc 02 BBP (los procesos donde participo)
+  → Doc 17 Estrategia (cómo se conecta a la estrategia anual)
+
+Lector tipo C · "voy a construir tech"
+─────────────────────────────────────────────────────
+  → Doc 11 🆕 Especificación Técnica (norte arquitectural)
+  → Doc 07 Architecture (HLA + escenarios)
+  → Doc 05 Data Model (schema)
+  → Doc 06 API Catalog (endpoints)
+  → Doc 38 Onboarding Dev (setup · convenciones)
+
+Lector tipo D · "necesito plan + plata"
+─────────────────────────────────────────────────────
+  → Doc 18 🆕 Plan Ejecución (gantt + agentes + montos)
+  → Doc 23 Financial (cash flow esperado · ver bloque negocio)
+  → Doc 41 Changelog (historial decisiones)</pre>
+<p>Implementación en index.html v4: tabs/filters por tipo de lector + recommended path visual.</p>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>09</span></div>
+</section>
+<section class="page" id="08-versionado-c-mo-navegamos-entre-versiones">
+  <h2><span class="h2-num">08</span>Versionado · cómo navegamos entre versiones</h2>
+  <pre class="ascii">v3.0.0 (actual · stable)
+  · Tag git congelado · navegable en repo
+  · URL: github.com/SmartConnection-CodeHub/marketplace-smc-banco/tree/v3.0.0
+  · No se borra · no se modifica
+
+v4.0.0-rc1 (futuro · proceso)
+  · Rama paralela: feature/v4-banco-extended
+  · Build separado: banco-v4 dir en mismo repo
+  · O subdomain: v4.marketplace.smconnection.cl
+  · Vos navegás entre las dos vía link visible en header
+
+Switcher UI (a construir):
+  ┌─────────────────────────────────────────┐
+  │ Marketplace SMC Banco          v3 [v4]  │
+  │                                          │
+  │ Estás viendo · v3.0.0 (stable)           │
+  │ Hay versión nueva · v4.0.0-rc1 (preview) │
+  │ [Probar v4]   [Quedarme en v3]           │
+  └─────────────────────────────────────────┘</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>10</span></div>
+</section>
+<section class="page" id="09-backlog-priorizado-para-v4">
+  <h2><span class="h2-num">09</span>Backlog priorizado para v4</h2>
+  <table>
+<thead><tr>
+<th>#</th>
+<th>Item</th>
+<th>Prioridad</th>
+<th>Effort</th>
+<th>Owner</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Doc 10 Especificación Funcional</td>
+<td>P1</td>
+<td>M</td>
+<td>Cerebro + Functional-Lead</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Doc 11 Especificación Técnica</td>
+<td>P1</td>
+<td>M</td>
+<td>Cerebro + Architect</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Doc 18 Plan Ejecución Gantt</td>
+<td>P1</td>
+<td>M</td>
+<td>Cerebro + PM</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Rediseño Doc 03 Requirements</td>
+<td>P2</td>
+<td>S</td>
+<td>Functional-Lead</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Rediseño Doc 17 (3 secciones nuevas)</td>
+<td>P2</td>
+<td>S</td>
+<td>Cerebro + Founders</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Sub-diagrama Supplier Adapter Doc 07</td>
+<td>P2</td>
+<td>S</td>
+<td>Architect</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Tablas supplier + ads Doc 05</td>
+<td>P2</td>
+<td>S</td>
+<td>Backend</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Endpoints /api/suppliers + /api/ads Doc 06</td>
+<td>P2</td>
+<td>M</td>
+<td>Backend</td>
+</tr>
+<tr>
+<td>9</td>
+<td>P14 ADS process Doc 02 BBP</td>
+<td>P3</td>
+<td>S</td>
+<td>Business Dev</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Onboarding Camila/Javier Doc 38</td>
+<td>P3</td>
+<td>S</td>
+<td>HR + Founders</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Switcher UI v3 / v4 navegación</td>
+<td>P3</td>
+<td>M</td>
+<td>Fiori</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Doc 19 UAT (al final · post-ejecución)</td>
+<td>P4</td>
+<td>M</td>
+<td>User-QAS</td>
+</tr>
+</tbody></table>
+<p>P1 = bloquea v4 · P2 = roadmap v4 · P3 = nice-to-have · P4 = post-launch.</p>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>11</span></div>
+</section>
+<section class="page" id="10-pr-ximos-pasos-inmediatos-cola-sentinela">
+  <h2><span class="h2-num">10</span>Próximos pasos inmediatos (cola Sentinela)</h2>
+  <ul>
+<li>✅ Doc 09 Assessment creado (este doc)</li>
+<li>⏭️ Doc 10 Especificación Funcional</li>
+<li>⏭️ Doc 11 Especificación Técnica</li>
+<li>⏭️ Doc 18 Plan Ejecución (Gantt + agentes + montos)</li>
+<li>⏭️ Tu OK para ejecutar v4</li>
+<li>⏭️ Ejecutar (aplicar cambios v4 al banco)</li>
+<li>⏭️ Doc 19 UAT (mientras se ejecuta · paralelo)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>12</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="09-opportunities-system.html">◂ doc anterior</a><span class="nav-center">FIN DOC 10</span><a href="11-especificacion-funcional.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
+</body>
+</html>

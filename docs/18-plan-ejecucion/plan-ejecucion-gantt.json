@@ -1,0 +1,23 @@
+{
+  "title": "Plan Ejecución Y1 · entregables + agente owner + costo · Q4-26 → Q3-27",
+  "months": ["Q4-26", "Q1-27", "Q2-27", "Q3-27"],
+  "tasks": [
+    { "id": "setup",   "name": "Setup repo + Amplify + Supabase",        "owner": "🛠️ Pipeline + 🔧 Backend",  "start": 0, "dur": 1, "color": "#94A3B8" },
+    { "id": "auth",    "name": "Auth + JWT + RLS Postgres",              "owner": "🔧 Backend + 🔍 Architect", "start": 0, "dur": 1, "color": "#3B82F6" },
+    { "id": "meli",    "name": "Channel Adapter MeLi · OAuth · webhook", "owner": "🔧 Backend",                "start": 0, "dur": 1, "color": "#EF4444" },
+    { "id": "dte",     "name": "DTE Open Factura · DTE 39 boleta",        "owner": "🔧 Backend + 🧮 Controller","start": 0, "dur": 1, "color": "#F59E0B" },
+    { "id": "ui-q4",   "name": "Dashboard founder · listings + orders",   "owner": "🎨 Fiori",                  "start": 0, "dur": 1, "color": "#06B6D4" },
+    { "id": "cer-mvp", "name": "Cerebro chat MVP · SSE + fallback chain", "owner": "🐾 Hoku",                   "start": 0, "dur": 1, "color": "#C026D3" },
+    { "id": "ads",     "name": "Mercado Ads integration · ROAS tracking", "owner": "🔧 Backend + 🐾 Hoku",      "start": 1, "dur": 1, "color": "#F59E0B" },
+    { "id": "scoring", "name": "Cerebro scoring oportunidades v5 (6 señales)","owner": "🐾 Hoku",                "start": 1, "dur": 1, "color": "#C026D3" },
+    { "id": "sync",    "name": "pg_notify cross-canal sync + Smart Cache","owner": "🔧 Backend",                "start": 1, "dur": 1, "color": "#3B82F6" },
+    { "id": "qa-q1",   "name": "Tests integración Channel Adapter MeLi",   "owner": "👩 User-QAS",               "start": 1, "dur": 1, "color": "#10B981" },
+    { "id": "mp",      "name": "Channel Adapter Mercado Público · B2G",   "owner": "🔧 Backend",                "start": 2, "dur": 1, "color": "#F59E0B" },
+    { "id": "b2b",     "name": "Channel Adapter B2B custom · portal RFQ", "owner": "🔧 Backend + 🎨 Fiori",     "start": 2, "dur": 1, "color": "#10B981" },
+    { "id": "supplier","name": "Supplier Adapter Pattern · 1er dropship", "owner": "🔧 Backend + 🔍 Architect", "start": 2, "dur": 1, "color": "#7C3AED" },
+    { "id": "d2c",     "name": "D2C storefront MVP (Y2 prep)",            "owner": "🎨 Fiori + 🔧 Backend",     "start": 3, "dur": 1, "color": "#00C1C1" },
+    { "id": "conc",    "name": "Conciliación pagos + reporte galvarez.cl","owner": "🔧 Backend + 🧮 Controller","start": 3, "dur": 1, "color": "#F59E0B" },
+    { "id": "obs",     "name": "Observabilidad LLMOps + dashboards",       "owner": "🐾 Hoku + 🛠️ Pipeline",     "start": 3, "dur": 1, "color": "#94A3B8" },
+    { "id": "audit",   "name": "Performance + Security audit final Y1",    "owner": "🔍 Architect + 🎨 Fiori",   "start": 3, "dur": 1, "color": "#EF4444" }
+  ]
+}

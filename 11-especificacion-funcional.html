@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>11 · Especificación Funcional · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+</head>
+<body>
+<nav class="doc-nav"><a href="10-assessment.html">◂ doc anterior</a><span class="nav-center">DOC 11 · PRODUCTO TÉCNICO</span><a href="13-especificacion-tecnica.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Producto Técnico</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 11 · Producto Técnico</div>
+    <h1 class="cover-title">Especificación Funcional</h1>
+    <p class="cover-subtitle">Qué hace el sistema · casos de uso · reglas de negocio · criterios de aceptación.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-27</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Functional-Lead + Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 Draft · pendiente review founders</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-personas-3-founders">02 · Personas (3 founders)</a><span class="toc-pg">04</span></li><li><a href="#03-casos-de-uso-cu-001-cu-024">03 · Casos de uso (CU-001 → CU-024)</a><span class="toc-pg">05</span></li><li><a href="#04-reglas-de-negocio-br-001-br-018">04 · Reglas de negocio (BR-001 → BR-018)</a><span class="toc-pg">06</span></li><li><a href="#05-workflows-por-modo-de-operaci-n">05 · Workflows por modo de operación</a><span class="toc-pg">07</span></li><li><a href="#06-wireframes-mockups-referencias">06 · Wireframes / Mockups (referencias)</a><span class="toc-pg">08</span></li><li><a href="#07-criterios-de-aceptaci-n-resumen-por-hito">07 · Criterios de aceptación (resumen por hito)</a><span class="toc-pg">09</span></li><li><a href="#08-out-of-scope-expl-cito">08 · Out of scope (explícito)</a><span class="toc-pg">10</span></li></ol>
+</section>
+
+<section class="page" id="01-premisa">
+  <h2><span class="h2-num">01</span>Premisa</h2>
+  <p>Este documento define <strong>qué hace</strong> Marketplace SMC desde la perspectiva del usuario (los 3 founders). NO habla de cómo se construye técnicamente (eso es Doc 11). NO habla de cuándo se construye (eso es Doc 18).</p>
+<div class="box box-info"><div class="box-title">💡 Relación con otros docs</div><p>Doc 17 · estrategia (norte estratégico Y1)</p>
+<p>Doc 10 (este) · qué hace el sistema (casos de uso)</p>
+<p>Doc 11 · cómo se construye (arquitectura + ADRs)</p>
+<p>Doc 18 · cuándo · con qué agentes · cuánto cuesta</p></div>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>03</span></div>
+</section>
+<section class="page" id="02-personas-3-founders">
+  <h2><span class="h2-num">02</span>Personas (3 founders)</h2>
+  <table>
+<thead><tr>
+<th>Persona</th>
+<th>Foco operativo</th>
+<th>Rol primario en el sistema</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Camila Bianchi</td>
+<td>Logística + Comercial</td>
+<td>Operadora bodega + listings MeLi/MP</td>
+</tr>
+<tr>
+<td>Javier Bianchi</td>
+<td>Logística + Comercial + Sourcing</td>
+<td>Sourcing + cotizaciones MP + B2B</td>
+</tr>
+<tr>
+<td>Guillermo González León</td>
+<td>Técnica + Contabilidad + Operativa backup</td>
+<td>Mantenimiento sistema + DTE + Cerebro IA</td>
+</tr>
+</tbody></table>
+<p>Cross-funcional: cualquiera de los 3 puede operar logística + comercial (rotación). Guillermo único en técnica + contabilidad.</p>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>04</span></div>
+</section>
+<section class="page" id="03-casos-de-uso-cu-001-cu-024">
+  <h2><span class="h2-num">03</span>Casos de uso (CU-001 → CU-024)</h2>
+  <p>Agrupados por fase Y1 del Doc 17 Estrategia Reputation First.</p>
+<h3>Fase 1 · Reputación (Q4-26 · CU-001 a CU-006)</h3>
+<table>
+<thead><tr>
+<th>CU</th>
+<th>Caso de uso</th>
+<th>Actor</th>
+<th>Hito</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>CU-001</td>
+<td>Subir primer producto al catálogo maestro con fotos pro propias</td>
+<td>Cualquier founder</td>
+<td>5 productos en cuenta MeLi</td>
+</tr>
+<tr>
+<td>CU-002</td>
+<td>Configurar listing MeLi con título · descripción · categoría correcta</td>
+<td>Cualquier founder</td>
+<td>Listing aprobado por MeLi</td>
+</tr>
+<tr>
+<td>CU-003</td>
+<td>Vender primera unidad a costo (regalo a contacto) · activar termómetro</td>
+<td>Cualquier founder</td>
+<td>Termómetro vendedor activo</td>
+</tr>
+<tr>
+<td>CU-004</td>
+<td>Recibir orden vía webhook MeLi · aceptar manualmente · despachar</td>
+<td>Cualquier founder</td>
+<td>Venta confirmada</td>
+</tr>
+<tr>
+<td>CU-005</td>
+<td>Emitir DTE 39 (boleta) automático al cierre de la orden</td>
+<td>Sistema · Open Factura</td>
+<td>DTE emitido con folio SII</td>
+</tr>
+<tr>
+<td>CU-006</td>
+<td>Lograr 10 ventas con reputación verde MeLi</td>
+<td>Sistema mide · founders ejecutan</td>
+<td>Hito Fase 1 cerrado</td>
+</tr>
+</tbody></table>
+<h3>Fase 2 · Escala MeLi (Q1-27 · CU-007 a CU-012)</h3>
+<table>
+<thead><tr>
+<th>CU</th>
+<th>Caso de uso</th>
+<th>Actor</th>
+<th>Hito</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>CU-007</td>
+<td>Configurar Mercado Ads · campaign por SKU ganador</td>
+<td>Cualquier founder</td>
+<td>ADS activo</td>
+</tr>
+<tr>
+<td>CU-008</td>
+<td>Monitorear ROI de campaign · pausar si <1.5x</td>
+<td>Cerebro IA sugiere · founder decide</td>
+<td>Decisión semanal</td>
+</tr>
+<tr>
+<td>CU-009</td>
+<td>Migrar SKU rotado a Full Fulfillment MeLi</td>
+<td>Cualquier founder</td>
+<td>Stock en almacenes MeLi</td>
+</tr>
+<tr>
+<td>CU-010</td>
+<td>Subir reputación a Medalla Plata · 30+ ventas/mes sostenidas</td>
+<td>Sistema mide</td>
+<td>Plata alcanzada</td>
+</tr>
+<tr>
+<td>CU-011</td>
+<td>Recibir alertas Cerebro IA sobre oportunidades cross-categoría</td>
+<td>Cerebro background</td>
+<td>Sugerencia diaria</td>
+</tr>
+<tr>
+<td>CU-012</td>
+<td>Cerrar 30 órdenes/mes sostenidas 2 meses · cerrar Fase 2</td>
+<td>Sistema mide</td>
+<td>Hito Fase 2 cerrado</td>
+</tr>
+</tbody></table>
+<h3>Fase 3 · Diversificación (Q2-27 · CU-013 a CU-018)</h3>
+<table>
+<thead><tr>
+<th>CU</th>
+<th>Caso de uso</th>
+<th>Actor</th>
+<th>Hito</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>CU-013</td>
+<td>Sync diario licitaciones Mercado Público (cron 8am)</td>
+<td>Sistema</td>
+<td>Licitaciones nuevas en DB</td>
+</tr>
+<tr>
+<td>CU-014</td>
+<td>Cerebro filtra licitaciones afines + scoring</td>
+<td>Cerebro IA</td>
+<td>Top 5 sugeridas/día</td>
+</tr>
+<tr>
+<td>CU-015</td>
+<td>Postular a licitación · oferta generada · review · submit</td>
+<td>Javier típicamente</td>
+<td>Oferta enviada MP</td>
+</tr>
+<tr>
+<td>CU-016</td>
+<td>Recibir webhook adjudicación · ejecutar despacho institucional</td>
+<td>Cualquier founder</td>
+<td>Primera adjudicación B2G</td>
+</tr>
+<tr>
+<td>CU-017</td>
+<td>Cliente B2B envía RFQ vía portal · generar cotización</td>
+<td>Javier típicamente</td>
+<td>Primera venta B2B</td>
+</tr>
+<tr>
+<td>CU-018</td>
+<td>Cerrar 1 adjudicación MP + 1 venta B2B + MeLi sostenido</td>
+<td>Sistema mide</td>
+<td>Hito Fase 3 cerrado</td>
+</tr>
+</tbody></table>
+<h3>Fase 4 · Consolidación (Q3-27 · CU-019 a CU-024)</h3>
+<table>
+<thead><tr>
+<th>CU</th>
+<th>Caso de uso</th>
+<th>Actor</th>
+<th>Hito</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>CU-019</td>
+<td>Cierre mensual con conciliación pagos vs DTE</td>
+<td>Guillermo + sistema</td>
+<td>Reporte galvarez.cl mensual</td>
+</tr>
+<tr>
+<td>CU-020</td>
+<td>Evaluación Nexport (importación) si SKU > USD 30K/mes sostenido</td>
+<td>Los 3 founders</td>
+<td>Decisión Y2 Nexport sí/no</td>
+</tr>
+<tr>
+<td>CU-021</td>
+<td>Preparar D2C storefront para Y2 launch</td>
+<td>Frontend (Y2)</td>
+<td>D2C MVP listo</td>
+</tr>
+<tr>
+<td>CU-022</td>
+<td>Setup dropshipping con proveedores chilenos (modo on-demand)</td>
+<td>Backend + Javier</td>
+<td>1+ proveedor dropship activo</td>
+</tr>
+<tr>
+<td>CU-023</td>
+<td>Review trimestral Risk Register · ajustar</td>
+<td>Los 3 founders</td>
+<td>Risks actualizados</td>
+</tr>
+<tr>
+<td>CU-024</td>
+<td>Cierre Y1 · $5M+ revenue mensual sostenido 2 meses · break-even</td>
+<td>Sistema mide</td>
+<td>Hito Y1 cerrado</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>05</span></div>
+</section>
+<section class="page" id="04-reglas-de-negocio-br-001-br-018">
+  <h2><span class="h2-num">04</span>Reglas de negocio (BR-001 → BR-018)</h2>
+  <div class="box box-info"><div class="box-title">💡 Estructura</div><p>Cada BR es regla NO transable que el sistema debe cumplir. Si una regla se rompe · es bug crítico.</p></div>
+<h3>Reputación primero (Fase 1)</h3>
+<ul>
+<li><strong>BR-001</strong>: Las primeras 10 ventas se publican con foto pro propia · jamás del proveedor.</li>
+<li><strong>BR-002</strong>: Envío gratis activado en Y1 fase 1 · sacrifica margen · gana reputación.</li>
+<li><strong>BR-003</strong>: Mercado Ads NO se activa hasta tener termómetro verde sostenido 4 semanas.</li>
+<li><strong>BR-004</strong>: Cuenta nueva NO atiende cliente con reclamo en primeros 30 días sin escalado a los 3 founders.</li>
+</ul>
+<h3>Stock cross-canal (todas las fases)</h3>
+<ul>
+<li><strong>BR-005</strong>: Stock real-time único · pg_notify propaga cambio a todos los canales activos &lt;1s.</li>
+<li><strong>BR-006</strong>: Reserva stock con SELECT FOR UPDATE · evita oversell por concurrencia.</li>
+<li><strong>BR-007</strong>: Si producto tiene <code>is_on_demand=true</code> · stock refleja al proveedor (no propio).</li>
+<li><strong>BR-008</strong>: Stock 0 → producto se despublica de canales automáticamente · no se vende lo que no hay.</li>
+</ul>
+<h3>DTE / SII Chile</h3>
+<ul>
+<li><strong>BR-009</strong>: Todo cierre de orden con monto > 0 dispara emisión DTE automática.</li>
+<li><strong>BR-010</strong>: DTE 39 (boleta) default · DTE 33 (factura) si cliente provee RUT empresa.</li>
+<li><strong>BR-011</strong>: Si SII rechaza DTE · retry exponencial 5 veces · si todos fallan · alerta + queue manual.</li>
+<li><strong>BR-012</strong>: NC (DTE 61) requiere autorización founder · NO auto-emisión por evento.</li>
+</ul>
+<h3>Channels & Adapters</h3>
+<ul>
+<li><strong>BR-013</strong>: Channel Adapter Pattern uniforme · agregar canal nuevo NO requiere refactor.</li>
+<li><strong>BR-014</strong>: Supplier Adapter Pattern análogo · agregar proveedor nuevo igual.</li>
+<li><strong>BR-015</strong>: Cron refresh MeLi tokens cada 6h · si falla · alerta inmediata.</li>
+</ul>
+<h3>Cerebro IA</h3>
+<ul>
+<li><strong>BR-016</strong>: Fallback chain Groq → Gemini → DeepSeek · NUNCA Claude (regla Hoku).</li>
+<li><strong>BR-017</strong>: Scoring oportunidades = sin LLM (6 señales) · NO costo IA por scoring.</li>
+<li><strong>BR-018</strong>: Chat Cerebro tiene rate limit 60 mensajes/día/founder · evita abuso.</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>06</span></div>
+</section>
+<section class="page" id="05-workflows-por-modo-de-operaci-n">
+  <h2><span class="h2-num">05</span>Workflows por modo de operación</h2>
+  <p>Tres modos paralelos (Doc 21 Modelo Comercio):</p>
+<h3>Modo 1 · Stock propio compra local Chile (Y1 prioridad)</h3>
+<pre class="ascii">Sourcing → Compra local (CLP · 3-7 días)
+        → Recepción bodega · QA · ingreso inventory
+        → Publicar cross-canal (foto pro)
+        → Venta · webhook
+        → Despacho directo
+        → DTE emitido
+        → Reinversión</pre>
+<h3>Modo 2 · Stock propio Nexport importación (Y2+)</h3>
+<pre class="ascii">Sourcing → RFQ Nexport (USD · 30-90 días)
+        → Importación + aduana
+        → Recepción bodega
+        → [mismo flujo Modo 1 desde acá]</pre>
+<h3>Modo 3 · Dropshipping (sin stock propio)</h3>
+<pre class="ascii">Sync catálogo proveedor → Filter SKUs viables
+                        → Publicar con flag is_dropship=true
+                        → Venta · webhook
+                        → OC propagada al proveedor (Supplier Adapter)
+                        → Proveedor despacha al cliente final
+                        → DTE emitido por SMC SpA
+                        → Liquidar al proveedor 7-15 días</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>07</span></div>
+</section>
+<section class="page" id="06-wireframes-mockups-referencias">
+  <h2><span class="h2-num">06</span>Wireframes / Mockups (referencias)</h2>
+  <p>Ya existentes en banco de diseño SMC:</p>
+<ul>
+<li>Dashboard founder (vista única operacional · todos los modos)</li>
+<li>Detalle producto (CRUD + multi-canal status)</li>
+<li>Lista órdenes (filter por canal · status · fecha)</li>
+<li>Detalle orden (timeline + items + payments + DTE + tracking)</li>
+<li>Cerebro chat (sidebar · SSE streaming)</li>
+<li>Panel oportunidades (top scored sin LLM)</li>
+</ul>
+<p>Pendiente diseñar en v4:</p>
+<ul>
+<li>Panel ADS multicanal (Meta + Google + TikTok · campañas + ROI)</li>
+<li>Panel suppliers dropship (catálogos sync + comisión + liquidación)</li>
+<li>Switcher v3/v4 navegación banco</li>
+<li>Onboarding wizard no-dev (Camila + Javier paso a paso)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>08</span></div>
+</section>
+<section class="page" id="07-criterios-de-aceptaci-n-resumen-por-hito">
+  <h2><span class="h2-num">07</span>Criterios de aceptación (resumen por hito)</h2>
+  <table>
+<thead><tr>
+<th>Hito</th>
+<th>Criterio</th>
+<th>Cómo se mide</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Cierre Fase 1</td>
+<td>10 ventas verdes MeLi sostenidas 4 sem</td>
+<td><code>mkt_orders WHERE status=delivered AND channel=meli AND reputation_color=green</code> · count ≥ 10</td>
+</tr>
+<tr>
+<td>Cierre Fase 2</td>
+<td>30 órdenes/mes sostenidas 2 meses</td>
+<td>Query mensual con threshold</td>
+</tr>
+<tr>
+<td>Cierre Fase 3</td>
+<td>1+ adjudicación MP + 1+ B2B</td>
+<td>Eventos específicos en <code>mkt_orders</code></td>
+</tr>
+<tr>
+<td>Cierre Fase 4 / Y1</td>
+<td>$5M+ revenue mensual sostenido 2 meses</td>
+<td>Sum mensual revenue real</td>
+</tr>
+<tr>
+<td>Margen blended</td>
+<td>30-35% Y1</td>
+<td>(Revenue - COGS) / Revenue por mes</td>
+</tr>
+<tr>
+<td>Uptime sistema</td>
+<td>99.5% Y1</td>
+<td>Monitoring CloudWatch + Sentry</td>
+</tr>
+<tr>
+<td>Tiempo founder operación manual</td>
+<td>&lt;1h/sem cada uno</td>
+<td>Self-report semanal + log sistema</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>09</span></div>
+</section>
+<section class="page" id="08-out-of-scope-expl-cito">
+  <h2><span class="h2-num">08</span>Out of scope (explícito)</h2>
+  <p>❌ Lo que <strong>NO</strong> hace el sistema (Y1):</p>
+<ul>
+<li>NO procesa pagos directamente (usa pasarelas externas)</li>
+<li>NO maneja inventario físico distribuido (1 bodega · simple)</li>
+<li>NO soporta multi-moneda (CLP único · USD solo en Nexport Fase 2)</li>
+<li>NO tiene app mobile (solo web responsive)</li>
+<li>NO maneja garantías / seguros productos (defer Y2)</li>
+<li>NO opera fuera de Chile (territorialmente Chile-only Y1)</li>
+<li>NO comparte tenant entre marcas (1 tenant = SMC SpA · multi-tenant es Y3+)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>10</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="10-assessment.html">◂ doc anterior</a><span class="nav-center">FIN DOC 11</span><a href="13-especificacion-tecnica.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
+</body>
+</html>

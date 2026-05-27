@@ -16,12 +16,17 @@
       { n: '06', t: 'API Catalog',            f: '06-api-catalog.html',   s: 'ok' },
       { n: '07', t: 'Architecture',           f: '07-architecture.html',  s: 'ok' },
       { n: '08', t: 'Roadmap',                f: '08-roadmap.html',       s: 'ok' },
+      { n: '09', t: 'Sistema Oportunidades',  f: '09-opportunities-system.html',     s: 'ok' },
+      { n: '10', t: '🆕 Assessment v1 → v2',   f: '10-assessment.html',           s: 'ok' },
+      { n: '11', t: '🆕 Espec. Funcional',     f: '11-especificacion-funcional.html', s: 'ok' },
+      { n: '13', t: '🆕 Espec. Técnica',       f: '13-especificacion-tecnica.html',   s: 'ok' },
     ]},
     { id: 'found', emoji: '👥', name: 'Founders Operation', color: '#C026D3', docs: [
       { n: '12', t: 'Roles Founders',         f: '12-roles-founders.html',   s: 'ok' },
       { n: '14', t: 'Founders Journey',       f: '14-founders-journey.html', s: 'ok' },
       { n: '15', t: 'Valor Interno SMC SpA',  f: '15-value-internal.html',   s: 'ok' },
       { n: '16', t: 'Comparativa Tools',      f: '16-comparativa-tools.html',s: 'ok' },
+      { n: '18', t: '🆕 Plan Ejecución v4',    f: '18-plan-ejecucion.html',   s: 'ok' },
     ]},
     { id: 'biz', emoji: '💼', name: 'Negocio & Comercio', color: '#F59E0B', docs: [
       { n: '17', t: '⭐ Estrategia Y1 (CENTRAL)',f: '17-estrategia-y1.html',     s: 'ok' },
