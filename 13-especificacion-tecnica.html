@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>13 · Especificación Técnica · Marketplace SMC</title>
+<head><meta charset="UTF-8"><title>13 · Especificación Técnica · Marketplace SMC</title>
 <link rel="stylesheet" href="_styles.css">
 <link rel="stylesheet" href="_diagram-kit.css">
 </head>
@@ -26,7 +26,7 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-stack-completo-librer-a-por-librer-a">02 · Stack completo · librería por librería</a><span class="toc-pg">04</span></li><li><a href="#03-arquitectura-de-capas">03 · Arquitectura de capas</a><span class="toc-pg">05</span></li><li><a href="#04-request-lifecycle-de-browser-a-db-y-vuelta">04 · Request lifecycle · de browser a DB y vuelta</a><span class="toc-pg">06</span></li><li><a href="#05-data-flow-cross-canal-venta-meli">05 · Data flow cross-canal · venta MeLi</a><span class="toc-pg">07</span></li><li><a href="#06-event-driven-architecture">06 · Event-driven architecture</a><span class="toc-pg">08</span></li><li><a href="#07-channel-adapter-pattern-interface-4-impl">07 · Channel Adapter Pattern · interface + 4 impl</a><span class="toc-pg">09</span></li><li><a href="#08-supplier-adapter-pattern">08 · Supplier Adapter Pattern</a><span class="toc-pg">10</span></li><li><a href="#09-estructura-monorepo">09 · Estructura monorepo</a><span class="toc-pg">11</span></li><li><a href="#10-integraci-n-bd-c-mo-se-conecta">10 · Integración BD · cómo se conecta</a><span class="toc-pg">12</span></li><li><a href="#11-orquestaci-n-cuando-entra-una-orden">11 · Orquestación · cuando entra una orden</a><span class="toc-pg">13</span></li><li><a href="#12-deploy-ambientes-ci-cd">12 · Deploy · ambientes · CI/CD</a><span class="toc-pg">14</span></li><li><a href="#13-escalabilidad-t-cnica-cu-ndo-refactorizar">13 · Escalabilidad técnica · cuándo refactorizar</a><span class="toc-pg">15</span></li><li><a href="#14-adrs-registradas-5-decisiones">14 · ADRs registradas · 5 decisiones</a><span class="toc-pg">16</span></li><li><a href="#15-performance-budgets">15 · Performance budgets</a><span class="toc-pg">17</span></li><li><a href="#16-security-requirements-12-items-con-implementaci-n">16 · Security requirements · 12 items con implementación</a><span class="toc-pg">18</span></li><li><a href="#17-observabilidad-llmops-detallado">17 · Observabilidad · LLMOps detallado</a><span class="toc-pg">19</span></li><li><a href="#18-pr-ximos-pasos-t-cnicos">18 · Próximos pasos técnicos</a><span class="toc-pg">20</span></li></ol>
+  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-stack-completo-librer-a-por-librer-a">02 · Stack completo · librería por librería</a><span class="toc-pg">04</span></li><li><a href="#03-arquitectura-de-capas">03 · Arquitectura de capas</a><span class="toc-pg">05</span></li><li><a href="#04-request-lifecycle-de-browser-a-db-y-vuelta">04 · Request lifecycle · de browser a DB y vuelta</a><span class="toc-pg">06</span></li><li><a href="#05-data-flow-cross-canal-venta-meli">05 · Data flow cross-canal · venta MeLi</a><span class="toc-pg">07</span></li><li><a href="#06-event-driven-architecture">06 · Event-driven architecture</a><span class="toc-pg">08</span></li><li><a href="#07-channel-adapter-pattern-interface-4-impl">07 · Channel Adapter Pattern · interface + 4 impl</a><span class="toc-pg">09</span></li><li><a href="#08-supplier-adapter-pattern">08 · Supplier Adapter Pattern</a><span class="toc-pg">10</span></li><li><a href="#09-estructura-monorepo">09 · Estructura monorepo</a><span class="toc-pg">11</span></li><li><a href="#10-integraci-n-bd-c-mo-se-conecta">10 · Integración BD · cómo se conecta</a><span class="toc-pg">12</span></li><li><a href="#11-orquestaci-n-cuando-entra-una-orden">11 · Orquestación · cuando entra una orden</a><span class="toc-pg">13</span></li><li><a href="#12-deploy-ambientes-ci-cd">12 · Deploy · ambientes · CI/CD</a><span class="toc-pg">14</span></li><li><a href="#13-escalabilidad-t-cnica-cu-ndo-refactorizar">13 · Escalabilidad técnica · cuándo refactorizar</a><span class="toc-pg">15</span></li><li><a href="#14-adrs-registradas-6-decisiones">14 · ADRs registradas · 6 decisiones</a><span class="toc-pg">16</span></li><li><a href="#15-performance-budgets">15 · Performance budgets</a><span class="toc-pg">17</span></li><li><a href="#16-security-requirements-12-items-con-implementaci-n">16 · Security requirements · 12 items con implementación</a><span class="toc-pg">18</span></li><li><a href="#17-observabilidad-llmops-detallado">17 · Observabilidad · LLMOps detallado</a><span class="toc-pg">19</span></li><li><a href="#18-pr-ximos-pasos-t-cnicos">18 · Próximos pasos técnicos</a><span class="toc-pg">20</span></li></ol>
 </section>
 
 <section class="page" id="01-premisa">
@@ -211,64 +211,83 @@
 <th>Servicio</th>
 <th>SDK / método</th>
 <th>Auth</th>
+<th>Estado Sprint 2</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>Mercado Libre</td>
+<td><strong>SoloTodo</strong> (Plan B activo)</td>
+<td>fetch directo</td>
+<td>Sin auth · API pública gratis</td>
+<td>✅ Conectado · 58K productos MeLi indexados</td>
+</tr>
+<tr>
+<td>Mercado Libre (objetivo)</td>
 <td>fetch directo · sin SDK oficial</td>
 <td>OAuth 2.0 PKCE</td>
+<td>🟡 App pendiente aprobación PolicyAgent</td>
 </tr>
 <tr>
 <td>Mercado Público</td>
 <td>fetch directo</td>
 <td>Ticket env var</td>
+<td>⏭️ Fase 3</td>
 </tr>
 <tr>
 <td>Open Factura</td>
 <td>fetch directo + cert digital</td>
 <td>API key + cert</td>
+<td>⏭️ Sprint 4</td>
 </tr>
 <tr>
 <td>MercadoPago</td>
 <td>mercadopago oficial SDK</td>
 <td>OAuth + webhook firmado</td>
+<td>⏭️ Sprint 5 D2C</td>
 </tr>
 <tr>
 <td>WebPay Plus</td>
 <td>@transbank/webpay-plus</td>
 <td>Cert + commerce code</td>
+<td>⏭️ Sprint 5 D2C</td>
 </tr>
 <tr>
 <td>Chilexpress</td>
 <td>fetch directo</td>
 <td>API key</td>
+<td>⏭️ Sprint 4</td>
 </tr>
 <tr>
 <td>Starken</td>
 <td>fetch directo</td>
 <td>API key</td>
+<td>⏭️ Sprint 4</td>
 </tr>
 <tr>
 <td>OpenRouter</td>
 <td>openai SDK (compatible API)</td>
 <td>API key</td>
+<td>✅ Hoku fallback chain</td>
 </tr>
 <tr>
 <td>Resend</td>
 <td>resend SDK</td>
 <td>API key</td>
+<td>⏭️ Sprint 4</td>
 </tr>
 <tr>
 <td>Sentry</td>
 <td>@sentry/nextjs</td>
 <td>DSN</td>
+<td>✅ Configurado</td>
 </tr>
 <tr>
 <td>PostHog</td>
 <td>posthog-node + posthog-js</td>
 <td>Project API key</td>
+<td>⏭️ Sprint 3</td>
 </tr>
 </tbody></table>
+<div class="box box-info"><div class="box-title">💡 SoloTodo es Plan B oficial mientras MeLi aprueba app</div><p>MeLi bloquea endpoints públicos (403 sin OAuth desde servidores) · app SmartConnection-Marketplace en revisión PolicyAgent en developers.mercadolibre.cl. Mientras tanto · <strong>SoloTodo</strong> (api.solotodo.com · store_id 260) entrega 58K+ productos MeLi Chile indexados · precios actualizados 6-12h · URLs reales · sin auth · sin costo. Sirve para: análisis competencia · scoring oportunidades · benchmarks precio. Cuando MeLi apruebe → SoloTodo se mantiene como caché/fallback · NO se elimina (redundancia + costo cero).</p></div>
 <h3>2.5 · DevOps + Observability</h3>
 <table>
 <thead><tr>
@@ -702,8 +721,8 @@ Tenant count > 5                               Migrar de tenant_id implicit a ex
 <div class="box box-info"><div class="box-title">💡 Regla de oro</div><p>Refactor cuando hay número concreto que dispara · NO porque "se ve mejor". Rule of three: 3 violaciones repetidas → abstraer. NO refactorizar 1 vez.</p></div>
   <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>15</span></div>
 </section>
-<section class="page" id="14-adrs-registradas-5-decisiones">
-  <h2><span class="h2-num">14</span>ADRs registradas · 5 decisiones</h2>
+<section class="page" id="14-adrs-registradas-6-decisiones">
+  <h2><span class="h2-num">14</span>ADRs registradas · 6 decisiones</h2>
   <table>
 <thead><tr>
 <th>ADR</th>
@@ -742,7 +761,49 @@ Tenant count > 5                               Migrar de tenant_id implicit a ex
 <td>🟡 Proposed</td>
 <td>Doc 10 Assessment · sección 08</td>
 </tr>
+<tr>
+<td>ADR-0006</td>
+<td>SoloTodo como Plan B catálogo MeLi</td>
+<td>✅ Accepted</td>
+<td>sección 14b · este doc</td>
+</tr>
 </tbody></table>
+<h3>14b · ADR-0006 · SoloTodo Plan B mientras MeLi aprueba app</h3>
+<p><strong>Status</strong>: ✅ Accepted · 2026-05-27</p>
+<p><strong>Context</strong>: app SmartConnection-Marketplace en review PolicyAgent MeLi (developers.mercadolibre.cl). Mientras no esté aprobada · endpoints públicos MeLi devuelven 403 desde servidores (anti-scraping). Sin OAuth tampoco se puede leer catálogo.</p>
+<p><strong>Decisión</strong>: usar <strong>SoloTodo API</strong> (api.solotodo.com · MELI_STORE_ID=260) como fuente de catálogo MeLi Chile mientras MeLi aprueba.</p>
+<p><strong>Por qué SoloTodo</strong>:</p>
+<ul>
+<li>58K+ productos MeLi Chile indexados (verificado live 2026-05-27)</li>
+<li>Precios actualizados cada 6-12h</li>
+<li>URLs reales del producto en MeLi (clickeables)</li>
+<li>Cross-store: agrupa precios MeLi vs Falabella · París · Ripley · etc</li>
+<li>API pública sin auth · sin costo</li>
+<li>Estable hace años (proyecto chileno consolidado)</li>
+</ul>
+<p><strong>Trade-offs aceptados</strong>:</p>
+<ul>
+<li>❌ NO permite publicar ni vender · solo lectura</li>
+<li>❌ NO entrega cuentas propias (es público · vemos competencia · no nuestras ventas)</li>
+<li>❌ Latencia 6-12h vs real-time webhook MeLi</li>
+<li>✅ Cubre 100% análisis competencia + scoring oportunidades</li>
+<li>✅ Cero costo · cero riesgo policy</li>
+<li>✅ Cuando MeLi apruebe → se mantiene como caché/fallback redundante</li>
+</ul>
+<p><strong>Cómo se usa en código</strong>:</p>
+<ul>
+<li><code>lib/solotodo-client.ts</code> (329 líneas · client con tipos completos)</li>
+<li><code>app/api/solotodo/test/route.ts</code> (health check)</li>
+<li><code>app/dashboard/settings/page.tsx</code> (botón "Probar conexión SoloTodo")</li>
+<li>Sprint 3: integrar en Sistema Oportunidades como fuente de precios competencia</li>
+</ul>
+<p><strong>Cuándo deprecate SoloTodo</strong>:</p>
+<ul>
+<li>NUNCA · se mantiene siempre como fallback redundante</li>
+<li>Costo cero · no afecta cuotas MeLi · ayuda a validar consistencia precios</li>
+</ul>
+<p><strong>Riesgo</strong>: SoloTodo cambia API o sube paywall.</p>
+<p><strong>Mitigación</strong>: API pública desde 2014 · sin señales de cierre. Si pasa → seguimos con MeLi OAuth directo.</p>
   <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>16</span></div>
 </section>
 <section class="page" id="15-performance-budgets">

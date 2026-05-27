@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>11 · Especificación Funcional · Marketplace SMC</title>
+<head><meta charset="UTF-8"><title>11 · Especificación Funcional · Marketplace SMC</title>
 <link rel="stylesheet" href="_styles.css">
 <link rel="stylesheet" href="_diagram-kit.css">
 </head>
@@ -56,7 +56,14 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><strong>Mercado Libre API v2</strong></td>
+<td><strong>SoloTodo API</strong> (Plan B activo)</td>
+<td>Source pricing + catálogo MeLi</td>
+<td>Análisis competencia · scoring oportunidades · 58K productos MeLi Chile indexados</td>
+<td>Pública sin auth · sin costo</td>
+<td>Pricing update 6-12h</td>
+</tr>
+<tr>
+<td><strong>Mercado Libre API v2</strong> (objetivo)</td>
 <td>Canal</td>
 <td>Publicar listings · sync stock · recibir órdenes</td>
 <td>OAuth 2.0 PKCE + cookies httpOnly</td>
@@ -146,20 +153,17 @@
 <td>API key</td>
 <td>Capa sobre Groq/Gemini/DS</td>
 </tr>
-<tr>
-<td><strong>SoloTodo API</strong></td>
-<td>Source pricing</td>
-<td>Comparación cross-tiendas Chile</td>
-<td>Pública sin auth</td>
-<td>Cron diario</td>
-</tr>
-<tr>
-<td><strong>Open Food Facts</strong></td>
-<td>Source data</td>
-<td>Productos alimentación + nutrición</td>
-<td>Pública sin auth</td>
-<td>Cron diario</td>
-</tr>
+</tbody></table>
+<p><!-- SoloTodo movido al top como Plan B activo · entry duplicada eliminada --></p>
+<table>
+<thead><tr>
+<th><strong>Open Food Facts</strong></th>
+<th>Source data</th>
+<th>Productos alimentación + nutrición</th>
+<th>Pública sin auth</th>
+<th>Cron diario</th>
+</tr></thead>
+<tbody>
 <tr>
 <td><strong>Banco Central API</strong></td>
 <td>Source FX</td>

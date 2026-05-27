@@ -28,7 +28,8 @@ Doc 11 detalla **qué hace el sistema** a nivel granular: qué herramienta espec
 
 | Herramienta | Categoría | Rol Y1 | Auth method | Frecuencia |
 |-------------|-----------|--------|-------------|-----------|
-| **Mercado Libre API v2** | Canal | Publicar listings · sync stock · recibir órdenes | OAuth 2.0 PKCE + cookies httpOnly | Webhooks real-time + cron 6h refresh |
+| **SoloTodo API** (Plan B activo) | Source pricing + catálogo MeLi | Análisis competencia · scoring oportunidades · 58K productos MeLi Chile indexados | Pública sin auth · sin costo | Pricing update 6-12h |
+| **Mercado Libre API v2** (objetivo) | Canal | Publicar listings · sync stock · recibir órdenes | OAuth 2.0 PKCE + cookies httpOnly | Webhooks real-time + cron 6h refresh |
 | **Mercado Ads** | Canal · publicidad | Campaigns · ROAS tracking · pausing | Token OAuth ML | Diaria (auto-tune) |
 | **Mercado Público (ChileCompra)** | Canal B2G | Sync licitaciones · postular · adjudicar | Ticket auth (env var) | Cron 8am diario |
 | **B2B Portal propio** | Canal B2B | RFQ · cotización · firma HMAC | API keys por cliente | Real-time |
@@ -41,7 +42,7 @@ Doc 11 detalla **qué hace el sistema** a nivel granular: qué herramienta espec
 | **Gemini Flash 2.0** | IA fallback 1 | Cuando Groq excede TPM | API key OpenRouter | Fallback |
 | **DeepSeek V3** | IA fallback 2 | Cuando Gemini falla | API key OpenRouter | Fallback |
 | **OpenRouter** | IA router | Routing automatic + cost cap | API key | Capa sobre Groq/Gemini/DS |
-| **SoloTodo API** | Source pricing | Comparación cross-tiendas Chile | Pública sin auth | Cron diario |
+<!-- SoloTodo movido al top como Plan B activo · entry duplicada eliminada -->
 | **Open Food Facts** | Source data | Productos alimentación + nutrición | Pública sin auth | Cron diario |
 | **Banco Central API** | Source FX | USD/CLP tipo cambio | Pública sin auth | Cron diario 9am |
 | **Supabase Auth** | Auth users | JWT founders · 2FA opcional TOTP | Email/password | Login persistente 30d |

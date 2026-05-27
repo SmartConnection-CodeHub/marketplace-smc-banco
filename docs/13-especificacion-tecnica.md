@@ -61,19 +61,23 @@ Doc 13 detalla **cómo se construye** Marketplace SMC a nivel granular: librerí
 
 ## 2.4 · Integraciones externas
 
-| Servicio | SDK / método | Auth |
-|----------|--------------|------|
-| Mercado Libre | fetch directo · sin SDK oficial | OAuth 2.0 PKCE |
-| Mercado Público | fetch directo | Ticket env var |
-| Open Factura | fetch directo + cert digital | API key + cert |
-| MercadoPago | mercadopago oficial SDK | OAuth + webhook firmado |
-| WebPay Plus | @transbank/webpay-plus | Cert + commerce code |
-| Chilexpress | fetch directo | API key |
-| Starken | fetch directo | API key |
-| OpenRouter | openai SDK (compatible API) | API key |
-| Resend | resend SDK | API key |
-| Sentry | @sentry/nextjs | DSN |
-| PostHog | posthog-node + posthog-js | Project API key |
+| Servicio | SDK / método | Auth | Estado Sprint 2 |
+|----------|--------------|------|-----------------|
+| **SoloTodo** (Plan B activo) | fetch directo | Sin auth · API pública gratis | ✅ Conectado · 58K productos MeLi indexados |
+| Mercado Libre (objetivo) | fetch directo · sin SDK oficial | OAuth 2.0 PKCE | 🟡 App pendiente aprobación PolicyAgent |
+| Mercado Público | fetch directo | Ticket env var | ⏭️ Fase 3 |
+| Open Factura | fetch directo + cert digital | API key + cert | ⏭️ Sprint 4 |
+| MercadoPago | mercadopago oficial SDK | OAuth + webhook firmado | ⏭️ Sprint 5 D2C |
+| WebPay Plus | @transbank/webpay-plus | Cert + commerce code | ⏭️ Sprint 5 D2C |
+| Chilexpress | fetch directo | API key | ⏭️ Sprint 4 |
+| Starken | fetch directo | API key | ⏭️ Sprint 4 |
+| OpenRouter | openai SDK (compatible API) | API key | ✅ Hoku fallback chain |
+| Resend | resend SDK | API key | ⏭️ Sprint 4 |
+| Sentry | @sentry/nextjs | DSN | ✅ Configurado |
+| PostHog | posthog-node + posthog-js | Project API key | ⏭️ Sprint 3 |
+
+> [!info] SoloTodo es Plan B oficial mientras MeLi aprueba app
+> MeLi bloquea endpoints públicos (403 sin OAuth desde servidores) · app SmartConnection-Marketplace en revisión PolicyAgent en developers.mercadolibre.cl. Mientras tanto · **SoloTodo** (api.solotodo.com · store_id 260) entrega 58K+ productos MeLi Chile indexados · precios actualizados 6-12h · URLs reales · sin auth · sin costo. Sirve para: análisis competencia · scoring oportunidades · benchmarks precio. Cuando MeLi apruebe → SoloTodo se mantiene como caché/fallback · NO se elimina (redundancia + costo cero).
 
 ## 2.5 · DevOps + Observability
 
@@ -435,7 +439,7 @@ Tenant count > 5                               Migrar de tenant_id implicit a ex
 > [!info] Regla de oro
 > Refactor cuando hay número concreto que dispara · NO porque "se ve mejor". Rule of three: 3 violaciones repetidas → abstraer. NO refactorizar 1 vez.
 
-# 14 · ADRs registradas · 5 decisiones
+# 14 · ADRs registradas · 6 decisiones
 
 | ADR | Título | Status | Dónde está el detalle |
 |-----|--------|--------|-----------------------|
@@ -444,6 +448,43 @@ Tenant count > 5                               Migrar de tenant_id implicit a ex
 | ADR-0003 | Supplier Adapter Pattern | 🟡 Proposed | sección 08 |
 | ADR-0004 | ADS multicanal automation (Y2) | 🟡 Proposed | Doc 11 · sección Ads |
 | ADR-0005 | Versionado banco v3 ↔ v4 | 🟡 Proposed | Doc 10 Assessment · sección 08 |
+| ADR-0006 | SoloTodo como Plan B catálogo MeLi | ✅ Accepted | sección 14b · este doc |
+
+## 14b · ADR-0006 · SoloTodo Plan B mientras MeLi aprueba app
+
+**Status**: ✅ Accepted · 2026-05-27
+**Context**: app SmartConnection-Marketplace en review PolicyAgent MeLi (developers.mercadolibre.cl). Mientras no esté aprobada · endpoints públicos MeLi devuelven 403 desde servidores (anti-scraping). Sin OAuth tampoco se puede leer catálogo.
+
+**Decisión**: usar **SoloTodo API** (api.solotodo.com · MELI_STORE_ID=260) como fuente de catálogo MeLi Chile mientras MeLi aprueba.
+
+**Por qué SoloTodo**:
+- 58K+ productos MeLi Chile indexados (verificado live 2026-05-27)
+- Precios actualizados cada 6-12h
+- URLs reales del producto en MeLi (clickeables)
+- Cross-store: agrupa precios MeLi vs Falabella · París · Ripley · etc
+- API pública sin auth · sin costo
+- Estable hace años (proyecto chileno consolidado)
+
+**Trade-offs aceptados**:
+- ❌ NO permite publicar ni vender · solo lectura
+- ❌ NO entrega cuentas propias (es público · vemos competencia · no nuestras ventas)
+- ❌ Latencia 6-12h vs real-time webhook MeLi
+- ✅ Cubre 100% análisis competencia + scoring oportunidades
+- ✅ Cero costo · cero riesgo policy
+- ✅ Cuando MeLi apruebe → se mantiene como caché/fallback redundante
+
+**Cómo se usa en código**:
+- `lib/solotodo-client.ts` (329 líneas · client con tipos completos)
+- `app/api/solotodo/test/route.ts` (health check)
+- `app/dashboard/settings/page.tsx` (botón "Probar conexión SoloTodo")
+- Sprint 3: integrar en Sistema Oportunidades como fuente de precios competencia
+
+**Cuándo deprecate SoloTodo**:
+- NUNCA · se mantiene siempre como fallback redundante
+- Costo cero · no afecta cuotas MeLi · ayuda a validar consistencia precios
+
+**Riesgo**: SoloTodo cambia API o sube paywall.
+**Mitigación**: API pública desde 2014 · sin señales de cierre. Si pasa → seguimos con MeLi OAuth directo.
 
 # 15 · Performance budgets
 
