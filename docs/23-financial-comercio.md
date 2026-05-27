@@ -21,21 +21,26 @@ next: 24-margen-canal.html
 
 - Capital inicial: $50M CLP (founders · sin sueldo Y1)
 - Mix canales Y1: 50% MeLi · 30% MP · 15% B2B · 5% D2C
-- Mix de modos Y1: 70% stock propio · 30% on-demand (sin capital atado)
-- Margen blended: 30-35% Y1 · 35-40% Y2 · 40-45% Y3
-- Rotación stock propio objetivo: 60-90 días
+- Mix de modos Y1: **60% stock local Chile** · **40% dropshipping** · 0% Nexport (Fase 2)
+- Mix Y2-Y3: agregar Nexport cuando volumen lo justifique (típico Y2 mid · 5-15% del mix)
+- Margen blended Y1: 28-33% (mix con dropship · más conservador)
+- Margen blended Y2: 33-40% (entra Nexport · menos dropship en mix)
+- Rotación stock local objetivo: 30-60 días (más rápido que importación)
 - Reinversión: 50% margen → reposición · 20% impuestos · 10% contingencia · 20% disponible
 
 # 02b · COGS diferencial por modo
 
-| Concepto | Stock propio | On-demand |
-|----------|--------------|-----------|
-| Pago al proveedor | Anticipado (30-60 días antes) | Post-venta (cuando llega cobro cliente) |
-| Capital atado | Alto · todo el inventario | Cero |
-| Costos logística | Importación + bodegaje + courier salida | Solo courier (proveedor paga o se carga al cliente) |
-| Riesgo merma | Sí (obsolescencia · daño · robo) | Cero (no es nuestro stock) |
-| Margen típico | 28-50% | 10-25% |
-| Velocidad escalado catálogo | Lento (limitado por capital) | Rápido (catálogo del proveedor) |
+| Concepto | Stock local Chile | Stock Nexport (Y2+) | Dropshipping |
+|----------|-------------------|---------------------|--------------|
+| Moneda | CLP | USD | CLP o USD |
+| Pago al proveedor | Contado o 30 días | Anticipado (30-60 días antes) | Post-venta (7-15 días después) |
+| Capital atado | Medio · ciclo 30-60 días | Alto · ciclo 90+ días | Cero |
+| Plazo despacho proveedor | 3-7 días | 30-90 días (LCL/FCL + aduana) | Variable según proveedor |
+| Costos extra | Courier salida bodega | + Aduana + IVA importación + agente | Solo courier proveedor (o cliente) |
+| Riesgo cambio USD/CLP | Cero | Alto (USD cotizado) | Bajo si proveedor chileno |
+| Riesgo merma | Sí (obsolescencia · daño · robo) | Sí + riesgo aduana | Cero (no es nuestro stock) |
+| Margen típico | 28-50% | 35-58% | 10-25% |
+| Velocidad escalado catálogo | Medio | Lento (limitado por capital) | Rápido (catálogo proveedor) |
 
 # 03 · Métricas a monitorear mensual
 

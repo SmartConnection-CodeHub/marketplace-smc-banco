@@ -26,25 +26,26 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-modelo-de-negocio-en-1-l-nea">01 · Modelo de negocio en 1 línea</a><span class="toc-pg">03</span></li><li><a href="#02-diagrama-del-flujo-de-dinero">02 · Diagrama del flujo de dinero</a><span class="toc-pg">04</span></li><li><a href="#03-streams-de-revenue">03 · Streams de revenue</a><span class="toc-pg">05</span></li><li><a href="#03b-cu-ndo-usar-cada-modo">03b · Cuándo usar cada modo</a><span class="toc-pg">06</span></li><li><a href="#04-estructura-de-costos">04 · Estructura de costos</a><span class="toc-pg">07</span></li><li><a href="#05-lo-que-no-cobramos">05 · Lo que NO cobramos</a><span class="toc-pg">08</span></li><li><a href="#06-reglas-de-inversi-n">06 · Reglas de inversión</a><span class="toc-pg">09</span></li><li><a href="#07-cu-ndo-evaluar-pivote">07 · Cuándo evaluar pivote</a><span class="toc-pg">10</span></li></ol>
+  <ol><li><a href="#01-modelo-de-negocio-en-1-l-nea">01 · Modelo de negocio en 1 línea</a><span class="toc-pg">03</span></li><li><a href="#02-diagrama-del-flujo-de-dinero">02 · Diagrama del flujo de dinero</a><span class="toc-pg">04</span></li><li><a href="#03-streams-de-revenue">03 · Streams de revenue</a><span class="toc-pg">05</span></li><li><a href="#03b-cu-ndo-usar-cada-modo">03b · Cuándo usar cada modo</a><span class="toc-pg">06</span></li><li><a href="#03c-estrategia-de-migraci-n-entre-modos">03c · Estrategia de migración entre modos</a><span class="toc-pg">07</span></li><li><a href="#04-estructura-de-costos">04 · Estructura de costos</a><span class="toc-pg">08</span></li><li><a href="#05-lo-que-no-cobramos">05 · Lo que NO cobramos</a><span class="toc-pg">09</span></li><li><a href="#06-reglas-de-inversi-n">06 · Reglas de inversión</a><span class="toc-pg">10</span></li><li><a href="#07-cu-ndo-evaluar-pivote">07 · Cuándo evaluar pivote</a><span class="toc-pg">11</span></li></ol>
 </section>
 
 <section class="page" id="01-modelo-de-negocio-en-1-l-nea">
   <h2><span class="h2-num">01</span>Modelo de negocio en 1 línea</h2>
-  <p>SMC SpA opera <strong>dos modos en paralelo</strong>:</p>
+  <p>SMC SpA opera <strong>tres modos en paralelo</strong> según rotación · capital disponible · velocidad de escalado:</p>
 <ul>
-<li><strong>Stock propio</strong>: compra a Nexport (importador) → recibe en bodega → vende multi-canal · margen 28-45%</li>
-<li><strong>On-demand</strong>: catálogo amplio sin stock propio · proveedor despacha directo al cliente cuando hay venta · margen 10-25% pero sin capital atado</li>
+<li><strong>Stock propio · compra local Chile (Y1 prioridad)</strong>: compra a proveedores nacionales → recibe en bodega → vende multi-canal · ciclo 3-7 días · pago CLP · margen 28-45%</li>
+<li><strong>Stock propio · importación Nexport (Fase 2 · Y2+)</strong>: cuando el volumen justifique · LCL/FCL en USD · ciclo 30-90 días · margen significativamente mayor pero capital atado más tiempo</li>
+<li><strong>Dropshipping</strong>: vender sin stock propio · proveedor (chileno o internacional) despacha directo al cliente · margen 10-25% sin capital atado · escalado catálogo rápido</li>
 </ul>
-<p>Margen blended objetivo: 30-40% considerando mix de ambos modos.</p>
+<p>Margen blended objetivo: 28-38% considerando mix de los 3 modos.</p>
   <div class="page-footer"><span>Banco SMC · Negocio</span><span>03</span></div>
 </section>
 <section class="page" id="02-diagrama-del-flujo-de-dinero">
   <h2><span class="h2-num">02</span>Diagrama del flujo de dinero</h2>
-  <p><strong>Modo 1 · Stock propio (mayoría capital Y1):</strong></p>
+  <p><strong>Modo 1 · Stock propio compra LOCAL Chile (Y1 prioridad):</strong></p>
 <pre class="ascii">Capital inicial 50M CLP
       ↓
-Compra a Nexport (LCL/FCL · 30-60 días)
+Compra a proveedor local Chile (CLP · 3-7 días)
       ↓
 Recepción bodega · QA · ingreso inventario
       ↓
@@ -55,18 +56,30 @@ Publicación cross-canal (MeLi + MP + B2B)
         └────────┬────────┘
                  ↓
        Cobro · DTE · Reinversión</pre>
-<p><strong>Modo 2 · On-demand (catálogo amplio · cero capital atado):</strong></p>
-<pre class="ascii">Catálogo proveedor sincronizado
+<p><strong>Modo 2 · Stock propio IMPORTACIÓN Nexport (Fase 2 · Y2+):</strong></p>
+<pre class="ascii">Capital ampliado (línea crédito · reinversión Y1)
       ↓
-Publicación cross-canal (mismo flujo)
+RFQ a Nexport (USD · LCL/FCL · 30-90 días)
+      ↓
+Tránsito + aduana + IVA importación
+      ↓
+Recepción bodega Chile (igual P03)
+      ↓
+[Mismo flujo Modo 1 desde acá]</pre>
+<p><strong>Modo 3 · Dropshipping (sin stock propio · escalado rápido):</strong></p>
+<pre class="ascii">Catálogo proveedor dropship sincronizado
+      ↓
+Publicación cross-canal con flag is_dropship=true
       ↓
             Venta llega
                  ↓
-   Orden propagada al proveedor (Supplier Adapter)
+   OC propagada al proveedor (Supplier Adapter)
                  ↓
    Proveedor despacha DIRECTO al cliente final
                  ↓
-       Cobro · DTE · margen retenido (10-25%)</pre>
+       Cobro nuestro · DTE nuestro · margen retenido (10-25%)
+                 ↓
+       Liquidación al proveedor 7-15 días post-venta</pre>
   <div class="page-footer"><span>Banco SMC · Negocio</span><span>04</span></div>
 </section>
 <section class="page" id="03-streams-de-revenue">
@@ -74,9 +87,10 @@ Publicación cross-canal (mismo flujo)
   <table>
 <thead><tr>
 <th>Canal</th>
-<th>% esperado Y1</th>
-<th>Margen stock propio</th>
-<th>Margen on-demand</th>
+<th>% Y1</th>
+<th>Margen stock local</th>
+<th>Margen Nexport (Y2+)</th>
+<th>Margen dropship</th>
 <th>Plazo cobro</th>
 </tr></thead>
 <tbody>
@@ -84,6 +98,7 @@ Publicación cross-canal (mismo flujo)
 <td>Mercado Libre (B2C)</td>
 <td>50%</td>
 <td>28%</td>
+<td>35%</td>
 <td>12-18%</td>
 <td>14-28 días</td>
 </tr>
@@ -91,6 +106,7 @@ Publicación cross-canal (mismo flujo)
 <td>Mercado Público (B2G)</td>
 <td>30%</td>
 <td>38%</td>
+<td>45%</td>
 <td>20-25%</td>
 <td>30-60 días</td>
 </tr>
@@ -98,6 +114,7 @@ Publicación cross-canal (mismo flujo)
 <td>B2B empresa privada</td>
 <td>15%</td>
 <td>42%</td>
+<td>50%</td>
 <td>22-28%</td>
 <td>30-60 días</td>
 </tr>
@@ -105,11 +122,12 @@ Publicación cross-canal (mismo flujo)
 <td>D2C storefront (Y2+)</td>
 <td>5% Y1 · 30% Y3</td>
 <td>50%</td>
+<td>58%</td>
 <td>25-30%</td>
 <td>inmediato</td>
 </tr>
 </tbody></table>
-<p>Blend Y1 estimado: 30-35% margen bruto (mezcla stock propio + on-demand) antes de costos operativos.</p>
+<p>Blend Y1 estimado: 28-33% margen bruto (predominante stock local + dropshipping) antes de costos operativos.</p>
   <div class="page-footer"><span>Banco SMC · Negocio</span><span>05</span></div>
 </section>
 <section class="page" id="03b-cu-ndo-usar-cada-modo">
@@ -121,31 +139,61 @@ Publicación cross-canal (mismo flujo)
 </tr></thead>
 <tbody>
 <tr>
-<td>Alta rotación · margen bueno · stock estable proveedor</td>
-<td>Stock propio</td>
+<td>SKU validado · alta rotación · proveedor local disponible</td>
+<td>Stock local Y1</td>
 </tr>
 <tr>
-<td>Producto bulky/caro · capital atado alto · rotación lenta</td>
-<td>On-demand</td>
+<td>SKU nuevo · sin validar demanda · sin querer arriesgar capital</td>
+<td>Dropshipping</td>
 </tr>
 <tr>
-<td>Catálogo amplio para explorar demanda sin riesgo</td>
-<td>On-demand</td>
+<td>Producto premium · margen 40%+ · volumen alto sostenido</td>
+<td>Stock local Y1 (luego Nexport Y2)</td>
 </tr>
 <tr>
-<td>Producto exclusivo · ventaja diferencial · margen 40%+</td>
-<td>Stock propio</td>
+<td>Catálogo amplio para explorar (long-tail)</td>
+<td>Dropshipping</td>
 </tr>
 <tr>
-<td>Producto que el proveedor despacha rápido y bien</td>
-<td>On-demand</td>
+<td>Producto bulky/caro · rotación lenta</td>
+<td>Dropshipping (no atar capital)</td>
 </tr>
 <tr>
-<td>SLA crítico de despacho cliente final</td>
+<td>Producto exclusivo · ventaja diferencial</td>
+<td>Stock propio (local o importado)</td>
+</tr>
+<tr>
+<td>Volumen mensual sostenido > USD 5K mismo SKU</td>
+<td>Migrar de dropship → stock local</td>
+</tr>
+<tr>
+<td>Volumen sostenido > USD 30K mensual mismo SKU</td>
+<td>Migrar de stock local → Nexport (Fase 2)</td>
+</tr>
+<tr>
+<td>SLA crítico despacho cliente final · marca premium</td>
 <td>Stock propio (control total)</td>
+</tr>
+<tr>
+<td>Test de mercado producto importado antes de Nexport</td>
+<td>Dropshipping desde importador chileno</td>
 </tr>
 </tbody></table>
   <div class="page-footer"><span>Banco SMC · Negocio</span><span>06</span></div>
+</section>
+<section class="page" id="03c-estrategia-de-migraci-n-entre-modos">
+  <h2><span class="h2-num">03</span>03c · Estrategia de migración entre modos</h2>
+  <pre class="ascii">Producto nuevo → ARRANCA dropshipping (test demanda · sin capital)
+                ↓
+        ¿Vende >USD 5K/mes sostenido 2 meses?
+                ↓ SÍ
+        MIGRA a stock local Chile (margen sube 15-25 pp)
+                ↓
+        ¿Vende >USD 30K/mes sostenido 6 meses?
+                ↓ SÍ
+        EVALÚA Nexport importación Fase 2 (margen sube 5-10 pp más)</pre>
+<p>Esta progresión protege el capital · cada upgrade requiere validación real de volumen.</p>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>07</span></div>
 </section>
 <section class="page" id="04-estructura-de-costos">
   <h2><span class="h2-num">04</span>Estructura de costos</h2>
@@ -155,12 +203,12 @@ Publicación cross-canal (mismo flujo)
 <li><strong>Operación</strong>: bodega · couriers (cobro a cliente) · DTE · IA usage</li>
 <li><strong>Founders</strong>: $0 sueldo Y1 · compensación equity · utilidades Y2+</li>
 </ul>
-  <div class="page-footer"><span>Banco SMC · Negocio</span><span>07</span></div>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>08</span></div>
 </section>
 <section class="page" id="05-lo-que-no-cobramos">
   <h2><span class="h2-num">05</span>Lo que NO cobramos</h2>
   <div class="box box-info"><div class="box-title">💡 Claridad de modelo</div><p>NO cobramos suscripción · NO cobramos por uso del sistema · NO cobramos a terceros. SMC SpA gana plata vendiendo productos físicos · la plataforma es una herramienta interna no un producto comercializable.</p></div>
-  <div class="page-footer"><span>Banco SMC · Negocio</span><span>08</span></div>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>09</span></div>
 </section>
 <section class="page" id="06-reglas-de-inversi-n">
   <h2><span class="h2-num">06</span>Reglas de inversión</h2>
@@ -170,7 +218,7 @@ Publicación cross-canal (mismo flujo)
 <li>10% reserva contingencia (devoluciones · merma · disputas)</li>
 <li>20% disponible para evaluación: nuevos SKUs · ampliar bodega · contratación</li>
 </ul>
-  <div class="page-footer"><span>Banco SMC · Negocio</span><span>09</span></div>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>10</span></div>
 </section>
 <section class="page" id="07-cu-ndo-evaluar-pivote">
   <h2><span class="h2-num">07</span>Cuándo evaluar pivote</h2>
@@ -179,7 +227,7 @@ Publicación cross-canal (mismo flujo)
 <li>Inventario stuck &gt; 90 días: revisar pricing o liquidar</li>
 <li>Cualquier canal acaba de revenue Y3 &gt; 80%: dependencia · diversificar</li>
 </ul></div>
-  <div class="page-footer"><span>Banco SMC · Negocio</span><span>10</span></div>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>11</span></div>
 </section>
 
 </div>

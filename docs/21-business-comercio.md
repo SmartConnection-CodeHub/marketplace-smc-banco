@@ -14,21 +14,22 @@ next: 23-financial-comercio.html
 
 # 01 · Modelo de negocio en 1 línea
 
-SMC SpA opera **dos modos en paralelo**:
+SMC SpA opera **tres modos en paralelo** según rotación · capital disponible · velocidad de escalado:
 
-1. **Stock propio**: compra a Nexport (importador) → recibe en bodega → vende multi-canal · margen 28-45%
-2. **On-demand**: catálogo amplio sin stock propio · proveedor despacha directo al cliente cuando hay venta · margen 10-25% pero sin capital atado
+1. **Stock propio · compra local Chile (Y1 prioridad)**: compra a proveedores nacionales → recibe en bodega → vende multi-canal · ciclo 3-7 días · pago CLP · margen 28-45%
+2. **Stock propio · importación Nexport (Fase 2 · Y2+)**: cuando el volumen justifique · LCL/FCL en USD · ciclo 30-90 días · margen significativamente mayor pero capital atado más tiempo
+3. **Dropshipping**: vender sin stock propio · proveedor (chileno o internacional) despacha directo al cliente · margen 10-25% sin capital atado · escalado catálogo rápido
 
-Margen blended objetivo: 30-40% considerando mix de ambos modos.
+Margen blended objetivo: 28-38% considerando mix de los 3 modos.
 
 # 02 · Diagrama del flujo de dinero
 
-**Modo 1 · Stock propio (mayoría capital Y1):**
+**Modo 1 · Stock propio compra LOCAL Chile (Y1 prioridad):**
 
 ```
 Capital inicial 50M CLP
       ↓
-Compra a Nexport (LCL/FCL · 30-60 días)
+Compra a proveedor local Chile (CLP · 3-7 días)
       ↓
 Recepción bodega · QA · ingreso inventario
       ↓
@@ -41,43 +42,79 @@ Publicación cross-canal (MeLi + MP + B2B)
        Cobro · DTE · Reinversión
 ```
 
-**Modo 2 · On-demand (catálogo amplio · cero capital atado):**
+**Modo 2 · Stock propio IMPORTACIÓN Nexport (Fase 2 · Y2+):**
 
 ```
-Catálogo proveedor sincronizado
+Capital ampliado (línea crédito · reinversión Y1)
       ↓
-Publicación cross-canal (mismo flujo)
+RFQ a Nexport (USD · LCL/FCL · 30-90 días)
+      ↓
+Tránsito + aduana + IVA importación
+      ↓
+Recepción bodega Chile (igual P03)
+      ↓
+[Mismo flujo Modo 1 desde acá]
+```
+
+**Modo 3 · Dropshipping (sin stock propio · escalado rápido):**
+
+```
+Catálogo proveedor dropship sincronizado
+      ↓
+Publicación cross-canal con flag is_dropship=true
       ↓
             Venta llega
                  ↓
-   Orden propagada al proveedor (Supplier Adapter)
+   OC propagada al proveedor (Supplier Adapter)
                  ↓
    Proveedor despacha DIRECTO al cliente final
                  ↓
-       Cobro · DTE · margen retenido (10-25%)
+       Cobro nuestro · DTE nuestro · margen retenido (10-25%)
+                 ↓
+       Liquidación al proveedor 7-15 días post-venta
 ```
 
 # 03 · Streams de revenue
 
-| Canal | % esperado Y1 | Margen stock propio | Margen on-demand | Plazo cobro |
-|-------|---------------|---------------------|------------------|-------------|
-| Mercado Libre (B2C) | 50% | 28% | 12-18% | 14-28 días |
-| Mercado Público (B2G) | 30% | 38% | 20-25% | 30-60 días |
-| B2B empresa privada | 15% | 42% | 22-28% | 30-60 días |
-| D2C storefront (Y2+) | 5% Y1 · 30% Y3 | 50% | 25-30% | inmediato |
+| Canal | % Y1 | Margen stock local | Margen Nexport (Y2+) | Margen dropship | Plazo cobro |
+|-------|------|---------------------|----------------------|-----------------|-------------|
+| Mercado Libre (B2C) | 50% | 28% | 35% | 12-18% | 14-28 días |
+| Mercado Público (B2G) | 30% | 38% | 45% | 20-25% | 30-60 días |
+| B2B empresa privada | 15% | 42% | 50% | 22-28% | 30-60 días |
+| D2C storefront (Y2+) | 5% Y1 · 30% Y3 | 50% | 58% | 25-30% | inmediato |
 
-Blend Y1 estimado: 30-35% margen bruto (mezcla stock propio + on-demand) antes de costos operativos.
+Blend Y1 estimado: 28-33% margen bruto (predominante stock local + dropshipping) antes de costos operativos.
 
 # 03b · Cuándo usar cada modo
 
 | Producto / situación | Modo recomendado |
 |----------------------|------------------|
-| Alta rotación · margen bueno · stock estable proveedor | Stock propio |
-| Producto bulky/caro · capital atado alto · rotación lenta | On-demand |
-| Catálogo amplio para explorar demanda sin riesgo | On-demand |
-| Producto exclusivo · ventaja diferencial · margen 40%+ | Stock propio |
-| Producto que el proveedor despacha rápido y bien | On-demand |
-| SLA crítico de despacho cliente final | Stock propio (control total) |
+| SKU validado · alta rotación · proveedor local disponible | Stock local Y1 |
+| SKU nuevo · sin validar demanda · sin querer arriesgar capital | Dropshipping |
+| Producto premium · margen 40%+ · volumen alto sostenido | Stock local Y1 (luego Nexport Y2) |
+| Catálogo amplio para explorar (long-tail) | Dropshipping |
+| Producto bulky/caro · rotación lenta | Dropshipping (no atar capital) |
+| Producto exclusivo · ventaja diferencial | Stock propio (local o importado) |
+| Volumen mensual sostenido > USD 5K mismo SKU | Migrar de dropship → stock local |
+| Volumen sostenido > USD 30K mensual mismo SKU | Migrar de stock local → Nexport (Fase 2) |
+| SLA crítico despacho cliente final · marca premium | Stock propio (control total) |
+| Test de mercado producto importado antes de Nexport | Dropshipping desde importador chileno |
+
+# 03c · Estrategia de migración entre modos
+
+```
+Producto nuevo → ARRANCA dropshipping (test demanda · sin capital)
+                ↓
+        ¿Vende >USD 5K/mes sostenido 2 meses?
+                ↓ SÍ
+        MIGRA a stock local Chile (margen sube 15-25 pp)
+                ↓
+        ¿Vende >USD 30K/mes sostenido 6 meses?
+                ↓ SÍ
+        EVALÚA Nexport importación Fase 2 (margen sube 5-10 pp más)
+```
+
+Esta progresión protege el capital · cada upgrade requiere validación real de volumen.
 
 # 04 · Estructura de costos
 

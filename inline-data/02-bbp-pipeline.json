@@ -20,20 +20,46 @@
       ]
     },
     "P02": {
-      "title": "P02 · Compra a Nexport",
-      "sub": "Intermediario importador · LCL/FCL",
-      "callout": "Compra al intermediario importador para llenar stock. Términos a definir Y1.",
-      "tags": ["Importación", "B2B compra"],
+      "title": "P02 · Compra a proveedores locales Chile",
+      "sub": "Y1 prioridad · proveedores nacionales · ciclo corto · pago en CLP",
+      "callout": "Modo primario Y1. Compramos a proveedores chilenos (mayoristas · distribuidores · marcas locales) · ciclo despacho 3-7 días · pago en CLP sin tipo de cambio · sin aduana ni LCL/FCL.",
+      "tags": ["Y1 prioridad", "Ciclo corto", "Pago CLP"],
+      "stages": [
+        { "num": "01", "name": "Detectar proveedor", "boxes": [
+          { "code": "P02-01", "label": "Match producto con proveedor local", "kind": "search", "stack": "Mercado Libre Mayorista · directorios · gremios" },
+          { "code": "P02-02", "label": "Validar precios + términos", "kind": "search", "stack": "Comparar 2-3 proveedores" }
+        ]},
+        { "num": "02", "name": "Cotizar", "boxes": [
+          { "code": "P02-03", "label": "RFQ por WhatsApp / email", "kind": "create", "stack": "Contacto directo proveedor" }
+        ]},
+        { "num": "03", "name": "Confirmar OC", "boxes": [
+          { "code": "P02-04", "label": "OC emitida · DTE 33 recibida", "kind": "doc", "stack": "Open Factura SII" },
+          { "code": "P02-05", "label": "Pago contado o 30 días", "kind": "pay", "stack": "Transferencia CLP" }
+        ]},
+        { "num": "04", "name": "Despacho proveedor", "boxes": [
+          { "code": "P02-06", "label": "Proveedor despacha a bodega · 3-7 días", "kind": "doc", "stack": "Courier proveedor o retiro propio" }
+        ]}
+      ]
+    },
+    "P02b": {
+      "title": "P02b · Importación Nexport (Fase 2 · Y2+)",
+      "sub": "Intermediario importador · LCL/FCL · ciclo largo · pago USD",
+      "callout": "Fase 2 · NO Y1. Cuando volumen justifique · importamos vía Nexport (importador). Ciclo 30-90 días · pago USD · costo aduana · pero margen significativamente mayor.",
+      "tags": ["Fase 2 · Y2+", "Importación LCL/FCL", "Pago USD"],
       "stages": [
         { "num": "01", "name": "Cotizar", "boxes": [
-          { "code": "P02-01", "label": "RFQ a Nexport", "kind": "create", "stack": "Email + portal Nexport" }
+          { "code": "P02b-01", "label": "RFQ a Nexport", "kind": "create", "stack": "Email + portal Nexport" }
         ]},
         { "num": "02", "name": "Confirmar OC", "boxes": [
-          { "code": "P02-02", "label": "OC emitida al proveedor", "kind": "doc", "stack": "DTE 33 recibido" },
-          { "code": "P02-03", "label": "Pago anticipado / 30 días", "kind": "pay", "stack": "Transferencia bancaria" }
+          { "code": "P02b-02", "label": "OC emitida USD + cláusulas Incoterm", "kind": "doc", "stack": "EXW · FOB · CIF según acuerdo" },
+          { "code": "P02b-03", "label": "Pago anticipado USD", "kind": "pay", "stack": "Transferencia internacional" }
         ]},
-        { "num": "03", "name": "Tracking importación", "boxes": [
-          { "code": "P02-04", "label": "ETA + manifest + documentación", "kind": "doc", "stack": "Nexport portal" }
+        { "num": "03", "name": "Tránsito + aduana", "boxes": [
+          { "code": "P02b-04", "label": "ETA + manifest + DUS", "kind": "doc", "stack": "Nexport portal" },
+          { "code": "P02b-05", "label": "Pago aduana + IVA importación", "kind": "pay", "stack": "Agente aduana" }
+        ]},
+        { "num": "04", "name": "Recepción bodega Chile", "boxes": [
+          { "code": "P02b-06", "label": "Llegada y entrada a P03", "kind": "doc", "stack": "Sigue flujo normal" }
         ]}
       ]
     },
@@ -234,33 +260,34 @@
       ]
     },
     "P13": {
-      "title": "P13 · Venta on-demand (sin stock propio)",
-      "sub": "Catálogo amplio · proveedor despacha directo · margen menor sin capital atado",
-      "callout": "Modo paralelo al stock propio. El producto se publica en canales sin tenerlo en bodega. Cuando entra venta · se propaga orden al proveedor que despacha directo al cliente final.",
+      "title": "P13 · Dropshipping",
+      "sub": "Vender sin stock propio · proveedor despacha directo al cliente final",
+      "callout": "Modo paralelo al stock propio. Catálogo amplio sin capital atado. El producto se publica en canales sin tenerlo en bodega. Cuando entra venta · se propaga orden al proveedor (chileno o internacional) que despacha directo al cliente final.",
       "tags": ["Sin capital atado", "Margen 10-25%", "Escala catálogo rápido"],
+      "notes": "Dropshipping permite explorar demanda sin riesgo · ideal Y1 para SKUs nuevos · para SKUs validados luego pasar a stock propio (P01-P02) para mejor margen.",
       "stages": [
-        { "num": "01", "name": "Catálogo proveedor", "boxes": [
-          { "code": "P13-01", "label": "Sync catálogo proveedor (Supplier Adapter)", "kind": "search", "stack": "API o feed XML del proveedor" },
-          { "code": "P13-02", "label": "Filtrar SKUs aprobados con margen viable", "kind": "search", "stack": "Cerebro scoring" }
+        { "num": "01", "name": "Catálogo proveedor dropship", "boxes": [
+          { "code": "P13-01", "label": "Sync catálogo proveedor (Supplier Adapter)", "kind": "search", "stack": "API · feed XML · CSV · scraping manual fallback" },
+          { "code": "P13-02", "label": "Filtrar SKUs aprobados · margen viable", "kind": "search", "stack": "Cerebro scoring + reglas operador" }
         ]},
-        { "num": "02", "name": "Publicación", "boxes": [
-          { "code": "P13-03", "label": "Publicar en canales con flag is_on_demand=true", "kind": "create", "stack": "Mismo Channel Adapter" }
+        { "num": "02", "name": "Publicación cross-canal", "boxes": [
+          { "code": "P13-03", "label": "Publicar en canales con flag is_dropship=true", "kind": "create", "stack": "Mismo Channel Adapter · marca producto como sin stock propio" }
         ]},
-        { "num": "03", "name": "Venta", "boxes": [
-          { "code": "P13-04", "label": "Webhook canal · orden recibida", "kind": "notify", "stack": "Mismo flujo que stock propio" }
+        { "num": "03", "name": "Venta cliente final", "boxes": [
+          { "code": "P13-04", "label": "Webhook canal · orden recibida", "kind": "notify", "stack": "Mismo flujo que stock propio P05-P08" }
         ]},
-        { "num": "04", "name": "Propagar al proveedor", "boxes": [
-          { "code": "P13-05", "label": "Crear OC al proveedor (Supplier Adapter)", "kind": "create", "stack": "API proveedor · API key o email automatizado" },
-          { "code": "P13-06", "label": "Confirmar disponibilidad real", "kind": "search", "stack": "Si proveedor responde stock=0 · refund cliente" }
+        { "num": "04", "name": "Propagar OC al proveedor", "boxes": [
+          { "code": "P13-05", "label": "Crear OC al proveedor dropship (Supplier Adapter)", "kind": "create", "stack": "API proveedor · API key · email automatizado · WhatsApp Business" },
+          { "code": "P13-06", "label": "Confirmar disponibilidad real-time", "kind": "search", "stack": "Si proveedor responde stock=0 · refund cliente + comunicación" }
         ]},
-        { "num": "05", "name": "Despacho directo", "boxes": [
-          { "code": "P13-07", "label": "Proveedor despacha al cliente · tracking compartido", "kind": "doc", "stack": "Proveedor courier · webhook tracking" }
+        { "num": "05", "name": "Despacho directo proveedor → cliente", "boxes": [
+          { "code": "P13-07", "label": "Proveedor despacha al cliente · tracking compartido", "kind": "doc", "stack": "Courier del proveedor · webhook tracking · nuestro nombre en remitente opcional" }
         ]},
-        { "num": "06", "name": "Cobro + factura", "boxes": [
-          { "code": "P13-08", "label": "Cobro pasarela + DTE emitido (mismo flujo P11)", "kind": "pay", "stack": "Open Factura" }
+        { "num": "06", "name": "Cobro + factura nuestra", "boxes": [
+          { "code": "P13-08", "label": "Cobro pasarela cliente + DTE emitido (mismo P11)", "kind": "pay", "stack": "Open Factura · DTE a nombre SMC SpA" }
         ]},
         { "num": "07", "name": "Liquidación al proveedor", "boxes": [
-          { "code": "P13-09", "label": "Pagar al proveedor menos comisión nuestra", "kind": "pay", "stack": "Transferencia · 7-15 días post-venta" }
+          { "code": "P13-09", "label": "Pagar al proveedor menos comisión nuestra", "kind": "pay", "stack": "Transferencia 7-15 días post-venta · acuerdo bilateral" }
         ]}
       ]
     }
