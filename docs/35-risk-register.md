@@ -26,10 +26,12 @@ Este registro lo revisamos trimestral en sesión de 1h.
 
 | ID | Riesgo | P | I | Score | Mitigación | Dueño |
 |----|--------|---|---|-------|-----------|-------|
-| C1 | MeLi DPP no aprueba en Y1 | 3 | 3 | 9 | Plan B: integración pública no-DPP con scope limitado | Comercial |
-| C2 | Churn &gt; 30% en primeros 6 meses | 2 | 3 | 6 | Onboarding asistido · check-ins semana 2-4-8 | Comercial |
-| C3 | No conseguir 5 clientes Pro Q4 | 2 | 3 | 6 | Pre-vender desde Q3 · descuento founding members | Comercial |
-| C4 | Competidor lanza algo similar gratis | 2 | 2 | 4 | Foco en multi-canal (no solo MeLi) · diferenciación IA | Cerebro |
+| C1 | **No llegar a 10 ventas verdes Q4 (Fase 1 estancada)** | 2 | 3 | 6 | Regalar a contactos primeras 5 · ajustar precio agresivo · ver Doc 17 | Founders |
+| C2 | **Reputación MeLi roja por reclamo en cuenta nueva** | 2 | 3 | 6 | Atender cliente final con cuidado extremo Y1 · responder &lt;2h | Founders |
+| C3 | **Activar Mercado Ads sin reputación = quemar plata** | 3 | 2 | 6 | Regla no transable: ADS OFF hasta 10 ventas verdes · Doc 24 sección 04b | Founders |
+| C4 | Bloqueo MeLi PolicyAgent | 1 | 3 | 3 | Plan B v5 Opportunities sin DPP · diversificar canales | Founders |
+| C5 | No conseguir adjudicar primera licitación MP Q2 (Fase 3) | 2 | 2 | 4 | Postular agresivo · Cerebro asistido · 3-5/semana | Founders |
+| C6 | Competidor copia fotos/listings | 2 | 2 | 4 | Foto pro propia + marca SMC visible · diferenciar | Founders |
 
 # 03 · Riesgos técnicos
 

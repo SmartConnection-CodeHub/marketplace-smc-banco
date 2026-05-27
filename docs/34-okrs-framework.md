@@ -44,13 +44,35 @@ KR 2: [verbo medible] · de X → Y · target Q?
 KR 3: [verbo medible] · de X → Y · target Q?
 ```
 
-# 04 · Ejemplo concreto (Q4 2026)
+# 04 · Company OKR Q4 2026 · Fase 1 Reputation First
 
-Objective: **Marketplace SMC valida product-market fit con primeros operadores reales**
+Objective: **Activar Marketplace SMC con reputación verde MeLi para escalar Q1**
 
-- KR 1: Onboarding 5 operadores pagando suscripción Pro (de 0 → 5)
-- KR 2: NPS &gt; 40 con primeros 5 clientes (encuesta mes 2 onboarding)
-- KR 3: Reducir churn intra-trimestre a &lt;20% (track explícito)
+- KR 1: **10 ventas con reputación verde MeLi** (de 0 → 10)
+- KR 2: **3-5 SKUs publicados con foto profesional propia** (no del proveedor)
+- KR 3: **Termómetro MeLi en verde sostenido** las últimas 4 semanas del trimestre
+
+Notas:
+
+- Margen Q4 = NEUTRO o ligeramente negativo · es deliberado · Fase 1 = reputación NO utilidad
+- Si KR1 no se logra · revisión profunda Fase 1 antes de pasar a Q1
+- Validado por estrategia central · ver Doc 17 Estrategia Y1
+
+# 04b · Company OKR Q1 2027 · Fase 2 Escala MeLi
+
+Objective: **Escalar MeLi a 30 ventas mensuales sostenidas con Mercado Ads activo**
+
+- KR 1: **30 órdenes/mes MeLi** sostenidas 2 meses consecutivos del trimestre
+- KR 2: **Mercado Ads ROI &gt; 1.5x** (revenue ADS / spend ADS)
+- KR 3: **Medalla Plata MeLi** alcanzada y mantenida
+
+# 04c · Company OKR Q2 2027 · Fase 3 Diversificación
+
+Objective: **Abrir B2G (Mercado Público) y B2B como streams complementarios a MeLi**
+
+- KR 1: **1+ adjudicación Mercado Público B2G** (primera victoria)
+- KR 2: **1+ venta B2B empresa privada** (RFQ → cierre)
+- KR 3: **MeLi mantiene 30+ órdenes/mes** sin canibalización
 
 # 05 · Cadencia operativa
 

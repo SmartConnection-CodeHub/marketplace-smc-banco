@@ -24,6 +24,7 @@
       { n: '16', t: 'Comparativa Tools',      f: '16-comparativa-tools.html',s: 'ok' },
     ]},
     { id: 'biz', emoji: '💼', name: 'Negocio & Comercio', color: '#F59E0B', docs: [
+      { n: '17', t: '⭐ Estrategia Y1 (CENTRAL)',f: '17-estrategia-y1.html',     s: 'ok' },
       { n: '21', t: 'Modelo Comercio',         f: '21-business-comercio.html', s: 'ok' },
       { n: '23', t: 'Financial Model Comercio',f: '23-financial-comercio.html',s: 'ok' },
       { n: '24', t: 'Margen por Canal',        f: '24-margen-canal.html',      s: 'ok' },
