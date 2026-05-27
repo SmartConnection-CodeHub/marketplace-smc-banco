@@ -91,18 +91,25 @@
 <td>Real-time</td>
 </tr>
 <tr>
-<td><strong>MercadoPago</strong></td>
+<td><strong>Transferencia bancaria</strong> (default Y1)</td>
+<td>Pago</td>
+<td>Cobros D2C · upload comprobante · verify manual founder</td>
+<td>Sin auth · UI propia</td>
+<td>1-24h verify</td>
+</tr>
+<tr>
+<td><strong>MercadoPago</strong> (opcional dual)</td>
 <td>Pasarela</td>
-<td>Cobros B2C MeLi + D2C</td>
+<td>Cobros activables por SKU · MeLi auto + D2C opt-in</td>
 <td>OAuth + webhook firmado HMAC</td>
 <td>Webhook real-time</td>
 </tr>
 <tr>
-<td><strong>WebPay Plus (Transbank)</strong></td>
+<td><strong>WebPay Plus</strong> (deferido Y2)</td>
 <td>Pasarela</td>
-<td>Cobros D2C Chile débito + crédito</td>
+<td>Si volumen justifica setup</td>
 <td>Certificado + commerce code</td>
-<td>Real-time + reverso 24h</td>
+<td>Y2</td>
 </tr>
 <tr>
 <td><strong>Open Factura</strong></td>
@@ -228,11 +235,11 @@
 <td>Real-time + 14d retention</td>
 </tr>
 <tr>
-<td><strong>Resend</strong></td>
+<td><strong>Gmail API</strong> (default Y1)</td>
 <td>Email transaccional</td>
-<td>Confirmaciones · tracking · password reset</td>
-<td>API key</td>
-<td>On event</td>
+<td>Confirmaciones · tracking · password reset · alertas founders</td>
+<td>OAuth Workspace SMC</td>
+<td>On event · batch 5min</td>
 </tr>
 <tr>
 <td><strong>Vercel Cron</strong></td>
@@ -458,7 +465,7 @@
 </tr>
 <tr>
 <td>Tools</td>
-<td>Open Factura API · Supabase Storage (PDF) · Resend (email)</td>
+<td>Open Factura API · Supabase Storage (PDF) · Gmail API (email)</td>
 </tr>
 <tr>
 <td>Endpoint</td>

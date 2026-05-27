@@ -33,8 +33,9 @@ Doc 11 detalla **qué hace el sistema** a nivel granular: qué herramienta espec
 | **Mercado Ads** | Canal · publicidad | Campaigns · ROAS tracking · pausing | Token OAuth ML | Diaria (auto-tune) |
 | **Mercado Público (ChileCompra)** | Canal B2G | Sync licitaciones · postular · adjudicar | Ticket auth (env var) | Cron 8am diario |
 | **B2B Portal propio** | Canal B2B | RFQ · cotización · firma HMAC | API keys por cliente | Real-time |
-| **MercadoPago** | Pasarela | Cobros B2C MeLi + D2C | OAuth + webhook firmado HMAC | Webhook real-time |
-| **WebPay Plus (Transbank)** | Pasarela | Cobros D2C Chile débito + crédito | Certificado + commerce code | Real-time + reverso 24h |
+| **Transferencia bancaria** (default Y1) | Pago | Cobros D2C · upload comprobante · verify manual founder | Sin auth · UI propia | 1-24h verify |
+| **MercadoPago** (opcional dual) | Pasarela | Cobros activables por SKU · MeLi auto + D2C opt-in | OAuth + webhook firmado HMAC | Webhook real-time |
+| **WebPay Plus** (deferido Y2) | Pasarela | Si volumen justifica setup | Certificado + commerce code | Y2 |
 | **Open Factura** | DTE SII | Emitir DTE 33/39/61 | API key + cert digital | Real-time post-venta |
 | **Chilexpress API** | Logística | Cotizar + etiqueta + tracking | API key | Real-time |
 | **Starken API** | Logística | Cotizar + etiqueta + tracking | API key | Real-time |
@@ -53,7 +54,7 @@ Doc 11 detalla **qué hace el sistema** a nivel granular: qué herramienta espec
 | **Sentry** | Errors | Error tracking + alerts | DSN | Real-time |
 | **PostHog** | Product analytics | Funnels · feature flags · events | Project API key | Real-time |
 | **CloudWatch** | Infra metrics | Lambda timing · API Gateway · cost | AWS IAM | Real-time + 14d retention |
-| **Resend** | Email transaccional | Confirmaciones · tracking · password reset | API key | On event |
+| **Gmail API** (default Y1) | Email transaccional | Confirmaciones · tracking · password reset · alertas founders | OAuth Workspace SMC | On event · batch 5min |
 | **Vercel Cron** | Scheduler | Refresh MeLi 6h · sync MP 8am · cleanup 7d | CRON_SECRET header | Programado |
 | **pg_cron + pg_notify** | DB triggers | Stock cross-canal · events internos | Solo Postgres | Real-time |
 
@@ -140,7 +141,7 @@ Cada CU tiene 6 atributos: **Trigger · Tools · Endpoint · Tablas · UI screen
 | Atributo | Detalle |
 |----------|---------|
 | Trigger | Evento `order.completed` · pg_notify dispara worker |
-| Tools | Open Factura API · Supabase Storage (PDF) · Resend (email) |
+| Tools | Open Factura API · Supabase Storage (PDF) · Gmail API (email) |
 | Endpoint | `POST /api/invoices/emit/:order_id` (internal) |
 | Tablas | `invoices` (insert con `folio_sii` · `pdf_url`) |
 | UI screen | Indicador en `/dashboard/ordenes/:id` con badge DTE estado |

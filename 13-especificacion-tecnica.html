@@ -239,16 +239,22 @@
 <td>⏭️ Sprint 4</td>
 </tr>
 <tr>
-<td>MercadoPago</td>
+<td><strong>Transferencia bancaria Kanki-style</strong> (default Y1)</td>
+<td>UI propia + upload comprobante</td>
+<td>Sin auth · verify manual founder</td>
+<td>⏭️ Sprint 5 D2C</td>
+</tr>
+<tr>
+<td>MercadoPago (opcional dual)</td>
 <td>mercadopago oficial SDK</td>
 <td>OAuth + webhook firmado</td>
 <td>⏭️ Sprint 5 D2C</td>
 </tr>
 <tr>
-<td>WebPay Plus</td>
+<td>WebPay Plus (deferido Y2)</td>
 <td>@transbank/webpay-plus</td>
 <td>Cert + commerce code</td>
-<td>⏭️ Sprint 5 D2C</td>
+<td>⏭️ Y2</td>
 </tr>
 <tr>
 <td>Chilexpress</td>
@@ -269,10 +275,16 @@
 <td>✅ Hoku fallback chain</td>
 </tr>
 <tr>
-<td>Resend</td>
+<td><strong>Gmail API</strong> (default Y1)</td>
+<td>googleapis SDK</td>
+<td>OAuth 2.0 cuenta SMC</td>
+<td>⏭️ Sprint 4</td>
+</tr>
+<tr>
+<td>Resend (deferido Y2)</td>
 <td>resend SDK</td>
 <td>API key</td>
-<td>⏭️ Sprint 4</td>
+<td>⏭️ Y2 si Gmail no escala</td>
 </tr>
 <tr>
 <td>Sentry</td>
@@ -767,6 +779,18 @@ Tenant count > 5                               Migrar de tenant_id implicit a ex
 <td>✅ Accepted</td>
 <td>sección 14b · este doc</td>
 </tr>
+<tr>
+<td>ADR-0007</td>
+<td>Gmail API en vez de Resend Y1</td>
+<td>✅ Accepted</td>
+<td>sección 14c · este doc</td>
+</tr>
+<tr>
+<td>ADR-0008</td>
+<td>Pagos dual: transferencia Kanki-style + MercadoPago opt</td>
+<td>✅ Accepted</td>
+<td>sección 14d · este doc</td>
+</tr>
 </tbody></table>
 <h3>14b · ADR-0006 · SoloTodo Plan B mientras MeLi aprueba app</h3>
 <p><strong>Status</strong>: ✅ Accepted · 2026-05-27</p>
@@ -804,6 +828,110 @@ Tenant count > 5                               Migrar de tenant_id implicit a ex
 </ul>
 <p><strong>Riesgo</strong>: SoloTodo cambia API o sube paywall.</p>
 <p><strong>Mitigación</strong>: API pública desde 2014 · sin señales de cierre. Si pasa → seguimos con MeLi OAuth directo.</p>
+<h3>14c · ADR-0007 · Gmail API en vez de Resend Y1</h3>
+<p><strong>Status</strong>: ✅ Accepted · 2026-05-27</p>
+<p><strong>Context</strong>: necesitamos enviar emails transaccionales (tracking · confirmación venta · post-venta · alertas founders). Sprint inicial sugirió Resend (servicio especializado · $0-20/mes). Founders ya tienen Google Workspace activo (smconnection.cl) con Gmail API funcional.</p>
+<p><strong>Decisión</strong>: usar <strong>Gmail API</strong> (cuenta <code>marketplace@smconnection.cl</code>) como motor de envío Y1.</p>
+<p><strong>Por qué Gmail API</strong>:</p>
+<ul>
+<li>Costo cero adicional (Workspace Business Starter ya pagado)</li>
+<li>Reputación dominio establecida (mejor deliverability que Resend nuevo)</li>
+<li>OAuth 2.0 SDK oficial googleapis</li>
+<li>500-2000 emails/día por usuario Workspace (suficiente Y1)</li>
+<li>API SMC ya tiene credenciales (<code>reference_google_workspace.md</code>)</li>
+</ul>
+<p><strong>Trade-offs</strong>:</p>
+<ul>
+<li>❌ No tiene templates fancy ni analytics builtin (debemos loggear nosotros)</li>
+<li>❌ Limit 500-2000/día · si Marketplace explota (>2K órdenes/día) tendríamos que migrar</li>
+<li>❌ Sin warming dominio automático</li>
+<li>✅ Cero costo · cero proveedor nuevo</li>
+<li>✅ Templates en código versionados @smc/prompts (regla Hoku)</li>
+</ul>
+<p><strong>Cuándo migrar a Resend</strong>:</p>
+<ul>
+<li>Volumen >1.5K emails/día sostenido (Y2 escalado)</li>
+<li>Necesitamos templates editables sin deploy</li>
+<li>Founders quieren métricas opens/clicks builtin</li>
+</ul>
+<p><strong>Cómo se usa en código (Sprint 4)</strong>:</p>
+<ul>
+<li><code>lib/email/gmail-client.ts</code> · googleapis SDK</li>
+<li><code>lib/email/templates/</code> · markdown templates versionados</li>
+<li>Cron 5min batch envíos (evita rate limit)</li>
+<li>Logging en <code>mkt_email_logs</code> (similar a mkt_ai_logs)</li>
+</ul>
+<h3>14d · ADR-0008 · Pagos dual: transferencia Kanki-style + MercadoPago opt</h3>
+<p><strong>Status</strong>: ✅ Accepted · 2026-05-27</p>
+<p><strong>Context</strong>: necesitamos cobrar en D2C storefront. Sprint inicial sugirió MercadoPago + WebPay Plus. Founders recién partiendo · sin volumen para justificar setup pasarelas. Kanki Street (proyecto hermano SMC) opera con transferencia bancaria manual exitosamente.</p>
+<p><strong>Decisión</strong>: ofrecer <strong>transferencia bancaria Kanki-style como default Y1</strong> + <strong>MercadoPago opcional</strong> activable por SKU/cliente. WebPay Plus deferido Y2.</p>
+<p><strong>Por qué dual</strong>:</p>
+<table>
+<thead><tr>
+<th>Aspecto</th>
+<th>Transferencia Kanki-style</th>
+<th>MercadoPago opcional</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Fee</td>
+<td>0%</td>
+<td>2.9-4.5% por transacción</td>
+</tr>
+<tr>
+<td>Setup</td>
+<td>Configurar cuenta bancaria · listo</td>
+<td>OAuth + cert + webhook + reconciliación</td>
+</tr>
+<tr>
+<td>Cliente</td>
+<td>Sube comprobante en UI</td>
+<td>Checkout directo</td>
+</tr>
+<tr>
+<td>Founder</td>
+<td>Verifica manual (5 min/día)</td>
+<td>Auto</td>
+</tr>
+<tr>
+<td>Tiempo orden</td>
+<td>1-24h (espera comprobante)</td>
+<td>Real-time</td>
+</tr>
+<tr>
+<td>Confianza cliente</td>
+<td>Alta en Chile (común)</td>
+<td>Más alta (instantánea)</td>
+</tr>
+<tr>
+<td>Volumen sostenible</td>
+<td><50 órdenes/día</td>
+<td>Ilimitado</td>
+</tr>
+</tbody></table>
+<p><strong>Flow transferencia Kanki-style</strong>:</p>
+<ul>
+<li>Cliente hace checkout · ve datos transferencia (cuenta · RUT · monto · referencia)</li>
+<li>Cliente sube comprobante PDF/imagen en UI</li>
+<li>Sistema crea orden status=<code>payment_pending</code></li>
+<li>Founder recibe alerta · revisa comprobante · marca <code>payment_verified</code></li>
+<li>Workflow normal sigue (DTE + label + despacho)</li>
+</ul>
+<p><strong>Flow MercadoPago (cuando activado por SKU)</strong>:</p>
+<ul>
+<li>Cliente hace checkout · redirect MercadoPago</li>
+<li>Pago real-time · webhook firmado → orden status=<code>paid</code> directo</li>
+<li>Workflow normal sigue</li>
+</ul>
+<p><strong>Tabla <code>mkt_orders.payment_method</code></strong>: <code>'transferencia' | 'mercadopago' | 'webpay'</code> (futuro)</p>
+<p><strong>Tabla <code>mkt_payment_proofs</code></strong> (nueva Sprint 5): comprobantes uploaded con verify state</p>
+<p><strong>Cuándo activar MercadoPago default</strong>:</p>
+<ul>
+<li>>20 órdenes/día sostenido 30 días</li>
+<li>Founders confirman costo 2.9-4.5% es asumible vs tiempo manual</li>
+<li>Cliente B2B grande que exige instantáneo</li>
+</ul>
+<p><strong>Costo evitado Y1</strong>: ~2.9-4.5% × revenue total Y1. Con 50 órdenes/mes × $25K CLP × 12 meses = $15M CLP/año revenue · ahorro ~$435K-675K CLP.</p>
   <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>16</span></div>
 </section>
 <section class="page" id="15-performance-budgets">
