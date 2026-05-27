@@ -315,6 +315,12 @@
     Tip: click en un bloque para ver detalle · Esc cierra · arrastra el canvas para hacer pan · ⌘/Ctrl + scroll para zoom.
   </p>
 
+  <div class="box box-info" style="margin-top: 24px;">
+    <div class="box-title">💡 Supplier Adapter Pattern (no renderizado arriba)</div>
+    <p>Análogo al Channel Adapter Pattern del HLA · existe un <strong>Supplier Adapter Pattern</strong> para integrarse con proveedores externos que despachan directamente al cliente final (modo on-demand del Doc 21 · escenario P13 del Doc 02 BBP).</p>
+    <p>Interfaz uniforme: <code>SupplierAdapter</code> con métodos <code>syncCatalog()</code> · <code>checkStock(sku)</code> · <code>createPurchaseOrder(items)</code> · <code>trackShipment(po_id)</code> · <code>handleReturn(order_id)</code>. Cada proveedor implementa la suya según su API (REST · feed XML · email automatizado).</p>
+  </div>
+
   <div class="page-footer"><span>Banco SMC · Tech</span><span>03</span></div>
 </section>
 

@@ -17,14 +17,17 @@ next: 25-brand-book.html
 > [!chart-bar] margen-bar
 > Margen vs Ticket vs Plazo cobro. MeLi alto volumen bajo margen · MP B2G margen bueno pero ciclo largo · B2B propio margen mejor con relación estable.
 
-# 02 · Cálculo por canal
+# 02 · Cálculo por canal · stock propio vs on-demand
 
-| Canal | Margen | Ticket promedio | Plazo cobro | Volumen Y1 |
-|-------|--------|-----------------|-------------|------------|
-| Mercado Libre B2C | 28% | $35K CLP | 14-28 días | 800-1.200 órdenes/mes |
-| Mercado Público B2G | 38% | $400K CLP | 30-60 días | 8-15 OC/mes |
-| B2B empresa privada | 42% | $250K CLP | 30-60 días | 6-12 órdenes/mes |
-| D2C storefront (Y2+) | 50% | $45K CLP | inmediato | 0 Y1 · 100/mes Y2 |
+| Canal | Stock propio | On-demand | Ticket | Plazo cobro | Volumen Y1 |
+|-------|--------------|-----------|--------|-------------|------------|
+| Mercado Libre B2C | 28% | 12-18% | $35K CLP | 14-28 días | 800-1.200 órd/mes |
+| Mercado Público B2G | 38% | 20-25% | $400K CLP | 30-60 días | 8-15 OC/mes |
+| B2B empresa privada | 42% | 22-28% | $250K CLP | 30-60 días | 6-12 órd/mes |
+| D2C storefront (Y2+) | 50% | 25-30% | $45K CLP | inmediato | 100/mes Y2 |
+
+> [!info] Por qué on-demand tiene margen menor
+> El proveedor que despacha directo se queda con buena parte del margen porque asume capital de inventario · logística · riesgo merma. Lo nuestro es captar la venta + procesar pago + facturar.
 
 # 03 · Por qué cada margen
 

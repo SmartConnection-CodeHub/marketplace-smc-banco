@@ -21,9 +21,21 @@ next: 24-margen-canal.html
 
 - Capital inicial: $50M CLP (founders · sin sueldo Y1)
 - Mix canales Y1: 50% MeLi · 30% MP · 15% B2B · 5% D2C
-- Margen blended: 35% Y1 · 40% Y2 · 45% Y3
-- Rotación stock objetivo: 60-90 días
+- Mix de modos Y1: 70% stock propio · 30% on-demand (sin capital atado)
+- Margen blended: 30-35% Y1 · 35-40% Y2 · 40-45% Y3
+- Rotación stock propio objetivo: 60-90 días
 - Reinversión: 50% margen → reposición · 20% impuestos · 10% contingencia · 20% disponible
+
+# 02b · COGS diferencial por modo
+
+| Concepto | Stock propio | On-demand |
+|----------|--------------|-----------|
+| Pago al proveedor | Anticipado (30-60 días antes) | Post-venta (cuando llega cobro cliente) |
+| Capital atado | Alto · todo el inventario | Cero |
+| Costos logística | Importación + bodegaje + courier salida | Solo courier (proveedor paga o se carga al cliente) |
+| Riesgo merma | Sí (obsolescencia · daño · robo) | Cero (no es nuestro stock) |
+| Margen típico | 28-50% | 10-25% |
+| Velocidad escalado catálogo | Lento (limitado por capital) | Rápido (catálogo del proveedor) |
 
 # 03 · Métricas a monitorear mensual
 

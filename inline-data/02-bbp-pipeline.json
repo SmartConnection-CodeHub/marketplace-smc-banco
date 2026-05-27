@@ -232,6 +232,37 @@
           { "code": "P12-04", "label": "Declaración mensual IVA", "kind": "doc", "stack": "SII Chile" }
         ]}
       ]
+    },
+    "P13": {
+      "title": "P13 · Venta on-demand (sin stock propio)",
+      "sub": "Catálogo amplio · proveedor despacha directo · margen menor sin capital atado",
+      "callout": "Modo paralelo al stock propio. El producto se publica en canales sin tenerlo en bodega. Cuando entra venta · se propaga orden al proveedor que despacha directo al cliente final.",
+      "tags": ["Sin capital atado", "Margen 10-25%", "Escala catálogo rápido"],
+      "stages": [
+        { "num": "01", "name": "Catálogo proveedor", "boxes": [
+          { "code": "P13-01", "label": "Sync catálogo proveedor (Supplier Adapter)", "kind": "search", "stack": "API o feed XML del proveedor" },
+          { "code": "P13-02", "label": "Filtrar SKUs aprobados con margen viable", "kind": "search", "stack": "Cerebro scoring" }
+        ]},
+        { "num": "02", "name": "Publicación", "boxes": [
+          { "code": "P13-03", "label": "Publicar en canales con flag is_on_demand=true", "kind": "create", "stack": "Mismo Channel Adapter" }
+        ]},
+        { "num": "03", "name": "Venta", "boxes": [
+          { "code": "P13-04", "label": "Webhook canal · orden recibida", "kind": "notify", "stack": "Mismo flujo que stock propio" }
+        ]},
+        { "num": "04", "name": "Propagar al proveedor", "boxes": [
+          { "code": "P13-05", "label": "Crear OC al proveedor (Supplier Adapter)", "kind": "create", "stack": "API proveedor · API key o email automatizado" },
+          { "code": "P13-06", "label": "Confirmar disponibilidad real", "kind": "search", "stack": "Si proveedor responde stock=0 · refund cliente" }
+        ]},
+        { "num": "05", "name": "Despacho directo", "boxes": [
+          { "code": "P13-07", "label": "Proveedor despacha al cliente · tracking compartido", "kind": "doc", "stack": "Proveedor courier · webhook tracking" }
+        ]},
+        { "num": "06", "name": "Cobro + factura", "boxes": [
+          { "code": "P13-08", "label": "Cobro pasarela + DTE emitido (mismo flujo P11)", "kind": "pay", "stack": "Open Factura" }
+        ]},
+        { "num": "07", "name": "Liquidación al proveedor", "boxes": [
+          { "code": "P13-09", "label": "Pagar al proveedor menos comisión nuestra", "kind": "pay", "stack": "Transferencia · 7-15 días post-venta" }
+        ]}
+      ]
     }
   }
 }

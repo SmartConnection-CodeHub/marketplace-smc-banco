@@ -14,9 +14,16 @@ next: 23-financial-comercio.html
 
 # 01 · Modelo de negocio en 1 línea
 
-SMC SpA compra productos a Nexport (importador) y los vende en 3 canales (Mercado Libre · Mercado Público · B2B empresas). Margen blend objetivo: 35-45%.
+SMC SpA opera **dos modos en paralelo**:
+
+1. **Stock propio**: compra a Nexport (importador) → recibe en bodega → vende multi-canal · margen 28-45%
+2. **On-demand**: catálogo amplio sin stock propio · proveedor despacha directo al cliente cuando hay venta · margen 10-25% pero sin capital atado
+
+Margen blended objetivo: 30-40% considerando mix de ambos modos.
 
 # 02 · Diagrama del flujo de dinero
+
+**Modo 1 · Stock propio (mayoría capital Y1):**
 
 ```
 Capital inicial 50M CLP
@@ -27,28 +34,50 @@ Recepción bodega · QA · ingreso inventario
       ↓
 Publicación cross-canal (MeLi + MP + B2B)
       ↓
-                ┌────────┴────────┐
-            Venta MeLi       Venta B2G        Venta B2B
-       (B2C alto vol.)  (institucional)  (empresa privada)
-                └────────┬────────┘
-                         ↓
-              Cobro (pasarela · transferencia)
-                         ↓
-              DTE emitido (SII · Open Factura)
-                         ↓
-              Reinversión + reserva impuestos
+        ┌────────┴────────┐
+    Venta MeLi  Venta B2G  Venta B2B
+        └────────┬────────┘
+                 ↓
+       Cobro · DTE · Reinversión
+```
+
+**Modo 2 · On-demand (catálogo amplio · cero capital atado):**
+
+```
+Catálogo proveedor sincronizado
+      ↓
+Publicación cross-canal (mismo flujo)
+      ↓
+            Venta llega
+                 ↓
+   Orden propagada al proveedor (Supplier Adapter)
+                 ↓
+   Proveedor despacha DIRECTO al cliente final
+                 ↓
+       Cobro · DTE · margen retenido (10-25%)
 ```
 
 # 03 · Streams de revenue
 
-| Canal | % esperado Y1 | Margen típico | Plazo cobro |
-|-------|---------------|---------------|-------------|
-| Mercado Libre (B2C) | 50% | 28% (post comisión MeLi) | 14-28 días |
-| Mercado Público (B2G) | 30% | 38% | 30-60 días |
-| B2B empresa privada | 15% | 42% | 30-60 días |
-| D2C storefront (Y2+) | 5% Y1 · 30% Y3 | 50% | inmediato |
+| Canal | % esperado Y1 | Margen stock propio | Margen on-demand | Plazo cobro |
+|-------|---------------|---------------------|------------------|-------------|
+| Mercado Libre (B2C) | 50% | 28% | 12-18% | 14-28 días |
+| Mercado Público (B2G) | 30% | 38% | 20-25% | 30-60 días |
+| B2B empresa privada | 15% | 42% | 22-28% | 30-60 días |
+| D2C storefront (Y2+) | 5% Y1 · 30% Y3 | 50% | 25-30% | inmediato |
 
-Blend Y1 estimado: 35% margen bruto antes de costos operativos.
+Blend Y1 estimado: 30-35% margen bruto (mezcla stock propio + on-demand) antes de costos operativos.
+
+# 03b · Cuándo usar cada modo
+
+| Producto / situación | Modo recomendado |
+|----------------------|------------------|
+| Alta rotación · margen bueno · stock estable proveedor | Stock propio |
+| Producto bulky/caro · capital atado alto · rotación lenta | On-demand |
+| Catálogo amplio para explorar demanda sin riesgo | On-demand |
+| Producto exclusivo · ventaja diferencial · margen 40%+ | Stock propio |
+| Producto que el proveedor despacha rápido y bien | On-demand |
+| SLA crítico de despacho cliente final | Stock propio (control total) |
 
 # 04 · Estructura de costos
 

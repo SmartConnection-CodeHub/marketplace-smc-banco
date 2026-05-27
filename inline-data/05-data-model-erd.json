@@ -24,10 +24,11 @@
       "type": "CATALOG",
       "title": "products",
       "sub": "Catálogo maestro · 1 producto por SKU",
-      "desc": "Producto único independiente del canal. Las publicaciones a MeLi · D2C · MP usan este maestro como fuente única.",
-      "stack": ["id · tenant_id · sku · name", "description · base_price · category_id", "images (jsonb) · attributes (jsonb)"],
+      "desc": "Producto único independiente del canal. Las publicaciones a MeLi · D2C · MP usan este maestro como fuente única. Flag `is_on_demand` indica si requiere stock propio o se despacha vía proveedor externo.",
+      "stack": ["id · tenant_id · sku · name", "description · base_price · category_id", "images (jsonb) · attributes (jsonb)", "is_on_demand (boolean) · supplier_id (FK opcional)"],
       "owner": "Backend",
-      "channels": ["meli", "d2c", "mp", "b2b"]
+      "channels": ["meli", "d2c", "mp", "b2b"],
+      "notes": "Si is_on_demand=true · inventory.stock_real refleja stock del proveedor (sync periódico) · NO stock físico nuestro."
     },
     "inventory": {
       "type": "STOCK",
