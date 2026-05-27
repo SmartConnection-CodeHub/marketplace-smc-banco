@@ -1,0 +1,105 @@
+{
+  "title": "Arquitectura de capas · Marketplace SMC",
+  "sub": "Cada bloque = capa técnica · click ve librerías + cómo fluye request/response",
+  "svg": "<g><rect class='group-frame' x='40' y='40' width='1100' height='110'/><text class='group-label' x='60' y='66'>EDGE · CDN · BROWSER</text></g><g><rect class='group-frame' x='40' y='180' width='1100' height='130'/><text class='group-label' x='60' y='206'>NEXT.JS RUNTIME (Amplify · sa-east-1)</text></g><g><rect class='group-frame' x='40' y='340' width='1100' height='130'/><text class='group-label' x='60' y='366'>BUSINESS LOGIC + ADAPTERS</text></g><g><rect class='group-frame' x='40' y='500' width='540' height='150'/><text class='group-label' x='60' y='526'>DATA LAYER</text></g><g><rect class='group-frame' x='600' y='500' width='540' height='150'/><text class='group-label' x='620' y='526'>OBSERVABILIDAD + LLMOps</text></g><path class='conn' data-from='browser' data-to='middleware' d='M 280 130 L 280 200' marker-end='url(#arr)'/><path class='conn' data-from='middleware' data-to='handlers' d='M 700 290 L 700 360' marker-end='url(#arr)'/><path class='conn' data-from='handlers' data-to='services' d='M 280 450 L 280 380' marker-end='url(#arr)' data-back='true'/><path class='conn' data-from='services' data-to='drizzle' d='M 600 450 L 300 510' marker-end='url(#arr)'/><path class='conn' data-from='drizzle' data-to='postgres' d='M 240 620 L 480 620' marker-end='url(#arr)'/><path class='conn' data-from='services' data-to='sentry' d='M 900 450 L 760 510' marker-end='url(#arr)'/><path class='conn' data-from='services' data-to='posthog' d='M 940 450 L 940 510' marker-end='url(#arr)'/><g class='block type-actor' data-id='browser'><rect class='block-bg' x='80' y='80' width='280' height='60'/><text class='block-code' x='98' y='105'>1 · BROWSER + CDN</text><text class='block-title' x='98' y='128'>Chrome · CloudFront · Edge cache</text></g><g class='block type-actor' data-id='auth-cookie'><rect class='block-bg' x='400' y='80' width='280' height='60'/><text class='block-code' x='418' y='105'>1.5 · COOKIES SSR</text><text class='block-title' x='418' y='128'>@supabase/ssr · httpOnly · SameSite</text></g><g class='block type-backend' data-id='middleware'><rect class='block-bg' x='80' y='220' width='280' height='80'/><text class='block-code' x='98' y='245'>2 · MIDDLEWARE</text><text class='block-title' x='98' y='268'>auth · rate-limit · idempotency</text><text class='block-sub' x='98' y='286'>Upstash Redis · UUID v7</text></g><g class='block type-backend' data-id='handlers'><rect class='block-bg' x='400' y='220' width='320' height='80'/><text class='block-code' x='418' y='245'>3 · ROUTE HANDLERS / SERVER ACTIONS</text><text class='block-title' x='418' y='268'>Next.js 16 App Router</text><text class='block-sub' x='418' y='286'>Zod validation input + output</text></g><g class='block type-backend' data-id='rsc'><rect class='block-bg' x='760' y='220' width='340' height='80'/><text class='block-code' x='778' y='245'>3.5 · REACT SERVER COMPONENTS</text><text class='block-title' x='778' y='268'>RSC streaming · ISR revalidate</text><text class='block-sub' x='778' y='286'>Sin estado client · data desde DB directo</text></g><g class='block type-backend' data-id='services'><rect class='block-bg' x='80' y='380' width='340' height='80'/><text class='block-code' x='98' y='405'>4 · BUSINESS SERVICES</text><text class='block-title' x='98' y='428'>lib/services · pure functions</text><text class='block-sub' x='98' y='446'>order-service · pricing · inventory · cerebro</text></g><g class='block type-backend' data-id='channel-adapter'><rect class='block-bg' x='460' y='380' width='320' height='80'/><text class='block-code' x='478' y='405'>4.1 · CHANNEL ADAPTER</text><text class='block-title' x='478' y='428'>lib/adapters/channels/{meli,d2c,mp,b2b}.ts</text><text class='block-sub' x='478' y='446'>Interface única · 4 impl · ADR-0002</text></g><g class='block type-backend' data-id='supplier-adapter'><rect class='block-bg' x='820' y='380' width='280' height='80'/><text class='block-code' x='838' y='405'>4.2 · SUPPLIER ADAPTER</text><text class='block-title' x='838' y='428'>lib/adapters/suppliers/*.ts</text><text class='block-sub' x='838' y='446'>Dropship Y1 · ADR-0003</text></g><g class='block type-data' data-id='drizzle'><rect class='block-bg' x='80' y='540' width='220' height='100'/><text class='block-code' x='98' y='565'>5 · DRIZZLE ORM</text><text class='block-title' x='98' y='588'>type-safe queries</text><text class='block-sub' x='98' y='606'>zero runtime · migrations</text><text class='block-sub' x='98' y='624'>postgres.js driver pool</text></g><g class='block type-data' data-id='postgres'><rect class='block-bg' x='340' y='540' width='220' height='100'/><text class='block-code' x='358' y='565'>6 · SUPABASE POSTGRES</text><text class='block-title' x='358' y='588'>RLS · pg_notify · pg_cron</text><text class='block-sub' x='358' y='606'>20+ tablas mkt_*</text><text class='block-sub' x='358' y='624'>PITR backup 30d</text></g><g class='block type-ai' data-id='sentry'><rect class='block-bg' x='620' y='540' width='160' height='100'/><text class='block-code' x='638' y='565'>SENTRY</text><text class='block-title' x='638' y='588'>errores client+server</text><text class='block-sub' x='638' y='606'>breadcrumbs</text><text class='block-sub' x='638' y='624'>alerts > 1% error rate</text></g><g class='block type-ai' data-id='posthog'><rect class='block-bg' x='800' y='540' width='150' height='100'/><text class='block-code' x='818' y='565'>POSTHOG</text><text class='block-title' x='818' y='588'>funnels + flags</text><text class='block-sub' x='818' y='606'>events</text><text class='block-sub' x='818' y='624'>session replay</text></g><g class='block type-ai' data-id='llmops'><rect class='block-bg' x='970' y='540' width='150' height='100'/><text class='block-code' x='988' y='565'>LLMOps</text><text class='block-title' x='988' y='588'>mkt_ai_logs</text><text class='block-sub' x='988' y='606'>cost/feature/día</text><text class='block-sub' x='988' y='624'>cache hit rate</text></g>",
+  "blocks": {
+    "browser": {
+      "type": "EDGE",
+      "title": "Browser + CloudFront",
+      "desc": "Punto de entrada. Browser de Camila/Javier/Guillermo hace request. CloudFront edge cachea assets estáticos (CSS/JS/images) con TTL agresivo. Páginas dinámicas pasan al runtime.",
+      "stack": ["Chrome 120+", "CloudFront (vía Amplify)", "ACM cert TLS 1.3"],
+      "endpoints": ["GET marketplace.smconnection.cl/*"]
+    },
+    "auth-cookie": {
+      "type": "AUTH SSR",
+      "title": "Cookies httpOnly + SameSite",
+      "desc": "@supabase/ssr inyecta sb-access-token + sb-refresh-token como cookies httpOnly. Refresh automático token expirado. Cookies NUNCA accesibles desde JS cliente.",
+      "stack": ["@supabase/ssr", "Cookie SameSite=lax", "Auto-refresh 5min antes de expiry"]
+    },
+    "middleware": {
+      "type": "MIDDLEWARE",
+      "title": "auth · rate-limit · idempotency",
+      "desc": "Next.js middleware corre antes de todo. 3 checks: (1) JWT válido o redirect /login. (2) Rate limit Upstash Redis 60 req/min/user. (3) Si POST con header Idempotency-Key existe en mkt_idempotency → return cached response (TTL 24h).",
+      "stack": ["Next.js middleware.ts", "Upstash Redis @upstash/ratelimit", "UUID v7 idempotency"],
+      "endpoints": ["middleware.ts en raíz · matcher /api/* /(founders)/*"]
+    },
+    "handlers": {
+      "type": "ROUTE HANDLERS",
+      "title": "Route Handlers + Server Actions",
+      "desc": "Capa de entrada API. Route Handlers (/api/X/route.ts) reciben fetch HTTP. Server Actions (form submits desde RSC) ejecutan mutations type-safe. Ambos hacen Zod validation input + output ANTES de llamar services.",
+      "stack": ["Next.js 16 App Router", "Zod 3.x", "Headers next/headers"],
+      "endpoints": ["/api/products/route.ts", "/api/orders/route.ts", "actions: createProduct · updateOrder"]
+    },
+    "rsc": {
+      "type": "RSC",
+      "title": "React Server Components",
+      "desc": "Páginas RSC ejecutan fetch desde DB directo (sin pasar por /api). Streaming progresivo via Suspense. ISR para listings públicos · revalidate disparado por pg_notify('inventory_changed').",
+      "stack": ["React 19 Server Components", "Suspense + streaming", "ISR + on-demand revalidate"]
+    },
+    "services": {
+      "type": "BUSINESS",
+      "title": "Business Services (pure)",
+      "desc": "Pure functions sin side effects (cuando es posible). order-service · pricing-service · inventory-service · cerebro-service. Reciben input validado · ejecutan lógica · llaman adapters cuando hace falta. Testeable sin DB.",
+      "stack": ["TypeScript 5.x strict", "Pure functions when possible", "Dependency injection adapters"],
+      "endpoints": ["lib/services/order.ts", "lib/services/pricing.ts", "lib/services/inventory.ts"]
+    },
+    "channel-adapter": {
+      "type": "ADAPTER",
+      "title": "Channel Adapter Pattern",
+      "desc": "Interface única ChannelAdapter con 4 implementaciones: MercadoLibreAdapter · D2CStorefrontAdapter · MercadoPublicoAdapter · B2BCustomAdapter. Agregar canal nuevo = 1 archivo. ADR-0002 formaliza este patrón.",
+      "stack": ["TypeScript interface", "4 impl class concrete", "Factory pattern selector por channelId"],
+      "endpoints": ["lib/adapters/channels/meli.ts", "lib/adapters/channels/d2c.ts", "lib/adapters/channels/mp.ts", "lib/adapters/channels/b2b.ts"]
+    },
+    "supplier-adapter": {
+      "type": "ADAPTER",
+      "title": "Supplier Adapter Pattern",
+      "desc": "Mismo patrón aplicado a proveedores dropship. Interface SupplierAdapter con N impl según proveedor (api_key, oauth, email_automated, whatsapp_business). ADR-0003 formaliza.",
+      "stack": ["TypeScript interface", "N impl según proveedor"],
+      "endpoints": ["lib/adapters/suppliers/proveedor-x.ts"]
+    },
+    "drizzle": {
+      "type": "ORM",
+      "title": "Drizzle ORM",
+      "desc": "Type-safe queries. Schema definido en lib/db/schema.ts (mapping 1:1 a tablas Postgres). Migrations versionadas en supabase/migrations/. postgres.js driver con connection pooling (max 10 conexiones por instancia).",
+      "stack": ["Drizzle ORM", "postgres.js (pgbouncer compatible)", "Drizzle Kit migrations"],
+      "endpoints": ["lib/db/schema.ts", "lib/db/index.ts (singleton)"]
+    },
+    "postgres": {
+      "type": "DB",
+      "title": "Supabase Postgres",
+      "desc": "Source of truth. 20+ tablas mkt_*. RLS estricta por tenant_id implícito JWT. pg_notify dispara eventos cross-canal. pg_cron para tareas internas (refresh matview, cleanup logs). PITR backup 30 días.",
+      "stack": ["Postgres 15", "Supabase Auth", "pg_notify · pg_cron · pg_trgm"],
+      "endpoints": ["yjjtbwfgtoepsevvkzta (intranet) o proyecto dedicado (decisión pending)"]
+    },
+    "sentry": {
+      "type": "ERROR TRACKING",
+      "title": "Sentry · errors + breadcrumbs",
+      "desc": "Captura errors client + server. Breadcrumbs por request (request_id correlacionado con CloudWatch logs). Alertas configuradas: error rate > 1% por 5min · DTE rechazo → email INMEDIATO · 401/403 spike > 10/min.",
+      "stack": ["@sentry/nextjs", "Source maps uploadeados", "Performance monitoring 10% sample"]
+    },
+    "posthog": {
+      "type": "ANALYTICS",
+      "title": "PostHog Cloud",
+      "desc": "Funnels · feature flags · session replay (con privacy mask). Eventos clave: order.completed · opportunity.detected · cerebro.message · listing.published. Dashboards por founder + por canal.",
+      "stack": ["posthog-js (client)", "posthog-node (server)", "Feature flags + experiments"]
+    },
+    "llmops": {
+      "type": "LLMOps",
+      "title": "Tabla mkt_ai_logs",
+      "desc": "Log JSON por cada llamada IA: provider · model · tokens_in/out · cost_usd · latency_ms · cache_hit · fallback_used. Dashboards Postgres queryables. Trigger auto-throttle si cost diario > 80% budget.",
+      "stack": ["INSERT mkt_ai_logs por llamada", "Materialized view cost_by_feature_daily", "pg_cron refresh 1h"]
+    }
+  },
+  "connections": [
+    { "from": "browser", "to": "middleware" },
+    { "from": "middleware", "to": "handlers" },
+    { "from": "handlers", "to": "services" },
+    { "from": "services", "to": "drizzle" },
+    { "from": "drizzle", "to": "postgres" },
+    { "from": "services", "to": "channel-adapter" },
+    { "from": "services", "to": "supplier-adapter" },
+    { "from": "services", "to": "sentry" },
+    { "from": "services", "to": "posthog" },
+    { "from": "services", "to": "llmops" }
+  ]
+}

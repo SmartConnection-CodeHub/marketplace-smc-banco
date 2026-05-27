@@ -1,0 +1,61 @@
+{
+  "default": "DROPSHIP",
+  "scenarios": {
+    "DROPSHIP": {
+      "title": "Dropshipping · venta sin stock propio",
+      "sub": "7 etapas · proveedor despacha directo · margen 10-25% · escala catálogo rápido",
+      "callout": "Modo paralelo al stock propio. SKUs marcados is_dropship=true. Sin capital atado · ideal para PROBAR demanda antes de comprar stock. Validado por referente chileno e-commerce 2020-25.",
+      "tags": ["Sin capital atado", "Margen 10-25%", "Escala catálogo rápido"],
+      "stages": [
+        { "num": "01", "name": "Sync catálogo proveedor", "boxes": [
+          { "code": "DS-01", "label": "POST /api/suppliers/sync · Supplier Adapter", "kind": "search", "stack": "API o feed XML proveedor · cron diario" },
+          { "code": "DS-02", "label": "Filter SKUs viables · margen 15%+", "kind": "search", "stack": "Cerebro scoring + reglas operador" }
+        ]},
+        { "num": "02", "name": "Publicación cross-canal", "boxes": [
+          { "code": "DS-03", "label": "Publicar en canales con is_dropship=true", "kind": "create", "stack": "Mismo Channel Adapter · flag diferenciador" }
+        ]},
+        { "num": "03", "name": "Venta cliente final", "boxes": [
+          { "code": "DS-04", "label": "Webhook canal · orden recibida", "kind": "notify", "stack": "Mismo flujo que stock propio P05" }
+        ]},
+        { "num": "04", "name": "Propagar OC al proveedor", "boxes": [
+          { "code": "DS-05", "label": "POST /api/suppliers/order · Supplier Adapter", "kind": "create", "stack": "API proveedor · API key o email automatizado" },
+          { "code": "DS-06", "label": "Confirmar disponibilidad real-time", "kind": "search", "stack": "Si stock=0 → refund + comunicación cliente" }
+        ]},
+        { "num": "05", "name": "Despacho directo", "boxes": [
+          { "code": "DS-07", "label": "Proveedor despacha al cliente final", "kind": "doc", "stack": "Courier del proveedor · webhook tracking compartido" }
+        ]},
+        { "num": "06", "name": "Cobro + factura nuestra", "boxes": [
+          { "code": "DS-08", "label": "Cobro pasarela + DTE emitido por SMC SpA", "kind": "pay", "stack": "Open Factura · DTE a nombre SMC" }
+        ]},
+        { "num": "07", "name": "Liquidación proveedor", "boxes": [
+          { "code": "DS-09", "label": "Pagar proveedor menos comisión nuestra", "kind": "pay", "stack": "Transferencia 7-15 días post-venta" }
+        ]}
+      ]
+    },
+    "MIGRATE": {
+      "title": "Migración dropship → stock local",
+      "sub": "Cuando SKU vende >USD 5K/mes sostenido 2 meses · migrar a stock propio · subir margen 15-25pp",
+      "callout": "Estrategia validada · empezar dropship para PROBAR · cuando funciona · comprar stock para SUBIR MARGEN. Trigger en Doc 21 sección 03c.",
+      "tags": ["Trigger migración", "Margen sube 15-25pp", "Decisión Cerebro asistida"],
+      "stages": [
+        { "num": "01", "name": "Detección automatica", "boxes": [
+          { "code": "MIG-01", "label": "Cerebro monitor · alerta cuando SKU > $5K/mes 2 meses", "kind": "search", "stack": "Postgres analytics + Cerebro" }
+        ]},
+        { "num": "02", "name": "Evaluar proveedor local", "boxes": [
+          { "code": "MIG-02", "label": "Javier busca proveedor chileno mismo SKU", "kind": "search", "stack": "Mercado Libre Mayorista · directorios · gremios" },
+          { "code": "MIG-03", "label": "Comparar costos · margen post-comisión MeLi", "kind": "search", "stack": "Cerebro + sheet comparativo" }
+        ]},
+        { "num": "03", "name": "Compra inicial", "boxes": [
+          { "code": "MIG-04", "label": "Comprar lote inicial (lo que rota 1 mes)", "kind": "pay", "stack": "Transferencia CLP" },
+          { "code": "MIG-05", "label": "Recepción bodega · update inventory", "kind": "create", "stack": "Camila/Javier" }
+        ]},
+        { "num": "04", "name": "Toggle flag", "boxes": [
+          { "code": "MIG-06", "label": "UPDATE products SET is_dropship=false · stock_real=lote", "kind": "update", "stack": "Postgres · pg_notify sync canales" }
+        ]},
+        { "num": "05", "name": "Validar primeros 30 días", "boxes": [
+          { "code": "MIG-07", "label": "Margen real vs proyectado · rotación", "kind": "search", "stack": "Postgres analytics" }
+        ]}
+      ]
+    }
+  }
+}

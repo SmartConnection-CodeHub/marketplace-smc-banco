@@ -12,11 +12,11 @@
   <div class="cover-center">
     <div class="cover-doc-num">Documento 13 · Producto Técnico</div>
     <h1 class="cover-title">Especificación Técnica</h1>
-    <p class="cover-subtitle">Cómo se construye · stack confirmado · ADRs · performance budgets · observabilidad.</p>
+    <p class="cover-subtitle">Cómo se construye granular · stack librería por librería · 5 ADRs · flujos detallados · monorepo · CI/CD · escalabilidad.</p>
     <div class="cover-meta">
-      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">2.0</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-27</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Architect + Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Architect + Hoku + Cerebro</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 Draft · pendiente review founders</div></div>
     </div>
   </div>
@@ -26,155 +26,727 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-stack-confirmado">02 · Stack confirmado</a><span class="toc-pg">04</span></li><li><a href="#03-architectural-decision-records-adrs">03 · Architectural Decision Records (ADRs)</a><span class="toc-pg">05</span></li><li><a href="#04-performance-budgets-targets-y1">04 · Performance budgets (targets Y1)</a><span class="toc-pg">06</span></li><li><a href="#05-security-requirements">05 · Security requirements</a><span class="toc-pg">07</span></li><li><a href="#06-observabilidad-llmops">06 · Observabilidad + LLMOps</a><span class="toc-pg">08</span></li><li><a href="#07-decisiones-de-implementaci-n">07 · Decisiones de implementación</a><span class="toc-pg">09</span></li><li><a href="#08-cosas-que-dej-fuera-por-ahora">08 · Cosas que dejé fuera (por ahora)</a><span class="toc-pg">10</span></li><li><a href="#09-pr-ximos-pasos-t-cnicos">09 · Próximos pasos técnicos</a><span class="toc-pg">11</span></li></ol>
+  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-stack-completo-librer-a-por-librer-a">02 · Stack completo · librería por librería</a><span class="toc-pg">04</span></li><li><a href="#03-arquitectura-de-capas">03 · Arquitectura de capas</a><span class="toc-pg">05</span></li><li><a href="#04-request-lifecycle-de-browser-a-db-y-vuelta">04 · Request lifecycle · de browser a DB y vuelta</a><span class="toc-pg">06</span></li><li><a href="#05-data-flow-cross-canal-venta-meli">05 · Data flow cross-canal · venta MeLi</a><span class="toc-pg">07</span></li><li><a href="#06-event-driven-architecture">06 · Event-driven architecture</a><span class="toc-pg">08</span></li><li><a href="#07-channel-adapter-pattern-interface-4-impl">07 · Channel Adapter Pattern · interface + 4 impl</a><span class="toc-pg">09</span></li><li><a href="#08-supplier-adapter-pattern">08 · Supplier Adapter Pattern</a><span class="toc-pg">10</span></li><li><a href="#09-estructura-monorepo">09 · Estructura monorepo</a><span class="toc-pg">11</span></li><li><a href="#10-integraci-n-bd-c-mo-se-conecta">10 · Integración BD · cómo se conecta</a><span class="toc-pg">12</span></li><li><a href="#11-orquestaci-n-cuando-entra-una-orden">11 · Orquestación · cuando entra una orden</a><span class="toc-pg">13</span></li><li><a href="#12-deploy-ambientes-ci-cd">12 · Deploy · ambientes · CI/CD</a><span class="toc-pg">14</span></li><li><a href="#13-escalabilidad-t-cnica-cu-ndo-refactorizar">13 · Escalabilidad técnica · cuándo refactorizar</a><span class="toc-pg">15</span></li><li><a href="#14-adrs-registradas-5-decisiones">14 · ADRs registradas · 5 decisiones</a><span class="toc-pg">16</span></li><li><a href="#15-performance-budgets">15 · Performance budgets</a><span class="toc-pg">17</span></li><li><a href="#16-security-requirements-12-items-con-implementaci-n">16 · Security requirements · 12 items con implementación</a><span class="toc-pg">18</span></li><li><a href="#17-observabilidad-llmops-detallado">17 · Observabilidad · LLMOps detallado</a><span class="toc-pg">19</span></li><li><a href="#18-pr-ximos-pasos-t-cnicos">18 · Próximos pasos técnicos</a><span class="toc-pg">20</span></li></ol>
 </section>
 
 <section class="page" id="01-premisa">
   <h2><span class="h2-num">01</span>Premisa</h2>
-  <p>Documento define <strong>cómo se construye</strong> Marketplace SMC. Complementa Doc 07 Architecture (HLA + escenarios) con detalle de decisiones técnicas + ADRs + performance budgets + observabilidad.</p>
-<div class="box box-info"><div class="box-title">💡 Hilo conductor</div><p>Doc 10 dice qué hace · Doc 11 dice cómo se construye · Doc 18 dice cuándo y con qué equipo. Los 3 son complementarios · NO redundantes.</p></div>
+  <p>Doc 13 detalla <strong>cómo se construye</strong> Marketplace SMC a nivel granular: librería específica por capa · cómo conversan entre sí · flujos técnicos detallados · ADRs registradas · cuándo refactorizar.</p>
+<div class="box box-info"><div class="box-title">💡 No es repetición de Doc 07 Architecture</div><p>Doc 07 muestra el HLA + 5 escenarios. Doc 13 detalla decisiones técnicas con librerías específicas · flujos request/response · event lifecycle · queries · CI/CD pipeline · cuándo aplica cada ADR.</p></div>
   <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>03</span></div>
 </section>
-<section class="page" id="02-stack-confirmado">
-  <h2><span class="h2-num">02</span>Stack confirmado</h2>
-  <table>
+<section class="page" id="02-stack-completo-librer-a-por-librer-a">
+  <h2><span class="h2-num">02</span>Stack completo · librería por librería</h2>
+  <h3>2.1 · Runtime + Framework</h3>
+<table>
 <thead><tr>
 <th>Capa</th>
-<th>Tecnología</th>
+<th>Librería específica</th>
+<th>Versión</th>
 <th>Justificación</th>
 </tr></thead>
 <tbody>
 <tr>
 <td>Runtime</td>
-<td>Node.js 22 LTS</td>
-<td>Estable hasta 2027-04 · familiarity Guillermo</td>
+<td>Node.js</td>
+<td>22 LTS</td>
+<td>Estable hasta 2027-04</td>
 </tr>
 <tr>
 <td>Framework</td>
-<td>Next.js 16 (App Router)</td>
-<td>SSR + RSC + Server Actions + ISR · DX excelente</td>
+<td>Next.js</td>
+<td>16.x App Router</td>
+<td>RSC + Server Actions + ISR + middleware</td>
 </tr>
 <tr>
 <td>TypeScript</td>
-<td>5.x strict</td>
-<td>Type safety · catch bugs en build</td>
+<td>TypeScript</td>
+<td>5.x strict mode</td>
+<td>Type safety · catch en build</td>
 </tr>
 <tr>
-<td>UI</td>
-<td>React 19 + Tailwind v4 + Radix + @smc/ui</td>
-<td>Component-driven · accesible · branded</td>
+<td>Build</td>
+<td>Turbopack</td>
+<td>(incluido Next.js 16)</td>
+<td>Builds 10x más rápidos que webpack</td>
+</tr>
+</tbody></table>
+<h3>2.2 · UI + Frontend</h3>
+<table>
+<thead><tr>
+<th>Capa</th>
+<th>Librería específica</th>
+<th>Versión</th>
+<th>Rol</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>CSS engine</td>
+<td>Tailwind CSS</td>
+<td>v4</td>
+<td>Utility-first · JIT compiler</td>
 </tr>
 <tr>
-<td>State Y1</td>
-<td>URL params + Server Components</td>
-<td>Sin Zustand/Redux Y1 · YAGNI</td>
+<td>Variants</td>
+<td>Tailwind Variants (tv)</td>
+<td>latest</td>
+<td>Component variants + slots</td>
 </tr>
 <tr>
-<td>DB</td>
-<td>Supabase Postgres (sa-east-1)</td>
-<td>RLS · pg_cron · pg_notify · backups PITR 30d</td>
+<td>Primitivas a11y</td>
+<td>Radix UI</td>
+<td>latest</td>
+<td>Accesibilidad WAI-ARIA</td>
 </tr>
 <tr>
-<td>Auth</td>
-<td>Supabase Auth + JWT con tenant_id</td>
-<td>Single tenant Y1 · multi-tenant ready arch</td>
+<td>Iconos</td>
+<td>Lucide React</td>
+<td>latest</td>
+<td>Tree-shake · stroke 1.75 consistente</td>
 </tr>
 <tr>
-<td>ORM</td>
-<td>Drizzle ORM</td>
-<td>Type-safe · zero runtime · migrations versionadas</td>
-</tr>
-<tr>
-<td>Validation</td>
-<td>Zod (client + server)</td>
-<td>Single source of truth schemas</td>
+<td>Motion</td>
+<td>Framer Motion</td>
+<td>11.x</td>
+<td>Animaciones + gestos</td>
 </tr>
 <tr>
 <td>Forms</td>
-<td>React Hook Form + Zod resolver</td>
-<td>Performance · UX · validación shared</td>
+<td>React Hook Form</td>
+<td>7.x</td>
+<td>Performance · uncontrolled inputs</td>
 </tr>
 <tr>
-<td>Pagos</td>
-<td>MercadoPago + WebPay Plus</td>
-<td>MercadoPago para MeLi · WebPay para D2C Chile</td>
+<td>Validation</td>
+<td>Zod</td>
+<td>3.x</td>
+<td>Schema único client+server</td>
 </tr>
 <tr>
-<td>Logística</td>
-<td>Chilexpress + Starken APIs</td>
-<td>Couriers locales Chile principales</td>
+<td>State global Y1</td>
+<td>URL params + RSC</td>
+<td>nativo</td>
+<td>Sin Zustand/Redux Y1 · YAGNI</td>
 </tr>
 <tr>
-<td>DTE</td>
+<td>Data fetching client</td>
+<td>TanStack Query</td>
+<td>5.x</td>
+<td>Solo donde RSC no aplica</td>
+</tr>
+<tr>
+<td>Charts</td>
+<td>Recharts</td>
+<td>latest</td>
+<td>Si se necesitan dashboards complejos</td>
+</tr>
+<tr>
+<td>Package interno</td>
+<td>@smc/ui</td>
+<td>propio</td>
+<td>Abstracción Radix + tv + lucide</td>
+</tr>
+</tbody></table>
+<h3>2.3 · Backend + Data</h3>
+<table>
+<thead><tr>
+<th>Capa</th>
+<th>Librería específica</th>
+<th>Versión</th>
+<th>Rol</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>ORM</td>
+<td>Drizzle ORM</td>
+<td>latest</td>
+<td>Type-safe · zero runtime · migrations versionadas</td>
+</tr>
+<tr>
+<td>DB driver</td>
+<td>postgres.js (de Drizzle)</td>
+<td>latest</td>
+<td>Connection pooling para serverless</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Supabase Auth + JWT</td>
+<td>latest</td>
+<td>Email/password + TOTP 2FA opcional</td>
+</tr>
+<tr>
+<td>Auth SSR</td>
+<td>@supabase/ssr</td>
+<td>latest</td>
+<td>Cookies httpOnly + refresh token rotation</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Supabase Realtime</td>
+<td>latest</td>
+<td>Only para subscribe específicos (Y2)</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>Supabase Storage</td>
+<td>latest</td>
+<td>Buckets con RLS · signed URLs</td>
+</tr>
+<tr>
+<td>Rate limit</td>
+<td>Upstash Redis + ratelimit</td>
+<td>latest</td>
+<td>60 req/min/user · 600 req/min/IP</td>
+</tr>
+<tr>
+<td>Idempotency</td>
+<td>Custom middleware</td>
+<td>propio</td>
+<td>Tabla <code>mkt_idempotency</code> con TTL 24h</td>
+</tr>
+</tbody></table>
+<h3>2.4 · Integraciones externas</h3>
+<table>
+<thead><tr>
+<th>Servicio</th>
+<th>SDK / método</th>
+<th>Auth</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Mercado Libre</td>
+<td>fetch directo · sin SDK oficial</td>
+<td>OAuth 2.0 PKCE</td>
+</tr>
+<tr>
+<td>Mercado Público</td>
+<td>fetch directo</td>
+<td>Ticket env var</td>
+</tr>
+<tr>
 <td>Open Factura</td>
-<td>DTE 33 · 39 · 61 · cumplimiento SII</td>
+<td>fetch directo + cert digital</td>
+<td>API key + cert</td>
 </tr>
 <tr>
-<td>IA</td>
-<td>OpenRouter (chain)</td>
-<td>Groq · Gemini · DeepSeek fallback · NUNCA Claude</td>
+<td>MercadoPago</td>
+<td>mercadopago oficial SDK</td>
+<td>OAuth + webhook firmado</td>
 </tr>
+<tr>
+<td>WebPay Plus</td>
+<td>@transbank/webpay-plus</td>
+<td>Cert + commerce code</td>
+</tr>
+<tr>
+<td>Chilexpress</td>
+<td>fetch directo</td>
+<td>API key</td>
+</tr>
+<tr>
+<td>Starken</td>
+<td>fetch directo</td>
+<td>API key</td>
+</tr>
+<tr>
+<td>OpenRouter</td>
+<td>openai SDK (compatible API)</td>
+<td>API key</td>
+</tr>
+<tr>
+<td>Resend</td>
+<td>resend SDK</td>
+<td>API key</td>
+</tr>
+<tr>
+<td>Sentry</td>
+<td>@sentry/nextjs</td>
+<td>DSN</td>
+</tr>
+<tr>
+<td>PostHog</td>
+<td>posthog-node + posthog-js</td>
+<td>Project API key</td>
+</tr>
+</tbody></table>
+<h3>2.5 · DevOps + Observability</h3>
+<table>
+<thead><tr>
+<th>Capa</th>
+<th>Tool</th>
+<th>Rol</th>
+</tr></thead>
+<tbody>
 <tr>
 <td>Hosting</td>
 <td>AWS Amplify</td>
-<td>Auto-deploy push · CDN CloudFront · build optimizado</td>
+<td>Next.js auto-deploy push to main</td>
 </tr>
 <tr>
-<td>Domain</td>
-<td>marketplace.smconnection.cl</td>
-<td>Custom domain · cert ACM</td>
+<td>CDN</td>
+<td>CloudFront (incluido Amplify)</td>
+<td>Edge caching + WAF</td>
 </tr>
 <tr>
-<td>Observabilidad</td>
-<td>Sentry + PostHog + CloudWatch</td>
-<td>Errores · funnels · infra · cost dashboards</td>
+<td>Cert</td>
+<td>ACM</td>
+<td>Auto-renovado</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>Route 53</td>
+<td>smconnection.cl + subdomains</td>
 </tr>
 <tr>
 <td>Cron</td>
-<td>Vercel Cron + pg_cron</td>
-<td>Refresh MeLi 6h · sync MP diario · cache cleanup 7d</td>
+<td>Vercel Cron (proxy via Amplify)</td>
+<td>Schedule jobs</td>
 </tr>
 <tr>
 <td>CI/CD</td>
 <td>GitHub Actions</td>
-<td>Lint · type-check · build · auto-tag deploy</td>
+<td>Lint · type-check · tests · build · tag</td>
+</tr>
+<tr>
+<td>Monitoring infra</td>
+<td>CloudWatch</td>
+<td>Lambda · API Gateway · cost</td>
+</tr>
+<tr>
+<td>Monitoring errors</td>
+<td>Sentry</td>
+<td>Frontend + backend</td>
+</tr>
+<tr>
+<td>Analytics product</td>
+<td>PostHog Cloud</td>
+<td>Funnels · feature flags · events</td>
+</tr>
+<tr>
+<td>LLMOps</td>
+<td>Tabla <code>mkt_ai_logs</code> + dashboards Postgres</td>
+<td>Cost · latency · quality</td>
+</tr>
+<tr>
+<td>Logs aggregator</td>
+<td>CloudWatch + filter Sentry</td>
+<td>Structured JSON logs</td>
 </tr>
 </tbody></table>
   <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>04</span></div>
 </section>
-<section class="page" id="03-architectural-decision-records-adrs">
-  <h2><span class="h2-num">03</span>Architectural Decision Records (ADRs)</h2>
-  <h3>ADR-0001 · v5 Opportunities sin LLM (existente)</h3>
-<p>Status: ✅ Accepted (2026-05-15)</p>
-<p>Context: MeLi DPP requiere USD 200K GMV · imposible Y1.</p>
-<p>Decision: 6 capas Opportunities · scoring sin LLM · usar SoloTodo + Mercado Público + Open Food Facts + BCentral.</p>
-<p>Consequences: Cero costo IA por scoring · sin dependencia DPP · catálogo amplio Chile.</p>
-<h3>ADR-0002 · Channel Adapter Pattern (existente)</h3>
-<p>Status: ✅ Accepted (2026-05-10)</p>
-<p>Context: 4+ canales (MeLi · MP · D2C · B2B) con APIs muy distintas. Sin abstracción se vuelve unmaintainable.</p>
-<p>Decision: Interface uniforme <code>ChannelAdapter</code> con métodos <code>syncStock()</code>, <code>listOrders()</code>, <code>publishProduct()</code>. Cada canal implementa su adapter.</p>
-<p>Consequences: Agregar canal nuevo = 1 archivo nuevo · NO refactor del resto.</p>
-<h3>ADR-0003 · Supplier Adapter Pattern 🆕</h3>
-<p>Status: 🟡 Proposed (2026-05-27)</p>
-<p>Context: Modo dropshipping (Doc 02 P13) requiere integración con proveedores externos. Cada proveedor tiene API/feed/método distinto. Sin abstracción = misma plaga que Channel.</p>
-<p>Decision: Interface uniforme <code>SupplierAdapter</code> con métodos <code>syncCatalog()</code>, <code>checkStock(sku)</code>, <code>createPurchaseOrder(items)</code>, <code>trackShipment(po_id)</code>, <code>handleReturn(order_id)</code>. Cada proveedor implementa el suyo.</p>
-<p>Consequences: Agregar proveedor dropship = 1 archivo · NO refactor.</p>
-<p>Alternativas descartadas: webhooks ad-hoc por proveedor (mantenimiento caro · escalado lineal).</p>
-<h3>ADR-0004 · ADS multicanal automation 🆕</h3>
-<p>Status: 🟡 Proposed (2026-05-27)</p>
-<p>Context: D2C Y2+ requiere ADS (Meta + Google + TikTok). Sin automation · tiempo founder por campaign sale del presupuesto.</p>
-<p>Decision: Construir AdsManager que abstrae las 3 plataformas. Métricas comunes (CTR · CPC · ROAS). Pixels server-side (Meta Conversions API + Google Ads Enhanced Conversions + TikTok Events API) para deprecation cookie-less.</p>
-<p>Consequences: 1 panel · 3 plataformas. Server-side mejor measurement.</p>
-<p>Alternativas descartadas: usar tool tercero (Triple Whale · Northbeam) · costo $300+/mes innecesario Y2.</p>
-<h3>ADR-0005 · Versionado banco v3 ↔ v4 🆕</h3>
-<p>Status: 🟡 Proposed (2026-05-27)</p>
-<p>Context: v3.0.0 estable · v4 en construcción. Necesidad de navegar entre versiones (founders + tú quieres comparar).</p>
-<p>Decision: 2 builds paralelos · <code>/v3</code> y <code>/v4</code> paths en mismo repo o subdomains separados. Switcher UI visible. NO se borra v3 cuando v4 sale.</p>
-<p>Consequences: Mantenimiento 2 versiones temporal · OK. Cuando v4 estable · v3 archivado pero accesible.</p>
+<section class="page" id="03-arquitectura-de-capas">
+  <h2><span class="h2-num">03</span>Arquitectura de capas</h2>
+  <div class="diagram-section">
+  <p class="diagram-caption">Mapa técnico detallado · cada capa con librería · cómo intercambia datos con la siguiente · request/response paths.</p>
+  <div class="diagram-host kind-hla" id="arquitectura-capas" data-kind="hla"></div>
+  <script type="application/json" data-for="arquitectura-capas">{"title": "Arquitectura de capas · Marketplace SMC", "sub": "Cada bloque = capa técnica · click ve librerías + cómo fluye request/response", "svg": "<g><rect class='group-frame' x='40' y='40' width='1100' height='110'/><text class='group-label' x='60' y='66'>EDGE · CDN · BROWSER</text></g><g><rect class='group-frame' x='40' y='180' width='1100' height='130'/><text class='group-label' x='60' y='206'>NEXT.JS RUNTIME (Amplify · sa-east-1)</text></g><g><rect class='group-frame' x='40' y='340' width='1100' height='130'/><text class='group-label' x='60' y='366'>BUSINESS LOGIC + ADAPTERS</text></g><g><rect class='group-frame' x='40' y='500' width='540' height='150'/><text class='group-label' x='60' y='526'>DATA LAYER</text></g><g><rect class='group-frame' x='600' y='500' width='540' height='150'/><text class='group-label' x='620' y='526'>OBSERVABILIDAD + LLMOps</text></g><path class='conn' data-from='browser' data-to='middleware' d='M 280 130 L 280 200' marker-end='url(#arr)'/><path class='conn' data-from='middleware' data-to='handlers' d='M 700 290 L 700 360' marker-end='url(#arr)'/><path class='conn' data-from='handlers' data-to='services' d='M 280 450 L 280 380' marker-end='url(#arr)' data-back='true'/><path class='conn' data-from='services' data-to='drizzle' d='M 600 450 L 300 510' marker-end='url(#arr)'/><path class='conn' data-from='drizzle' data-to='postgres' d='M 240 620 L 480 620' marker-end='url(#arr)'/><path class='conn' data-from='services' data-to='sentry' d='M 900 450 L 760 510' marker-end='url(#arr)'/><path class='conn' data-from='services' data-to='posthog' d='M 940 450 L 940 510' marker-end='url(#arr)'/><g class='block type-actor' data-id='browser'><rect class='block-bg' x='80' y='80' width='280' height='60'/><text class='block-code' x='98' y='105'>1 · BROWSER + CDN</text><text class='block-title' x='98' y='128'>Chrome · CloudFront · Edge cache</text></g><g class='block type-actor' data-id='auth-cookie'><rect class='block-bg' x='400' y='80' width='280' height='60'/><text class='block-code' x='418' y='105'>1.5 · COOKIES SSR</text><text class='block-title' x='418' y='128'>@supabase/ssr · httpOnly · SameSite</text></g><g class='block type-backend' data-id='middleware'><rect class='block-bg' x='80' y='220' width='280' height='80'/><text class='block-code' x='98' y='245'>2 · MIDDLEWARE</text><text class='block-title' x='98' y='268'>auth · rate-limit · idempotency</text><text class='block-sub' x='98' y='286'>Upstash Redis · UUID v7</text></g><g class='block type-backend' data-id='handlers'><rect class='block-bg' x='400' y='220' width='320' height='80'/><text class='block-code' x='418' y='245'>3 · ROUTE HANDLERS / SERVER ACTIONS</text><text class='block-title' x='418' y='268'>Next.js 16 App Router</text><text class='block-sub' x='418' y='286'>Zod validation input + output</text></g><g class='block type-backend' data-id='rsc'><rect class='block-bg' x='760' y='220' width='340' height='80'/><text class='block-code' x='778' y='245'>3.5 · REACT SERVER COMPONENTS</text><text class='block-title' x='778' y='268'>RSC streaming · ISR revalidate</text><text class='block-sub' x='778' y='286'>Sin estado client · data desde DB directo</text></g><g class='block type-backend' data-id='services'><rect class='block-bg' x='80' y='380' width='340' height='80'/><text class='block-code' x='98' y='405'>4 · BUSINESS SERVICES</text><text class='block-title' x='98' y='428'>lib/services · pure functions</text><text class='block-sub' x='98' y='446'>order-service · pricing · inventory · cerebro</text></g><g class='block type-backend' data-id='channel-adapter'><rect class='block-bg' x='460' y='380' width='320' height='80'/><text class='block-code' x='478' y='405'>4.1 · CHANNEL ADAPTER</text><text class='block-title' x='478' y='428'>lib/adapters/channels/{meli,d2c,mp,b2b}.ts</text><text class='block-sub' x='478' y='446'>Interface única · 4 impl · ADR-0002</text></g><g class='block type-backend' data-id='supplier-adapter'><rect class='block-bg' x='820' y='380' width='280' height='80'/><text class='block-code' x='838' y='405'>4.2 · SUPPLIER ADAPTER</text><text class='block-title' x='838' y='428'>lib/adapters/suppliers/*.ts</text><text class='block-sub' x='838' y='446'>Dropship Y1 · ADR-0003</text></g><g class='block type-data' data-id='drizzle'><rect class='block-bg' x='80' y='540' width='220' height='100'/><text class='block-code' x='98' y='565'>5 · DRIZZLE ORM</text><text class='block-title' x='98' y='588'>type-safe queries</text><text class='block-sub' x='98' y='606'>zero runtime · migrations</text><text class='block-sub' x='98' y='624'>postgres.js driver pool</text></g><g class='block type-data' data-id='postgres'><rect class='block-bg' x='340' y='540' width='220' height='100'/><text class='block-code' x='358' y='565'>6 · SUPABASE POSTGRES</text><text class='block-title' x='358' y='588'>RLS · pg_notify · pg_cron</text><text class='block-sub' x='358' y='606'>20+ tablas mkt_*</text><text class='block-sub' x='358' y='624'>PITR backup 30d</text></g><g class='block type-ai' data-id='sentry'><rect class='block-bg' x='620' y='540' width='160' height='100'/><text class='block-code' x='638' y='565'>SENTRY</text><text class='block-title' x='638' y='588'>errores client+server</text><text class='block-sub' x='638' y='606'>breadcrumbs</text><text class='block-sub' x='638' y='624'>alerts > 1% error rate</text></g><g class='block type-ai' data-id='posthog'><rect class='block-bg' x='800' y='540' width='150' height='100'/><text class='block-code' x='818' y='565'>POSTHOG</text><text class='block-title' x='818' y='588'>funnels + flags</text><text class='block-sub' x='818' y='606'>events</text><text class='block-sub' x='818' y='624'>session replay</text></g><g class='block type-ai' data-id='llmops'><rect class='block-bg' x='970' y='540' width='150' height='100'/><text class='block-code' x='988' y='565'>LLMOps</text><text class='block-title' x='988' y='588'>mkt_ai_logs</text><text class='block-sub' x='988' y='606'>cost/feature/día</text><text class='block-sub' x='988' y='624'>cache hit rate</text></g>", "blocks": {"browser": {"type": "EDGE", "title": "Browser + CloudFront", "desc": "Punto de entrada. Browser de Camila/Javier/Guillermo hace request. CloudFront edge cachea assets estáticos (CSS/JS/images) con TTL agresivo. Páginas dinámicas pasan al runtime.", "stack": ["Chrome 120+", "CloudFront (vía Amplify)", "ACM cert TLS 1.3"], "endpoints": ["GET marketplace.smconnection.cl/*"]}, "auth-cookie": {"type": "AUTH SSR", "title": "Cookies httpOnly + SameSite", "desc": "@supabase/ssr inyecta sb-access-token + sb-refresh-token como cookies httpOnly. Refresh automático token expirado. Cookies NUNCA accesibles desde JS cliente.", "stack": ["@supabase/ssr", "Cookie SameSite=lax", "Auto-refresh 5min antes de expiry"]}, "middleware": {"type": "MIDDLEWARE", "title": "auth · rate-limit · idempotency", "desc": "Next.js middleware corre antes de todo. 3 checks: (1) JWT válido o redirect /login. (2) Rate limit Upstash Redis 60 req/min/user. (3) Si POST con header Idempotency-Key existe en mkt_idempotency → return cached response (TTL 24h).", "stack": ["Next.js middleware.ts", "Upstash Redis @upstash/ratelimit", "UUID v7 idempotency"], "endpoints": ["middleware.ts en raíz · matcher /api/* /(founders)/*"]}, "handlers": {"type": "ROUTE HANDLERS", "title": "Route Handlers + Server Actions", "desc": "Capa de entrada API. Route Handlers (/api/X/route.ts) reciben fetch HTTP. Server Actions (form submits desde RSC) ejecutan mutations type-safe. Ambos hacen Zod validation input + output ANTES de llamar services.", "stack": ["Next.js 16 App Router", "Zod 3.x", "Headers next/headers"], "endpoints": ["/api/products/route.ts", "/api/orders/route.ts", "actions: createProduct · updateOrder"]}, "rsc": {"type": "RSC", "title": "React Server Components", "desc": "Páginas RSC ejecutan fetch desde DB directo (sin pasar por /api). Streaming progresivo via Suspense. ISR para listings públicos · revalidate disparado por pg_notify('inventory_changed').", "stack": ["React 19 Server Components", "Suspense + streaming", "ISR + on-demand revalidate"]}, "services": {"type": "BUSINESS", "title": "Business Services (pure)", "desc": "Pure functions sin side effects (cuando es posible). order-service · pricing-service · inventory-service · cerebro-service. Reciben input validado · ejecutan lógica · llaman adapters cuando hace falta. Testeable sin DB.", "stack": ["TypeScript 5.x strict", "Pure functions when possible", "Dependency injection adapters"], "endpoints": ["lib/services/order.ts", "lib/services/pricing.ts", "lib/services/inventory.ts"]}, "channel-adapter": {"type": "ADAPTER", "title": "Channel Adapter Pattern", "desc": "Interface única ChannelAdapter con 4 implementaciones: MercadoLibreAdapter · D2CStorefrontAdapter · MercadoPublicoAdapter · B2BCustomAdapter. Agregar canal nuevo = 1 archivo. ADR-0002 formaliza este patrón.", "stack": ["TypeScript interface", "4 impl class concrete", "Factory pattern selector por channelId"], "endpoints": ["lib/adapters/channels/meli.ts", "lib/adapters/channels/d2c.ts", "lib/adapters/channels/mp.ts", "lib/adapters/channels/b2b.ts"]}, "supplier-adapter": {"type": "ADAPTER", "title": "Supplier Adapter Pattern", "desc": "Mismo patrón aplicado a proveedores dropship. Interface SupplierAdapter con N impl según proveedor (api_key, oauth, email_automated, whatsapp_business). ADR-0003 formaliza.", "stack": ["TypeScript interface", "N impl según proveedor"], "endpoints": ["lib/adapters/suppliers/proveedor-x.ts"]}, "drizzle": {"type": "ORM", "title": "Drizzle ORM", "desc": "Type-safe queries. Schema definido en lib/db/schema.ts (mapping 1:1 a tablas Postgres). Migrations versionadas en supabase/migrations/. postgres.js driver con connection pooling (max 10 conexiones por instancia).", "stack": ["Drizzle ORM", "postgres.js (pgbouncer compatible)", "Drizzle Kit migrations"], "endpoints": ["lib/db/schema.ts", "lib/db/index.ts (singleton)"]}, "postgres": {"type": "DB", "title": "Supabase Postgres", "desc": "Source of truth. 20+ tablas mkt_*. RLS estricta por tenant_id implícito JWT. pg_notify dispara eventos cross-canal. pg_cron para tareas internas (refresh matview, cleanup logs). PITR backup 30 días.", "stack": ["Postgres 15", "Supabase Auth", "pg_notify · pg_cron · pg_trgm"], "endpoints": ["yjjtbwfgtoepsevvkzta (intranet) o proyecto dedicado (decisión pending)"]}, "sentry": {"type": "ERROR TRACKING", "title": "Sentry · errors + breadcrumbs", "desc": "Captura errors client + server. Breadcrumbs por request (request_id correlacionado con CloudWatch logs). Alertas configuradas: error rate > 1% por 5min · DTE rechazo → email INMEDIATO · 401/403 spike > 10/min.", "stack": ["@sentry/nextjs", "Source maps uploadeados", "Performance monitoring 10% sample"]}, "posthog": {"type": "ANALYTICS", "title": "PostHog Cloud", "desc": "Funnels · feature flags · session replay (con privacy mask). Eventos clave: order.completed · opportunity.detected · cerebro.message · listing.published. Dashboards por founder + por canal.", "stack": ["posthog-js (client)", "posthog-node (server)", "Feature flags + experiments"]}, "llmops": {"type": "LLMOps", "title": "Tabla mkt_ai_logs", "desc": "Log JSON por cada llamada IA: provider · model · tokens_in/out · cost_usd · latency_ms · cache_hit · fallback_used. Dashboards Postgres queryables. Trigger auto-throttle si cost diario > 80% budget.", "stack": ["INSERT mkt_ai_logs por llamada", "Materialized view cost_by_feature_daily", "pg_cron refresh 1h"]}}, "connections": [{"from": "browser", "to": "middleware"}, {"from": "middleware", "to": "handlers"}, {"from": "handlers", "to": "services"}, {"from": "services", "to": "drizzle"}, {"from": "drizzle", "to": "postgres"}, {"from": "services", "to": "channel-adapter"}, {"from": "services", "to": "supplier-adapter"}, {"from": "services", "to": "sentry"}, {"from": "services", "to": "posthog"}, {"from": "services", "to": "llmops"}]}</script>
+</div>
   <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>05</span></div>
 </section>
-<section class="page" id="04-performance-budgets-targets-y1">
-  <h2><span class="h2-num">04</span>Performance budgets (targets Y1)</h2>
+<section class="page" id="04-request-lifecycle-de-browser-a-db-y-vuelta">
+  <h2><span class="h2-num">04</span>Request lifecycle · de browser a DB y vuelta</h2>
+  <pre class="ascii">Browser (founder) hace acción
+     ↓
+Next.js Middleware (auth · rate limit · idempotency check)
+     ↓
+Route Handler (/api/X) o Server Action
+     ↓
+Zod schema validation (input)
+     ↓
+Business logic layer (services/ folder)
+     ↓
+Drizzle ORM (type-safe queries · transactions)
+     ↓
+Supabase Postgres (RLS apply by tenant_id)
+     ↓
+[opcional] pg_notify si data afecta otros canales
+     ↓
+[opcional] Side effects (call MeLi · Open Factura · etc)
+     ↓
+Zod schema validation (output)
+     ↓
+Response al browser (JSON o RSC stream)
+     ↓
+Sentry log si error · PostHog event si feature usage
+     ↓
+mkt_api_logs row append-only para audit</pre>
+<p>Target end-to-end: API lectura p95 &lt;350ms · mutación p95 &lt;600ms.</p>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>06</span></div>
+</section>
+<section class="page" id="05-data-flow-cross-canal-venta-meli">
+  <h2><span class="h2-num">05</span>Data flow cross-canal · venta MeLi</h2>
+  <pre class="ascii">1. MeLi POST webhook a /api/webhooks/meli
+2. Middleware verifica HMAC SHA-256 firma
+3. Middleware verifica idempotency_key contra mkt_idempotency
+4. Si new event: INSERT mkt_orders (status='created')
+5. Trigger Postgres: UPDATE mkt_inventory.reserved += qty
+   (con SELECT FOR UPDATE para evitar concurrency oversell)
+6. Trigger Postgres: pg_notify('inventory_changed', product_id)
+7. Listener Node.js subscriber recibe notify
+8. Listener llama channels-sync API por cada adapter activo:
+   · Adapter D2C → actualiza ISR revalidate
+   · Adapter MP → actualiza stock en MP API
+   · Adapter B2B → invalida cache portal
+9. Mientras tanto · evento order.created dispara:
+   · Side effect: emit DTE 39 vía Open Factura
+   · Side effect: generate label vía Chilexpress
+   · Side effect: send email comprador vía Resend
+10. Cada side effect → row en mkt_api_logs (audit)
+11. Sentry breadcrumbs en cada paso · si error → alerta</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>07</span></div>
+</section>
+<section class="page" id="06-event-driven-architecture">
+  <h2><span class="h2-num">06</span>Event-driven architecture</h2>
+  <pre class="ascii">EVENTOS INTERNOS (pg_notify · solo Postgres)
+─────────────────────────────────────────────────────
+inventory_changed      → channels-sync · ISR revalidate
+order_completed        → emit DTE · email comprador
+opportunity_detected   → push notification UI
+ads_roas_low           → alerta founder (sugerencia pausa)
+licitacion_match       → notification Javier
+threshold_phase_met    → email cierre fase
+
+EVENTOS EXTERNOS (webhooks inbound · HMAC verificado)
+─────────────────────────────────────────────────────
+POST /webhooks/meli           → order events MeLi
+POST /webhooks/payment        → pasarelas (MP · WebPay)
+POST /webhooks/courier        → tracking updates
+POST /webhooks/mp             → adjudicación MP
+POST /webhooks/supplier/:id   → dropship suppliers
+
+EVENTOS PROGRAMADOS (Vercel Cron)
+─────────────────────────────────────────────────────
+POST /cron/refresh-meli       6h · refresh OAuth tokens
+POST /cron/sync-mp            8am · sync licitaciones diarias
+POST /cron/cache-cleanup      7d · eliminar Smart Cache Cold
+POST /cron/scoring-daily      6am · Cerebro scoring oportunidades
+POST /cron/conciliacion       1ro mes · matching pagos vs DTE
+POST /cron/reputation-tracker 1h · refresh materialized view</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>08</span></div>
+</section>
+<section class="page" id="07-channel-adapter-pattern-interface-4-impl">
+  <h2><span class="h2-num">07</span>Channel Adapter Pattern · interface + 4 impl</h2>
+  <h3>Interface</h3>
+<pre class="ascii">interface ChannelAdapter {
+  readonly channelId: 'meli' | 'd2c' | 'mp' | 'b2b';
+  readonly displayName: string;
+
+  // Catalog
+  publishProduct(product: Product, listing: ChannelListing): Promise<{ externalId: string }>;
+  updateProduct(externalId: string, changes: Partial<Product>): Promise<void>;
+  unpublishProduct(externalId: string): Promise<void>;
+  syncStock(externalId: string, qty: number): Promise<void>;
+
+  // Orders
+  fetchOrders(since: Date): Promise<Order[]>;
+  acceptOrder(externalOrderId: string): Promise<void>;
+  shipOrder(externalOrderId: string, tracking: string): Promise<void>;
+  cancelOrder(externalOrderId: string, reason: string): Promise<void>;
+
+  // Auth
+  refreshAuth(): Promise<void>;
+  isAuthValid(): Promise<boolean>;
+
+  // Health
+  ping(): Promise<{ ok: boolean; latency_ms: number }>;
+}</pre>
+<h3>4 Implementaciones</h3>
+<table>
+<thead><tr>
+<th>Canal</th>
+<th>Clase</th>
+<th>Highlights</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><strong>MeLi</strong></td>
+<td><code>MercadoLibreAdapter</code></td>
+<td>OAuth 2.0 PKCE · refresh 6h · webhook firmado · rate limit 1K req/min</td>
+</tr>
+<tr>
+<td><strong>D2C</strong></td>
+<td><code>D2CStorefrontAdapter</code></td>
+<td>Next.js ISR revalidate · stock real-time UI · pasarelas internas (Y2)</td>
+</tr>
+<tr>
+<td><strong>MP</strong></td>
+<td><code>MercadoPublicoAdapter</code></td>
+<td>Ticket auth · sync diario 8am · postular ofertas · webhook adjudicación</td>
+</tr>
+<tr>
+<td><strong>B2B</strong></td>
+<td><code>B2BCustomAdapter</code></td>
+<td>API keys por cliente · RFQ workflow · firma HMAC aprobación</td>
+</tr>
+</tbody></table>
+<p>Beneficio: agregar canal nuevo = 1 archivo nuevo. NO refactor del resto.</p>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>09</span></div>
+</section>
+<section class="page" id="08-supplier-adapter-pattern">
+  <h2><span class="h2-num">08</span>Supplier Adapter Pattern</h2>
+  <pre class="ascii">interface SupplierAdapter {
+  readonly supplierId: string;
+  readonly displayName: string;
+  readonly authMode: 'api_key' | 'oauth' | 'email_automated' | 'whatsapp_business';
+
+  syncCatalog(): Promise<SupplierProduct[]>;
+  checkStock(sku: string): Promise<{ available: number; updated_at: Date }>;
+  createPurchaseOrder(items: OrderItem[], shipTo: Address): Promise<{ poId: string }>;
+  cancelPurchaseOrder(poId: string, reason: string): Promise<void>;
+  trackShipment(poId: string): Promise<{ status: string; eta: Date; tracking_number?: string }>;
+  handleReturn(orderId: string, items: ReturnItem[]): Promise<{ rmaId: string }>;
+  ping(): Promise<{ ok: boolean }>;
+}</pre>
+<p>ADR-0003 formaliza este pattern para modo dropshipping Y1.</p>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>10</span></div>
+</section>
+<section class="page" id="09-estructura-monorepo">
+  <h2><span class="h2-num">09</span>Estructura monorepo</h2>
+  <pre class="ascii">marketplace-smc/                       (repo principal · Next.js app)
+├── app/
+│   ├── (founders)/                   (route group · auth wall)
+│   │   ├── dashboard/
+│   │   ├── productos/
+│   │   ├── ordenes/
+│   │   ├── cerebro/
+│   │   ├── oportunidades/
+│   │   ├── ads/
+│   │   ├── mercado-publico/
+│   │   ├── b2b/
+│   │   └── settings/
+│   ├── (public)/                     (route group · sin auth)
+│   │   ├── d2c/                      (storefront Y2)
+│   │   └── b2b/rfq/                  (portal cliente B2B)
+│   └── api/
+│       ├── auth/
+│       ├── products/
+│       ├── orders/
+│       ├── channels/{meli|d2c|mp|b2b}/
+│       ├── suppliers/
+│       ├── ads/
+│       ├── cerebro/
+│       ├── webhooks/{meli|payment|courier|mp|supplier}/
+│       └── cron/
+├── lib/
+│   ├── db/                           (Drizzle schema + migrations)
+│   ├── adapters/
+│   │   ├── channels/{meli,d2c,mp,b2b}.ts
+│   │   └── suppliers/{xxx}.ts
+│   ├── cerebro/                      (scoring · chat SSE · cache)
+│   ├── auth/                         (Supabase Auth helpers SSR)
+│   ├── validators/                   (Zod schemas)
+│   └── utils/
+├── packages/
+│   ├── ui/                           (@smc/ui · componentes atómicos)
+│   ├── shared/                       (@smc/shared · tipos cross-canal)
+│   └── prompts/                      (@smc/prompts · versionados IA)
+├── supabase/
+│   ├── migrations/                   (SQL versionado)
+│   └── seed.sql
+├── .github/workflows/
+│   ├── ci.yml                        (lint + type + test + build + tag)
+│   └── e2e.yml                       (Playwright nightly · Y2)
+└── public/</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>11</span></div>
+</section>
+<section class="page" id="10-integraci-n-bd-c-mo-se-conecta">
+  <h2><span class="h2-num">10</span>Integración BD · cómo se conecta</h2>
+  <pre class="ascii">Next.js Server Components / Route Handlers
+     ↓
+import { db } from '@/lib/db'         (singleton client)
+     ↓
+Drizzle ORM (type-safe queries)
+     ↓
+postgres.js (driver con connection pooling)
+     ↓
+Supabase Postgres (RLS enforced)
+     ↓
+Si tenant_id en JWT no matches → 0 rows (RLS bloquea)</pre>
+<h3>Patrones obligatorios</h3>
+<pre class="ascii">// ✅ Server-side · createServerClient (RLS aplicada)
+import { createServerClient } from '@/lib/supabase/server';
+
+export async function getProducts() {
+  const supabase = await createServerClient();
+  const { data } = await supabase.from('products').select('*');
+  return data;
+}
+
+// ❌ NUNCA queries con service_role en código client-side
+
+// ✅ Server Action con Zod validation
+'use server';
+import { z } from 'zod';
+import { createServerClient } from '@/lib/supabase/server';
+
+const schema = z.object({
+  sku: z.string().min(3),
+  name: z.string().min(1),
+  base_price: z.number().int().positive(),
+});
+
+export async function createProduct(input: unknown) {
+  const parsed = schema.parse(input);
+  const supabase = await createServerClient();
+  const { data, error } = await supabase.from('products').insert(parsed).select().single();
+  if (error) throw new Error(error.message);
+  return data;
+}</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>12</span></div>
+</section>
+<section class="page" id="11-orquestaci-n-cuando-entra-una-orden">
+  <h2><span class="h2-num">11</span>Orquestación · cuando entra una orden</h2>
+  <pre class="ascii">ORDEN ENTRA → orchestrator decide qué hacer
+     ↓
+1. Identify channel (meli · mp · d2c · b2b)
+2. Call ChannelAdapter[channel].acceptOrder()
+3. Postgres transaction:
+   · INSERT mkt_orders
+   · UPDATE mkt_inventory (reserve)
+   · INSERT mkt_order_items
+4. If is_dropship product → SupplierAdapter[supplier_id].createPurchaseOrder()
+5. Trigger pg_notify('order_completed')
+6. Side effect listener:
+   · emit DTE
+   · generate label (si stock propio)
+   · send email comprador
+7. PostHog event 'order.completed'
+8. Sentry breadcrumb success</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>13</span></div>
+</section>
+<section class="page" id="12-deploy-ambientes-ci-cd">
+  <h2><span class="h2-num">12</span>Deploy · ambientes · CI/CD</h2>
+  <h3>Ambientes</h3>
+<table>
+<thead><tr>
+<th>Ambiente</th>
+<th>URL</th>
+<th>Auto-deploy</th>
+<th>Branch</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Development local</td>
+<td>localhost:3000</td>
+<td>manual · <code>npm run dev</code></td>
+<td>feature branches</td>
+</tr>
+<tr>
+<td>QAS (futuro Y2)</td>
+<td>qas.marketplace.smconnection.cl</td>
+<td>push develop</td>
+<td>develop</td>
+</tr>
+<tr>
+<td>Production</td>
+<td>marketplace.smconnection.cl</td>
+<td>push main + tests verdes</td>
+<td>main</td>
+</tr>
+</tbody></table>
+<h3>Pipeline CI · GitHub Actions</h3>
+<pre class="ascii">name: CI — Marketplace
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    permissions:
+      contents: write  # para push tag
+
+    steps:
+      - Checkout
+      - Setup Node 22
+      - npm ci
+      - npm test (Vitest)
+      - npx tsc --noEmit (type-check)
+      - npm run build (Next.js production build)
+      - if main + tests OK → git tag deploy-marketplace-YYYY.MM.DD-XXX
+      - if main → AWS Amplify auto-deploy hook
+      - smoke test post-deploy (curl marketplace.smconnection.cl status 200)
+      - if smoke fail → rollback automático + alerta Sentry</pre>
+<h3>Rollback strategy</h3>
+<ul>
+<li>AWS Amplify mantiene últimos 25 builds</li>
+<li>Rollback en 1 click vía console O CLI</li>
+<li>Tag deploys permite git checkout fácil</li>
+<li>Si rollback dispara → notification founders + Sentry incident</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>14</span></div>
+</section>
+<section class="page" id="13-escalabilidad-t-cnica-cu-ndo-refactorizar">
+  <h2><span class="h2-num">13</span>Escalabilidad técnica · cuándo refactorizar</h2>
+  <pre class="ascii">SEÑAL                                          ACCIÓN
+─────────────────────────────────────────────────────
+Build time > 5min                              Turbopack tuning · code splitting
+Bundle client > 500KB                          Dynamic imports · server components
+API p95 > 800ms                                Add caching · index DB · query review
+DB connections agotadas                        Pool tuning · pgBouncer
+1 canal > 80% revenue                          Acelerar diversificación (BR-driven)
+Founder > 8h/día sistema                       Automatizar más · agentes IA bg
+Tests > 5min                                   Parallelizar · test sharding
+Costo IA > $300K CLP/mes                       Cache prompts comunes · downgrade modelos
+Tabla Postgres > 1M rows                       Indexar correctamente · particionar
+Tenant count > 5                               Migrar de tenant_id implicit a explicit
+                                               sharding (Y3+)</pre>
+<h3>Cuándo NO refactorizar</h3>
+<ul>
+<li>❌ "Para hacer el código más limpio" sin métrica concreta</li>
+<li>❌ "Para usar la tecnología nueva X" sin caso de uso real</li>
+<li>❌ "Porque siempre quise" — guardarse para hobbies personales</li>
+</ul>
+<div class="box box-info"><div class="box-title">💡 Regla de oro</div><p>Refactor cuando hay número concreto que dispara · NO porque "se ve mejor". Rule of three: 3 violaciones repetidas → abstraer. NO refactorizar 1 vez.</p></div>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>15</span></div>
+</section>
+<section class="page" id="14-adrs-registradas-5-decisiones">
+  <h2><span class="h2-num">14</span>ADRs registradas · 5 decisiones</h2>
+  <table>
+<thead><tr>
+<th>ADR</th>
+<th>Título</th>
+<th>Status</th>
+<th>Dónde está el detalle</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>ADR-0001</td>
+<td>v5 Opportunities sin LLM</td>
+<td>✅ Accepted</td>
+<td>Doc 09 Sistema Oportunidades</td>
+</tr>
+<tr>
+<td>ADR-0002</td>
+<td>Channel Adapter Pattern</td>
+<td>✅ Accepted</td>
+<td>sección 07</td>
+</tr>
+<tr>
+<td>ADR-0003</td>
+<td>Supplier Adapter Pattern</td>
+<td>🟡 Proposed</td>
+<td>sección 08</td>
+</tr>
+<tr>
+<td>ADR-0004</td>
+<td>ADS multicanal automation (Y2)</td>
+<td>🟡 Proposed</td>
+<td>Doc 11 · sección Ads</td>
+</tr>
+<tr>
+<td>ADR-0005</td>
+<td>Versionado banco v3 ↔ v4</td>
+<td>🟡 Proposed</td>
+<td>Doc 10 Assessment · sección 08</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>16</span></div>
+</section>
+<section class="page" id="15-performance-budgets">
+  <h2><span class="h2-num">15</span>Performance budgets</h2>
   <table>
 <thead><tr>
 <th>Métrica</th>
@@ -213,7 +785,7 @@
 <td>&gt; 1.5s</td>
 </tr>
 <tr>
-<td>Cerebro chat first token (SSE)</td>
+<td>Cerebro first token SSE</td>
 <td>&lt; 600ms</td>
 <td>&gt; 2s</td>
 </tr>
@@ -223,20 +795,20 @@
 <td>&gt; 30s</td>
 </tr>
 <tr>
-<td>Build time CI</td>
+<td>Build CI</td>
 <td>&lt; 3min</td>
 <td>&gt; 8min</td>
 </tr>
 <tr>
-<td>Bundle size cliente</td>
+<td>Bundle client</td>
 <td>&lt; 250KB gzipped</td>
 <td>&gt; 500KB</td>
 </tr>
 </tbody></table>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>06</span></div>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>17</span></div>
 </section>
-<section class="page" id="05-security-requirements">
-  <h2><span class="h2-num">05</span>Security requirements</h2>
+<section class="page" id="16-security-requirements-12-items-con-implementaci-n">
+  <h2><span class="h2-num">16</span>Security requirements · 12 items con implementación</h2>
   <table>
 <thead><tr>
 <th>#</th>
@@ -247,126 +819,125 @@
 <tr>
 <td>SR-1</td>
 <td>TLS 1.3 obligatorio</td>
-<td>Amplify default + HSTS preload</td>
+<td>Amplify default + HSTS preload header</td>
 </tr>
 <tr>
 <td>SR-2</td>
 <td>AES-256 at rest</td>
-<td>Supabase default</td>
+<td>Supabase default (Postgres + Storage)</td>
 </tr>
 <tr>
 <td>SR-3</td>
 <td>RLS Postgres siempre activo</td>
-<td>tenant_id implícito desde JWT</td>
+<td>Policies por tabla + tenant_id implícito JWT</td>
 </tr>
 <tr>
 <td>SR-4</td>
 <td>service_role solo backend</td>
-<td>NUNCA exposed a client</td>
+<td>Variable env Amplify · NUNCA <code>NEXT_PUBLIC_*</code></td>
 </tr>
 <tr>
 <td>SR-5</td>
 <td>2FA obligatorio admins</td>
-<td>Supabase Auth TOTP</td>
+<td>Supabase Auth TOTP enforcement</td>
 </tr>
 <tr>
 <td>SR-6</td>
 <td>Cookies httpOnly + SameSite=lax</td>
-<td>Default Next.js + custom config</td>
+<td>@supabase/ssr default + custom config</td>
 </tr>
 <tr>
 <td>SR-7</td>
 <td>CSP headers estrictos</td>
-<td>next.config.ts headers()</td>
+<td>next.config.ts <code>headers()</code> + report-uri</td>
 </tr>
 <tr>
 <td>SR-8</td>
 <td>Rate limit 60 req/min user</td>
-<td>Middleware Next.js + Upstash Redis</td>
+<td>Upstash Redis middleware Next.js</td>
 </tr>
 <tr>
 <td>SR-9</td>
-<td>Idempotency keys en POST críticos</td>
-<td>UUIDs · tabla <code>mkt_idempotency</code></td>
+<td>Idempotency keys POST críticos</td>
+<td>UUID v7 · tabla <code>mkt_idempotency</code> TTL 24h</td>
 </tr>
 <tr>
 <td>SR-10</td>
 <td>Audit logs append-only</td>
-<td>Tabla <code>audit_logs</code> + RLS</td>
+<td>Tabla <code>audit_logs</code> con RLS read-only · only INSERT</td>
 </tr>
 <tr>
 <td>SR-11</td>
 <td>Secrets en Amplify env vars</td>
-<td>NUNCA en repo · rotación trimestral</td>
+<td>NUNCA en repo · rotación trimestral docs/security</td>
 </tr>
 <tr>
 <td>SR-12</td>
-<td>HMAC SHA-256 en webhooks</td>
-<td>Validar firma antes de procesar</td>
+<td>HMAC SHA-256 webhooks</td>
+<td><code>crypto.timingSafeEqual</code> para evitar timing attacks</td>
 </tr>
 </tbody></table>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>07</span></div>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>18</span></div>
 </section>
-<section class="page" id="06-observabilidad-llmops">
-  <h2><span class="h2-num">06</span>Observabilidad + LLMOps</h2>
-  <pre class="ascii">LOGS estructurados (JSON) por evento
+<section class="page" id="17-observabilidad-llmops-detallado">
+  <h2><span class="h2-num">17</span>Observabilidad · LLMOps detallado</h2>
+  <pre class="ascii">LOG estructurado JSON por evento
 ─────────────────────────────────────────────────────
-{ timestamp · level · feature · user_id · tenant_id ·
-  duration_ms · status · error_msg · metadata }
+{
+  timestamp: "2026-10-15T14:23:11.234Z",
+  level: "info|warn|error",
+  request_id: "uuid-correlation",
+  user_id: "uuid",
+  tenant_id: "uuid",
+  feature: "products.list",
+  endpoint: "/api/products",
+  method: "GET",
+  status: 200,
+  duration_ms: 124,
+  error_msg: null,
+  metadata: { /* feature-specific */ }
+}
 
-→ stdout (CloudWatch) + tabla mkt_api_logs (consultable)
+→ stdout (CloudWatch) + tabla mkt_api_logs (Postgres queryable)
 
 LLMOps específico Cerebro
 ─────────────────────────────────────────────────────
-{ provider · model · prompt_version · tokens_in · tokens_out ·
-  cost_usd · latency_ms · cache_hit · feature · hallucination_flag }
+{
+  timestamp: "2026-10-15T14:23:15.123Z",
+  feature: "cerebro.chat",
+  provider: "groq",
+  model: "llama-3.3-70b-versatile",
+  prompt_version: "chat-v2.1",
+  tokens_in: 1234,
+  tokens_out: 456,
+  cost_usd: 0.00021,
+  latency_ms: 287,
+  cache_hit: false,
+  fallback_used: false,
+  hallucination_flag: false
+}
 
-→ tabla mkt_ai_logs · dashboards costo/feature/día
+→ tabla mkt_ai_logs · dashboards costo/feature/día/founder
 
-ALERTAS (CloudWatch + Sentry)
+ALERTAS configuradas (CloudWatch + Sentry)
 ─────────────────────────────────────────────────────
-- Error rate > 1% por 5 min → email founders
-- p95 API > 800ms por 10 min → email
-- Costo IA diario > 80% budget → email
-- Sync canal fallido > 3 retries → email
-- DTE SII rechazo → email inmediato</pre>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>08</span></div>
+- Error rate > 1% por 5 min          → email founders
+- p95 API > 800ms por 10 min         → email
+- Cost IA diario > 80% budget        → email + auto-throttle
+- Sync canal fallido > 3 retries     → email + alert PostHog
+- DTE SII rechazo                    → email INMEDIATO
+- 401/403 spike > 10/min             → posible attack · email</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>19</span></div>
 </section>
-<section class="page" id="07-decisiones-de-implementaci-n">
-  <h2><span class="h2-num">07</span>Decisiones de implementación</h2>
-  <div class="box box-premise"><div class="box-title">🎯 Filosofía técnica</div><p>Hacer lo mínimo que entregue valor · NO sobre-diseñar.</p></div>
-<ul>
-<li><strong>Sin tests E2E Y1</strong>: foco unit + integration. E2E (Playwright) en Y2 si hay capacidad.</li>
-<li><strong>Sin GraphQL</strong>: REST endpoints simples. GraphQL si complejidad data fetching lo justifica Y2.</li>
-<li><strong>Sin WebSockets Y1</strong>: SSE para streaming Cerebro. WS solo si voz/colab requiere bidireccional Y2.</li>
-<li><strong>Sin micro-frontends</strong>: single Next.js app. Split si equipo crece a 5+ devs.</li>
-<li><strong>Sin Kubernetes</strong>: Amplify suficiente. K8s solo si self-hosting · NO el caso.</li>
-<li><strong>Sin Kafka / event streaming externo</strong>: pg_notify suficiente Y1. RabbitMQ/Kafka si volumen >100K eventos/día.</li>
-<li><strong>Sin Sentry custom dashboards</strong>: usar defaults. Custom solo si patrón específico emerge.</li>
-</ul>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>09</span></div>
-</section>
-<section class="page" id="08-cosas-que-dej-fuera-por-ahora">
-  <h2><span class="h2-num">08</span>Cosas que dejé fuera (por ahora)</h2>
+<section class="page" id="18-pr-ximos-pasos-t-cnicos">
+  <h2><span class="h2-num">18</span>Próximos pasos técnicos</h2>
   <ul>
-<li>Schema completo DB → ver Doc 05 Data Model</li>
-<li>Endpoints detallados → ver Doc 06 API Catalog (Swagger live)</li>
-<li>HLA + 5 escenarios → ver Doc 07 Architecture</li>
-<li>Setup dev local · convenciones · workflow Git → ver Doc 38 Onboarding Dev</li>
-<li>Performance perfiles real → se construyen post-MVP con data real</li>
+<li>✅ Doc 13 v2 · granular · librerías · flujos detallados</li>
+<li>⏭️ Tu OK plan</li>
+<li>⏭️ Empezar implementación Q4-26 según Doc 18 Plan Ejecución</li>
+<li>⏭️ Doc 19 UAT post-construcción</li>
 </ul>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>10</span></div>
-</section>
-<section class="page" id="09-pr-ximos-pasos-t-cnicos">
-  <h2><span class="h2-num">09</span>Próximos pasos técnicos</h2>
-  <ul>
-<li>Implementar ADR-0003 Supplier Adapter Pattern (estimate: 16h)</li>
-<li>Implementar ADR-0004 ADS Manager (estimate: 40h · Y2)</li>
-<li>Setup observabilidad LLMOps tabla <code>mkt_ai_logs</code> (4h)</li>
-<li>Performance audit Lighthouse · alinear a budgets (8h)</li>
-<li>Audit security checklist 12 items SR-1 a SR-12 (4h)</li>
-</ul>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>11</span></div>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>20</span></div>
 </section>
 
 </div>

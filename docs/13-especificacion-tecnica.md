@@ -2,10 +2,10 @@
 number: 13
 id: especificacion-tecnica
 title: Especificación Técnica
-subtitle: "Cómo se construye · stack confirmado · ADRs · performance budgets · observabilidad."
+subtitle: "Cómo se construye granular · stack librería por librería · 5 ADRs · flujos detallados · monorepo · CI/CD · escalabilidad."
 block: Producto Técnico
-author: Architect + Cerebro
-version: 1.0
+author: Architect + Hoku + Cerebro
+version: 2.0
 date: 2026-05-27
 status: 🟡 Draft · pendiente review founders
 prev: 11-especificacion-funcional.html
@@ -14,75 +14,438 @@ next: 14-founders-journey.html
 
 # 01 · Premisa
 
-Documento define **cómo se construye** Marketplace SMC. Complementa Doc 07 Architecture (HLA + escenarios) con detalle de decisiones técnicas + ADRs + performance budgets + observabilidad.
+Doc 13 detalla **cómo se construye** Marketplace SMC a nivel granular: librería específica por capa · cómo conversan entre sí · flujos técnicos detallados · ADRs registradas · cuándo refactorizar.
 
-> [!info] Hilo conductor
-> Doc 10 dice qué hace · Doc 11 dice cómo se construye · Doc 18 dice cuándo y con qué equipo. Los 3 son complementarios · NO redundantes.
+> [!info] No es repetición de Doc 07 Architecture
+> Doc 07 muestra el HLA + 5 escenarios. Doc 13 detalla decisiones técnicas con librerías específicas · flujos request/response · event lifecycle · queries · CI/CD pipeline · cuándo aplica cada ADR.
 
-# 02 · Stack confirmado
+# 02 · Stack completo · librería por librería
 
-| Capa | Tecnología | Justificación |
-|------|------------|---------------|
-| Runtime | Node.js 22 LTS | Estable hasta 2027-04 · familiarity Guillermo |
-| Framework | Next.js 16 (App Router) | SSR + RSC + Server Actions + ISR · DX excelente |
-| TypeScript | 5.x strict | Type safety · catch bugs en build |
-| UI | React 19 + Tailwind v4 + Radix + @smc/ui | Component-driven · accesible · branded |
-| State Y1 | URL params + Server Components | Sin Zustand/Redux Y1 · YAGNI |
-| DB | Supabase Postgres (sa-east-1) | RLS · pg_cron · pg_notify · backups PITR 30d |
-| Auth | Supabase Auth + JWT con tenant_id | Single tenant Y1 · multi-tenant ready arch |
-| ORM | Drizzle ORM | Type-safe · zero runtime · migrations versionadas |
-| Validation | Zod (client + server) | Single source of truth schemas |
-| Forms | React Hook Form + Zod resolver | Performance · UX · validación shared |
-| Pagos | MercadoPago + WebPay Plus | MercadoPago para MeLi · WebPay para D2C Chile |
-| Logística | Chilexpress + Starken APIs | Couriers locales Chile principales |
-| DTE | Open Factura | DTE 33 · 39 · 61 · cumplimiento SII |
-| IA | OpenRouter (chain) | Groq · Gemini · DeepSeek fallback · NUNCA Claude |
-| Hosting | AWS Amplify | Auto-deploy push · CDN CloudFront · build optimizado |
-| Domain | marketplace.smconnection.cl | Custom domain · cert ACM |
-| Observabilidad | Sentry + PostHog + CloudWatch | Errores · funnels · infra · cost dashboards |
-| Cron | Vercel Cron + pg_cron | Refresh MeLi 6h · sync MP diario · cache cleanup 7d |
-| CI/CD | GitHub Actions | Lint · type-check · build · auto-tag deploy |
+## 2.1 · Runtime + Framework
 
-# 03 · Architectural Decision Records (ADRs)
+| Capa | Librería específica | Versión | Justificación |
+|------|---------------------|---------|---------------|
+| Runtime | Node.js | 22 LTS | Estable hasta 2027-04 |
+| Framework | Next.js | 16.x App Router | RSC + Server Actions + ISR + middleware |
+| TypeScript | TypeScript | 5.x strict mode | Type safety · catch en build |
+| Build | Turbopack | (incluido Next.js 16) | Builds 10x más rápidos que webpack |
 
-## ADR-0001 · v5 Opportunities sin LLM (existente)
+## 2.2 · UI + Frontend
 
-Status: ✅ Accepted (2026-05-15)
-Context: MeLi DPP requiere USD 200K GMV · imposible Y1.
-Decision: 6 capas Opportunities · scoring sin LLM · usar SoloTodo + Mercado Público + Open Food Facts + BCentral.
-Consequences: Cero costo IA por scoring · sin dependencia DPP · catálogo amplio Chile.
+| Capa | Librería específica | Versión | Rol |
+|------|---------------------|---------|-----|
+| CSS engine | Tailwind CSS | v4 | Utility-first · JIT compiler |
+| Variants | Tailwind Variants (tv) | latest | Component variants + slots |
+| Primitivas a11y | Radix UI | latest | Accesibilidad WAI-ARIA |
+| Iconos | Lucide React | latest | Tree-shake · stroke 1.75 consistente |
+| Motion | Framer Motion | 11.x | Animaciones + gestos |
+| Forms | React Hook Form | 7.x | Performance · uncontrolled inputs |
+| Validation | Zod | 3.x | Schema único client+server |
+| State global Y1 | URL params + RSC | nativo | Sin Zustand/Redux Y1 · YAGNI |
+| Data fetching client | TanStack Query | 5.x | Solo donde RSC no aplica |
+| Charts | Recharts | latest | Si se necesitan dashboards complejos |
+| Package interno | @smc/ui | propio | Abstracción Radix + tv + lucide |
 
-## ADR-0002 · Channel Adapter Pattern (existente)
+## 2.3 · Backend + Data
 
-Status: ✅ Accepted (2026-05-10)
-Context: 4+ canales (MeLi · MP · D2C · B2B) con APIs muy distintas. Sin abstracción se vuelve unmaintainable.
-Decision: Interface uniforme `ChannelAdapter` con métodos `syncStock()`, `listOrders()`, `publishProduct()`. Cada canal implementa su adapter.
-Consequences: Agregar canal nuevo = 1 archivo nuevo · NO refactor del resto.
+| Capa | Librería específica | Versión | Rol |
+|------|---------------------|---------|-----|
+| ORM | Drizzle ORM | latest | Type-safe · zero runtime · migrations versionadas |
+| DB driver | postgres.js (de Drizzle) | latest | Connection pooling para serverless |
+| Auth | Supabase Auth + JWT | latest | Email/password + TOTP 2FA opcional |
+| Auth SSR | @supabase/ssr | latest | Cookies httpOnly + refresh token rotation |
+| Real-time | Supabase Realtime | latest | Only para subscribe específicos (Y2) |
+| Storage | Supabase Storage | latest | Buckets con RLS · signed URLs |
+| Rate limit | Upstash Redis + ratelimit | latest | 60 req/min/user · 600 req/min/IP |
+| Idempotency | Custom middleware | propio | Tabla `mkt_idempotency` con TTL 24h |
 
-## ADR-0003 · Supplier Adapter Pattern 🆕
+## 2.4 · Integraciones externas
 
-Status: 🟡 Proposed (2026-05-27)
-Context: Modo dropshipping (Doc 02 P13) requiere integración con proveedores externos. Cada proveedor tiene API/feed/método distinto. Sin abstracción = misma plaga que Channel.
-Decision: Interface uniforme `SupplierAdapter` con métodos `syncCatalog()`, `checkStock(sku)`, `createPurchaseOrder(items)`, `trackShipment(po_id)`, `handleReturn(order_id)`. Cada proveedor implementa el suyo.
-Consequences: Agregar proveedor dropship = 1 archivo · NO refactor.
-Alternativas descartadas: webhooks ad-hoc por proveedor (mantenimiento caro · escalado lineal).
+| Servicio | SDK / método | Auth |
+|----------|--------------|------|
+| Mercado Libre | fetch directo · sin SDK oficial | OAuth 2.0 PKCE |
+| Mercado Público | fetch directo | Ticket env var |
+| Open Factura | fetch directo + cert digital | API key + cert |
+| MercadoPago | mercadopago oficial SDK | OAuth + webhook firmado |
+| WebPay Plus | @transbank/webpay-plus | Cert + commerce code |
+| Chilexpress | fetch directo | API key |
+| Starken | fetch directo | API key |
+| OpenRouter | openai SDK (compatible API) | API key |
+| Resend | resend SDK | API key |
+| Sentry | @sentry/nextjs | DSN |
+| PostHog | posthog-node + posthog-js | Project API key |
 
-## ADR-0004 · ADS multicanal automation 🆕
+## 2.5 · DevOps + Observability
 
-Status: 🟡 Proposed (2026-05-27)
-Context: D2C Y2+ requiere ADS (Meta + Google + TikTok). Sin automation · tiempo founder por campaign sale del presupuesto.
-Decision: Construir AdsManager que abstrae las 3 plataformas. Métricas comunes (CTR · CPC · ROAS). Pixels server-side (Meta Conversions API + Google Ads Enhanced Conversions + TikTok Events API) para deprecation cookie-less.
-Consequences: 1 panel · 3 plataformas. Server-side mejor measurement.
-Alternativas descartadas: usar tool tercero (Triple Whale · Northbeam) · costo $300+/mes innecesario Y2.
+| Capa | Tool | Rol |
+|------|------|-----|
+| Hosting | AWS Amplify | Next.js auto-deploy push to main |
+| CDN | CloudFront (incluido Amplify) | Edge caching + WAF |
+| Cert | ACM | Auto-renovado |
+| DNS | Route 53 | smconnection.cl + subdomains |
+| Cron | Vercel Cron (proxy via Amplify) | Schedule jobs |
+| CI/CD | GitHub Actions | Lint · type-check · tests · build · tag |
+| Monitoring infra | CloudWatch | Lambda · API Gateway · cost |
+| Monitoring errors | Sentry | Frontend + backend |
+| Analytics product | PostHog Cloud | Funnels · feature flags · events |
+| LLMOps | Tabla `mkt_ai_logs` + dashboards Postgres | Cost · latency · quality |
+| Logs aggregator | CloudWatch + filter Sentry | Structured JSON logs |
 
-## ADR-0005 · Versionado banco v3 ↔ v4 🆕
+# 03 · Arquitectura de capas
 
-Status: 🟡 Proposed (2026-05-27)
-Context: v3.0.0 estable · v4 en construcción. Necesidad de navegar entre versiones (founders + tú quieres comparar).
-Decision: 2 builds paralelos · `/v3` y `/v4` paths en mismo repo o subdomains separados. Switcher UI visible. NO se borra v3 cuando v4 sale.
-Consequences: Mantenimiento 2 versiones temporal · OK. Cuando v4 estable · v3 archivado pero accesible.
+> [!hla] arquitectura-capas
+> Mapa técnico detallado · cada capa con librería · cómo intercambia datos con la siguiente · request/response paths.
 
-# 04 · Performance budgets (targets Y1)
+# 04 · Request lifecycle · de browser a DB y vuelta
+
+```
+Browser (founder) hace acción
+     ↓
+Next.js Middleware (auth · rate limit · idempotency check)
+     ↓
+Route Handler (/api/X) o Server Action
+     ↓
+Zod schema validation (input)
+     ↓
+Business logic layer (services/ folder)
+     ↓
+Drizzle ORM (type-safe queries · transactions)
+     ↓
+Supabase Postgres (RLS apply by tenant_id)
+     ↓
+[opcional] pg_notify si data afecta otros canales
+     ↓
+[opcional] Side effects (call MeLi · Open Factura · etc)
+     ↓
+Zod schema validation (output)
+     ↓
+Response al browser (JSON o RSC stream)
+     ↓
+Sentry log si error · PostHog event si feature usage
+     ↓
+mkt_api_logs row append-only para audit
+```
+
+Target end-to-end: API lectura p95 &lt;350ms · mutación p95 &lt;600ms.
+
+# 05 · Data flow cross-canal · venta MeLi
+
+```
+1. MeLi POST webhook a /api/webhooks/meli
+2. Middleware verifica HMAC SHA-256 firma
+3. Middleware verifica idempotency_key contra mkt_idempotency
+4. Si new event: INSERT mkt_orders (status='created')
+5. Trigger Postgres: UPDATE mkt_inventory.reserved += qty
+   (con SELECT FOR UPDATE para evitar concurrency oversell)
+6. Trigger Postgres: pg_notify('inventory_changed', product_id)
+7. Listener Node.js subscriber recibe notify
+8. Listener llama channels-sync API por cada adapter activo:
+   · Adapter D2C → actualiza ISR revalidate
+   · Adapter MP → actualiza stock en MP API
+   · Adapter B2B → invalida cache portal
+9. Mientras tanto · evento order.created dispara:
+   · Side effect: emit DTE 39 vía Open Factura
+   · Side effect: generate label vía Chilexpress
+   · Side effect: send email comprador vía Resend
+10. Cada side effect → row en mkt_api_logs (audit)
+11. Sentry breadcrumbs en cada paso · si error → alerta
+```
+
+# 06 · Event-driven architecture
+
+```
+EVENTOS INTERNOS (pg_notify · solo Postgres)
+─────────────────────────────────────────────────────
+inventory_changed      → channels-sync · ISR revalidate
+order_completed        → emit DTE · email comprador
+opportunity_detected   → push notification UI
+ads_roas_low           → alerta founder (sugerencia pausa)
+licitacion_match       → notification Javier
+threshold_phase_met    → email cierre fase
+
+EVENTOS EXTERNOS (webhooks inbound · HMAC verificado)
+─────────────────────────────────────────────────────
+POST /webhooks/meli           → order events MeLi
+POST /webhooks/payment        → pasarelas (MP · WebPay)
+POST /webhooks/courier        → tracking updates
+POST /webhooks/mp             → adjudicación MP
+POST /webhooks/supplier/:id   → dropship suppliers
+
+EVENTOS PROGRAMADOS (Vercel Cron)
+─────────────────────────────────────────────────────
+POST /cron/refresh-meli       6h · refresh OAuth tokens
+POST /cron/sync-mp            8am · sync licitaciones diarias
+POST /cron/cache-cleanup      7d · eliminar Smart Cache Cold
+POST /cron/scoring-daily      6am · Cerebro scoring oportunidades
+POST /cron/conciliacion       1ro mes · matching pagos vs DTE
+POST /cron/reputation-tracker 1h · refresh materialized view
+```
+
+# 07 · Channel Adapter Pattern · interface + 4 impl
+
+## Interface
+
+```typescript
+interface ChannelAdapter {
+  readonly channelId: 'meli' | 'd2c' | 'mp' | 'b2b';
+  readonly displayName: string;
+
+  // Catalog
+  publishProduct(product: Product, listing: ChannelListing): Promise<{ externalId: string }>;
+  updateProduct(externalId: string, changes: Partial<Product>): Promise<void>;
+  unpublishProduct(externalId: string): Promise<void>;
+  syncStock(externalId: string, qty: number): Promise<void>;
+
+  // Orders
+  fetchOrders(since: Date): Promise<Order[]>;
+  acceptOrder(externalOrderId: string): Promise<void>;
+  shipOrder(externalOrderId: string, tracking: string): Promise<void>;
+  cancelOrder(externalOrderId: string, reason: string): Promise<void>;
+
+  // Auth
+  refreshAuth(): Promise<void>;
+  isAuthValid(): Promise<boolean>;
+
+  // Health
+  ping(): Promise<{ ok: boolean; latency_ms: number }>;
+}
+```
+
+## 4 Implementaciones
+
+| Canal | Clase | Highlights |
+|-------|-------|------------|
+| **MeLi** | `MercadoLibreAdapter` | OAuth 2.0 PKCE · refresh 6h · webhook firmado · rate limit 1K req/min |
+| **D2C** | `D2CStorefrontAdapter` | Next.js ISR revalidate · stock real-time UI · pasarelas internas (Y2) |
+| **MP** | `MercadoPublicoAdapter` | Ticket auth · sync diario 8am · postular ofertas · webhook adjudicación |
+| **B2B** | `B2BCustomAdapter` | API keys por cliente · RFQ workflow · firma HMAC aprobación |
+
+Beneficio: agregar canal nuevo = 1 archivo nuevo. NO refactor del resto.
+
+# 08 · Supplier Adapter Pattern
+
+```typescript
+interface SupplierAdapter {
+  readonly supplierId: string;
+  readonly displayName: string;
+  readonly authMode: 'api_key' | 'oauth' | 'email_automated' | 'whatsapp_business';
+
+  syncCatalog(): Promise<SupplierProduct[]>;
+  checkStock(sku: string): Promise<{ available: number; updated_at: Date }>;
+  createPurchaseOrder(items: OrderItem[], shipTo: Address): Promise<{ poId: string }>;
+  cancelPurchaseOrder(poId: string, reason: string): Promise<void>;
+  trackShipment(poId: string): Promise<{ status: string; eta: Date; tracking_number?: string }>;
+  handleReturn(orderId: string, items: ReturnItem[]): Promise<{ rmaId: string }>;
+  ping(): Promise<{ ok: boolean }>;
+}
+```
+
+ADR-0003 formaliza este pattern para modo dropshipping Y1.
+
+# 09 · Estructura monorepo
+
+```
+marketplace-smc/                       (repo principal · Next.js app)
+├── app/
+│   ├── (founders)/                   (route group · auth wall)
+│   │   ├── dashboard/
+│   │   ├── productos/
+│   │   ├── ordenes/
+│   │   ├── cerebro/
+│   │   ├── oportunidades/
+│   │   ├── ads/
+│   │   ├── mercado-publico/
+│   │   ├── b2b/
+│   │   └── settings/
+│   ├── (public)/                     (route group · sin auth)
+│   │   ├── d2c/                      (storefront Y2)
+│   │   └── b2b/rfq/                  (portal cliente B2B)
+│   └── api/
+│       ├── auth/
+│       ├── products/
+│       ├── orders/
+│       ├── channels/{meli|d2c|mp|b2b}/
+│       ├── suppliers/
+│       ├── ads/
+│       ├── cerebro/
+│       ├── webhooks/{meli|payment|courier|mp|supplier}/
+│       └── cron/
+├── lib/
+│   ├── db/                           (Drizzle schema + migrations)
+│   ├── adapters/
+│   │   ├── channels/{meli,d2c,mp,b2b}.ts
+│   │   └── suppliers/{xxx}.ts
+│   ├── cerebro/                      (scoring · chat SSE · cache)
+│   ├── auth/                         (Supabase Auth helpers SSR)
+│   ├── validators/                   (Zod schemas)
+│   └── utils/
+├── packages/
+│   ├── ui/                           (@smc/ui · componentes atómicos)
+│   ├── shared/                       (@smc/shared · tipos cross-canal)
+│   └── prompts/                      (@smc/prompts · versionados IA)
+├── supabase/
+│   ├── migrations/                   (SQL versionado)
+│   └── seed.sql
+├── .github/workflows/
+│   ├── ci.yml                        (lint + type + test + build + tag)
+│   └── e2e.yml                       (Playwright nightly · Y2)
+└── public/
+```
+
+# 10 · Integración BD · cómo se conecta
+
+```
+Next.js Server Components / Route Handlers
+     ↓
+import { db } from '@/lib/db'         (singleton client)
+     ↓
+Drizzle ORM (type-safe queries)
+     ↓
+postgres.js (driver con connection pooling)
+     ↓
+Supabase Postgres (RLS enforced)
+     ↓
+Si tenant_id en JWT no matches → 0 rows (RLS bloquea)
+```
+
+## Patrones obligatorios
+
+```typescript
+// ✅ Server-side · createServerClient (RLS aplicada)
+import { createServerClient } from '@/lib/supabase/server';
+
+export async function getProducts() {
+  const supabase = await createServerClient();
+  const { data } = await supabase.from('products').select('*');
+  return data;
+}
+
+// ❌ NUNCA queries con service_role en código client-side
+
+// ✅ Server Action con Zod validation
+'use server';
+import { z } from 'zod';
+import { createServerClient } from '@/lib/supabase/server';
+
+const schema = z.object({
+  sku: z.string().min(3),
+  name: z.string().min(1),
+  base_price: z.number().int().positive(),
+});
+
+export async function createProduct(input: unknown) {
+  const parsed = schema.parse(input);
+  const supabase = await createServerClient();
+  const { data, error } = await supabase.from('products').insert(parsed).select().single();
+  if (error) throw new Error(error.message);
+  return data;
+}
+```
+
+# 11 · Orquestación · cuando entra una orden
+
+```
+ORDEN ENTRA → orchestrator decide qué hacer
+     ↓
+1. Identify channel (meli · mp · d2c · b2b)
+2. Call ChannelAdapter[channel].acceptOrder()
+3. Postgres transaction:
+   · INSERT mkt_orders
+   · UPDATE mkt_inventory (reserve)
+   · INSERT mkt_order_items
+4. If is_dropship product → SupplierAdapter[supplier_id].createPurchaseOrder()
+5. Trigger pg_notify('order_completed')
+6. Side effect listener:
+   · emit DTE
+   · generate label (si stock propio)
+   · send email comprador
+7. PostHog event 'order.completed'
+8. Sentry breadcrumb success
+```
+
+# 12 · Deploy · ambientes · CI/CD
+
+## Ambientes
+
+| Ambiente | URL | Auto-deploy | Branch |
+|----------|-----|-------------|--------|
+| Development local | localhost:3000 | manual · `npm run dev` | feature branches |
+| QAS (futuro Y2) | qas.marketplace.smconnection.cl | push develop | develop |
+| Production | marketplace.smconnection.cl | push main + tests verdes | main |
+
+## Pipeline CI · GitHub Actions
+
+```yaml
+name: CI — Marketplace
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    permissions:
+      contents: write  # para push tag
+
+    steps:
+      - Checkout
+      - Setup Node 22
+      - npm ci
+      - npm test (Vitest)
+      - npx tsc --noEmit (type-check)
+      - npm run build (Next.js production build)
+      - if main + tests OK → git tag deploy-marketplace-YYYY.MM.DD-XXX
+      - if main → AWS Amplify auto-deploy hook
+      - smoke test post-deploy (curl marketplace.smconnection.cl status 200)
+      - if smoke fail → rollback automático + alerta Sentry
+```
+
+## Rollback strategy
+
+- AWS Amplify mantiene últimos 25 builds
+- Rollback en 1 click vía console O CLI
+- Tag deploys permite git checkout fácil
+- Si rollback dispara → notification founders + Sentry incident
+
+# 13 · Escalabilidad técnica · cuándo refactorizar
+
+```
+SEÑAL                                          ACCIÓN
+─────────────────────────────────────────────────────
+Build time > 5min                              Turbopack tuning · code splitting
+Bundle client > 500KB                          Dynamic imports · server components
+API p95 > 800ms                                Add caching · index DB · query review
+DB connections agotadas                        Pool tuning · pgBouncer
+1 canal > 80% revenue                          Acelerar diversificación (BR-driven)
+Founder > 8h/día sistema                       Automatizar más · agentes IA bg
+Tests > 5min                                   Parallelizar · test sharding
+Costo IA > $300K CLP/mes                       Cache prompts comunes · downgrade modelos
+Tabla Postgres > 1M rows                       Indexar correctamente · particionar
+Tenant count > 5                               Migrar de tenant_id implicit a explicit
+                                               sharding (Y3+)
+```
+
+## Cuándo NO refactorizar
+
+- ❌ "Para hacer el código más limpio" sin métrica concreta
+- ❌ "Para usar la tecnología nueva X" sin caso de uso real
+- ❌ "Porque siempre quise" — guardarse para hobbies personales
+
+> [!info] Regla de oro
+> Refactor cuando hay número concreto que dispara · NO porque "se ve mejor". Rule of three: 3 violaciones repetidas → abstraer. NO refactorizar 1 vez.
+
+# 14 · ADRs registradas · 5 decisiones
+
+| ADR | Título | Status | Dónde está el detalle |
+|-----|--------|--------|-----------------------|
+| ADR-0001 | v5 Opportunities sin LLM | ✅ Accepted | Doc 09 Sistema Oportunidades |
+| ADR-0002 | Channel Adapter Pattern | ✅ Accepted | sección 07 |
+| ADR-0003 | Supplier Adapter Pattern | 🟡 Proposed | sección 08 |
+| ADR-0004 | ADS multicanal automation (Y2) | 🟡 Proposed | Doc 11 · sección Ads |
+| ADR-0005 | Versionado banco v3 ↔ v4 | 🟡 Proposed | Doc 10 Assessment · sección 08 |
+
+# 15 · Performance budgets
 
 | Métrica | Budget | Trigger alarma |
 |---------|--------|----------------|
@@ -92,79 +455,82 @@ Consequences: Mantenimiento 2 versiones temporal · OK. Cuando v4 estable · v3 
 | API p50 lectura | &lt; 120ms | &gt; 300ms |
 | API p95 lectura | &lt; 350ms | &gt; 800ms |
 | API p95 mutación | &lt; 600ms | &gt; 1.5s |
-| Cerebro chat first token (SSE) | &lt; 600ms | &gt; 2s |
+| Cerebro first token SSE | &lt; 600ms | &gt; 2s |
 | Sync MeLi p95 | &lt; 8s | &gt; 30s |
-| Build time CI | &lt; 3min | &gt; 8min |
-| Bundle size cliente | &lt; 250KB gzipped | &gt; 500KB |
+| Build CI | &lt; 3min | &gt; 8min |
+| Bundle client | &lt; 250KB gzipped | &gt; 500KB |
 
-# 05 · Security requirements
+# 16 · Security requirements · 12 items con implementación
 
 | # | Requerimiento | Implementación |
 |---|--------------|----------------|
-| SR-1 | TLS 1.3 obligatorio | Amplify default + HSTS preload |
-| SR-2 | AES-256 at rest | Supabase default |
-| SR-3 | RLS Postgres siempre activo | tenant_id implícito desde JWT |
-| SR-4 | service_role solo backend | NUNCA exposed a client |
-| SR-5 | 2FA obligatorio admins | Supabase Auth TOTP |
-| SR-6 | Cookies httpOnly + SameSite=lax | Default Next.js + custom config |
-| SR-7 | CSP headers estrictos | next.config.ts headers() |
-| SR-8 | Rate limit 60 req/min user | Middleware Next.js + Upstash Redis |
-| SR-9 | Idempotency keys en POST críticos | UUIDs · tabla `mkt_idempotency` |
-| SR-10 | Audit logs append-only | Tabla `audit_logs` + RLS |
-| SR-11 | Secrets en Amplify env vars | NUNCA en repo · rotación trimestral |
-| SR-12 | HMAC SHA-256 en webhooks | Validar firma antes de procesar |
+| SR-1 | TLS 1.3 obligatorio | Amplify default + HSTS preload header |
+| SR-2 | AES-256 at rest | Supabase default (Postgres + Storage) |
+| SR-3 | RLS Postgres siempre activo | Policies por tabla + tenant_id implícito JWT |
+| SR-4 | service_role solo backend | Variable env Amplify · NUNCA `NEXT_PUBLIC_*` |
+| SR-5 | 2FA obligatorio admins | Supabase Auth TOTP enforcement |
+| SR-6 | Cookies httpOnly + SameSite=lax | @supabase/ssr default + custom config |
+| SR-7 | CSP headers estrictos | next.config.ts `headers()` + report-uri |
+| SR-8 | Rate limit 60 req/min user | Upstash Redis middleware Next.js |
+| SR-9 | Idempotency keys POST críticos | UUID v7 · tabla `mkt_idempotency` TTL 24h |
+| SR-10 | Audit logs append-only | Tabla `audit_logs` con RLS read-only · only INSERT |
+| SR-11 | Secrets en Amplify env vars | NUNCA en repo · rotación trimestral docs/security |
+| SR-12 | HMAC SHA-256 webhooks | `crypto.timingSafeEqual` para evitar timing attacks |
 
-# 06 · Observabilidad + LLMOps
+# 17 · Observabilidad · LLMOps detallado
 
 ```
-LOGS estructurados (JSON) por evento
+LOG estructurado JSON por evento
 ─────────────────────────────────────────────────────
-{ timestamp · level · feature · user_id · tenant_id ·
-  duration_ms · status · error_msg · metadata }
+{
+  timestamp: "2026-10-15T14:23:11.234Z",
+  level: "info|warn|error",
+  request_id: "uuid-correlation",
+  user_id: "uuid",
+  tenant_id: "uuid",
+  feature: "products.list",
+  endpoint: "/api/products",
+  method: "GET",
+  status: 200,
+  duration_ms: 124,
+  error_msg: null,
+  metadata: { /* feature-specific */ }
+}
 
-→ stdout (CloudWatch) + tabla mkt_api_logs (consultable)
+→ stdout (CloudWatch) + tabla mkt_api_logs (Postgres queryable)
 
 LLMOps específico Cerebro
 ─────────────────────────────────────────────────────
-{ provider · model · prompt_version · tokens_in · tokens_out ·
-  cost_usd · latency_ms · cache_hit · feature · hallucination_flag }
+{
+  timestamp: "2026-10-15T14:23:15.123Z",
+  feature: "cerebro.chat",
+  provider: "groq",
+  model: "llama-3.3-70b-versatile",
+  prompt_version: "chat-v2.1",
+  tokens_in: 1234,
+  tokens_out: 456,
+  cost_usd: 0.00021,
+  latency_ms: 287,
+  cache_hit: false,
+  fallback_used: false,
+  hallucination_flag: false
+}
 
-→ tabla mkt_ai_logs · dashboards costo/feature/día
+→ tabla mkt_ai_logs · dashboards costo/feature/día/founder
 
-ALERTAS (CloudWatch + Sentry)
+ALERTAS configuradas (CloudWatch + Sentry)
 ─────────────────────────────────────────────────────
-- Error rate > 1% por 5 min → email founders
-- p95 API > 800ms por 10 min → email
-- Costo IA diario > 80% budget → email
-- Sync canal fallido > 3 retries → email
-- DTE SII rechazo → email inmediato
+- Error rate > 1% por 5 min          → email founders
+- p95 API > 800ms por 10 min         → email
+- Cost IA diario > 80% budget        → email + auto-throttle
+- Sync canal fallido > 3 retries     → email + alert PostHog
+- DTE SII rechazo                    → email INMEDIATO
+- 401/403 spike > 10/min             → posible attack · email
 ```
 
-# 07 · Decisiones de implementación
+# 18 · Próximos pasos técnicos
 
-> [!premise] Filosofía técnica
-> Hacer lo mínimo que entregue valor · NO sobre-diseñar.
-
-- **Sin tests E2E Y1**: foco unit + integration. E2E (Playwright) en Y2 si hay capacidad.
-- **Sin GraphQL**: REST endpoints simples. GraphQL si complejidad data fetching lo justifica Y2.
-- **Sin WebSockets Y1**: SSE para streaming Cerebro. WS solo si voz/colab requiere bidireccional Y2.
-- **Sin micro-frontends**: single Next.js app. Split si equipo crece a 5+ devs.
-- **Sin Kubernetes**: Amplify suficiente. K8s solo si self-hosting · NO el caso.
-- **Sin Kafka / event streaming externo**: pg_notify suficiente Y1. RabbitMQ/Kafka si volumen >100K eventos/día.
-- **Sin Sentry custom dashboards**: usar defaults. Custom solo si patrón específico emerge.
-
-# 08 · Cosas que dejé fuera (por ahora)
-
-- Schema completo DB → ver Doc 05 Data Model
-- Endpoints detallados → ver Doc 06 API Catalog (Swagger live)
-- HLA + 5 escenarios → ver Doc 07 Architecture
-- Setup dev local · convenciones · workflow Git → ver Doc 38 Onboarding Dev
-- Performance perfiles real → se construyen post-MVP con data real
-
-# 09 · Próximos pasos técnicos
-
-1. Implementar ADR-0003 Supplier Adapter Pattern (estimate: 16h)
-2. Implementar ADR-0004 ADS Manager (estimate: 40h · Y2)
-3. Setup observabilidad LLMOps tabla `mkt_ai_logs` (4h)
-4. Performance audit Lighthouse · alinear a budgets (8h)
-5. Audit security checklist 12 items SR-1 a SR-12 (4h)
+1. ✅ Doc 13 v2 · granular · librerías · flujos detallados
+2. ⏭️ Tu OK plan
+3. ⏭️ Empezar implementación Q4-26 según Doc 18 Plan Ejecución
+4. ⏭️ Doc 19 UAT post-construcción

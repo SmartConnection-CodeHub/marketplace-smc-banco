@@ -1,0 +1,69 @@
+{
+  "default": "MELI",
+  "scenarios": {
+    "MELI": {
+      "title": "Stock local · Venta MeLi",
+      "sub": "8 etapas · cliente MeLi recibe en 3-5 días · DTE auto · margen 28%",
+      "callout": "Modo Y1 prioridad · proveedor local Chile · pago CLP · ciclo despacho 3-7 días.",
+      "tags": ["Y1 prioridad", "B2C MeLi", "Margen 28%"],
+      "stages": [
+        { "num": "01", "name": "Sourcing local", "boxes": [
+          { "code": "SL-01", "label": "Compra a proveedor chileno (CLP)", "kind": "pay", "stack": "Email/WhatsApp · transferencia bancaria" },
+          { "code": "SL-02", "label": "Recepción bodega · QA físico · ingreso DB", "kind": "create", "stack": "Camila o Javier · Supabase mkt_inventory" }
+        ]},
+        { "num": "02", "name": "Publicar MeLi", "boxes": [
+          { "code": "SL-03", "label": "Fotos pro propias (BR-001 valida)", "kind": "create", "stack": "Cualquier founder · Storage upload" },
+          { "code": "SL-04", "label": "POST /items MeLi · Channel Adapter", "kind": "create", "stack": "Next.js API + MeLi API v2" }
+        ]},
+        { "num": "03", "name": "Recibir venta", "boxes": [
+          { "code": "SL-05", "label": "MeLi webhook → POST /api/webhooks/meli", "kind": "notify", "stack": "HMAC SHA-256 verify + idempotency" }
+        ]},
+        { "num": "04", "name": "Aceptar y reservar", "boxes": [
+          { "code": "SL-06", "label": "Reservar stock · SELECT FOR UPDATE", "kind": "update", "stack": "Postgres transaction · BR-006" }
+        ]},
+        { "num": "05", "name": "Cotizar + etiqueta courier", "boxes": [
+          { "code": "SL-07", "label": "POST /api/courier/quote · Adapter Chilexpress/Starken", "kind": "search", "stack": "Adapter pattern courier" },
+          { "code": "SL-08", "label": "POST /api/courier/label → PDF generado", "kind": "doc", "stack": "Courier API + Storage" }
+        ]},
+        { "num": "06", "name": "Despacho físico", "boxes": [
+          { "code": "SL-09", "label": "Camila/Javier despacha desde bodega", "kind": "update", "stack": "Manual · scanner QR opcional Y2" }
+        ]},
+        { "num": "07", "name": "DTE + email", "boxes": [
+          { "code": "SL-10", "label": "Open Factura emit DTE 39 (o 33 si RUT empresa)", "kind": "doc", "stack": "API Open Factura + folio SII · BR-010" },
+          { "code": "SL-11", "label": "Resend email tracking al comprador", "kind": "notify", "stack": "Email transaccional Resend" }
+        ]},
+        { "num": "08", "name": "Tracking + cierre", "boxes": [
+          { "code": "SL-12", "label": "Courier webhook 'delivered' → order.status='delivered'", "kind": "notify", "stack": "Webhook courier + DB update" }
+        ]}
+      ]
+    },
+    "MP": {
+      "title": "Stock local · Venta Mercado Público B2G",
+      "sub": "Detectar · postular · adjudicar · despacho institucional · factura DTE 33",
+      "callout": "Canal B2G Fase 3. Cerebro IA sugiere licitaciones afines · Javier postula · adjudicación → workflow despacho institucional.",
+      "tags": ["B2G", "Cerebro asistido", "Factura DTE 33"],
+      "stages": [
+        { "num": "01", "name": "Sync diario", "boxes": [
+          { "code": "MP-01", "label": "Cron 8am · POST /api/cron/sync-mp", "kind": "search", "stack": "Mercado Público API · ticket auth" }
+        ]},
+        { "num": "02", "name": "Cerebro filter", "boxes": [
+          { "code": "MP-02", "label": "Matching catálogo (pg_trgm fuzzy)", "kind": "search", "stack": "Cerebro + Postgres" }
+        ]},
+        { "num": "03", "name": "Postular", "boxes": [
+          { "code": "MP-03", "label": "Javier revisa top 5 · click postular", "kind": "create", "stack": "UI dashboard B2G" },
+          { "code": "MP-04", "label": "Cerebro genera template · founder valida", "kind": "create", "stack": "Cerebro IA + edits" },
+          { "code": "MP-05", "label": "POST oferta a MP · ticket auth", "kind": "notify", "stack": "MP API + PDF Storage" }
+        ]},
+        { "num": "04", "name": "Adjudicación", "boxes": [
+          { "code": "MP-06", "label": "MP envía webhook resultado", "kind": "notify", "stack": "HMAC verify + DB update" }
+        ]},
+        { "num": "05", "name": "Despacho institucional", "boxes": [
+          { "code": "MP-07", "label": "Guía electrónica DTE 52 + courier", "kind": "doc", "stack": "Open Factura + Adapter courier" }
+        ]},
+        { "num": "06", "name": "Factura B2G", "boxes": [
+          { "code": "MP-08", "label": "DTE 33 factura institucional", "kind": "doc", "stack": "Open Factura · pago 30/60 días" }
+        ]}
+      ]
+    }
+  }
+}
