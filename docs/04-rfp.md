@@ -1,72 +1,43 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>04 · RFP · Marketplace SMC</title>
-<link rel="stylesheet" href="_styles.css">
-</head>
-<body>
-<nav class="doc-nav"><a href="03-requirements.html">◂ doc 03</a><span class="nav-center">DOCUMENTO 04 DE 09</span><a href="05-data-model.html">doc 05 · Data Model ▸</a></nav>
+---
+number: 04
+id: rfp
+title: RFP
+subtitle: "Request for Proposal · especificación contractual para construcción interna o vendor externo."
+block: Marketplace SMC
+author: PM + Cerebro
+version: 1.0
+date: 2026-05-25
+status: 🟢 Activo
+prev: 03-requirements.html
+next: 05-data-model.html
+---
 
-<div class="doc">
-<section class="cover">
-  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Blueprint · Marketplace SMC</div></div>
-  <div class="cover-center">
-    <div class="cover-doc-num">Documento 04 de 09</div>
-    <h1 class="cover-title">RFP</h1>
-    <p class="cover-subtitle">Request for Proposal · especificación contractual para construcción interna o vendor externo.</p>
-    <div class="cover-meta">
-      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-25</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">PM + Cerebro</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
-    </div>
-  </div>
-  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
-</section>
+# 01 · Contexto y motivación
 
-<section class="page toc">
-  <div class="toc-title">Tabla de contenidos</div>
-  <h1>10 secciones RFP</h1>
-  <ol>
-    <li><a href="#s1">Contexto y motivación</a><span class="toc-pg">03</span></li>
-    <li><a href="#s2">Alcance del proyecto</a><span class="toc-pg">04</span></li>
-    <li><a href="#s3">Entregables esperados</a><span class="toc-pg">05</span></li>
-    <li><a href="#s4">Stack técnico recomendado</a><span class="toc-pg">06</span></li>
-    <li><a href="#s5">Integraciones requeridas</a><span class="toc-pg">07</span></li>
-    <li><a href="#s6">Criterios de aceptación</a><span class="toc-pg">08</span></li>
-    <li><a href="#s7">Timeline y fases</a><span class="toc-pg">09</span></li>
-    <li><a href="#s8">Presupuesto referencial</a><span class="toc-pg">10</span></li>
-    <li><a href="#s9">Riesgos y mitigaciones</a><span class="toc-pg">11</span></li>
-    <li><a href="#s10">Términos y condiciones</a><span class="toc-pg">12</span></li>
-  </ol>
-</section>
+Smart Connection SpA (futuro Marketplace SMC SpA) requiere construir una **plataforma operativa unificada multi-canal** que permita gestionar desde un solo lugar: compra, inventario, venta cross-canal (MeLi · D2C · Mercado Público · B2B), fulfillment, facturación electrónica chilena y contabilidad automática.
 
-<section class="page" id="s1">
-  <h2><span class="h2-num">01</span>Contexto y motivación</h2>
-  <p>Smart Connection SpA (futuro Marketplace SMC SpA) requiere construir una <strong>plataforma operativa unificada multi-canal</strong> que permita gestionar desde un solo lugar: compra, inventario, venta cross-canal (MeLi · D2C · Mercado Público · B2B), fulfillment, facturación electrónica chilena y contabilidad automática.</p>
+  
+## Situación actual
 
-  <h3>Situación actual</h3>
-  <ul>
-    <li>Operación dispersa en 4-5 herramientas (MeLi Seller Center · Excel · Shopify · ChileCompra portal · contabilidad externa)</li>
-    <li>Conciliación manual mensual · alto error · alto costo en horas operativas</li>
-    <li>Sin visibilidad cross-canal real · decisiones basadas en feeling</li>
-    <li>Sin escalabilidad para sumar marcas/tenants futuros (marcas propias adicionales)</li>
-  </ul>
+  
+- Operación dispersa en 4-5 herramientas (MeLi Seller Center · Excel · Shopify · ChileCompra portal · contabilidad externa)
+- Conciliación manual mensual · alto error · alto costo en horas operativas
+- Sin visibilidad cross-canal real · decisiones basadas en feeling
+- Sin escalabilidad para sumar marcas/tenants futuros (marcas propias adicionales)
 
-  <h3>Visión post-implementación</h3>
-  <ul>
-    <li>1 inventario master · 1 base clientes · 1 plan de cuentas · N canales como adapters</li>
-    <li>Asientos contables automáticos por cada evento operativo</li>
-    <li>Decisiones basadas en margen real cross-canal en tiempo real</li>
-    <li>Arquitectura multi-tenant escalable a múltiples marcas</li>
-  </ul>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>03</span></div>
-</section>
+  
+## Visión post-implementación
 
-<section class="page" id="s2">
-  <h2><span class="h2-num">02</span>Alcance del proyecto</h2>
-  <h3>In-scope</h3>
+  
+- 1 inventario master · 1 base clientes · 1 plan de cuentas · N canales como adapters
+- Asientos contables automáticos por cada evento operativo
+- Decisiones basadas en margen real cross-canal en tiempo real
+- Arquitectura multi-tenant escalable a múltiples marcas
+
+# 02 · Alcance del proyecto
+
+## In-scope
+
   <table>
     <thead><tr><th>Módulo</th><th>Funcionalidad clave</th></tr></thead>
     <tbody>
@@ -80,20 +51,19 @@
     </tbody>
   </table>
 
-  <h3>Out-of-scope (no incluido en esta versión)</h3>
-  <ul>
-    <li>POS físico para tienda con mesón</li>
-    <li>Conciliación bancaria automática (manual via export)</li>
-    <li>F22 anual completo (solo soporte parcial · contador lo cierra)</li>
-    <li>Manejo de RRHH / sueldos / Previred</li>
-    <li>Comercio exterior directo (Nexport es intermediario)</li>
-  </ul>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>04</span></div>
-</section>
+  
+## Out-of-scope (no incluido en esta versión)
 
-<section class="page" id="s3">
-  <h2><span class="h2-num">03</span>Entregables esperados</h2>
-  <table>
+  
+- POS físico para tienda con mesón
+- Conciliación bancaria automática (manual via export)
+- F22 anual completo (solo soporte parcial · contador lo cierra)
+- Manejo de RRHH / sueldos / Previred
+- Comercio exterior directo (Nexport es intermediario)
+
+# 03 · Entregables esperados
+
+<table>
     <thead><tr><th>#</th><th>Entregable</th><th>Formato</th></tr></thead>
     <tbody>
       <tr><td>1</td><td>Código fuente completo (frontend + backend + IaC)</td><td>Repositorio Git privado</td></tr>
@@ -108,12 +78,10 @@
       <tr><td>10</td><td>Soporte post-lanzamiento (3 meses)</td><td>SLA según contrato</td></tr>
     </tbody>
   </table>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>05</span></div>
-</section>
 
-<section class="page" id="s4">
-  <h2><span class="h2-num">04</span>Stack técnico recomendado</h2>
-  <table>
+# 04 · Stack técnico recomendado
+
+<table>
     <thead><tr><th>Capa</th><th>Tecnología</th><th>Justificación</th></tr></thead>
     <tbody>
       <tr><td>Frontend</td><td>Next.js 16 + React 19 + TypeScript</td><td>Stack actual SMC · server components · SSR</td></tr>
@@ -132,12 +100,10 @@
       <tr><td>CI/CD</td><td>GitHub Actions</td><td>Estándar SMC</td></tr>
     </tbody>
   </table>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>06</span></div>
-</section>
 
-<section class="page" id="s5">
-  <h2><span class="h2-num">05</span>Integraciones requeridas</h2>
-  <table>
+# 05 · Integraciones requeridas
+
+<table>
     <thead><tr><th>Sistema externo</th><th>API</th><th>Uso</th></tr></thead>
     <tbody>
       <tr><td>MercadoLibre Chile</td><td>REST + Webhooks</td><td>Catálogo · órdenes · stock · reputación</td></tr>
@@ -153,12 +119,10 @@
       <tr><td>Nexport</td><td>Manual/email</td><td>Proveedor (sin API)</td></tr>
     </tbody>
   </table>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>07</span></div>
-</section>
 
-<section class="page" id="s6">
-  <h2><span class="h2-num">06</span>Criterios de aceptación</h2>
-  <div class="box box-premise">
+# 06 · Criterios de aceptación
+
+<div class="box box-premise">
     <div class="box-title">✅ Para que cada módulo se considere "Done"</div>
     <ul style="margin:0">
       <li>Funcionalidad demostrable en ambiente staging</li>
@@ -171,19 +135,18 @@
     </ul>
   </div>
 
-  <h3>Criterios end-to-end (MVP completo)</h3>
-  <ul>
-    <li>Crear SKU master desde 0 · publicar en 2 canales · vender en cada uno · descontar stock cross-canal · emitir DTE · cobrar · generar asiento contable</li>
-    <li>Cerrar mes contable con resumen pre-F29 sin Excel paralelo</li>
-    <li>Onboarding nuevo operador en &lt;2 horas con doc usuario</li>
-    <li>0 oversell en 100 ventas de prueba simuladas concurrentes</li>
-  </ul>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>08</span></div>
-</section>
+  
+## Criterios end-to-end (MVP completo)
 
-<section class="page" id="s7">
-  <h2><span class="h2-num">07</span>Timeline y fases</h2>
-  <table>
+  
+- Crear SKU master desde 0 · publicar en 2 canales · vender en cada uno · descontar stock cross-canal · emitir DTE · cobrar · generar asiento contable
+- Cerrar mes contable con resumen pre-F29 sin Excel paralelo
+- Onboarding nuevo operador en &lt;2 horas con doc usuario
+- 0 oversell en 100 ventas de prueba simuladas concurrentes
+
+# 07 · Timeline y fases
+
+<table>
     <thead><tr><th>Fase</th><th>Duración</th><th>Entregable</th></tr></thead>
     <tbody>
       <tr><td>F0 · Discovery + Spec final</td><td>2 semanas</td><td>Refinamiento blueprint · ADRs · setup repo</td></tr>
@@ -198,13 +161,12 @@
       <tr><td>F9 · Soporte post-lanzamiento</td><td>12 semanas</td><td>SLA bug fixing + iteración</td></tr>
     </tbody>
   </table>
-  <p><strong>Total construcción: ~30 semanas (~7 meses) · soporte 3 meses adicionales.</strong></p>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>09</span></div>
-</section>
+  
+**Total construcción: ~30 semanas (~7 meses) · soporte 3 meses adicionales.**
 
-<section class="page" id="s8">
-  <h2><span class="h2-num">08</span>Presupuesto referencial</h2>
-  <table>
+# 08 · Presupuesto referencial
+
+<table>
     <thead><tr><th>Concepto</th><th>Modelo</th><th>Referencial CLP</th></tr></thead>
     <tbody>
       <tr><td>Construcción interna (1 dev senior · 7 meses)</td><td>Salario</td><td>$25-35M total</td></tr>
@@ -215,19 +177,17 @@
       <tr><td>Open Factura (DTE)</td><td>Mensual</td><td>$30K/mes</td></tr>
       <tr><td>Groq IA + OpenRouter</td><td>Variable</td><td>$10-50K/mes</td></tr>
       <tr><td>Domain · SSL · CDN</td><td>Anual</td><td>$50K/año</td></tr>
-      <tr><td><strong>Operación recurrente total</strong></td><td>Mensual</td><td><strong>~$140-280K/mes</strong></td></tr>
+      <tr><td>**Operación recurrente total**</td><td>Mensual</td><td>**~$140-280K/mes**</td></tr>
     </tbody>
   </table>
   <div class="box box-info">
     <div class="box-title">💡 Comparativa honesta</div>
     <p style="margin:0">Construir custom cuesta más al inicio pero ~50% menos al año 2-3 vs SaaS estilo Defontana+Bsale+Channable+Open Factura ($330K+/mes). Punto de equilibrio: ~12-18 meses.</p>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>10</span></div>
-</section>
 
-<section class="page" id="s9">
-  <h2><span class="h2-num">09</span>Riesgos y mitigaciones</h2>
-  <table>
+# 09 · Riesgos y mitigaciones
+
+<table>
     <thead><tr><th>Riesgo</th><th>Probabilidad</th><th>Impacto</th><th>Mitigación</th></tr></thead>
     <tbody>
       <tr><td>MeLi app no aprobada en producción</td><td>Alta</td><td>Alto</td><td>Construir canales B2G + B2B primero · MeLi en F2 ya con app aprobada</td></tr>
@@ -239,42 +199,41 @@
       <tr><td>Equipo dev con knowledge loss</td><td>Media</td><td>Alto</td><td>Documentación obligatoria · pair programming · code review</td></tr>
     </tbody>
   </table>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>11</span></div>
-</section>
 
-<section class="page" id="s10">
-  <h2><span class="h2-num">10</span>Términos y condiciones</h2>
-  <h3>Propiedad intelectual</h3>
-  <p>Todo código, documentación y assets producidos son propiedad exclusiva de Smart Connection SpA (futuro Marketplace SMC SpA). Vendor externo (si aplica) cede derechos completos al pago final.</p>
+# 10 · Términos y condiciones
 
-  <h3>Confidencialidad</h3>
-  <p>Equipo de desarrollo y vendor (si aplica) firman NDA antes de acceder a credenciales o data operativa.</p>
+## Propiedad intelectual
 
-  <h3>SLA producción</h3>
-  <ul>
-    <li>Uptime objetivo: 99.5% mensual (excluye mantenimientos programados)</li>
-    <li>Bug P1 (sistema caído · pérdida data · facturación rota): respuesta &lt;2h · resolución &lt;8h</li>
-    <li>Bug P2 (módulo crítico afectado): respuesta &lt;1 día · resolución &lt;3 días</li>
-    <li>Bug P3-P4: respuesta &lt;1 semana</li>
-  </ul>
+  
+Todo código, documentación y assets producidos son propiedad exclusiva de Smart Connection SpA (futuro Marketplace SMC SpA). Vendor externo (si aplica) cede derechos completos al pago final.
 
-  <h3>Términos de pago (si vendor externo)</h3>
-  <ul>
-    <li>Hito 1 (cierre F0): 10%</li>
-    <li>Hito 2 (cierre F1 Core): 20%</li>
-    <li>Hitos 3-7 (cierre cada canal/módulo): 10% c/u (50% total)</li>
-    <li>Hito 8 (cierre F8 hardening + UAT): 15%</li>
-    <li>Hito 9 (cierre F9 soporte): 5%</li>
-  </ul>
+  
+## Confidencialidad
 
-  <h3>Garantía</h3>
-  <p>3 meses post-lanzamiento · vendor corrige bugs P1-P2 sin costo adicional · garantía contra defectos.</p>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>12</span></div>
-</section>
+  
+Equipo de desarrollo y vendor (si aplica) firman NDA antes de acceder a credenciales o data operativa.
 
-</div>
-<nav class="doc-nav"><a href="03-requirements.html">◂ doc 03</a><span class="nav-center">FIN DOCUMENTO 04</span><a href="05-data-model.html">doc 05 · Data Model ▸</a></nav>
-<script src="auth.js"></script>
-<script src="nav.js"></script>
-</body>
-</html>
+  
+## SLA producción
+
+  
+- Uptime objetivo: 99.5% mensual (excluye mantenimientos programados)
+- Bug P1 (sistema caído · pérdida data · facturación rota): respuesta &lt;2h · resolución &lt;8h
+- Bug P2 (módulo crítico afectado): respuesta &lt;1 día · resolución &lt;3 días
+- Bug P3-P4: respuesta &lt;1 semana
+
+  
+## Términos de pago (si vendor externo)
+
+  
+- Hito 1 (cierre F0): 10%
+- Hito 2 (cierre F1 Core): 20%
+- Hitos 3-7 (cierre cada canal/módulo): 10% c/u (50% total)
+- Hito 8 (cierre F8 hardening + UAT): 15%
+- Hito 9 (cierre F9 soporte): 5%
+
+  
+## Garantía
+
+  
+3 meses post-lanzamiento · vendor corrige bugs P1-P2 sin costo adicional · garantía contra defectos.

@@ -1,117 +1,20 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>02 · Business Blueprint · Marketplace SMC</title>
-<link rel="stylesheet" href="_styles.css">
-<link rel="stylesheet" href="_diagram-kit.css">
-<style>
-.proc-card {
-  background: white;
-  border: 1px solid var(--ink-200);
-  border-radius: 14px;
-  padding: 28px;
-  margin: 24px 0;
-}
-.proc-head {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid var(--ink-100);
-}
-.proc-num {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #00C1C1, #0F766E);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-.proc-title { font-size: 22px; font-weight: 800; margin: 0; }
-.proc-sub { font-size: 12px; color: var(--ink-500); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
-.proc-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin: 16px 0;
-}
-.proc-cell { padding: 12px 16px; background: var(--ink-50); border-radius: 8px; font-size: 13px; }
-.proc-cell strong { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--smc-primary-dark); display: block; margin-bottom: 4px; }
-.steps-list { list-style: none; counter-reset: step; padding-left: 0; }
-.steps-list li { counter-increment: step; padding: 8px 0 8px 36px; position: relative; font-size: 14px; }
-.steps-list li::before {
-  content: counter(step);
-  position: absolute; left: 0; top: 6px;
-  width: 24px; height: 24px;
-  background: var(--smc-primary); color: white;
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700;
-}
-</style>
-</head>
-<body>
-<nav class="doc-nav">
-  <a href="01-vision.html">◂ doc 01</a>
-  <span class="nav-center">DOCUMENTO 02 DE 09</span>
-  <a href="03-requirements.html">doc 03 · Requirements ▸</a>
-</nav>
+---
+number: 02
+id: bbp
+title: Business<br>Blueprint
+subtitle: "12 procesos end-to-end · cómo opera el negocio · NO cómo se construye el software."
+block: Marketplace SMC
+author: Functional-Lead + Cerebro
+version: 1.0
+date: 2026-05-25
+status: 🟢 Activo
+prev: index.html
+next: index.html
+---
 
-<div class="doc">
+# 00 · Mapa visual end-to-end
 
-<section class="cover">
-  <div class="cover-header">
-    <div class="cover-brand">SMART CONNECTION</div>
-    <div>Blueprint · Marketplace SMC</div>
-  </div>
-  <div class="cover-center">
-    <div class="cover-doc-num">Documento 02 de 09</div>
-    <h1 class="cover-title">Business<br>Blueprint</h1>
-    <p class="cover-subtitle">12 procesos end-to-end · cómo opera el negocio · NO cómo se construye el software.</p>
-    <div class="cover-meta">
-      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-25</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Functional-Lead + Cerebro</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Activo</div></div>
-    </div>
-  </div>
-  <div class="cover-footer">
-    <div>Smart Connection SpA · Rut 76.811.863-9</div>
-    <div>Confidencial · uso interno</div>
-  </div>
-</section>
-
-<section class="page toc">
-  <div class="toc-title">Tabla de contenidos</div>
-  <h1>12 procesos + transversales</h1>
-  <ol>
-    <li><a href="#bbp-procesos-section">00b · Procesos interactivos · 14 procesos · stock propio + dropshipping</a><span class="toc-pg">—</span></li>
-    <li><a href="#map">Mapa visual end-to-end</a><span class="toc-pg">03</span></li>
-    <li><a href="#p1">P01 · Sourcing</a><span class="toc-pg">04</span></li>
-    <li><a href="#p2">P02 · Compra a Nexport</a><span class="toc-pg">05</span></li>
-    <li><a href="#p3">P03 · Recepción bodega</a><span class="toc-pg">06</span></li>
-    <li><a href="#p4">P04 · Publicación cross-canal</a><span class="toc-pg">07</span></li>
-    <li><a href="#p5">P05 · Venta MeLi (B2C marketplace)</a><span class="toc-pg">08</span></li>
-    <li><a href="#p6">P06 · Venta D2C (storefront propio)</a><span class="toc-pg">09</span></li>
-    <li><a href="#p7">P07 · Venta B2G (Mercado Público)</a><span class="toc-pg">10</span></li>
-    <li><a href="#p8">P08 · Venta B2B (empresa privada)</a><span class="toc-pg">11</span></li>
-    <li><a href="#p9">P09 · Fulfillment</a><span class="toc-pg">12</span></li>
-    <li><a href="#p10">P10 · Devolución</a><span class="toc-pg">13</span></li>
-    <li><a href="#p11">P11 · Facturación DTE</a><span class="toc-pg">14</span></li>
-    <li><a href="#p12">P12 · Cobranza</a><span class="toc-pg">15</span></li>
-    <li><a href="#tr">Procesos transversales (T1-T5)</a><span class="toc-pg">16</span></li>
-  </ol>
-</section>
-
-<section class="page" id="map">
-  <h2><span class="h2-num">00</span>Mapa visual end-to-end</h2>
-  <div class="svg-container">
+<div class="svg-container">
     <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style="background:#FAFAF7">
       <defs>
         <marker id="ar" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
@@ -197,63 +100,62 @@
       <text x="450" y="500" text-anchor="middle" font-size="11" fill="#64748B" font-style="italic">+ contabilidad automática · inventario real-time · Cerebro IA · compliance · analytics (transversales)</text>
     </svg>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>03</span></div>
-</section>
-<section class="page" id="bbp-procesos-section">
-  <h2><span class="h2-num">00b</span>Procesos interactivos · 14 procesos · stock propio + dropshipping</h2>
+
+# bbp-procesos-section
+
+<h2><span class="h2-num">00b</span>Procesos interactivos · 14 procesos · stock propio + dropshipping</h2>
   <p style="color:#475569;font-size:14px;line-height:1.6;margin-top:-8px;">Seleccioná uno de los 12 procesos (P01-P12) para ver su pipeline detallado. Click en cualquier paso para ver stack · acciones · errores comunes.</p>
   <div class="diagram-host kind-pipeline" id="bbp-procesos" data-kind="pipeline"></div>
   <script type="application/json" data-for="bbp-procesos">{"default": "P01", "scenarios": {"P01": {"title": "P01 · Sourcing", "sub": "Búsqueda de productos · matching mercado", "callout": "Identificar productos candidatos en SoloTodo y otras fuentes públicas Chile · score por margen y demanda.", "tags": ["Cerebro · scoring", "Fuentes Chile gratis"], "stages": [{"num": "01", "name": "Detectar", "boxes": [{"code": "P01-01", "label": "Scrape SoloTodo categorías", "kind": "search", "stack": "Cron diario · API pública"}, {"code": "P01-02", "label": "Cargar Open Food Facts si aplica", "kind": "search", "stack": "API OFF"}]}, {"num": "02", "name": "Scoring", "boxes": [{"code": "P01-03", "label": "6 señales sin LLM · multistore/spread/etc", "kind": "search", "stack": "Postgres + cerebro lógica"}]}, {"num": "03", "name": "Sugerir operador", "boxes": [{"code": "P01-04", "label": "Top oportunidades en dashboard", "kind": "notify", "stack": "UI cards + cerebro chat"}]}]}, "P02": {"title": "P02 · Compra a proveedores locales Chile", "sub": "Y1 prioridad · proveedores nacionales · ciclo corto · pago en CLP", "callout": "Modo primario Y1. Compramos a proveedores chilenos (mayoristas · distribuidores · marcas locales) · ciclo despacho 3-7 días · pago en CLP sin tipo de cambio · sin aduana ni LCL/FCL.", "tags": ["Y1 prioridad", "Ciclo corto", "Pago CLP"], "stages": [{"num": "01", "name": "Detectar proveedor", "boxes": [{"code": "P02-01", "label": "Match producto con proveedor local", "kind": "search", "stack": "Mercado Libre Mayorista · directorios · gremios"}, {"code": "P02-02", "label": "Validar precios + términos", "kind": "search", "stack": "Comparar 2-3 proveedores"}]}, {"num": "02", "name": "Cotizar", "boxes": [{"code": "P02-03", "label": "RFQ por WhatsApp / email", "kind": "create", "stack": "Contacto directo proveedor"}]}, {"num": "03", "name": "Confirmar OC", "boxes": [{"code": "P02-04", "label": "OC emitida · DTE 33 recibida", "kind": "doc", "stack": "Open Factura SII"}, {"code": "P02-05", "label": "Pago contado o 30 días", "kind": "pay", "stack": "Transferencia CLP"}]}, {"num": "04", "name": "Despacho proveedor", "boxes": [{"code": "P02-06", "label": "Proveedor despacha a bodega · 3-7 días", "kind": "doc", "stack": "Courier proveedor o retiro propio"}]}]}, "P02b": {"title": "P02b · Importación Nexport (Fase 2 · Y2+)", "sub": "Intermediario importador · LCL/FCL · ciclo largo · pago USD", "callout": "Fase 2 · NO Y1. Cuando volumen justifique · importamos vía Nexport (importador). Ciclo 30-90 días · pago USD · costo aduana · pero margen significativamente mayor.", "tags": ["Fase 2 · Y2+", "Importación LCL/FCL", "Pago USD"], "stages": [{"num": "01", "name": "Cotizar", "boxes": [{"code": "P02b-01", "label": "RFQ a Nexport", "kind": "create", "stack": "Email + portal Nexport"}]}, {"num": "02", "name": "Confirmar OC", "boxes": [{"code": "P02b-02", "label": "OC emitida USD + cláusulas Incoterm", "kind": "doc", "stack": "EXW · FOB · CIF según acuerdo"}, {"code": "P02b-03", "label": "Pago anticipado USD", "kind": "pay", "stack": "Transferencia internacional"}]}, {"num": "03", "name": "Tránsito + aduana", "boxes": [{"code": "P02b-04", "label": "ETA + manifest + DUS", "kind": "doc", "stack": "Nexport portal"}, {"code": "P02b-05", "label": "Pago aduana + IVA importación", "kind": "pay", "stack": "Agente aduana"}]}, {"num": "04", "name": "Recepción bodega Chile", "boxes": [{"code": "P02b-06", "label": "Llegada y entrada a P03", "kind": "doc", "stack": "Sigue flujo normal"}]}]}, "P03": {"title": "P03 · Recepción en bodega", "sub": "Conteo · QA · ingreso a inventario", "callout": "Llegada del lote a bodega. Verificación física + ingreso digital a Postgres.", "tags": ["Operación bodega", "QA físico"], "stages": [{"num": "01", "name": "Recepción física", "boxes": [{"code": "P03-01", "label": "Conteo + estado producto", "kind": "search", "stack": "Manual operador"}]}, {"num": "02", "name": "Ingreso inventario", "boxes": [{"code": "P03-02", "label": "Insert mkt_inventory", "kind": "create", "stack": "Postgres + adapter"}, {"code": "P03-03", "label": "Fotos al storage", "kind": "doc", "stack": "Supabase Storage"}]}]}, "P04": {"title": "P04 · Publicación cross-canal", "sub": "Listing en MeLi · D2C · MP · B2B", "callout": "Una vez en inventario, se publica simultáneamente en todos los canales activos del operador via Channel Adapter Pattern.", "tags": ["Cross-canal", "Adapter pattern"], "stages": [{"num": "01", "name": "MeLi", "boxes": [{"code": "P04-01", "label": "POST /items MeLi", "kind": "create", "stack": "MeLi API · OAuth"}]}, {"num": "02", "name": "D2C storefront", "boxes": [{"code": "P04-02", "label": "Insert catalog + ISR revalidate", "kind": "create", "stack": "Storefront Next.js"}]}, {"num": "03", "name": "MP catálogo", "boxes": [{"code": "P04-03", "label": "Update catálogo Mercado Público", "kind": "update", "stack": "MP API REST"}]}, {"num": "04", "name": "B2B portal", "boxes": [{"code": "P04-04", "label": "Sync portal B2B + cache invalidation", "kind": "update", "stack": "B2B API"}]}]}, "P05": {"title": "P05 · Venta MeLi (B2C marketplace ajeno)", "sub": "Fase reputación · Webhook · Aceptación · Despacho", "callout": "Canal alto volumen · 2 fases Y1: (1) Fase reputación = primeras 10 ventas SIN foco margen · regalar o costo + envío gratis para activar termómetro vendedor. (2) Fase escala = post 10 ventas verdes · Mercado Ads ON + foco margen.", "tags": ["MeLi · OAuth", "Volumen alto Y1", "Reputación primero"], "notes": "Estrategia reputación Y1 fase 1 basada en referentes chilenos del e-commerce: las primeras 10 ventas activan el algoritmo · NO buscan utilidad. Fotografía propia (no del proveedor) es non-negotiable.", "stages": [{"num": "01", "name": "Fase reputación (primeras 10)", "boxes": [{"code": "P05-00a", "label": "Configurar listado con foto pro propia + envío gratis", "kind": "create", "stack": "NO usar fotos del proveedor · diferenciar"}, {"code": "P05-00b", "label": "Vender a costo o regalar a contactos diferentes direcciones", "kind": "pay", "stack": "Activar termómetro vendedor MeLi"}]}, {"num": "02", "name": "Webhook MeLi", "boxes": [{"code": "P05-01", "label": "Validar firma + idempotency", "kind": "notify", "stack": "MeLi webhook"}]}, {"num": "03", "name": "Aceptar", "boxes": [{"code": "P05-02", "label": "Reservar stock", "kind": "update", "stack": "Postgres SELECT FOR UPDATE"}]}, {"num": "04", "name": "Despachar", "boxes": [{"code": "P05-03", "label": "Etiqueta courier + tracking", "kind": "doc", "stack": "Chilexpress/Starken"}]}, {"num": "05", "name": "Factura", "boxes": [{"code": "P05-04", "label": "DTE 39 boleta", "kind": "doc", "stack": "Open Factura"}]}, {"num": "06", "name": "Fase escala (post 10 ventas verdes)", "boxes": [{"code": "P05-05a", "label": "Activar Mercado Ads + medallas", "kind": "create", "stack": "Reputación validada · escalar con ADS"}, {"code": "P05-05b", "label": "Migrar a Full Fulfillment si rota bien", "kind": "update", "stack": "Stock en almacenes MeLi · mayor exposición"}]}]}, "P06": {"title": "P06 · Venta D2C (storefront propio)", "sub": "Tráfico ADS · checkout · post-venta", "callout": "Sin comisión marketplace · margen mayor pero requiere inversión ADS y skills marketing.", "tags": ["D2C", "ADS Meta/Google/TikTok"], "stages": [{"num": "01", "name": "Conversión", "boxes": [{"code": "P06-01", "label": "Landing → cart → checkout", "kind": "search", "stack": "Storefront Next.js"}]}, {"num": "02", "name": "Checkout", "boxes": [{"code": "P06-02", "label": "WebPay Plus o MercadoPago", "kind": "pay", "stack": "Pasarela seleccionable"}]}, {"num": "03", "name": "Despacho", "boxes": [{"code": "P06-03", "label": "Courier auto + tracking email", "kind": "doc", "stack": "Adapter pattern courier"}]}, {"num": "04", "name": "Post-venta", "boxes": [{"code": "P06-04", "label": "NPS · reseña · upsell", "kind": "notify", "stack": "Cerebro email + UI"}]}]}, "P07": {"title": "P07 · Venta B2G Mercado Público", "sub": "Detección licitación · postular · adjudicar", "callout": "Margen menor pero ticket alto. Ciclo más largo (días hasta semanas).", "tags": ["B2G", "Factura DTE 33"], "stages": [{"num": "01", "name": "Detectar", "boxes": [{"code": "P07-01", "label": "Sync licitaciones diarias 8am", "kind": "search", "stack": "MP API cron"}]}, {"num": "02", "name": "Postular", "boxes": [{"code": "P07-02", "label": "Generar oferta Cerebro", "kind": "create", "stack": "Template + AI"}, {"code": "P07-03", "label": "Enviar a MP", "kind": "notify", "stack": "MP API POST"}]}, {"num": "03", "name": "Adjudicar", "boxes": [{"code": "P07-04", "label": "Webhook resultado", "kind": "notify", "stack": "MP webhook"}]}, {"num": "04", "name": "Despacho + Factura", "boxes": [{"code": "P07-05", "label": "Guía + factura DTE 33", "kind": "doc", "stack": "Open Factura"}]}]}, "P08": {"title": "P08 · Venta B2B empresa privada", "sub": "RFQ · cotización · aprobación · despacho", "callout": "Ticket más alto · pago a 30/60/90 días · requiere historial cuentas y precios negociados.", "tags": ["B2B", "Pago diferido"], "stages": [{"num": "01", "name": "RFQ", "boxes": [{"code": "P08-01", "label": "Cliente envía RFQ", "kind": "create", "stack": "Portal B2B"}]}, {"num": "02", "name": "Cotizar", "boxes": [{"code": "P08-02", "label": "Pricing engine con descuentos volumen", "kind": "create", "stack": "Cerebro pricing"}]}, {"num": "03", "name": "Aprobar", "boxes": [{"code": "P08-03", "label": "Click aprobación cliente · firma HMAC", "kind": "update", "stack": "Portal B2B firma"}]}, {"num": "04", "name": "Cerrar", "boxes": [{"code": "P08-04", "label": "Despacho LTL · factura DTE 33", "kind": "doc", "stack": "Open Factura"}]}]}, "P09": {"title": "P09 · Fulfillment despacho", "sub": "Cotización · etiqueta · tracking · entrega", "callout": "Cross-cutting · usado por P05/P06/P07/P08. Adapter Pattern también acá: misma interfaz · distinto courier.", "tags": ["Logística", "Cross-canal"], "stages": [{"num": "01", "name": "Cotizar", "boxes": [{"code": "P09-01", "label": "Cotización por peso/volumen", "kind": "search", "stack": "Adapter courier"}]}, {"num": "02", "name": "Generar etiqueta", "boxes": [{"code": "P09-02", "label": "Etiqueta PDF + número tracking", "kind": "doc", "stack": "Courier API"}]}, {"num": "03", "name": "Tracking", "boxes": [{"code": "P09-03", "label": "Webhook updates courier", "kind": "notify", "stack": "Courier webhook"}]}, {"num": "04", "name": "Entrega", "boxes": [{"code": "P09-04", "label": "Confirmación entregado", "kind": "update", "stack": "Webhook final"}]}]}, "P10": {"title": "P10 · Devolución", "sub": "Opcional · ojalá poco · proceso reversa", "callout": "Devolución del cliente. Coordinación con courier en logística reversa. Nota de crédito SII si aplica.", "tags": ["Reversa", "Nota crédito DTE 61"], "stages": [{"num": "01", "name": "Solicitud", "boxes": [{"code": "P10-01", "label": "Cliente solicita devolución", "kind": "notify", "stack": "Soporte ticket / canal"}]}, {"num": "02", "name": "Aprobar", "boxes": [{"code": "P10-02", "label": "Validar política devolución", "kind": "search", "stack": "Reglas operador"}]}, {"num": "03", "name": "Logística reversa", "boxes": [{"code": "P10-03", "label": "Etiqueta courier reversa", "kind": "doc", "stack": "Courier API reverse"}]}, {"num": "04", "name": "Refund + NC", "boxes": [{"code": "P10-04", "label": "Reverso pago + DTE 61 nota crédito", "kind": "pay", "stack": "Pasarela + Open Factura"}]}]}, "P11": {"title": "P11 · Facturación electrónica", "sub": "DTE 33 · 39 · 61 · SII", "callout": "Cross-cutting con SII. Requiere autorización previa de tipos en SII. Status SMC SpA: solo exenta autorizada, pedir 33/39/61.", "tags": ["SII Chile", "DTE auto"], "stages": [{"num": "01", "name": "Trigger evento", "boxes": [{"code": "P11-01", "label": "Orden cerrada · monto > 0", "kind": "notify", "stack": "Evento pg_notify"}]}, {"num": "02", "name": "Determinar tipo DTE", "boxes": [{"code": "P11-02", "label": "39 boleta · 33 factura · 61 NC", "kind": "search", "stack": "Lógica negocio"}]}, {"num": "03", "name": "Emitir", "boxes": [{"code": "P11-03", "label": "POST a Open Factura", "kind": "doc", "stack": "Open Factura API"}]}, {"num": "04", "name": "Archivar", "boxes": [{"code": "P11-04", "label": "PDF al storage + email cliente", "kind": "doc", "stack": "Supabase Storage"}]}]}, "P12": {"title": "P12 · Conciliación financiera", "sub": "Pagos recibidos · DTE emitido · libro mayor", "callout": "Cierre del ciclo. Reconciliar lo que se cobró vs lo que se facturó. Reportes contador galvarez.cl mensual.", "tags": ["Contable", "F29 mensual"], "stages": [{"num": "01", "name": "Importar movimientos", "boxes": [{"code": "P12-01", "label": "Bank statement / pasarelas", "kind": "search", "stack": "Manual fase 1 · API fase 2"}]}, {"num": "02", "name": "Matching", "boxes": [{"code": "P12-02", "label": "Match pagos vs DTE", "kind": "search", "stack": "Lógica + cerebro asistencia"}]}, {"num": "03", "name": "Reporte mensual", "boxes": [{"code": "P12-03", "label": "Export contador galvarez.cl", "kind": "doc", "stack": "Excel + PDF"}]}, {"num": "04", "name": "F29 SII", "boxes": [{"code": "P12-04", "label": "Declaración mensual IVA", "kind": "doc", "stack": "SII Chile"}]}]}, "P13": {"title": "P13 · Dropshipping", "sub": "Vender sin stock propio · proveedor despacha directo al cliente final", "callout": "Modo paralelo al stock propio. Catálogo amplio sin capital atado. El producto se publica en canales sin tenerlo en bodega. Cuando entra venta · se propaga orden al proveedor (chileno o internacional) que despacha directo al cliente final.", "tags": ["Sin capital atado", "Margen 10-25%", "Escala catálogo rápido"], "notes": "Dropshipping permite explorar demanda sin riesgo · ideal Y1 para SKUs nuevos · para SKUs validados luego pasar a stock propio (P01-P02) para mejor margen.", "stages": [{"num": "01", "name": "Catálogo proveedor dropship", "boxes": [{"code": "P13-01", "label": "Sync catálogo proveedor (Supplier Adapter)", "kind": "search", "stack": "API · feed XML · CSV · scraping manual fallback"}, {"code": "P13-02", "label": "Filtrar SKUs aprobados · margen viable", "kind": "search", "stack": "Cerebro scoring + reglas operador"}]}, {"num": "02", "name": "Publicación cross-canal", "boxes": [{"code": "P13-03", "label": "Publicar en canales con flag is_dropship=true", "kind": "create", "stack": "Mismo Channel Adapter · marca producto como sin stock propio"}]}, {"num": "03", "name": "Venta cliente final", "boxes": [{"code": "P13-04", "label": "Webhook canal · orden recibida", "kind": "notify", "stack": "Mismo flujo que stock propio P05-P08"}]}, {"num": "04", "name": "Propagar OC al proveedor", "boxes": [{"code": "P13-05", "label": "Crear OC al proveedor dropship (Supplier Adapter)", "kind": "create", "stack": "API proveedor · API key · email automatizado · WhatsApp Business"}, {"code": "P13-06", "label": "Confirmar disponibilidad real-time", "kind": "search", "stack": "Si proveedor responde stock=0 · refund cliente + comunicación"}]}, {"num": "05", "name": "Despacho directo proveedor → cliente", "boxes": [{"code": "P13-07", "label": "Proveedor despacha al cliente · tracking compartido", "kind": "doc", "stack": "Courier del proveedor · webhook tracking · nuestro nombre en remitente opcional"}]}, {"num": "06", "name": "Cobro + factura nuestra", "boxes": [{"code": "P13-08", "label": "Cobro pasarela cliente + DTE emitido (mismo P11)", "kind": "pay", "stack": "Open Factura · DTE a nombre SMC SpA"}]}, {"num": "07", "name": "Liquidación al proveedor", "boxes": [{"code": "P13-09", "label": "Pagar al proveedor menos comisión nuestra", "kind": "pay", "stack": "Transferencia 7-15 días post-venta · acuerdo bilateral"}]}]}}}</script>
-  <div class="page-footer"><span>Banco SMC</span><span>—</span></div>
-</section>
 
+# p1
 
-<!-- P01 -->
-<section class="page" id="p1">
-  <h2><span class="h2-num">P01</span>Sourcing · búsqueda de productos</h2>
+<h2><span class="h2-num">P01</span>Sourcing · búsqueda de productos</h2>
   <div class="proc-card">
     <div class="proc-grid">
-      <div class="proc-cell"><strong>Actor</strong>Operador + IA Cerebro (sugerencias)</div>
-      <div class="proc-cell"><strong>Trigger</strong>Ampliar catálogo · stock bajo · oportunidad detectada</div>
-      <div class="proc-cell"><strong>Inputs</strong>keyword · presupuesto · márgenes mínimos</div>
-      <div class="proc-cell"><strong>Outputs</strong>Brief Sourcing (PDF + DB)</div>
+      <div class="proc-cell">**Actor**Operador + IA Cerebro (sugerencias)</div>
+      <div class="proc-cell">**Trigger**Ampliar catálogo · stock bajo · oportunidad detectada</div>
+      <div class="proc-cell">**Inputs**keyword · presupuesto · márgenes mínimos</div>
+      <div class="proc-cell">**Outputs**Brief Sourcing (PDF + DB)</div>
     </div>
-    <h4>Pasos</h4>
+    
+### Pasos
+
     <ol class="steps-list">
       <li>Operador define categoría/nicho a explorar (ej: "audífonos bluetooth")</li>
       <li>Sistema consulta histórico rotación SKUs similares</li>
       <li>IA sugiere keywords trending MeLi · precios competencia · márgenes</li>
       <li>Operador filtra: 3-5 candidatos</li>
       <li>Sistema arma "Brief Sourcing" con specs · MOQ · precio target</li>
-      <li>Brief queda en <code>/sourcing/briefs/{id}</code> · pasa a P02</li>
+      <li>Brief queda en `/sourcing/briefs/{id}` · pasa a P02</li>
     </ol>
     <div class="proc-grid">
-      <div class="proc-cell"><strong>Eventos</strong><code>sourcing.brief.created</code></div>
-      <div class="proc-cell"><strong>KPIs</strong>time-to-brief · % briefs que llegan a compra</div>
+      <div class="proc-cell">**Eventos**`sourcing.brief.created`</div>
+      <div class="proc-cell">**KPIs**time-to-brief · % briefs que llegan a compra</div>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>04</span></div>
-</section>
 
-<!-- P02 -->
-<section class="page" id="p2">
-  <h2><span class="h2-num">P02</span>Compra a Nexport (intermediario importador)</h2>
+# p2
+
+<h2><span class="h2-num">P02</span>Compra a Nexport (intermediario importador)</h2>
   <div class="proc-card">
     <div class="proc-grid">
-      <div class="proc-cell"><strong>Actor</strong>Operador + Nexport</div>
-      <div class="proc-cell"><strong>Trigger</strong>Brief Sourcing aprobado</div>
-      <div class="proc-cell"><strong>Inputs</strong>Brief aprobado</div>
-      <div class="proc-cell"><strong>Outputs</strong>OC · pago registrado · shipment</div>
+      <div class="proc-cell">**Actor**Operador + Nexport</div>
+      <div class="proc-cell">**Trigger**Brief Sourcing aprobado</div>
+      <div class="proc-cell">**Inputs**Brief aprobado</div>
+      <div class="proc-cell">**Outputs**OC · pago registrado · shipment</div>
     </div>
-    <h4>Pasos</h4>
+    
+### Pasos
+
     <ol class="steps-list">
       <li>Operador envía Brief a Nexport (WhatsApp · email · portal)</li>
       <li>Nexport cotiza en CLP+IVA + lead time</li>
-      <li>Operador registra cotización en <code>/sourcing/quotes/{id}</code></li>
+      <li>Operador registra cotización en `/sourcing/quotes/{id}`</li>
       <li>Operador emite OC en Hub con términos pago (ej: 50% adelanto · 50% B/L)</li>
       <li>Transferencia primer pago · registro CxP</li>
       <li>Nexport confirma · envía tracking estimado</li>
-      <li>Hub crea registro shipment <code>/sourcing/shipments/{id}</code> con ETA</li>
+      <li>Hub crea registro shipment `/sourcing/shipments/{id}` con ETA</li>
     </ol>
     <div class="box box-info">
       <div class="box-title">💡 Notas legales</div>
@@ -264,24 +166,24 @@
       </ul>
     </div>
     <div class="proc-grid">
-      <div class="proc-cell"><strong>Eventos</strong><code>purchase.po.created</code> · <code>purchase.payment.made</code> · <code>purchase.shipment.in-transit</code></div>
-      <div class="proc-cell"><strong>KPIs</strong>time-to-PO · % OC en plazo · variación precio</div>
+      <div class="proc-cell">**Eventos**`purchase.po.created` · `purchase.payment.made` · `purchase.shipment.in-transit`</div>
+      <div class="proc-cell">**KPIs**time-to-PO · % OC en plazo · variación precio</div>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>05</span></div>
-</section>
 
-<!-- P03 -->
-<section class="page" id="p3">
-  <h2><span class="h2-num">P03</span>Recepción en bodega</h2>
+# p3
+
+<h2><span class="h2-num">P03</span>Recepción en bodega</h2>
   <div class="proc-card">
     <div class="proc-grid">
-      <div class="proc-cell"><strong>Actor</strong>Operador (o bodeguero futuro)</div>
-      <div class="proc-cell"><strong>Trigger</strong>Llegada física de mercadería</div>
-      <div class="proc-cell"><strong>Inputs</strong>Mercadería + OC referenciada</div>
-      <div class="proc-cell"><strong>Outputs</strong>Stock disponible + acta firmada</div>
+      <div class="proc-cell">**Actor**Operador (o bodeguero futuro)</div>
+      <div class="proc-cell">**Trigger**Llegada física de mercadería</div>
+      <div class="proc-cell">**Inputs**Mercadería + OC referenciada</div>
+      <div class="proc-cell">**Outputs**Stock disponible + acta firmada</div>
     </div>
-    <h4>Pasos</h4>
+    
+### Pasos
+
     <ol class="steps-list">
       <li>Recibe paquete · verifica embalaje</li>
       <li>Hub → /warehouse/recepcion → escanea código OC (QR de P02)</li>
@@ -289,7 +191,7 @@
       <li>Cuenta físicamente · marca cada SKU como recibido</li>
       <li>Si discrepancia (cantidad menor · daños) → registra novedad + foto</li>
       <li>Asigna ubicación física (rack · pasillo · bin)</li>
-      <li>Hub actualiza <code>inventory.physical_stock</code> · genera etiquetas barcode</li>
+      <li>Hub actualiza `inventory.physical_stock` · genera etiquetas barcode</li>
       <li>Genera Acta de Recepción PDF (firmable digital)</li>
     </ol>
     <div class="box box-decision">
@@ -299,48 +201,48 @@ HABER: Proveedores (Nexport) por valor compra
 + asiento separado IVA crédito si aplica</pre>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>06</span></div>
-</section>
 
-<!-- P04 -->
-<section class="page" id="p4">
-  <h2><span class="h2-num">P04</span>Publicación cross-canal</h2>
+# p4
+
+<h2><span class="h2-num">P04</span>Publicación cross-canal</h2>
   <div class="proc-card">
     <div class="proc-grid">
-      <div class="proc-cell"><strong>Actor</strong>Operador + Sistema (auto-publish)</div>
-      <div class="proc-cell"><strong>Trigger</strong>Producto nuevo en inventario · o publicar existente en canal nuevo</div>
+      <div class="proc-cell">**Actor**Operador + Sistema (auto-publish)</div>
+      <div class="proc-cell">**Trigger**Producto nuevo en inventario · o publicar existente en canal nuevo</div>
     </div>
-    <h4>Pasos</h4>
+    
+### Pasos
+
     <ol class="steps-list">
-      <li>Operador entra a <code>/inventory/sku/{id}</code> · "Publicar en canales"</li>
+      <li>Operador entra a `/inventory/sku/{id}` · "Publicar en canales"</li>
       <li>Hub muestra checklist: MeLi · D2C · Mercado Público · B2B · Falabella (si conectados)</li>
       <li>Operador marca canales destino</li>
-      <li>Hub aplica <code>price-rules</code> por canal (landed cost + markup + comisión + IVA)</li>
+      <li>Hub aplica `price-rules` por canal (landed cost + markup + comisión + IVA)</li>
       <li>Operador revisa precio sugerido por canal · ajusta si quiere</li>
       <li>Hub llama al adapter de cada canal seleccionado</li>
-      <li>Cada adapter responde OK/error · Hub registra estado en <code>inventory.channel_sync_status</code></li>
+      <li>Cada adapter responde OK/error · Hub registra estado en `inventory.channel_sync_status`</li>
     </ol>
     <div class="box box-premise">
       <div class="box-title">🎯 Premisa core</div>
-      <p style="margin:0"><strong>publicar en N canales = 1 click. No 4 forms.</strong></p>
+      <p style="margin:0">**publicar en N canales = 1 click. No 4 forms.**</p>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>07</span></div>
-</section>
 
-<!-- P05 -->
-<section class="page" id="p5">
-  <h2><span class="h2-num">P05</span>Venta MeLi (B2C marketplace ajeno)</h2>
+# p5
+
+<h2><span class="h2-num">P05</span>Venta MeLi (B2C marketplace ajeno)</h2>
   <div class="proc-card">
-    <h4>Flujo</h4>
+    
+### Flujo
+
     <ol class="steps-list">
-      <li>MeLi envía webhook a <code>/api/webhooks/meli</code> con orden nueva</li>
-      <li>Hub valida HMAC · crea registro <code>orders</code> con <code>channel='meli'</code></li>
-      <li>Hub reserva stock (<code>inventory.reservations</code> +1)</li>
-      <li>Cliente queda como <code>customers</code> con <code>is_meli_anonymous=true</code></li>
-      <li>Hub crea task fulfillment → cola <code>/fulfillment/pendientes</code></li>
+      <li>MeLi envía webhook a `/api/webhooks/meli` con orden nueva</li>
+      <li>Hub valida HMAC · crea registro `orders` con `channel='meli'`</li>
+      <li>Hub reserva stock (`inventory.reservations` +1)</li>
+      <li>Cliente queda como `customers` con `is_meli_anonymous=true`</li>
+      <li>Hub crea task fulfillment → cola `/fulfillment/pendientes`</li>
       <li>Operador gestiona despacho (P09)</li>
-      <li>MeLi confirma pago liberado (14-21 días) → registro <code>payments</code> status=paid</li>
+      <li>MeLi confirma pago liberado (14-21 días) → registro `payments` status=paid</li>
       <li>CxC contra MeLi se actualiza</li>
     </ol>
     <div class="box box-warning">
@@ -351,45 +253,45 @@ HABER: Proveedores (Nexport) por valor compra
       </ul>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>08</span></div>
-</section>
 
-<!-- P06 -->
-<section class="page" id="p6">
-  <h2><span class="h2-num">P06</span>Venta D2C (storefront propio)</h2>
+# p6
+
+<h2><span class="h2-num">P06</span>Venta D2C (storefront propio)</h2>
   <div class="proc-card">
-    <h4>Flujo</h4>
+    
+### Flujo
+
     <ol class="steps-list">
       <li>Cliente en storefront de marca propia agrega productos al carrito</li>
       <li>Checkout: ingresa datos + paga (WebPay/MercadoPago/transferencia)</li>
       <li>Hub recibe orden vía API directa (no webhook · es nuestro propio storefront)</li>
       <li>Mismo flow MeLi: orden + reserva stock + customer + task fulfillment</li>
-      <li>Cliente queda como <code>customers</code> con datos completos (no anónimo)</li>
+      <li>Cliente queda como `customers` con datos completos (no anónimo)</li>
       <li>Boleta/factura electrónica se emite automático (P11)</li>
       <li>Pago se acredita (WebPay 24h · transferencia manual)</li>
     </ol>
     <div class="proc-grid">
-      <div class="proc-cell"><strong>Eventos</strong><code>order.created</code> · <code>dte.issued</code> · <code>payment.received</code></div>
-      <div class="proc-cell"><strong>KPIs</strong>conversion rate · ticket promedio · abandono carrito</div>
+      <div class="proc-cell">**Eventos**`order.created` · `dte.issued` · `payment.received`</div>
+      <div class="proc-cell">**KPIs**conversion rate · ticket promedio · abandono carrito</div>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>09</span></div>
-</section>
 
-<!-- P07 -->
-<section class="page" id="p7">
-  <h2><span class="h2-num">P07</span>Venta B2G · Mercado Público (Estado)</h2>
+# p7
+
+<h2><span class="h2-num">P07</span>Venta B2G · Mercado Público (Estado)</h2>
   <div class="proc-card">
-    <h4>Flujo</h4>
+    
+### Flujo
+
     <ol class="steps-list">
       <li>Hub monitorea API Mercado Público diariamente</li>
       <li>Filtra licitaciones por categorías propias · región · monto</li>
-      <li>Operador revisa "Bandeja Oportunidades" <code>/channels/mp/licitaciones-abiertas</code></li>
+      <li>Operador revisa "Bandeja Oportunidades" `/channels/mp/licitaciones-abiertas`</li>
       <li>Decide ofertar → "Preparar oferta"</li>
       <li>Hub pre-llena form con productos catálogo CM + precio + plazo entrega</li>
       <li>Operador adjunta certificados · garantía bancaria si aplica</li>
       <li>Hub envía oferta vía API MP (o exporta XML para upload manual)</li>
-      <li>Si adjudican → orden con <code>channel='mp'</code></li>
+      <li>Si adjudican → orden con `channel='mp'`</li>
       <li>Operador entrega · genera acta recepción Estado</li>
       <li>Hub emite factura · carga en sistema MP</li>
       <li>Estado paga 30-90 días después · Hub trackea CxC</li>
@@ -399,16 +301,16 @@ HABER: Proveedores (Nexport) por valor compra
       <p style="margin:0">30-90 días post entrega · planificar cash flow · NO depender de pago rápido B2G</p>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>10</span></div>
-</section>
 
-<!-- P08 -->
-<section class="page" id="p8">
-  <h2><span class="h2-num">P08</span>Venta B2B (empresa privada)</h2>
+# p8
+
+<h2><span class="h2-num">P08</span>Venta B2B (empresa privada)</h2>
   <div class="proc-card">
-    <h4>Flujo</h4>
+    
+### Flujo
+
     <ol class="steps-list">
-      <li>Operador crea/busca cliente en <code>/channels/b2b/clientes</code></li>
+      <li>Operador crea/busca cliente en `/channels/b2b/clientes`</li>
       <li>"Nueva cotización" → arma quote (SKUs + cantidades + precio mayorista)</li>
       <li>Hub genera PDF cotización · envía email automático al cliente</li>
       <li>Cliente aprueba (responde email o click link aprobación)</li>
@@ -419,20 +321,20 @@ HABER: Proveedores (Nexport) por valor compra
       <li>Hub trackea CxC (P12)</li>
     </ol>
     <div class="proc-grid">
-      <div class="proc-cell"><strong>KPIs</strong>conversion quote→orden · ticket promedio B2B · % cobrado en tiempo</div>
-      <div class="proc-cell"><strong>Eventos</strong><code>b2b.quote.created</code> · <code>b2b.quote.approved</code></div>
+      <div class="proc-cell">**KPIs**conversion quote→orden · ticket promedio B2B · % cobrado en tiempo</div>
+      <div class="proc-cell">**Eventos**`b2b.quote.created` · `b2b.quote.approved`</div>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>11</span></div>
-</section>
 
-<!-- P09 -->
-<section class="page" id="p9">
-  <h2><span class="h2-num">P09</span>Fulfillment · despacho</h2>
+# p9
+
+<h2><span class="h2-num">P09</span>Fulfillment · despacho</h2>
   <div class="proc-card">
-    <h4>Flujo</h4>
+    
+### Flujo
+
     <ol class="steps-list">
-      <li>Operador entra a <code>/fulfillment/pendientes</code> · ve cola priorizada</li>
+      <li>Operador entra a `/fulfillment/pendientes` · ve cola priorizada</li>
       <li>Hub genera picking list (qué SKU sacar de qué ubicación)</li>
       <li>Operador hace picking físico · marca SKUs picked</li>
       <li>Packing: arma paquete · pesa · mide</li>
@@ -449,45 +351,45 @@ HABER: Proveedores (Nexport) por valor compra
 HABER: Mercadería (existencia) por landed cost</pre>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>12</span></div>
-</section>
 
-<!-- P10 -->
-<section class="page" id="p10">
-  <h2><span class="h2-num">P10</span>Devolución (opcional · ojalá poco)</h2>
+# p10
+
+<h2><span class="h2-num">P10</span>Devolución (opcional · ojalá poco)</h2>
   <div class="proc-card">
-    <h4>Flujo</h4>
+    
+### Flujo
+
     <ol class="steps-list">
       <li>Cliente solicita por canal correspondiente (motivo: defecto · arrepentimiento · diferente al esperado)</li>
       <li>Operador valida motivo · aprueba RMA</li>
-      <li>Hub crea ticket <code>/fulfillment/devoluciones/{id}</code></li>
+      <li>Hub crea ticket `/fulfillment/devoluciones/{id}`</li>
       <li>Cliente envía producto de vuelta</li>
       <li>Operador recibe · inspecciona estado</li>
-      <li>Si OK · stock vuelve a inventario (<code>inventory.adjustments</code> IN)</li>
+      <li>Si OK · stock vuelve a inventario (`inventory.adjustments` IN)</li>
       <li>Hub emite Nota de Crédito Electrónica (NC 61) al canal de origen</li>
       <li>Reembolsa pago al cliente (transferencia · WebPay reverse)</li>
     </ol>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>13</span></div>
-</section>
 
-<!-- P11 -->
-<section class="page" id="p11">
-  <h2><span class="h2-num">P11</span>Facturación · DTE Chile</h2>
+# p11
+
+<h2><span class="h2-num">P11</span>Facturación · DTE Chile</h2>
   <div class="proc-card">
-    <h4>Flujo</h4>
+    
+### Flujo
+
     <ol class="steps-list">
       <li>Orden status=approved → Hub trigger emisión DTE</li>
       <li>Decide tipo documento según cliente:
-        <ul>
-          <li>Persona natural sin RUT → <strong>Boleta Electrónica (39)</strong></li>
-          <li>Empresa con RUT → <strong>Factura Electrónica (33)</strong></li>
-          <li>Cliente exento → <strong>Factura Exenta (34)</strong></li>
-        </ul>
+        
+- Persona natural sin RUT → **Boleta Electrónica (39)**
+- Empresa con RUT → **Factura Electrónica (33)**
+- Cliente exento → **Factura Exenta (34)**
+
       </li>
       <li>Llama API Open Factura (o SII MIPYME directo)</li>
       <li>Recibe folio + XML firmado + PDF</li>
-      <li>Guarda en <code>dte.documents</code></li>
+      <li>Guarda en `dte.documents`</li>
       <li>Envía PDF al cliente por email</li>
       <li>Reporta automático al SII (libro IVA digital)</li>
     </ol>
@@ -498,23 +400,23 @@ HABER: Ventas afectas por neto
 HABER: IVA débito por IVA</pre>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>14</span></div>
-</section>
 
-<!-- P12 -->
-<section class="page" id="p12">
-  <h2><span class="h2-num">P12</span>Cobranza</h2>
+# p12
+
+<h2><span class="h2-num">P12</span>Cobranza</h2>
   <div class="proc-card">
-    <h4>Flujo</h4>
+    
+### Flujo
+
     <ol class="steps-list">
-      <li>Hub monitorea diariamente <code>/finanzas/cuentas-por-cobrar</code></li>
+      <li>Hub monitorea diariamente `/finanzas/cuentas-por-cobrar`</li>
       <li>Calcula días restantes hasta vencimiento por cliente/canal</li>
       <li>5 días antes → recordatorio automático cliente (email)</li>
       <li>0 días → alerta operador</li>
       <li>+7 días → segundo recordatorio + alerta amarilla</li>
       <li>+15 días → llamada manual del operador</li>
       <li>+30 días → escalamiento (gestión cobranza)</li>
-      <li>Pago llega → conciliación · Hub matchea pago con factura → <code>paid</code></li>
+      <li>Pago llega → conciliación · Hub matchea pago con factura → `paid`</li>
       <li>Genera asiento contable</li>
     </ol>
     <div class="box box-decision">
@@ -523,26 +425,24 @@ HABER: IVA débito por IVA</pre>
 HABER: Clientes (CxC) por monto recibido</pre>
     </div>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>15</span></div>
-</section>
 
-<!-- Transversales -->
-<section class="page" id="tr">
-  <h2><span class="h2-num">T</span>Procesos transversales</h2>
+# tr
+
+<h2><span class="h2-num">T</span>Procesos transversales</h2>
   <table>
     <thead><tr><th>ID</th><th>Proceso</th><th>Qué hace</th></tr></thead>
     <tbody>
-      <tr><td><strong>T1</strong></td><td>Contabilidad automática (event-driven)</td><td>Cada evento de los 12 procesos dispara asientos contables en plan de cuentas configurable. F29 mensual + libro IVA + auxiliar de clientes/proveedores automático.</td></tr>
-      <tr><td><strong>T2</strong></td><td>Inventario real-time (SSoT)</td><td>Cada venta/recepción/devolución/merma actualiza inventario inmediato. Cross-canal sincroniza stock vía webhook a cada adapter.</td></tr>
-      <tr><td><strong>T3</strong></td><td>Cerebro IA (sugerencias proactivas)</td><td>Analiza data de los 12 procesos · genera alertas: "stock bajo SKU X" · "MeLi vendiste 30% menos esta semana" · "comprá más del proveedor Y".</td></tr>
-      <tr><td><strong>T4</strong></td><td>Compliance (vencimientos y validaciones)</td><td>F30/F30-1 · garantías bancarias · vigencia ChileProveedores · libro IVA digital · F22 anual. Alertas antes de vencer.</td></tr>
-      <tr><td><strong>T5</strong></td><td>Analytics (cross-data)</td><td>Dashboards consolidados por canal · marca · vertical · producto. Decisiones de pricing · canal · sourcing basadas en margen real.</td></tr>
+      <tr><td>**T1**</td><td>Contabilidad automática (event-driven)</td><td>Cada evento de los 12 procesos dispara asientos contables en plan de cuentas configurable. F29 mensual + libro IVA + auxiliar de clientes/proveedores automático.</td></tr>
+      <tr><td>**T2**</td><td>Inventario real-time (SSoT)</td><td>Cada venta/recepción/devolución/merma actualiza inventario inmediato. Cross-canal sincroniza stock vía webhook a cada adapter.</td></tr>
+      <tr><td>**T3**</td><td>Cerebro IA (sugerencias proactivas)</td><td>Analiza data de los 12 procesos · genera alertas: "stock bajo SKU X" · "MeLi vendiste 30% menos esta semana" · "comprá más del proveedor Y".</td></tr>
+      <tr><td>**T4**</td><td>Compliance (vencimientos y validaciones)</td><td>F30/F30-1 · garantías bancarias · vigencia ChileProveedores · libro IVA digital · F22 anual. Alertas antes de vencer.</td></tr>
+      <tr><td>**T5**</td><td>Analytics (cross-data)</td><td>Dashboards consolidados por canal · marca · vertical · producto. Decisiones de pricing · canal · sourcing basadas en margen real.</td></tr>
     </tbody>
   </table>
 
   <div class="box box-premise" style="margin-top: 32px;">
     <div class="box-title">🎯 Premisa CORE recordada</div>
-    <p style="margin:0"><strong>NO duplicar esfuerzo · NO duplicar data · NO duplicar lógica.</strong></p>
+    <p style="margin:0">**NO duplicar esfuerzo · NO duplicar data · NO duplicar lógica.**</p>
     <ul style="margin:8px 0 0">
       <li>1 inventario para los 12 procesos</li>
       <li>1 catálogo de clientes</li>
@@ -551,18 +451,3 @@ HABER: Clientes (CxC) por monto recibido</pre>
       <li>N adapters por canal externo</li>
     </ul>
   </div>
-  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>16</span></div>
-</section>
-
-</div>
-<nav class="doc-nav">
-  <a href="01-vision.html">◂ doc 01</a>
-  <span class="nav-center">FIN DOCUMENTO 02</span>
-  <a href="03-requirements.html">doc 03 · Requirements ▸</a>
-</nav>
-<script src="auth.js"></script>
-<script src="nav.js"></script>
-<script src="_diagram-kit.js"></script>
-<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
-</body>
-</html>
