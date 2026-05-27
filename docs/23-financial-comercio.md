@@ -21,9 +21,10 @@ next: 24-margen-canal.html
 
 - Capital inicial: $50M CLP (founders · sin sueldo Y1)
 - Mix canales Y1: 50% MeLi · 30% MP · 15% B2B · 5% D2C
-- Mix de modos Y1: **60% stock local Chile** · **40% dropshipping** · 0% Nexport (Fase 2)
+- Mix de modos Y1: **70% stock local Chile** · **30% dropshipping** · 0% Nexport (Fase 2)
+- Ajuste mix vs versión previa: subimos stock local +10pp · bajamos dropship -10pp (referente chileno escalado 2020-25 valida que dropship es útil para probar · NO para escalar · trigger migración agresivo desde rotación sostenida)
 - Mix Y2-Y3: agregar Nexport cuando volumen lo justifique (típico Y2 mid · 5-15% del mix)
-- Margen blended Y1: 28-33% (mix con dropship · más conservador)
+- Margen blended Y1: 30-35% (mix con menos dropship · más conservador)
 - Margen blended Y2: 33-40% (entra Nexport · menos dropship en mix)
 - Rotación stock local objetivo: 30-60 días (más rápido que importación)
 - Reinversión: 50% margen → reposición · 20% impuestos · 10% contingencia · 20% disponible

@@ -116,6 +116,35 @@ Producto nuevo → ARRANCA dropshipping (test demanda · sin capital)
 
 Esta progresión protege el capital · cada upgrade requiere validación real de volumen.
 
+# 03d · Tácticas Y1 validadas por referentes chilenos
+
+Aprendizajes del ecosistema e-commerce chileno aplicables Y1 SMC:
+
+**Reputación primero (fase 1 · primeros 3 meses):**
+- Primeras 10 ventas MeLi a precio costo o regalando · NO buscar utilidad
+- Envío gratis siempre · sacrifica margen inicial · gana reputación
+- Fotografía profesional propia · jamás usar fotos del proveedor
+
+**Escala con base sólida (fase 2 · post 10 ventas verdes):**
+- Activar Mercado Ads · ANTES de reputación es gastar sin convertir
+- Migrar a Full Fulfillment MeLi (stock en sus almacenes) si producto rota
+- Optimizar logística antes de ampliar catálogo
+
+**Marca SMC mínima viable:**
+- Empaque con sticker propio (nombre + logo)
+- Mensaje post-venta personalizado (agradecimiento + invitación reseña)
+- Paleta visual consistente cross-canal
+- Diferenciarse · no competir solo en precio
+
+**Anti-patrones a evitar:**
+- Esperar dinero rápido o tratar como part-time
+- Fotos del proveedor (= identificarse genérico)
+- Sin estrategia de escalado post primeras ventas
+- Mercado Ads sin reputación
+- Vender SKU idéntico a competencia con misma foto y título
+
+Referencia: e-commerce chileno escalado validó este path 2020-2025 con resultados USD 4M/año.
+
 # 04 · Estructura de costos
 
 - **COGS**: precio Nexport + logística importación + bodegaje

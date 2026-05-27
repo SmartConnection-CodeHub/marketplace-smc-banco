@@ -100,21 +100,30 @@
     },
     "P05": {
       "title": "P05 · Venta MeLi (B2C marketplace ajeno)",
-      "sub": "Webhook orden · Aceptación · Despacho",
-      "callout": "Canal alto volumen · margen menor por comisión MeLi · webhook firmado clave para idempotency.",
-      "tags": ["MeLi · OAuth", "Volumen alto Y1"],
+      "sub": "Fase reputación · Webhook · Aceptación · Despacho",
+      "callout": "Canal alto volumen · 2 fases Y1: (1) Fase reputación = primeras 10 ventas SIN foco margen · regalar o costo + envío gratis para activar termómetro vendedor. (2) Fase escala = post 10 ventas verdes · Mercado Ads ON + foco margen.",
+      "tags": ["MeLi · OAuth", "Volumen alto Y1", "Reputación primero"],
+      "notes": "Estrategia reputación Y1 fase 1 basada en referentes chilenos del e-commerce: las primeras 10 ventas activan el algoritmo · NO buscan utilidad. Fotografía propia (no del proveedor) es non-negotiable.",
       "stages": [
-        { "num": "01", "name": "Webhook MeLi", "boxes": [
+        { "num": "01", "name": "Fase reputación (primeras 10)", "boxes": [
+          { "code": "P05-00a", "label": "Configurar listado con foto pro propia + envío gratis", "kind": "create", "stack": "NO usar fotos del proveedor · diferenciar" },
+          { "code": "P05-00b", "label": "Vender a costo o regalar a contactos diferentes direcciones", "kind": "pay", "stack": "Activar termómetro vendedor MeLi" }
+        ]},
+        { "num": "02", "name": "Webhook MeLi", "boxes": [
           { "code": "P05-01", "label": "Validar firma + idempotency", "kind": "notify", "stack": "MeLi webhook" }
         ]},
-        { "num": "02", "name": "Aceptar", "boxes": [
+        { "num": "03", "name": "Aceptar", "boxes": [
           { "code": "P05-02", "label": "Reservar stock", "kind": "update", "stack": "Postgres SELECT FOR UPDATE" }
         ]},
-        { "num": "03", "name": "Despachar", "boxes": [
+        { "num": "04", "name": "Despachar", "boxes": [
           { "code": "P05-03", "label": "Etiqueta courier + tracking", "kind": "doc", "stack": "Chilexpress/Starken" }
         ]},
-        { "num": "04", "name": "Factura", "boxes": [
+        { "num": "05", "name": "Factura", "boxes": [
           { "code": "P05-04", "label": "DTE 39 boleta", "kind": "doc", "stack": "Open Factura" }
+        ]},
+        { "num": "06", "name": "Fase escala (post 10 ventas verdes)", "boxes": [
+          { "code": "P05-05a", "label": "Activar Mercado Ads + medallas", "kind": "create", "stack": "Reputación validada · escalar con ADS" },
+          { "code": "P05-05b", "label": "Migrar a Full Fulfillment si rota bien", "kind": "update", "stack": "Stock en almacenes MeLi · mayor exposición" }
         ]}
       ]
     },

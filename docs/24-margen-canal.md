@@ -40,10 +40,37 @@ next: 25-brand-book.html
 
 | Canal | Foco | KPI clave |
 |-------|------|-----------|
-| MeLi | Volumen · turnover rápido | Órdenes/día · rating reputación |
+| MeLi | Volumen · turnover rápido | Órdenes/día · rating reputación · medallas |
 | MP | Cantidad postulaciones · win rate | Adjudicaciones/postulaciones · margen por OC |
 | B2B | Relación · ticket grande · recurrencia | LTV por cliente B2B · % recurrencia |
 | D2C | ADS efficiency · LTV · branding | CAC ADS · LTV/CAC · margen post-ADS |
+
+# 04b · Estrategia MeLi · primeras 10 ventas
+
+Cuenta nueva en MeLi requiere reputación para activar el algoritmo. Las **primeras 10 ventas son hito crítico** · margen importa MENOS que velocidad de obtención.
+
+| Táctica | Cuándo | Razón |
+|---------|--------|-------|
+| Vender a costo o regalar primeras 10 unidades | Cuenta nueva · sin reputación | Activar termómetro vendedor MeLi |
+| Envío gratis siempre Y1 | Primeros 3 meses | Subir ranking algoritmo · reputación &gt;&gt; margen inicial |
+| Fotografía profesional propia (no del proveedor) | Antes de cualquier listado | Diferenciación visual · evita duplicar competencia |
+| Mercado Ads OFF Y1 fase 1 | Hasta reputación verde sostenida | ADS sin reputación = gastar sin convertir |
+| Mercado Ads ON Y1 fase 2 | Post primeras 10-20 ventas con reputación verde | Escala con base confiable |
+
+> [!info] Hito clave
+> Las primeras 10 ventas NO buscan utilidad · buscan reputación. Después de 10 ventas a buena puntuación · activar Mercado Ads y migrar foco a margen.
+
+# 04c · Construcción de marca SMC
+
+Vender producto genérico = competir solo en precio · cero defensibilidad. Marca propia mínima Y1:
+
+- Nombre comercial visible en empaque (sticker · etiqueta)
+- Logo simple aplicado a todo material
+- Fotografía consistente · paleta visual reconocible
+- Mensaje post-venta personalizado (agradecimiento · invitación reseña)
+
+> [!anti] NO hacer
+> Vender SKUs idénticos a la competencia con la MISMA foto y MISMO título. El cliente de MeLi compara · gana el que tiene mejor reputación o mejor presentación.
 
 # 05 · Decisiones de mix
 
