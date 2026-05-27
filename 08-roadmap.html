@@ -41,22 +41,37 @@
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
   <ol>
-    <li><a href="#roadmap-gantt-section">00b · Gantt · 4 fases Reputation First Y1</a><span class="toc-pg">—</span></li>
-    <li><a href="#vista">Vista general · timeline visual</a><span class="toc-pg">03</span></li>
-    <li><a href="#f0">F0 · Discovery + Spec final</a><span class="toc-pg">04</span></li>
-    <li><a href="#f1">F1 · Core (Inventory + Auth + Tenants)</a><span class="toc-pg">05</span></li>
-    <li><a href="#f2">F2 · Canal MeLi + DTE</a><span class="toc-pg">06</span></li>
-    <li><a href="#f3">F3 · Canal D2C + Pagos</a><span class="toc-pg">07</span></li>
-    <li><a href="#f4">F4 · Canal Mercado Público</a><span class="toc-pg">08</span></li>
-    <li><a href="#f5">F5 · Canal B2B</a><span class="toc-pg">09</span></li>
-    <li><a href="#f6">F6 · Finanzas + Contabilidad</a><span class="toc-pg">10</span></li>
-    <li><a href="#f7">F7 · Cerebro IA + Analytics</a><span class="toc-pg">11</span></li>
-    <li><a href="#deps">Dependencias críticas y bloqueos</a><span class="toc-pg">12</span></li>
+    <li><a href="#roadmap-intro">Dos dimensiones del roadmap · comercial vs técnico</a><span class="toc-pg">02</span></li>
+    <li><a href="#roadmap-gantt-section">00b · ROADMAP COMERCIAL · 4 fases Reputation First Y1</a><span class="toc-pg">03</span></li>
+    <li><a href="#vista">ROADMAP TÉCNICO · timeline construcción plataforma</a><span class="toc-pg">04</span></li>
+    <li><a href="#f0">FT0 · Discovery + Spec final</a><span class="toc-pg">05</span></li>
+    <li><a href="#f1">FT1 · Core (Inventory + Auth + Tenants)</a><span class="toc-pg">06</span></li>
+    <li><a href="#f2">FT2 · Canal MeLi + DTE</a><span class="toc-pg">07</span></li>
+    <li><a href="#f3">FT3 · Canal D2C + Pagos</a><span class="toc-pg">08</span></li>
+    <li><a href="#f4">FT4 · Canal Mercado Público</a><span class="toc-pg">09</span></li>
+    <li><a href="#f5">FT5 · Canal B2B</a><span class="toc-pg">10</span></li>
+    <li><a href="#f6">FT6 · Finanzas + Contabilidad</a><span class="toc-pg">11</span></li>
+    <li><a href="#f7">FT7 · Cerebro IA + Analytics</a><span class="toc-pg">12</span></li>
+    <li><a href="#deps">Dependencias críticas y bloqueos</a><span class="toc-pg">13</span></li>
   </ol>
 </section>
 
+<section class="page" id="roadmap-intro">
+  <h2><span class="h2-num">00</span>Dos dimensiones del roadmap</h2>
+  <div class="box box-premise">
+    <div class="box-title">🎯 Dos roadmaps complementarios · NO confundir</div>
+    <p>El Doc 08 contiene <strong>dos roadmaps en paralelo</strong>, NO uno solo. Sirven a propósitos distintos y conviven:</p>
+    <ul>
+      <li><strong>ROADMAP COMERCIAL · 4 fases F1-F4</strong> (sección 00b · Gantt visual). Plan del NEGOCIO Y1: Reputación → Escala → Diversificación → Consolidación. Ver <a href="17-estrategia-y1.html">Doc 17 Estrategia Y1</a> como hilo conductor.</li>
+      <li><strong>ROADMAP TÉCNICO · 8 fases FT0-FT7</strong> (secciones 01-09). Plan de CONSTRUCCIÓN de la plataforma: setup → core → adapters por canal. Es la deuda de Guillermo (founder técnico) para que el sistema soporte las 4 fases comerciales.</li>
+    </ul>
+    <p><strong>Cómo conviven</strong>: las fases técnicas FT0-FT2 deben estar listas ANTES de arrancar Fase 1 Comercial (no se pueden hacer 10 ventas MeLi sin que el sistema soporte MeLi). FT3-FT4 antes de Fase 3 Diversificación. FT5-FT7 son optimizaciones que apoyan Fase 4 Consolidación y Y2+.</p>
+  </div>
+  <div class="page-footer"><span>Marketplace SMC · Blueprint v1.0</span><span>02</span></div>
+</section>
+
 <section class="page" id="vista">
-  <h2><span class="h2-num">01</span>Vista general · timeline visual</h2>
+  <h2><span class="h2-num">01</span>Roadmap técnico · timeline visual construcción</h2>
   <div class="timeline-svg">
     <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" style="background:#FAFAF7">
       <!-- timeline axis -->

@@ -26,7 +26,7 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-c-mo-se-usa">01 · Cómo se usa</a><span class="toc-pg">03</span></li><li><a href="#02-riesgos-comerciales">02 · Riesgos comerciales</a><span class="toc-pg">04</span></li><li><a href="#03-riesgos-t-cnicos">03 · Riesgos técnicos</a><span class="toc-pg">05</span></li><li><a href="#04-riesgos-legales-y-compliance">04 · Riesgos legales y compliance</a><span class="toc-pg">06</span></li><li><a href="#05-riesgos-de-equipo">05 · Riesgos de equipo</a><span class="toc-pg">07</span></li><li><a href="#06-heatmap-visual-p-i">06 · Heatmap visual P×I</a><span class="toc-pg">08</span></li><li><a href="#07-top-riesgos-para-mover-este-trimestre-score-gt-6">07 · Top riesgos para mover este trimestre (score &gt;= 6)</a><span class="toc-pg">09</span></li><li><a href="#07-revisi-n-trimestral">07 · Revisión trimestral</a><span class="toc-pg">10</span></li></ol>
+  <ol><li><a href="#01-c-mo-se-usa">01 · Cómo se usa</a><span class="toc-pg">03</span></li><li><a href="#02-riesgos-comerciales">02 · Riesgos comerciales</a><span class="toc-pg">04</span></li><li><a href="#03-riesgos-t-cnicos">03 · Riesgos técnicos</a><span class="toc-pg">05</span></li><li><a href="#04-riesgos-legales-y-compliance">04 · Riesgos legales y compliance</a><span class="toc-pg">06</span></li><li><a href="#05-riesgos-de-equipo-3-founders">05 · Riesgos de equipo (3 founders)</a><span class="toc-pg">07</span></li><li><a href="#06-heatmap-visual-p-i">06 · Heatmap visual P×I</a><span class="toc-pg">08</span></li><li><a href="#07-top-riesgos-para-mover-este-trimestre-score-gt-6">07 · Top riesgos para mover este trimestre (score &gt;= 6)</a><span class="toc-pg">09</span></li><li><a href="#07-revisi-n-trimestral">07 · Revisión trimestral</a><span class="toc-pg">10</span></li></ol>
 </section>
 
 <section class="page" id="01-c-mo-se-usa">
@@ -126,39 +126,48 @@
 <tbody>
 <tr>
 <td>T1</td>
-<td>API de canal externo cambia sin aviso</td>
+<td>API canal externo cambia sin aviso (MeLi · MP)</td>
 <td>3</td>
 <td>2</td>
 <td>6</td>
 <td>Adapter Pattern + alertas changelog · degradación graceful</td>
-<td>TechLead</td>
+<td>Guillermo</td>
 </tr>
 <tr>
 <td>T2</td>
-<td>Supabase down extendido</td>
+<td>Supabase down extendido (region sa-east-1)</td>
 <td>1</td>
 <td>3</td>
 <td>3</td>
 <td>PITR backups · documentar manual failover · status page</td>
-<td>INFRA-OPS</td>
+<td>Guillermo</td>
 </tr>
 <tr>
 <td>T3</td>
-<td>Costo IA escala más rápido que revenue</td>
+<td>Costo IA escala más rápido que revenue Y1</td>
 <td>2</td>
 <td>2</td>
 <td>4</td>
 <td>Fallback chain Groq → Gemini · cache de prompts comunes</td>
-<td>Hoku</td>
+<td>Guillermo</td>
 </tr>
 <tr>
 <td>T4</td>
-<td>Tech debt acumulado paraliza features</td>
+<td>Tech debt acumulado paraliza features Y1</td>
 <td>2</td>
 <td>3</td>
 <td>6</td>
-<td>20% capacidad cada sprint a deuda · score B mínimo en core</td>
-<td>Architect</td>
+<td>20% capacidad por sprint a deuda · cero scope creep</td>
+<td>Guillermo</td>
+</tr>
+<tr>
+<td>T5</td>
+<td>Bloqueo MeLi PolicyAgent en cuenta SMC SpA</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>Cumplir reglas estrictamente · cuenta limpia desde día 1</td>
+<td>Founders</td>
 </tr>
 </tbody></table>
   <div class="page-footer"><span>Banco SMC · Producto</span><span>05</span></div>
@@ -178,36 +187,45 @@
 <tbody>
 <tr>
 <td>L1</td>
-<td>SMC SpA pierde rectificación giro</td>
+<td>SMC SpA pierde rectificación giro (autorizar comercio)</td>
 <td>2</td>
 <td>3</td>
 <td>6</td>
-<td>Plan B: constituir Marketplace SMC SpA dedicada Q4</td>
-<td>Compliance</td>
+<td>Tramitar inicio actividades comercio + galvarez.cl coordina</td>
+<td>Controller</td>
 </tr>
 <tr>
 <td>L2</td>
-<td>Cliente reclama por data breach</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>Security policy · 2FA admins · audit logs</td>
-<td>Security</td>
-</tr>
-<tr>
-<td>L3</td>
-<td>SII rechaza facturas DTE</td>
+<td>Reclamo comprador final cuenta MeLi por DTE</td>
 <td>2</td>
 <td>2</td>
 <td>4</td>
-<td>Doble validador (Open Factura + Acepta) · monitoring</td>
+<td>Validar DTE pre-emisión · contacto rápido cliente · ATA reseñas</td>
+<td>Founders</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>SII rechaza facturas DTE (folio · monto · RUT cliente)</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>Doble validador (Open Factura + monitoring) · retry exponencial</td>
+<td>Controller</td>
+</tr>
+<tr>
+<td>L4</td>
+<td>Cambio normativo SII afecta operación (IVA · F29)</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>Monitoreo galvarez.cl mensual · actualizar sistema</td>
 <td>Controller</td>
 </tr>
 </tbody></table>
   <div class="page-footer"><span>Banco SMC · Producto</span><span>06</span></div>
 </section>
-<section class="page" id="05-riesgos-de-equipo">
-  <h2><span class="h2-num">05</span>Riesgos de equipo</h2>
+<section class="page" id="05-riesgos-de-equipo-3-founders">
+  <h2><span class="h2-num">05</span>Riesgos de equipo (3 founders)</h2>
   <table>
 <thead><tr>
 <th>ID</th>
@@ -221,30 +239,39 @@
 <tbody>
 <tr>
 <td>E1</td>
-<td>Founder se va antes vesting</td>
+<td>Founder se va antes vesting 4 años</td>
 <td>2</td>
 <td>3</td>
 <td>6</td>
-<td>Vesting 4 años con cliff 1 año en pacto socios</td>
+<td>Cláusula vesting + cliff 1 año en pacto socios</td>
 <td>Compliance</td>
 </tr>
 <tr>
 <td>E2</td>
-<td>Falta capacidad técnica (1 dev a tiempo parcial)</td>
+<td>Guillermo capacidad técnica saturada (único founder técnico)</td>
 <td>3</td>
 <td>3</td>
 <td>9</td>
-<td>Contratar dev Q2 · usar más agentes IA · scope realista</td>
+<td>Automatizar operativa · agentes IA · scope Y1 realista · evaluar dev Y2</td>
 <td>Founders</td>
 </tr>
 <tr>
 <td>E3</td>
-<td>Conflicto Javier-InfoPet vs Marketplace</td>
+<td>Conflicto Javier · InfoPet vs Marketplace SMC (tiempo dedicación 80%)</td>
 <td>2</td>
 <td>2</td>
 <td>4</td>
-<td>Declaración explícita en pacto socios · review trimestral</td>
+<td>Declaración explícita pacto socios · review trimestral horas dedicadas</td>
 <td>Compliance</td>
+</tr>
+<tr>
+<td>E4</td>
+<td>Camila o Javier fatiga operativa bodega (rotación insuficiente)</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>Rotación explícita lunes stand-up · backup Guillermo cuando aplica</td>
+<td>Founders</td>
 </tr>
 </tbody></table>
   <div class="page-footer"><span>Banco SMC · Producto</span><span>07</span></div>
@@ -254,15 +281,21 @@
   <div class="diagram-section">
   <p class="diagram-caption">Cada riesgo posicionado en su cuadrante. Click revela detalle. Los rojos (score 9 · cuadrante superior derecho) son los críticos a mover ya.</p>
   <div class="diagram-host kind-heatmap" id="risk-heatmap" data-kind="heatmap"></div>
-  <script type="application/json" data-for="risk-heatmap">{"title": "Heatmap riesgos · Probabilidad × Impacto", "axisX": {"label": "Probabilidad", "ticks": ["Baja", "Media", "Alta"]}, "axisY": {"label": "Impacto", "ticks": ["Alto", "Medio", "Bajo"]}, "items": [{"id": "C1", "label": "MeLi DPP no aprueba Y1", "x": 3, "y": 3, "score": 9}, {"id": "C2", "label": "Churn > 30% primeros 6 meses", "x": 2, "y": 3, "score": 6}, {"id": "C3", "label": "No conseguir 5 Pro Q4", "x": 2, "y": 3, "score": 6}, {"id": "C4", "label": "Competidor similar gratis", "x": 2, "y": 2, "score": 4}, {"id": "T1", "label": "API canal cambia sin aviso", "x": 3, "y": 2, "score": 6}, {"id": "T2", "label": "Supabase down extendido", "x": 1, "y": 3, "score": 3}, {"id": "T3", "label": "Costo IA escala > revenue", "x": 2, "y": 2, "score": 4}, {"id": "T4", "label": "Tech debt paraliza features", "x": 2, "y": 3, "score": 6}, {"id": "L1", "label": "SMC SpA pierde rectif. giro", "x": 2, "y": 3, "score": 6}, {"id": "L2", "label": "Cliente reclama data breach", "x": 1, "y": 3, "score": 3}, {"id": "L3", "label": "SII rechaza DTE", "x": 2, "y": 2, "score": 4}, {"id": "E1", "label": "Founder se va antes vesting", "x": 2, "y": 3, "score": 6}, {"id": "E2", "label": "Falta capacidad técnica", "x": 3, "y": 3, "score": 9}, {"id": "E3", "label": "Conflicto Javier-InfoPet", "x": 2, "y": 2, "score": 4}]}</script>
+  <script type="application/json" data-for="risk-heatmap">{"title": "Heatmap riesgos · Probabilidad × Impacto", "axisX": {"label": "Probabilidad", "ticks": ["Baja", "Media", "Alta"]}, "axisY": {"label": "Impacto", "ticks": ["Alto", "Medio", "Bajo"]}, "items": [{"id": "C1", "label": "No llegar a 10 ventas Q4 (Fase 1)", "x": 2, "y": 3, "score": 6}, {"id": "C2", "label": "Reputación MeLi roja cuenta nueva", "x": 2, "y": 3, "score": 6}, {"id": "C3", "label": "ADS sin reputación = quemar plata", "x": 3, "y": 2, "score": 6}, {"id": "C4", "label": "MeLi PolicyAgent bloqueo cuenta", "x": 1, "y": 3, "score": 3}, {"id": "C5", "label": "No adjudicar primera MP Q2 (Fase 3)", "x": 2, "y": 2, "score": 4}, {"id": "C6", "label": "Competidor copia fotos/listings", "x": 2, "y": 2, "score": 4}, {"id": "T1", "label": "API canal cambia sin aviso", "x": 3, "y": 2, "score": 6}, {"id": "T2", "label": "Supabase down extendido", "x": 1, "y": 3, "score": 3}, {"id": "T3", "label": "Costo IA escala > revenue Y1", "x": 2, "y": 2, "score": 4}, {"id": "T4", "label": "Tech debt paraliza features", "x": 2, "y": 3, "score": 6}, {"id": "T5", "label": "MeLi PolicyAgent bloqueo SMC SpA", "x": 1, "y": 3, "score": 3}, {"id": "L1", "label": "SMC SpA pierde rectif. giro", "x": 2, "y": 3, "score": 6}, {"id": "L2", "label": "Reclamo comprador final DTE", "x": 2, "y": 2, "score": 4}, {"id": "L3", "label": "SII rechaza DTE", "x": 2, "y": 2, "score": 4}, {"id": "L4", "label": "Cambio normativo SII", "x": 1, "y": 2, "score": 2}, {"id": "E1", "label": "Founder se va antes vesting", "x": 2, "y": 3, "score": 6}, {"id": "E2", "label": "Guillermo capacidad técnica saturada", "x": 3, "y": 3, "score": 9}, {"id": "E3", "label": "Conflicto Javier-InfoPet", "x": 2, "y": 2, "score": 4}, {"id": "E4", "label": "Camila/Javier fatiga bodega", "x": 2, "y": 2, "score": 4}]}</script>
 </div>
   <div class="page-footer"><span>Banco SMC · Producto</span><span>08</span></div>
 </section>
 <section class="page" id="07-top-riesgos-para-mover-este-trimestre-score-gt-6">
   <h2><span class="h2-num">07</span>Top riesgos para mover este trimestre (score &gt;= 6)</h2>
   <ul>
-<li>C1 · MeLi DPP no aprueba (9)</li>
-<li>E2 · Falta capacidad técnica (9)</li>
+<li>E2 · Guillermo capacidad técnica saturada (9) → automatizar + scope realista</li>
+<li>C1 · No llegar a 10 ventas verdes Q4 Fase 1 (6) → Doc 17 estrategia</li>
+<li>C2 · Reputación MeLi roja por reclamo (6) → atención &lt;2h Y1</li>
+<li>C3 · Mercado Ads antes de reputación = quemar plata (6) → regla no transable</li>
+<li>T1 · API canal externo cambia (6) → Adapter Pattern + alertas</li>
+<li>T4 · Tech debt paraliza features (6) → 20% sprint a deuda</li>
+<li>L1 · SMC SpA rectificación giro pendiente (6) → galvarez.cl coordina</li>
+<li>E1 · Founder se va antes vesting (6) → cláusula pacto socios</li>
 <li>C2 · Churn primeros meses (6)</li>
 <li>C3 · No conseguir 5 Pro Q4 (6)</li>
 <li>T1 · API canal cambia (6)</li>
