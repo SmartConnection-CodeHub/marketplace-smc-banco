@@ -500,3 +500,68 @@ code:not(pre code) {
   overflow-x: auto;
 }
 .svg-container svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+/* ===== Mobile First (Luke Wroblewski) · 768px breakpoint ===== */
+@media (max-width: 768px) {
+  body { font-size: 14px; }
+  .doc { max-width: 100%; box-shadow: none; }
+  .page { padding: 24px 18px; min-height: auto; }
+
+  /* Cover compactado en mobile · no full-screen */
+  .cover { min-height: auto; padding: 32px 18px; }
+  .cover-title { font-size: 28px !important; line-height: 1.2; }
+  .cover-subtitle { font-size: 14px !important; }
+  .cover-doc-num { font-size: 11px; }
+  .cover-meta { grid-template-columns: repeat(2, 1fr) !important; gap: 8px; }
+  .cover-meta-item { padding: 8px 10px; }
+  .cover-meta-value { font-size: 13px; }
+  .cover-header, .cover-footer { font-size: 11px; flex-direction: column; gap: 4px; text-align: center; }
+
+  /* Headers más chicos */
+  h1 { font-size: 22px; }
+  h2 { font-size: 18px; }
+  h3 { font-size: 16px; }
+  h4 { font-size: 14px; }
+  .h2-num { font-size: 14px; padding: 2px 8px; }
+
+  /* TOC stackeado · ocultar page numbers que rompen layout */
+  .toc ol { padding-left: 18px; }
+  .toc-pg { display: none; }
+  .toc li { margin-bottom: 8px; font-size: 13px; line-height: 1.4; }
+
+  /* Tablas con scroll horizontal · evita desbordes */
+  table { display: block; overflow-x: auto; white-space: nowrap; font-size: 12px; }
+  table thead, table tbody, table tr { display: table; width: max-content; min-width: 100%; }
+  table td, table th { padding: 6px 8px; }
+
+  /* Boxes y callouts compactos */
+  .box { padding: 14px 16px; margin: 14px 0; }
+  .box-title { font-size: 13px; }
+
+  /* Code blocks · scroll horizontal */
+  pre, .ascii { font-size: 10px; overflow-x: auto; padding: 12px; }
+
+  /* Nav docs · stack vertical */
+  .doc-nav { flex-direction: column; gap: 6px; padding: 10px 12px; font-size: 11px; text-align: center; }
+  .doc-nav .nav-center { font-size: 10px; letter-spacing: 1px; }
+
+  /* SVG containers · scroll horizontal interno */
+  .svg-container { padding: 12px; margin: 16px 0; }
+  .svg-container svg { min-width: 280px; }
+
+  /* Footer páginas más chico */
+  .page-footer { font-size: 10px; margin-top: 24px; }
+
+  /* Index page · cards una por columna */
+  .doc-card { padding: 16px; }
+  .docs-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ===== Mobile extra small (375px iPhone SE) ===== */
+@media (max-width: 480px) {
+  .page { padding: 18px 12px; }
+  .cover-title { font-size: 24px !important; }
+  .cover-meta { grid-template-columns: 1fr !important; }
+  h2 { font-size: 16px; }
+  .h2-num { display: block; margin-bottom: 4px; }
+}
