@@ -45,9 +45,9 @@
     <li><a href="#03-arquitectura">03 · Arquitectura · 6 capas</a><span class="toc-pg">05</span></li>
     <li><a href="#04-scoring">04 · Scoring sin LLM · 6 señales</a><span class="toc-pg">06</span></li>
     <li><a href="#05-cache">05 · Smart Cache · NO data lake</a><span class="toc-pg">07</span></li>
-    <li><a href="#06-camila">06 · Qué hace Camila con el sistema</a><span class="toc-pg">08</span></li>
-    <li><a href="#07-javier">07 · Qué hace Javier con el sistema</a><span class="toc-pg">09</span></li>
-    <li><a href="#08-guillermo">08 · Qué hace Guillermo con el sistema</a><span class="toc-pg">10</span></li>
+    <li><a href="#06-camila">06 · Cómo usa el sistema Camila</a><span class="toc-pg">08</span></li>
+    <li><a href="#07-javier">07 · Cómo usa el sistema Javier</a><span class="toc-pg">09</span></li>
+    <li><a href="#08-guillermo">08 · Cómo usa el sistema Guillermo + qué lidera</a><span class="toc-pg">10</span></li>
     <li><a href="#09-sources">09 · Sources conectadas (estado actual)</a><span class="toc-pg">11</span></li>
     <li><a href="#10-roadmap">10 · Roadmap 3 sprints</a><span class="toc-pg">12</span></li>
     <li><a href="#11-restricciones">11 · Restricciones que NO se violan</a><span class="toc-pg">13</span></li>
@@ -64,16 +64,16 @@
 
 <section class="page" id="02-por-los-3">
   <h2><span class="h2-num">02</span>Por qué este sistema lo operamos los 3 founders</h2>
-  <p>El sistema NO es una herramienta exclusiva de Guillermo (técnico). Es una herramienta operativa que <strong>los 3 founders consultan a diario</strong> para decidir qué comprar a Nexport, qué publicar en MeLi, qué postular en Mercado Público.</p>
+  <p>El sistema NO es una herramienta exclusiva de nadie. <strong>Los 3 founders trabajamos lo mismo</strong> · consultamos diariamente, filtramos, operamos oportunidades. La única diferencia: Guillermo <strong>lidera la mantención técnica</strong> del sistema con apoyo de Javier y un chuca de Camila.</p>
   <table>
     <thead><tr><th>Rol con el sistema</th><th>Camila</th><th>Javier</th><th>Guillermo</th></tr></thead>
     <tbody>
       <tr><td>Consulta la tabla de oportunidades diaria</td><td>✓</td><td>✓</td><td>✓</td></tr>
       <tr><td>Ajusta filtros por categoría / score</td><td>✓</td><td>✓</td><td>✓</td></tr>
       <tr><td>Click "Explicar" para entender un score</td><td>✓</td><td>✓</td><td>✓</td></tr>
-      <tr><td>Operaciona la oportunidad (compra · publica)</td><td>✓</td><td>✓</td><td>—</td></tr>
-      <tr><td>Mantiene el sistema (código · APIs · cron)</td><td>—</td><td>—</td><td>✓</td></tr>
+      <tr><td>Opera la oportunidad (compra · publica · licita)</td><td>✓</td><td>✓</td><td>✓</td></tr>
       <tr><td>Propone nueva señal de scoring</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Mantención técnica (código · APIs · cron · IA)</td><td>apoyo</td><td>apoyo</td><td><strong>lidera</strong></td></tr>
     </tbody>
   </table>
   <p><strong>Rotación garantizada · sin silos:</strong> ningún founder bloquea al otro porque cada uno puede usar el sistema sin esperar a otro.</p>
@@ -130,53 +130,67 @@
 </section>
 
 <section class="page" id="06-camila">
-  <h2><span class="h2-num">06</span>Qué hace Camila con el sistema</h2>
+  <h2><span class="h2-num">06</span>Cómo usa el sistema Camila</h2>
   <div class="founder-block">
     <p class="founder-name">Camila Bianchi</p>
-    <p class="founder-role">Founder · logística + comercial · rotación con Javier y Guillermo</p>
-    <p><strong>Uso diario del Sistema Oportunidades:</strong></p>
+    <p class="founder-role">Founder · uso operativo idéntico a Javier y Guillermo</p>
+    <p><strong>Uso diario del Sistema Oportunidades · los 3 hacemos lo mismo:</strong></p>
     <ul>
-      <li>Cada mañana abre <code>/dashboard/oportunidades</code> y filtra por <strong>Score &gt;7 + spread &gt;15%</strong></li>
-      <li>Identifica 3-5 SKUs para revisar con Javier en sourcing</li>
+      <li>Abre <code>/dashboard/oportunidades</code> · filtra por score · spread · categoría</li>
+      <li>Identifica SKUs candidatos · click "Explicar" en los top</li>
       <li>Cruza con stock actual de bodega (¿ya tenemos? ¿cuánto?)</li>
-      <li>Si hay oportunidad → la postula a licitación Mercado Público (su fuerte)</li>
+      <li>Compara <code>price_min</code> del sistema vs precio Nexport ofrecido</li>
+      <li>Opera la oportunidad · compra a Nexport · publica en MeLi · postula licitación Mercado Público · abre cuenta B2B</li>
       <li>Marca "Hot 🔥" los SKUs que está empujando para que el sistema priorice</li>
-      <li>Reporta a los 3 founders en stand-up lunes: top 3 oportunidades de la semana</li>
+      <li>Propone nuevas señales de scoring si detecta gap</li>
+      <li>Reporta en stand-up lunes a los 3 founders</li>
     </ul>
   </div>
   <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>08</span></div>
 </section>
 
 <section class="page" id="07-javier">
-  <h2><span class="h2-num">07</span>Qué hace Javier con el sistema</h2>
+  <h2><span class="h2-num">07</span>Cómo usa el sistema Javier</h2>
   <div class="founder-block">
     <p class="founder-name">Javier Bianchi</p>
-    <p class="founder-role">Founder · sourcing + comercial · rotación con Camila y Guillermo</p>
-    <p><strong>Uso diario del Sistema Oportunidades:</strong></p>
+    <p class="founder-role">Founder · uso operativo idéntico a Camila y Guillermo</p>
+    <p><strong>Uso diario del Sistema Oportunidades · los 3 hacemos lo mismo:</strong></p>
     <ul>
-      <li>Filtra por <strong>Categoría premium + MeLi presence</strong> para sourcing Nexport</li>
-      <li>Click "Explicar" en el top 5 antes de negociar con proveedor</li>
+      <li>Abre <code>/dashboard/oportunidades</code> · filtra por score · spread · categoría</li>
+      <li>Identifica SKUs candidatos · click "Explicar" en los top</li>
+      <li>Cruza con stock actual de bodega (¿ya tenemos? ¿cuánto?)</li>
       <li>Compara <code>price_min</code> del sistema vs precio Nexport ofrecido</li>
-      <li>Aprueba/rechaza compra a Nexport con datos en mano (no a ojo)</li>
-      <li>Si abre cuenta B2B nueva → cruza catálogo cliente vs oportunidades sistema</li>
-      <li>Propone nuevas señales de scoring si detecta gap (ej: estacionalidad)</li>
+      <li>Opera la oportunidad · compra a Nexport · publica en MeLi · postula licitación Mercado Público · abre cuenta B2B</li>
+      <li>Marca "Hot 🔥" los SKUs que está empujando para que el sistema priorice</li>
+      <li>Propone nuevas señales de scoring si detecta gap</li>
+      <li>Reporta en stand-up lunes a los 3 founders</li>
     </ul>
   </div>
   <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>09</span></div>
 </section>
 
 <section class="page" id="08-guillermo">
-  <h2><span class="h2-num">08</span>Qué hace Guillermo con el sistema</h2>
+  <h2><span class="h2-num">08</span>Cómo usa el sistema Guillermo + qué lidera</h2>
   <div class="founder-block">
     <p class="founder-name">Guillermo González León</p>
-    <p class="founder-role">Founder · técnico + plataforma + backup operacional</p>
-    <p><strong>Construye y mantiene · también consulta como Camila y Javier:</strong></p>
+    <p class="founder-role">Founder · uso operativo idéntico + lidera mantención técnica</p>
+    <p><strong>Uso diario del Sistema Oportunidades · los 3 hacemos lo mismo:</strong></p>
+    <ul>
+      <li>Abre <code>/dashboard/oportunidades</code> · filtra por score · spread · categoría</li>
+      <li>Identifica SKUs candidatos · click "Explicar" en los top</li>
+      <li>Cruza con stock actual de bodega (¿ya tenemos? ¿cuánto?)</li>
+      <li>Compara <code>price_min</code> del sistema vs precio Nexport ofrecido</li>
+      <li>Opera la oportunidad · compra a Nexport · publica en MeLi · postula licitación Mercado Público · abre cuenta B2B</li>
+      <li>Marca "Hot 🔥" los SKUs que está empujando para que el sistema priorice</li>
+      <li>Propone nuevas señales de scoring si detecta gap</li>
+      <li>Reporta en stand-up lunes a los 3 founders</li>
+    </ul>
+    <p><strong>Lo que lidera Guillermo</strong> (con apoyo de Javier y un chuca de Camila):</p>
     <ul>
       <li>Mantiene los 6 endpoints (sources + scoring + cache + list)</li>
       <li>Vigila el cron <code>pg_cron</code> diario · revisa logs de tokens LLM (debe estar &lt;1% sesión)</li>
       <li>Suma sources nuevas cuando hay caso de uso real (no especulativo)</li>
-      <li>Ajusta pesos del scoring según feedback de Camila y Javier (no unilateral)</li>
-      <li>Consulta el sistema como Camila/Javier cuando hace backup operacional</li>
+      <li>Ajusta pesos del scoring según feedback de los 3 (no unilateral)</li>
       <li>Reporta a galvarez.cl si hay cambios fiscales (UF/USD en BCentral)</li>
     </ul>
   </div>
