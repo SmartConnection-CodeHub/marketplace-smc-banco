@@ -61,7 +61,15 @@ Doc 11 detalla **qué hace el sistema** a nivel granular: qué herramienta espec
 ## 4.1 · Modo stock propio compra local Chile (Y1 prioridad)
 
 > [!pipeline] flow-stock-local
-> Venta end-to-end · 8 etapas · cada etapa con herramientas · disparadores · DB · tiempo target. Click box ve detalle granular.
+> Venta end-to-end · 3 escenarios paralelos (MeLi · D2C storefront · MP) · cada etapa con herramientas · disparadores · DB · tiempo target. Click box ve detalle granular.
+
+**3 canales del mismo modo stock propio**:
+
+| Canal | Margen | Comisión | Volumen Y1 esperado |
+|-------|--------|----------|---------------------|
+| **MELI** (default visible) | 28% | Fee MeLi 13-17% + MP 2.9% | 80% Y1 |
+| **D2C storefront** | 40%+ | Solo pasarela 2.9% | 5-10% Y1 · crece Y2 |
+| **MP B2G** | 22-30% | 0% (pago directo institución 30-60d) | Fase 3 |
 
 ## 4.2 · Modo dropshipping (paralelo)
 

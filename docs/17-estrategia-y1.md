@@ -151,7 +151,74 @@ Toda cuenta nueva en MeLi necesita reputación antes que el algoritmo la haga vi
 | Doc 34 OKRs | Q1 Company OKR = hito 10 ventas verdes |
 | Doc 35 Risk Register | Riesgos específicos por fase |
 
-# 10 · Origen y validación de la estrategia
+# 10 · Avance semanal · review lunes
+
+Cada lunes 9:00 AM los 3 founders revisan estado fase actual. Sesión 30 min máximo.
+
+## Checklist semanal (lunes 9:00)
+
+| # | Pregunta | Dueño respuesta | Donde mirar |
+|---|----------|----------------|-------------|
+| 1 | ¿Cuántas ventas cerradas semana pasada? | Camila | Dashboard MeLi + DTE emitidos |
+| 2 | ¿Cuántos reclamos/devoluciones? | Camila | mkt_orders WHERE status='returned' |
+| 3 | ¿Reputación MeLi sigue verde? | Camila | UI cuenta MeLi + Mobbin tracker |
+| 4 | ¿Hubo oportunidades nuevas Cerebro top 10? | Javier | Dashboard /oportunidades |
+| 5 | ¿Algún bug P0/P1 abierto? | Guillermo | GitHub Issues label:priority |
+| 6 | ¿Costo IA semanal vs budget? | Guillermo | mkt_ai_logs dashboard |
+| 7 | ¿Estamos on-track con hitos fase actual? | los 3 | Doc 17 §3-6 thresholds |
+
+Si 3+ preguntas tienen respuesta "no" o "no sé" · disparar sesión emergencia mismo día.
+
+# 11 · Qué hacer si fase NO llega al hito
+
+Cada fase tiene threshold cuantitativo (ej: Fase 1 = 10 ventas verdes). Si pasa el plazo y NO se alcanza:
+
+```
+SEÑAL                       ACCIÓN INMEDIATA            ACCIÓN SI PERSISTE 30D
+─────────────────────────────────────────────────────────────────────────────
+Fase 1 < 5 ventas mes 1     War room founders            Pivotar categoría (sourcing)
+Fase 1 < 10 ventas mes 2    Reducir precio 5-10%         Cambiar 1 producto top
+                            + foto pro nueva top SKU     que NO vende
+Fase 2 MeLi reputación      Pausar ads inmediato         Re-trabajar atención
+amarilla 2 semanas          Sesión emergencia            Considerar refund proactivo
+Fase 3 MP sin adjudicación  Ajustar template Cerebro     Postular más volumen
+en 2 meses                  Pedir feedback institución   Diversificar categorías
+Fase 4 break-even no llega  Revisar mix margen por canal Pausar canal margen < 15%
+                            + cortar costos fijos        Re-evaluar Y2 plan
+```
+
+> [!info] No es fracaso · es señal
+> Que una fase no llegue al hito en plazo NO es fracaso del founder · es señal de que la hipótesis necesita ajuste. La estrategia es viva · revisable trimestre a trimestre.
+
+## Decision tree breakdown profundo
+
+```
+¿Hito no llega?
+  ├─ ¿Falla técnica? → Doc 32 Incident Response → fix + retry
+  ├─ ¿Falla producto? → Doc 21 Business → cambiar SKU + sourcing
+  ├─ ¿Falla canal? → Doc 24 Margen Canal → ajustar mix
+  └─ ¿Falla equipo? → Doc 12 Roles Founders → re-balancear
+```
+
+# 12 · Cómo se conecta con Doc 18 Plan Ejecución
+
+Doc 17 dice **QUÉ se busca cada fase** (objetivos · hitos · learnings).
+Doc 18 dice **CÓMO se construye** (sprints · entregables técnicos · agentes · costo).
+
+| Fase Estrategia (Doc 17) | Sprint Ejecución (Doc 18) | Entregable tech principal |
+|---|---|---|
+| Fase 1 Reputación · 10 ventas | Sprint 1-2 Q4-26 | Adapters + MeLi OAuth + dashboard skeleton |
+| Fase 1 Reputación · 10 ventas | Sprint 3-4 Q1-27 | Cerebro chat + Sistema Oportunidades |
+| Fase 2 Escala MeLi | Sprint 5-6 Q1-27 → Q2-27 | Storefront D2C + dropshipping flow |
+| Fase 3 Diversificación | Sprint 7-8 Q2-27 → Q3-27 | MP sync + B2B portal RFQ |
+| Fase 4 Consolidación | Sprint 9-10 Q3-27+ | Ads multicanal + Conciliación |
+
+UAT por sprint (Doc 19) valida que cada entregable cumple lo necesario para la fase estratégica.
+
+> [!info] Trinidad de docs
+> Doc 17 (estrategia) · Doc 18 (plan ejecución) · Doc 19 (UAT) son los 3 docs que se consultan SEMANAL en review founders. El resto del banco se consulta puntualmente cuando se necesita.
+
+# 13 · Origen y validación de la estrategia
 
 Esta estrategia NO es teórica. Está validada por casos reales del ecosistema e-commerce chileno · operadores que escalaron de cero a USD 4M anuales en 5 años siguiendo este path. Aprendizajes recogidos vía investigación externa Q2 2026 e incorporados al banco como hilo conductor Y1.
 

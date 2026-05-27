@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>19 · UAT · User Acceptance Testing · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+</head>
+<body>
+<nav class="doc-nav"><a href="18-plan-ejecucion.html">◂ doc anterior</a><span class="nav-center">DOC 19 · PRODUCTO TÉCNICO</span><a href="21-business-comercio.html">doc siguiente ▸</a></nav>
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Producto Técnico</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 19 · Producto Técnico</div>
+    <h1 class="cover-title">UAT · User Acceptance Testing</h1>
+    <p class="cover-subtitle">Plan integral de pruebas · 24 casos por CU · 5 escenarios end-to-end · criterios sign-off por fase.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-27</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">User-QAS + Architect + Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 Draft · evoluciona durante construcción</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-estrategia-4-niveles-de-testing">02 · Estrategia · 4 niveles de testing</a><span class="toc-pg">04</span></li><li><a href="#03-ambientes">03 · Ambientes</a><span class="toc-pg">05</span></li><li><a href="#04-criterios-universales-de-cada-cu-pre-flight">04 · Criterios universales de cada CU (pre-flight)</a><span class="toc-pg">06</span></li><li><a href="#05-casos-uat-por-cu-fase-1-reputaci-n-q4-26-q1-27">05 · Casos UAT por CU · Fase 1 Reputación (Q4-26 → Q1-27)</a><span class="toc-pg">07</span></li><li><a href="#06-casos-uat-fase-2-escala-q1-27-q2-27">06 · Casos UAT · Fase 2 Escala (Q1-27 → Q2-27)</a><span class="toc-pg">08</span></li><li><a href="#07-casos-uat-fase-3-diversificaci-n-q2-27-q3-27">07 · Casos UAT · Fase 3 Diversificación (Q2-27 → Q3-27)</a><span class="toc-pg">09</span></li><li><a href="#08-casos-uat-fase-4-consolidaci-n-q3-27">08 · Casos UAT · Fase 4 Consolidación (Q3-27+)</a><span class="toc-pg">10</span></li><li><a href="#09-escenarios-end-to-end-5-happy-paths">09 · Escenarios end-to-end · 5 happy paths</a><span class="toc-pg">11</span></li><li><a href="#10-performance-load-testing">10 · Performance + load testing</a><span class="toc-pg">12</span></li><li><a href="#11-security-testing">11 · Security testing</a><span class="toc-pg">13</span></li><li><a href="#12-accesibilidad-wcag-2-2-aa">12 · Accesibilidad WCAG 2.2 AA</a><span class="toc-pg">14</span></li><li><a href="#13-criterios-sign-off-por-fase">13 · Criterios sign-off por fase</a><span class="toc-pg">15</span></li><li><a href="#14-defect-lifecycle">14 · Defect lifecycle</a><span class="toc-pg">16</span></li><li><a href="#15-uat-regression-suite-y2">15 · UAT regression suite (Y2+)</a><span class="toc-pg">17</span></li><li><a href="#16-m-tricas-uat-trackeadas">16 · Métricas UAT trackeadas</a><span class="toc-pg">18</span></li><li><a href="#17-pr-ximos-pasos">17 · Próximos pasos</a><span class="toc-pg">19</span></li></ol>
+</section>
+
+<section class="page" id="01-premisa">
+  <h2><span class="h2-num">01</span>Premisa</h2>
+  <p>Doc 19 define el <strong>plan integral de pruebas</strong> que valida que Marketplace SMC cumple lo especificado en Doc 11 Funcional + Doc 13 Técnica antes de cierre de cada fase del Doc 18 Plan Ejecución.</p>
+<div class="box box-info"><div class="box-title">💡 UAT vs unit tests vs E2E</div><p>Unit + integration tests viven en el repo (Vitest · 70%+ cobertura) · UAT corre en QAS antes de promote a PROD · enfoque founder-side · valida workflows reales no funciones aisladas.</p></div>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>03</span></div>
+</section>
+<section class="page" id="02-estrategia-4-niveles-de-testing">
+  <h2><span class="h2-num">02</span>Estrategia · 4 niveles de testing</h2>
+  <table>
+<thead><tr>
+<th>Nivel</th>
+<th>Owner</th>
+<th>Cuándo</th>
+<th>Tool</th>
+<th>Output</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Unit</td>
+<td>dev</td>
+<td>en cada commit · pre-push</td>
+<td>Vitest</td>
+<td>Coverage report</td>
+</tr>
+<tr>
+<td>Integration</td>
+<td>dev + Pipeline</td>
+<td>en CI · main</td>
+<td>Vitest + Supabase test DB</td>
+<td>Suite verde</td>
+</tr>
+<tr>
+<td>E2E automation</td>
+<td>User-QAS</td>
+<td>nightly QAS</td>
+<td>Playwright</td>
+<td>Reporte HTML + screenshots</td>
+</tr>
+<tr>
+<td>UAT (este doc)</td>
+<td>3 founders</td>
+<td>fin de cada sprint</td>
+<td>Manual + checklist</td>
+<td>Sign-off sheet</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>04</span></div>
+</section>
+<section class="page" id="03-ambientes">
+  <h2><span class="h2-num">03</span>Ambientes</h2>
+  <table>
+<thead><tr>
+<th>Ambiente</th>
+<th>URL</th>
+<th>Datos</th>
+<th>Quién testea</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Local</td>
+<td>localhost:3000</td>
+<td>seed minimal</td>
+<td>Developer</td>
+</tr>
+<tr>
+<td>QAS</td>
+<td>qas.marketplace.smconnection.cl</td>
+<td>mirror PROD - 30 días</td>
+<td>Founders + auto Playwright</td>
+</tr>
+<tr>
+<td>PROD</td>
+<td>marketplace.smconnection.cl</td>
+<td>datos reales</td>
+<td>smoke test post-deploy</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>05</span></div>
+</section>
+<section class="page" id="04-criterios-universales-de-cada-cu-pre-flight">
+  <h2><span class="h2-num">04</span>Criterios universales de cada CU (pre-flight)</h2>
+  <p>Cada caso de prueba UAT debe verificar <strong>antes</strong> de marcar como pass:</p>
+<table>
+<thead><tr>
+<th>#</th>
+<th>Criterio</th>
+<th>Cómo verificar</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>C-1</td>
+<td>Endpoint responde 200 · 4xx · 5xx según corresponda</td>
+<td>Network tab DevTools</td>
+</tr>
+<tr>
+<td>C-2</td>
+<td>Tiempo respuesta dentro de budget (Doc 13 §15)</td>
+<td>DevTools timing</td>
+</tr>
+<tr>
+<td>C-3</td>
+<td>DB tablas modificadas correctamente</td>
+<td>Supabase SQL editor</td>
+</tr>
+<tr>
+<td>C-4</td>
+<td>Auditoría INSERT en mkt_api_logs / mkt_audit_logs</td>
+<td>Query verificación</td>
+</tr>
+<tr>
+<td>C-5</td>
+<td>Sentry sin error nuevo · sin warnings</td>
+<td>Sentry dashboard QAS</td>
+</tr>
+<tr>
+<td>C-6</td>
+<td>PostHog event registrado si aplica</td>
+<td>PostHog activity</td>
+</tr>
+<tr>
+<td>C-7</td>
+<td>UI feedback visible (loading · success · error)</td>
+<td>Visual inspection</td>
+</tr>
+<tr>
+<td>C-8</td>
+<td>Mobile responsive 375px · 768px · 1280px+</td>
+<td>Chrome DevTools device toolbar</td>
+</tr>
+<tr>
+<td>C-9</td>
+<td>Accesibilidad keyboard nav</td>
+<td>Tab + Enter sin mouse</td>
+</tr>
+<tr>
+<td>C-10</td>
+<td>RLS bloquea acceso cross-tenant</td>
+<td>Cambiar JWT + reintentar</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>06</span></div>
+</section>
+<section class="page" id="05-casos-uat-por-cu-fase-1-reputaci-n-q4-26-q1-27">
+  <h2><span class="h2-num">05</span>Casos UAT por CU · Fase 1 Reputación (Q4-26 → Q1-27)</h2>
+  <h3>CU-01 · Onboarding founders + 2FA</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-01-A</td>
+<td>Camila crea cuenta con email + password fuerte</td>
+<td>Email confirmación enviado · status='pending_2fa'</td>
+</tr>
+<tr>
+<td>UAT-01-B</td>
+<td>Camila completa verify TOTP con Authenticator</td>
+<td>Status='active' · puede acceder dashboard</td>
+</tr>
+<tr>
+<td>UAT-01-C</td>
+<td>Camila intenta login sin 2FA</td>
+<td>Bloqueo · prompt código TOTP</td>
+</tr>
+<tr>
+<td>UAT-01-D</td>
+<td>Reset password con email</td>
+<td>Email link recibido en 30s · link expira 1h</td>
+</tr>
+<tr>
+<td>UAT-01-E</td>
+<td>3 founders cuentas creadas + 2FA activo</td>
+<td>Query: SELECT count(*) FROM auth.users WHERE mfa_enabled = true = 3</td>
+</tr>
+</tbody></table>
+<h3>CU-02 · Crear producto + foto pro propia</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-02-A</td>
+<td>Camila sube 1 producto · SKU · 1 foto profesional propia · precio</td>
+<td>Producto guardado · validation BR-001 ok (foto >800px)</td>
+</tr>
+<tr>
+<td>UAT-02-B</td>
+<td>Intentar subir foto stock genérica de proveedor</td>
+<td>BR-001 bloquea · mensaje claro</td>
+</tr>
+<tr>
+<td>UAT-02-C</td>
+<td>Editar precio · stock · descripción</td>
+<td>UPDATE · pg_notify('inventory_changed') dispara</td>
+</tr>
+<tr>
+<td>UAT-02-D</td>
+<td>Eliminar producto sin ventas</td>
+<td>DELETE soft (deleted_at) · queda en histórico</td>
+</tr>
+<tr>
+<td>UAT-02-E</td>
+<td>Eliminar producto con ventas históricas</td>
+<td>Bloqueo · solo unpublish posible</td>
+</tr>
+</tbody></table>
+<h3>CU-03 · Publicar a Mercado Libre</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-03-A</td>
+<td>Producto creado · click "Publicar a MeLi"</td>
+<td>POST /items a MeLi · external_id guardado</td>
+</tr>
+<tr>
+<td>UAT-03-B</td>
+<td>Verificar listado aparece en cuenta MeLi del founder</td>
+<td>mercadolibre.cl muestra producto</td>
+</tr>
+<tr>
+<td>UAT-03-C</td>
+<td>Cambiar stock localmente · verificar sync</td>
+<td>MeLi muestra nuevo stock en &lt;30s</td>
+</tr>
+<tr>
+<td>UAT-03-D</td>
+<td>OAuth token expira · refresh automático</td>
+<td>Cron 6h refresca · sin intervención founder</td>
+</tr>
+<tr>
+<td>UAT-03-E</td>
+<td>MeLi rechaza publicación (categoría inválida)</td>
+<td>Error UI claro · sugerencia corrección</td>
+</tr>
+</tbody></table>
+<h3>CU-04 · Recibir venta MeLi + procesar</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-04-A</td>
+<td>Webhook MeLi POST /api/webhooks/meli (orden nueva)</td>
+<td>HMAC verify OK · INSERT mkt_orders</td>
+</tr>
+<tr>
+<td>UAT-04-B</td>
+<td>Reservar stock · UPDATE inventory.reserved</td>
+<td>SELECT FOR UPDATE evita oversell</td>
+</tr>
+<tr>
+<td>UAT-04-C</td>
+<td>Webhook duplicado (idempotency key igual)</td>
+<td>Return cached · NO segundo insert</td>
+</tr>
+<tr>
+<td>UAT-04-D</td>
+<td>Listar órdenes en dashboard</td>
+<td>UI muestra 1 orden · status 'created'</td>
+</tr>
+<tr>
+<td>UAT-04-E</td>
+<td>Aceptar orden · cambia status a 'accepted'</td>
+<td>UPDATE + audit_log</td>
+</tr>
+</tbody></table>
+<h3>CU-05 · Emitir DTE + label courier + despachar</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-05-A</td>
+<td>Orden 'accepted' → click "Emitir factura"</td>
+<td>Open Factura API · DTE 39 generado · folio SII guardado</td>
+</tr>
+<tr>
+<td>UAT-05-B</td>
+<td>Orden con RUT empresa (B2B) → DTE 33 (factura)</td>
+<td>DTE 33 con timbre electrónico SII</td>
+</tr>
+<tr>
+<td>UAT-05-C</td>
+<td>Cotizar courier · 3 opciones (Chilexpress · Starken · ambos)</td>
+<td>Mostrar precio + ETA por opción</td>
+</tr>
+<tr>
+<td>UAT-05-D</td>
+<td>Generar etiqueta PDF · descargable</td>
+<td>PDF >0 bytes · QR escaneable</td>
+</tr>
+<tr>
+<td>UAT-05-E</td>
+<td>Webhook courier "in_transit" · "delivered"</td>
+<td>UPDATE status + email comprador</td>
+</tr>
+</tbody></table>
+<h3>CU-06 · Cerebro chat · primer mensaje</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-06-A</td>
+<td>Camila escribe "¿cuánto vendí esta semana?"</td>
+<td>SSE stream &lt;600ms first token · respuesta basada en data real</td>
+</tr>
+<tr>
+<td>UAT-06-B</td>
+<td>Pregunta sin contexto suficiente</td>
+<td>Cerebro pide aclaración · NO inventa</td>
+</tr>
+<tr>
+<td>UAT-06-C</td>
+<td>Founder #61 mensaje del día (rate limit)</td>
+<td>Bloqueo · mensaje "límite diario alcanzado"</td>
+</tr>
+<tr>
+<td>UAT-06-D</td>
+<td>Provider Groq cae · fallback Gemini</td>
+<td>Respuesta sigue · log mkt_ai_logs.fallback_used=true</td>
+</tr>
+<tr>
+<td>UAT-06-E</td>
+<td>3 founders consultan simultáneo</td>
+<td>Sin colisión · responses correlated por user_id</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>07</span></div>
+</section>
+<section class="page" id="06-casos-uat-fase-2-escala-q1-27-q2-27">
+  <h2><span class="h2-num">06</span>Casos UAT · Fase 2 Escala (Q1-27 → Q2-27)</h2>
+  <h3>CU-07 · Sistema Oportunidades (v5 sin LLM)</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-07-A</td>
+<td>Cron diario 6am · scoring oportunidades</td>
+<td>INSERT mkt_opportunities con score 1-100</td>
+</tr>
+<tr>
+<td>UAT-07-B</td>
+<td>Camila ve top 10 ordenadas score DESC</td>
+<td>UI lista clara · filtros por canal</td>
+</tr>
+<tr>
+<td>UAT-07-C</td>
+<td>Click oportunidad → ve 6 señales detail</td>
+<td>Modal con breakdown de cada señal</td>
+</tr>
+<tr>
+<td>UAT-07-D</td>
+<td>Descartar oportunidad</td>
+<td>Status='dismissed' · NO aparece más</td>
+</tr>
+<tr>
+<td>UAT-07-E</td>
+<td>Convertir oportunidad → acción (publicar SKU sugerido)</td>
+<td>Producto pre-poblado · UI siguiente paso</td>
+</tr>
+</tbody></table>
+<h3>CU-08 · Storefront D2C (Y2)</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-08-A</td>
+<td>Cliente externo navega marketplace.smconnection.cl</td>
+<td>LCP &lt;2.5s · catálogo cargado ISR</td>
+</tr>
+<tr>
+<td>UAT-08-B</td>
+<td>Agregar al carrito + checkout WebPay</td>
+<td>Pago exitoso · DTE emitido · email confirmación</td>
+</tr>
+<tr>
+<td>UAT-08-C</td>
+<td>Stock=0 cuando intenta comprar</td>
+<td>Bloqueo · mensaje "agotado"</td>
+</tr>
+</tbody></table>
+<h3>CU-09 · Ads multicanal automation</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-09-A</td>
+<td>Activar campaña Mercado Ads · presupuesto $10K</td>
+<td>POST a MeLi Ads · campaign activa</td>
+</tr>
+<tr>
+<td>UAT-09-B</td>
+<td>ROAS &lt;1.5 por 7 días · alerta auto</td>
+<td>Notification founder · sugerencia pausa</td>
+</tr>
+<tr>
+<td>UAT-09-C</td>
+<td>Pausar campaña · verificar gasto detiene</td>
+<td>MeLi API confirma status='paused'</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>08</span></div>
+</section>
+<section class="page" id="07-casos-uat-fase-3-diversificaci-n-q2-27-q3-27">
+  <h2><span class="h2-num">07</span>Casos UAT · Fase 3 Diversificación (Q2-27 → Q3-27)</h2>
+  <h3>CU-10 · Mercado Público B2G</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-10-A</td>
+<td>Cron 8am · sync licitaciones MP</td>
+<td>INSERT mkt_mp_licitaciones · filtradas por categoría</td>
+</tr>
+<tr>
+<td>UAT-10-B</td>
+<td>Cerebro sugiere top 5 afines catálogo SMC</td>
+<td>Lista con scoring + razones</td>
+</tr>
+<tr>
+<td>UAT-10-C</td>
+<td>Javier postula con template Cerebro generado</td>
+<td>PDF + JSON enviado a MP API · ticket auth</td>
+</tr>
+<tr>
+<td>UAT-10-D</td>
+<td>Webhook adjudicación recibido</td>
+<td>UPDATE + workflow despacho institucional</td>
+</tr>
+<tr>
+<td>UAT-10-E</td>
+<td>DTE 33 emitido a institución pública</td>
+<td>Folio SII · pago 30-60 días tracked</td>
+</tr>
+</tbody></table>
+<h3>CU-11 · B2B portal RFQ</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-11-A</td>
+<td>Cliente B2B crea cuenta con API key invitada</td>
+<td>Cuenta + portal acceso restringido</td>
+</tr>
+<tr>
+<td>UAT-11-B</td>
+<td>Crear RFQ con 10 SKUs · cantidades</td>
+<td>INSERT mkt_b2b_rfq · founder recibe alerta</td>
+</tr>
+<tr>
+<td>UAT-11-C</td>
+<td>Founder responde cotización custom</td>
+<td>Cliente recibe email · puede aprobar/rechazar</td>
+</tr>
+<tr>
+<td>UAT-11-D</td>
+<td>Aprobar cotización · firma HMAC</td>
+<td>Workflow despacho dispara</td>
+</tr>
+</tbody></table>
+<h3>CU-12 · Dropshipping flow completo</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-12-A</td>
+<td>Sync catálogo proveedor dropship</td>
+<td>INSERT productos con is_dropship=true</td>
+</tr>
+<tr>
+<td>UAT-12-B</td>
+<td>Cliente compra SKU dropship en MeLi</td>
+<td>OC propagada al proveedor automáticamente</td>
+</tr>
+<tr>
+<td>UAT-12-C</td>
+<td>Proveedor stock=0 cuando llega OC</td>
+<td>Refund automático + email comprador</td>
+</tr>
+<tr>
+<td>UAT-12-D</td>
+<td>Proveedor despacha · webhook tracking</td>
+<td>UPDATE order + email comprador</td>
+</tr>
+<tr>
+<td>UAT-12-E</td>
+<td>SKU dropship vende >$5K/mes 2 meses</td>
+<td>Cerebro alerta · sugiere migrar a stock local</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>09</span></div>
+</section>
+<section class="page" id="08-casos-uat-fase-4-consolidaci-n-q3-27">
+  <h2><span class="h2-num">08</span>Casos UAT · Fase 4 Consolidación (Q3-27+)</h2>
+  <h3>CU-13 · Conciliación financiera mensual</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-13-A</td>
+<td>Cron 1ro mes · POST /api/cron/conciliacion</td>
+<td>Matching pagos vs DTE · diferencias detectadas</td>
+</tr>
+<tr>
+<td>UAT-13-B</td>
+<td>Reporte enviado a CONTROLLER + 3 founders</td>
+<td>Email con tabla discrepancias</td>
+</tr>
+<tr>
+<td>UAT-13-C</td>
+<td>F29 prep mensual · datos compatibles SII</td>
+<td>Export JSON listo upload</td>
+</tr>
+</tbody></table>
+<h3>CU-14 · Multi-tenant readiness (Y3 anticipación)</h3>
+<table>
+<thead><tr>
+<th>Test ID</th>
+<th>Acción</th>
+<th>Resultado esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>UAT-14-A</td>
+<td>Crear tenant test_b · verificar isolation RLS</td>
+<td>Founder tenant_a NO ve data tenant_b</td>
+</tr>
+<tr>
+<td>UAT-14-B</td>
+<td>Crear órdenes en ambos tenants paralelo</td>
+<td>Postgres separado lógicamente · query con JWT correcto</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>10</span></div>
+</section>
+<section class="page" id="09-escenarios-end-to-end-5-happy-paths">
+  <h2><span class="h2-num">09</span>Escenarios end-to-end · 5 happy paths</h2>
+  <div class="diagram-section">
+  <p class="diagram-caption">Mapa visual de los 5 escenarios E2E críticos · cada uno con sus CU encadenados.</p>
+  <div class="diagram-host kind-hla" id="funnel-uat" data-kind="hla"></div>
+  <script type="application/json" data-for="funnel-uat">{}</script>
+</div>
+<h3>E2E-1 · Venta MeLi (stock local) ciclo completo</h3>
+<p>CU-02 → CU-03 → CU-04 → CU-05 · 3 días · target: founder click 5 veces total</p>
+<h3>E2E-2 · Venta dropshipping ciclo completo</h3>
+<p>CU-12-A → CU-12-B → CU-12-D · 5-7 días · target: 0 intervención manual</p>
+<h3>E2E-3 · Adjudicación Mercado Público</h3>
+<p>CU-10-A → CU-10-B → CU-10-C → CU-10-D → CU-10-E · 7-30 días según licitación</p>
+<h3>E2E-4 · Cliente B2B RFQ → pedido</h3>
+<p>CU-11-A → CU-11-B → CU-11-C → CU-11-D · 1-3 días</p>
+<h3>E2E-5 · Storefront D2C compra externa</h3>
+<p>CU-08-A → CU-08-B · 5 minutos cliente externo</p>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>11</span></div>
+</section>
+<section class="page" id="10-performance-load-testing">
+  <h2><span class="h2-num">10</span>Performance + load testing</h2>
+  <table>
+<thead><tr>
+<th>Test</th>
+<th>Tool</th>
+<th>Target</th>
+<th>Trigger fail</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>API products list 1K items</td>
+<td>k6</td>
+<td>p95 &lt;350ms</td>
+<td>&gt;800ms</td>
+</tr>
+<tr>
+<td>100 órdenes concurrentes MeLi webhook</td>
+<td>k6</td>
+<td>sin oversell · sin duplicate</td>
+<td>1+ oversell</td>
+</tr>
+<tr>
+<td>Cerebro chat 50 sesiones simultáneas</td>
+<td>k6 + manual</td>
+<td>first token &lt;600ms p95</td>
+<td>&gt;2s</td>
+</tr>
+<tr>
+<td>RSC streaming 100 founders dashboard</td>
+<td>Lighthouse CI</td>
+<td>LCP &lt;2.5s</td>
+<td>&gt;4s</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>12</span></div>
+</section>
+<section class="page" id="11-security-testing">
+  <h2><span class="h2-num">11</span>Security testing</h2>
+  <table>
+<thead><tr>
+<th>Test</th>
+<th>Tool</th>
+<th>Esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>OWASP ZAP scan QAS</td>
+<td>ZAP CLI</td>
+<td>0 high · 0 medium</td>
+</tr>
+<tr>
+<td>SQL injection en todos los endpoints</td>
+<td>Manual + sqlmap</td>
+<td>RLS bloquea · NO error 500</td>
+</tr>
+<tr>
+<td>Auth bypass tentado (manipular JWT)</td>
+<td>jwt.io + manual</td>
+<td>401 siempre</td>
+</tr>
+<tr>
+<td>Rate limit honrado</td>
+<td>k6 burst 100 req/min</td>
+<td>429 después de 60</td>
+</tr>
+<tr>
+<td>CORS origins restrictivos</td>
+<td>curl + headers</td>
+<td>Sin Access-Control-Allow-Origin: *</td>
+</tr>
+<tr>
+<td>Secrets en client bundle</td>
+<td>npm run build + grep</td>
+<td>0 service_role · 0 API keys</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>13</span></div>
+</section>
+<section class="page" id="12-accesibilidad-wcag-2-2-aa">
+  <h2><span class="h2-num">12</span>Accesibilidad WCAG 2.2 AA</h2>
+  <table>
+<thead><tr>
+<th>Test</th>
+<th>Tool</th>
+<th>Esperado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Lighthouse a11y score</td>
+<td>Chrome DevTools</td>
+<td>&gt;90</td>
+</tr>
+<tr>
+<td>Keyboard navigation completa</td>
+<td>Manual</td>
+<td>Tab cubre TODO · sin keyboard traps</td>
+</tr>
+<tr>
+<td>Screen reader VoiceOver Mac</td>
+<td>VoiceOver</td>
+<td>Labels descriptivos · sin "button button"</td>
+</tr>
+<tr>
+<td>Contraste color</td>
+<td>axe-core</td>
+<td>AA en todos los textos</td>
+</tr>
+<tr>
+<td>Touch targets mobile</td>
+<td>Manual 375px</td>
+<td>Botones &gt;44px altura</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>14</span></div>
+</section>
+<section class="page" id="13-criterios-sign-off-por-fase">
+  <h2><span class="h2-num">13</span>Criterios sign-off por fase</h2>
+  <h3>Fase 1 Reputación Q4-26 → Q1-27</h3>
+<p>✓ Sign-off cuando:</p>
+<ul>
+<li>100% UAT-01 a UAT-06 verde</li>
+<li>E2E-1 pasa con 10 órdenes consecutivas</li>
+<li>Lighthouse a11y &gt;90</li>
+<li>0 errores P0 abiertos en backlog</li>
+<li>Backup PITR confirmado funcional (test restore)</li>
+<li>3 founders firmaron checklist</li>
+</ul>
+<h3>Fase 2 Escala Q1-27 → Q2-27</h3>
+<p>✓ Sign-off cuando:</p>
+<ul>
+<li>UAT-07 + UAT-08 + UAT-09 verde</li>
+<li>Performance test 100 órdenes/hora sin degradación</li>
+<li>ROAS dashboard usable por Camila sin ayuda</li>
+<li>Backup + DR plan probado (Doc 37)</li>
+</ul>
+<h3>Fase 3 Diversificación Q2-27 → Q3-27</h3>
+<p>✓ Sign-off cuando:</p>
+<ul>
+<li>UAT-10 + UAT-11 + UAT-12 verde</li>
+<li>1 adjudicación MP real procesada end-to-end</li>
+<li>1 cliente B2B real cerrado en portal</li>
+<li>Dropshipping con &gt;1 proveedor real funcionando</li>
+</ul>
+<h3>Fase 4 Consolidación Q3-27+</h3>
+<p>✓ Sign-off cuando:</p>
+<ul>
+<li>UAT-13 + UAT-14 verde</li>
+<li>Conciliación mensual real cerrada sin diferencias inexplicadas</li>
+<li>Multi-tenant scaffold testeado (sin migrar aún)</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>15</span></div>
+</section>
+<section class="page" id="14-defect-lifecycle">
+  <h2><span class="h2-num">14</span>Defect lifecycle</h2>
+  <pre class="ascii">DEFECTO DETECTADO durante UAT
+     ↓
+Founder reporta vía dashboard "Reportar issue"
+     ↓
+GitHub Issue creado auto · labels [bug · priority · area]
+     ↓
+Triage diario (Architect + dev asignado)
+     ↓
+Priority:
+  P0 → blocker · fix HOY · QAS deploy nuevo
+  P1 → fix sprint actual · QAS antes sign-off
+  P2 → backlog · próximo sprint
+  P3 → nice-to-have · evaluable
+     ↓
+PR + tests · approval Architect
+     ↓
+Re-test UAT específico
+     ↓
+Mark verde + close issue</pre>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>16</span></div>
+</section>
+<section class="page" id="15-uat-regression-suite-y2">
+  <h2><span class="h2-num">15</span>UAT regression suite (Y2+)</h2>
+  <p>Cada vez que se cierra una fase · sus UAT pasan a Playwright nightly automation:</p>
+<ul>
+<li>Fase 1 → Playwright suite-fase-1.spec.ts (runs nightly QAS)</li>
+<li>Si falla → notification User-QAS + alerta Sentry incident</li>
+<li>Bloquea promote a PROD si suite roja</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>17</span></div>
+</section>
+<section class="page" id="16-m-tricas-uat-trackeadas">
+  <h2><span class="h2-num">16</span>Métricas UAT trackeadas</h2>
+  <table>
+<thead><tr>
+<th>Métrica</th>
+<th>Cómo medir</th>
+<th>Target</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>% UAT pass first try</td>
+<td>Sign-off sheet</td>
+<td>&gt;80%</td>
+</tr>
+<tr>
+<td>Bugs P0 escaped a PROD</td>
+<td>post-deploy 30d</td>
+<td>&lt;2 por fase</td>
+</tr>
+<tr>
+<td>Tiempo defecto reportado → fix</td>
+<td>GitHub Issue timestamps</td>
+<td>P0 &lt;24h · P1 &lt;1 semana</td>
+</tr>
+<tr>
+<td>Cobertura UAT vs CU</td>
+<td>matriz</td>
+<td>100% CU mapeados</td>
+</tr>
+<tr>
+<td>Lighthouse score promedio</td>
+<td>CI Lighthouse</td>
+<td>&gt;90 a11y · &gt;85 performance</td>
+</tr>
+</tbody></table>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>18</span></div>
+</section>
+<section class="page" id="17-pr-ximos-pasos">
+  <h2><span class="h2-num">17</span>Próximos pasos</h2>
+  <ul>
+<li>✅ Doc 19 v1 · plan completo</li>
+<li>⏭️ Durante Sprint 1 Q4-26 · empezar a marcar UAT-01 a UAT-06</li>
+<li>⏭️ User-QAS prepara Playwright skeleton para automation Fase 2+</li>
+<li>⏭️ Cada cierre fase → sign-off sheet firmado por 3 founders</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>19</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="18-plan-ejecucion.html">◂ doc anterior</a><span class="nav-center">FIN DOC 19</span><a href="21-business-comercio.html">doc siguiente ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
+</body>
+</html>

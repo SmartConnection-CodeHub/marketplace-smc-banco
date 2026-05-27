@@ -26,7 +26,7 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-journey-interactivo-onboarding-a-operaci-n">01 · Journey interactivo · onboarding a operación</a><span class="toc-pg">03</span></li><li><a href="#02-hito-clave-primer-ciclo-completo">02 · Hito clave · primer ciclo completo</a><span class="toc-pg">04</span></li><li><a href="#03-indicadores-de-adopci-n-saludable">03 · Indicadores de adopción saludable</a><span class="toc-pg">05</span></li><li><a href="#04-anti-patrones-detectables">04 · Anti-patrones detectables</a><span class="toc-pg">06</span></li><li><a href="#05-evoluci-n-esperada-a-o-por-a-o">05 · Evolución esperada año por año</a><span class="toc-pg">07</span></li></ol>
+  <ol><li><a href="#01-journey-interactivo-onboarding-a-operaci-n">01 · Journey interactivo · onboarding a operación</a><span class="toc-pg">03</span></li><li><a href="#02-hito-clave-primer-ciclo-completo">02 · Hito clave · primer ciclo completo</a><span class="toc-pg">04</span></li><li><a href="#03-indicadores-de-adopci-n-saludable">03 · Indicadores de adopción saludable</a><span class="toc-pg">05</span></li><li><a href="#04-anti-patrones-detectables">04 · Anti-patrones detectables</a><span class="toc-pg">06</span></li><li><a href="#05-evoluci-n-esperada-a-o-por-a-o">05 · Evolución esperada año por año</a><span class="toc-pg">07</span></li><li><a href="#06-scenario-breakdown-cuando-algo-se-rompe">06 · Scenario BREAKDOWN · cuando algo se rompe</a><span class="toc-pg">08</span></li></ol>
 </section>
 
 <section class="page" id="01-journey-interactivo-onboarding-a-operaci-n">
@@ -71,6 +71,109 @@
 <li><strong>Y3</strong>: evaluar si hay margen para escalar (más SKUs · más canales · más volumen) con o sin contratación externa</li>
 </ul>
   <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>07</span></div>
+</section>
+<section class="page" id="06-scenario-breakdown-cuando-algo-se-rompe">
+  <h2><span class="h2-num">06</span>Scenario BREAKDOWN · cuando algo se rompe</h2>
+  <p>Realidad operativa: tarde o temprano algo va a fallar. Este journey define <strong>quién decide qué</strong> sin que el sistema se quede paralizado.</p>
+<h3>Mapa de incidentes típicos</h3>
+<table>
+<thead><tr>
+<th>Incidente</th>
+<th>Detectado por</th>
+<th>Primera acción (5 min)</th>
+<th>Decision owner</th>
+<th>Doc soporte</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Orden duplicada (idempotency falló)</td>
+<td>Camila revisando dashboard</td>
+<td>Pausar webhook + verificar mkt_idempotency</td>
+<td>Guillermo</td>
+<td>Doc 32 Incident</td>
+</tr>
+<tr>
+<td>Stock 0 cuando ya vendí</td>
+<td>Sistema (alert auto)</td>
+<td>Refund inmediato + email comprador disculpa</td>
+<td>Camila</td>
+<td>Doc 21 Business</td>
+</tr>
+<tr>
+<td>SII rechaza DTE</td>
+<td>Open Factura retry agota 5x</td>
+<td>Manual re-emit con corrección · escalar contador</td>
+<td>Camila + Gladys</td>
+<td>Doc 37 Runbook</td>
+</tr>
+<tr>
+<td>Courier no recoge en 24h</td>
+<td>Webhook timeout</td>
+<td>Llamar courier · re-agendar · si persiste cambiar</td>
+<td>Javier</td>
+<td>Doc 02 BBP P09</td>
+</tr>
+<tr>
+<td>Reclamo MeLi cliente</td>
+<td>Camila revisando inbox MeLi</td>
+<td>Responder en &lt;2h · refund si error nuestro</td>
+<td>Camila</td>
+<td>Doc 21 Business</td>
+</tr>
+<tr>
+<td>MeLi baja reputación a amarillo</td>
+<td>Sistema (cron 1h)</td>
+<td>Pausar ads inmediato · war room founders</td>
+<td>los 3</td>
+<td>Doc 17 §11</td>
+</tr>
+<tr>
+<td>Build CI falla &gt;3 commits</td>
+<td>Pipeline workflow</td>
+<td>Fix forward o rollback · Sentry analiza root cause</td>
+<td>Guillermo</td>
+<td>Doc 32 Incident</td>
+</tr>
+<tr>
+<td>Provider IA cae (Groq + Gemini)</td>
+<td>Cerebro fallback chain log</td>
+<td>Auto-fallback DeepSeek · si también cae mensaje UX</td>
+<td>Guillermo</td>
+<td>Doc 13 §17</td>
+</tr>
+<tr>
+<td>Supabase región sa-east-1 down</td>
+<td>Sentry + Status page</td>
+<td>Status page propio · esperar Supabase + comunicar</td>
+<td>Guillermo</td>
+<td>Doc 37 DR Plan</td>
+</tr>
+<tr>
+<td>Founder enfermo &gt;3 días</td>
+<td>los otros 2</td>
+<td>Backup roles temporal · doc 12 roles mapea</td>
+<td>los 3</td>
+<td>Doc 12 Roles</td>
+</tr>
+</tbody></table>
+<h3>Reglas anti-pánico</h3>
+<div class="box box-info"><div class="box-title">💡 No es emergencia salvo que sea P0</div><p>P0 = sangrado de dinero o reputación AHORA (oversell · DTE rechazo · MeLi amarillo). Resto se prioriza en review semanal.</p></div>
+<h3>Cuándo escalar entre founders</h3>
+<pre class="ascii">Acción afecta a 1 cliente   → resuelve el founder que detectó
+Acción afecta > 5 clientes  → consulta a otros 2 antes de actuar
+Acción irreversible         → SIEMPRE consulta · sin excepción
+Acción legal/financiera     → siempre 3 firmas + Compliance/Controller</pre>
+<h3>Post-mortem cada incidente P0/P1</h3>
+<p>Después de cerrar un incidente P0 o P1 · sesión 30 min · formato:</p>
+<ul>
+<li>Qué pasó (timeline objetivo)</li>
+<li>Por qué (root cause · NO blame)</li>
+<li>Cómo lo detectamos</li>
+<li>Cómo se evita repetir (acción concreta · dueño · fecha)</li>
+<li>Cómo lo arreglaríamos más rápido la próxima vez</li>
+</ul>
+<p>Output: row en <code>mkt_postmortems</code> + actualizar Doc 32 Incident Response si patrón nuevo.</p>
+  <div class="page-footer"><span>Banco SMC · Founders Operation</span><span>08</span></div>
 </section>
 
 </div>

@@ -26,7 +26,7 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-las-4-fases-del-a-o-1">02 · Las 4 fases del año 1</a><span class="toc-pg">04</span></li><li><a href="#03-fase-1-reputaci-n-q4-26">03 · Fase 1 · Reputación (Q4-26)</a><span class="toc-pg">05</span></li><li><a href="#04-fase-2-escala-meli-q1-27">04 · Fase 2 · Escala MeLi (Q1-27)</a><span class="toc-pg">06</span></li><li><a href="#05-fase-3-diversificaci-n-q2-27">05 · Fase 3 · Diversificación (Q2-27)</a><span class="toc-pg">07</span></li><li><a href="#06-fase-4-consolidaci-n-q3-27">06 · Fase 4 · Consolidación (Q3-27)</a><span class="toc-pg">08</span></li><li><a href="#07-reglas-no-transables-del-y1">07 · Reglas no transables del Y1</a><span class="toc-pg">09</span></li><li><a href="#08-indicadores-de-salud-por-fase">08 · Indicadores de salud por fase</a><span class="toc-pg">10</span></li><li><a href="#09-c-mo-se-conecta-esta-estrategia-con-el-resto-del-banco">09 · Cómo se conecta esta estrategia con el resto del banco</a><span class="toc-pg">11</span></li><li><a href="#10-origen-y-validaci-n-de-la-estrategia">10 · Origen y validación de la estrategia</a><span class="toc-pg">12</span></li></ol>
+  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-las-4-fases-del-a-o-1">02 · Las 4 fases del año 1</a><span class="toc-pg">04</span></li><li><a href="#03-fase-1-reputaci-n-q4-26">03 · Fase 1 · Reputación (Q4-26)</a><span class="toc-pg">05</span></li><li><a href="#04-fase-2-escala-meli-q1-27">04 · Fase 2 · Escala MeLi (Q1-27)</a><span class="toc-pg">06</span></li><li><a href="#05-fase-3-diversificaci-n-q2-27">05 · Fase 3 · Diversificación (Q2-27)</a><span class="toc-pg">07</span></li><li><a href="#06-fase-4-consolidaci-n-q3-27">06 · Fase 4 · Consolidación (Q3-27)</a><span class="toc-pg">08</span></li><li><a href="#07-reglas-no-transables-del-y1">07 · Reglas no transables del Y1</a><span class="toc-pg">09</span></li><li><a href="#08-indicadores-de-salud-por-fase">08 · Indicadores de salud por fase</a><span class="toc-pg">10</span></li><li><a href="#09-c-mo-se-conecta-esta-estrategia-con-el-resto-del-banco">09 · Cómo se conecta esta estrategia con el resto del banco</a><span class="toc-pg">11</span></li><li><a href="#10-avance-semanal-review-lunes">10 · Avance semanal · review lunes</a><span class="toc-pg">12</span></li><li><a href="#11-qu-hacer-si-fase-no-llega-al-hito">11 · Qué hacer si fase NO llega al hito</a><span class="toc-pg">13</span></li><li><a href="#12-c-mo-se-conecta-con-doc-18-plan-ejecuci-n">12 · Cómo se conecta con Doc 18 Plan Ejecución</a><span class="toc-pg">14</span></li><li><a href="#13-origen-y-validaci-n-de-la-estrategia">13 · Origen y validación de la estrategia</a><span class="toc-pg">15</span></li></ol>
 </section>
 
 <section class="page" id="01-premisa">
@@ -276,11 +276,133 @@
 </tbody></table>
   <div class="page-footer"><span>Banco SMC · Negocio</span><span>11</span></div>
 </section>
-<section class="page" id="10-origen-y-validaci-n-de-la-estrategia">
-  <h2><span class="h2-num">10</span>Origen y validación de la estrategia</h2>
+<section class="page" id="10-avance-semanal-review-lunes">
+  <h2><span class="h2-num">10</span>Avance semanal · review lunes</h2>
+  <p>Cada lunes 9:00 AM los 3 founders revisan estado fase actual. Sesión 30 min máximo.</p>
+<h3>Checklist semanal (lunes 9:00)</h3>
+<table>
+<thead><tr>
+<th>#</th>
+<th>Pregunta</th>
+<th>Dueño respuesta</th>
+<th>Donde mirar</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>¿Cuántas ventas cerradas semana pasada?</td>
+<td>Camila</td>
+<td>Dashboard MeLi + DTE emitidos</td>
+</tr>
+<tr>
+<td>2</td>
+<td>¿Cuántos reclamos/devoluciones?</td>
+<td>Camila</td>
+<td>mkt_orders WHERE status='returned'</td>
+</tr>
+<tr>
+<td>3</td>
+<td>¿Reputación MeLi sigue verde?</td>
+<td>Camila</td>
+<td>UI cuenta MeLi + Mobbin tracker</td>
+</tr>
+<tr>
+<td>4</td>
+<td>¿Hubo oportunidades nuevas Cerebro top 10?</td>
+<td>Javier</td>
+<td>Dashboard /oportunidades</td>
+</tr>
+<tr>
+<td>5</td>
+<td>¿Algún bug P0/P1 abierto?</td>
+<td>Guillermo</td>
+<td>GitHub Issues label:priority</td>
+</tr>
+<tr>
+<td>6</td>
+<td>¿Costo IA semanal vs budget?</td>
+<td>Guillermo</td>
+<td>mkt_ai_logs dashboard</td>
+</tr>
+<tr>
+<td>7</td>
+<td>¿Estamos on-track con hitos fase actual?</td>
+<td>los 3</td>
+<td>Doc 17 §3-6 thresholds</td>
+</tr>
+</tbody></table>
+<p>Si 3+ preguntas tienen respuesta "no" o "no sé" · disparar sesión emergencia mismo día.</p>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>12</span></div>
+</section>
+<section class="page" id="11-qu-hacer-si-fase-no-llega-al-hito">
+  <h2><span class="h2-num">11</span>Qué hacer si fase NO llega al hito</h2>
+  <p>Cada fase tiene threshold cuantitativo (ej: Fase 1 = 10 ventas verdes). Si pasa el plazo y NO se alcanza:</p>
+<pre class="ascii">SEÑAL                       ACCIÓN INMEDIATA            ACCIÓN SI PERSISTE 30D
+─────────────────────────────────────────────────────────────────────────────
+Fase 1 < 5 ventas mes 1     War room founders            Pivotar categoría (sourcing)
+Fase 1 < 10 ventas mes 2    Reducir precio 5-10%         Cambiar 1 producto top
+                            + foto pro nueva top SKU     que NO vende
+Fase 2 MeLi reputación      Pausar ads inmediato         Re-trabajar atención
+amarilla 2 semanas          Sesión emergencia            Considerar refund proactivo
+Fase 3 MP sin adjudicación  Ajustar template Cerebro     Postular más volumen
+en 2 meses                  Pedir feedback institución   Diversificar categorías
+Fase 4 break-even no llega  Revisar mix margen por canal Pausar canal margen < 15%
+                            + cortar costos fijos        Re-evaluar Y2 plan</pre>
+<div class="box box-info"><div class="box-title">💡 No es fracaso · es señal</div><p>Que una fase no llegue al hito en plazo NO es fracaso del founder · es señal de que la hipótesis necesita ajuste. La estrategia es viva · revisable trimestre a trimestre.</p></div>
+<h3>Decision tree breakdown profundo</h3>
+<pre class="ascii">¿Hito no llega?
+  ├─ ¿Falla técnica? → Doc 32 Incident Response → fix + retry
+  ├─ ¿Falla producto? → Doc 21 Business → cambiar SKU + sourcing
+  ├─ ¿Falla canal? → Doc 24 Margen Canal → ajustar mix
+  └─ ¿Falla equipo? → Doc 12 Roles Founders → re-balancear</pre>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>13</span></div>
+</section>
+<section class="page" id="12-c-mo-se-conecta-con-doc-18-plan-ejecuci-n">
+  <h2><span class="h2-num">12</span>Cómo se conecta con Doc 18 Plan Ejecución</h2>
+  <p>Doc 17 dice <strong>QUÉ se busca cada fase</strong> (objetivos · hitos · learnings).</p>
+<p>Doc 18 dice <strong>CÓMO se construye</strong> (sprints · entregables técnicos · agentes · costo).</p>
+<table>
+<thead><tr>
+<th>Fase Estrategia (Doc 17)</th>
+<th>Sprint Ejecución (Doc 18)</th>
+<th>Entregable tech principal</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Fase 1 Reputación · 10 ventas</td>
+<td>Sprint 1-2 Q4-26</td>
+<td>Adapters + MeLi OAuth + dashboard skeleton</td>
+</tr>
+<tr>
+<td>Fase 1 Reputación · 10 ventas</td>
+<td>Sprint 3-4 Q1-27</td>
+<td>Cerebro chat + Sistema Oportunidades</td>
+</tr>
+<tr>
+<td>Fase 2 Escala MeLi</td>
+<td>Sprint 5-6 Q1-27 → Q2-27</td>
+<td>Storefront D2C + dropshipping flow</td>
+</tr>
+<tr>
+<td>Fase 3 Diversificación</td>
+<td>Sprint 7-8 Q2-27 → Q3-27</td>
+<td>MP sync + B2B portal RFQ</td>
+</tr>
+<tr>
+<td>Fase 4 Consolidación</td>
+<td>Sprint 9-10 Q3-27+</td>
+<td>Ads multicanal + Conciliación</td>
+</tr>
+</tbody></table>
+<p>UAT por sprint (Doc 19) valida que cada entregable cumple lo necesario para la fase estratégica.</p>
+<div class="box box-info"><div class="box-title">💡 Trinidad de docs</div><p>Doc 17 (estrategia) · Doc 18 (plan ejecución) · Doc 19 (UAT) son los 3 docs que se consultan SEMANAL en review founders. El resto del banco se consulta puntualmente cuando se necesita.</p></div>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>14</span></div>
+</section>
+<section class="page" id="13-origen-y-validaci-n-de-la-estrategia">
+  <h2><span class="h2-num">13</span>Origen y validación de la estrategia</h2>
   <p>Esta estrategia NO es teórica. Está validada por casos reales del ecosistema e-commerce chileno · operadores que escalaron de cero a USD 4M anuales en 5 años siguiendo este path. Aprendizajes recogidos vía investigación externa Q2 2026 e incorporados al banco como hilo conductor Y1.</p>
 <div class="box box-info"><div class="box-title">💡 Esta es la estrategia más importante del banco Y1</div><p>Si solo se lee un documento del banco, debería ser este. Todos los demás docs operativos (BBP · Architecture · OKRs · Roadmap) sirven A esta estrategia · no al revés.</p></div>
-  <div class="page-footer"><span>Banco SMC · Negocio</span><span>12</span></div>
+  <div class="page-footer"><span>Banco SMC · Negocio</span><span>15</span></div>
 </section>
 
 </div>

@@ -37,6 +37,41 @@
         ]}
       ]
     },
+    "D2C": {
+      "title": "Stock local · Venta D2C storefront propio",
+      "sub": "8 etapas · marketplace.smconnection.cl checkout directo · sin comisión canal · margen 40%+",
+      "callout": "Canal con margen más alto · sin fee 13-17% MeLi · pasarela 2.9% solo · DTE auto · brand directo. Diferenciador: 'fotos pro propias' + curaduría SMC vs revendedores random MeLi.",
+      "tags": ["Margen 40%+", "B2C directo", "Sin fee MeLi"],
+      "stages": [
+        { "num": "01", "name": "Sourcing local", "boxes": [
+          { "code": "D2C-01", "label": "Compra a proveedor chileno (mismo que MELI)", "kind": "pay", "stack": "Email/WhatsApp · transferencia bancaria CLP" },
+          { "code": "D2C-02", "label": "Recepción bodega · QA físico · ingreso DB", "kind": "create", "stack": "Camila o Javier · Supabase mkt_inventory" }
+        ]},
+        { "num": "02", "name": "Publicar storefront", "boxes": [
+          { "code": "D2C-03", "label": "Fotos pro propias (BR-001 valida)", "kind": "create", "stack": "Founders · Storage upload optimized WebP" },
+          { "code": "D2C-04", "label": "Página producto en Next.js · ISR revalidate", "kind": "create", "stack": "Next.js 16 · RSC + ISR · marketplace.smconnection.cl/p/[slug]" }
+        ]},
+        { "num": "03", "name": "Cliente navega + carrito", "boxes": [
+          { "code": "D2C-05", "label": "SEO + breadcrumbs · agregar al carrito", "kind": "create", "stack": "Storefront público · sin auth requerido · localStorage cart" }
+        ]},
+        { "num": "04", "name": "Checkout pasarela", "boxes": [
+          { "code": "D2C-06", "label": "POST /api/checkout · WebPay Plus o MercadoPago", "kind": "pay", "stack": "@transbank/webpay-plus · mercadopago SDK · idempotency_key" }
+        ]},
+        { "num": "05", "name": "Confirmación pago", "boxes": [
+          { "code": "D2C-07", "label": "Webhook firmado HMAC · INSERT mkt_orders", "kind": "notify", "stack": "Postgres transaction · UPDATE inventory.reserved" }
+        ]},
+        { "num": "06", "name": "Cotizar + etiqueta courier", "boxes": [
+          { "code": "D2C-08", "label": "POST /api/courier/quote + label", "kind": "search", "stack": "Adapter Chilexpress/Starken · PDF Storage" }
+        ]},
+        { "num": "07", "name": "Despacho físico", "boxes": [
+          { "code": "D2C-09", "label": "Camila/Javier despacha desde bodega", "kind": "update", "stack": "Manual · scanner QR opcional Y2" }
+        ]},
+        { "num": "08", "name": "DTE + email + post-venta", "boxes": [
+          { "code": "D2C-10", "label": "Open Factura emit DTE 39 (boleta) o 33 (B2B RUT empresa)", "kind": "doc", "stack": "API Open Factura · folio SII · BR-010" },
+          { "code": "D2C-11", "label": "Resend email tracking + post-venta survey", "kind": "notify", "stack": "Email transaccional · review request 7d después delivered" }
+        ]}
+      ]
+    },
     "MP": {
       "title": "Stock local · Venta Mercado Público B2G",
       "sub": "Detectar · postular · adjudicar · despacho institucional · factura DTE 33",

@@ -193,29 +193,36 @@ Switcher UI (a construir):
 
 # 09 · Backlog priorizado para v4
 
-| # | Item | Prioridad | Effort | Owner |
+| # | Item | Prioridad | Estado | Owner |
 |---|------|-----------|--------|-------|
-| 1 | Doc 10 Especificación Funcional | P1 | M | Cerebro + Functional-Lead |
-| 2 | Doc 11 Especificación Técnica | P1 | M | Cerebro + Architect |
-| 3 | Doc 18 Plan Ejecución Gantt | P1 | M | Cerebro + PM |
-| 4 | Rediseño Doc 03 Requirements | P2 | S | Functional-Lead |
-| 5 | Rediseño Doc 17 (3 secciones nuevas) | P2 | S | Cerebro + Founders |
-| 6 | Sub-diagrama Supplier Adapter Doc 07 | P2 | S | Architect |
-| 7 | Tablas supplier + ads Doc 05 | P2 | S | Backend |
-| 8 | Endpoints /api/suppliers + /api/ads Doc 06 | P2 | M | Backend |
-| 9 | P14 ADS process Doc 02 BBP | P3 | S | Business Dev |
-| 10 | Onboarding Camila/Javier Doc 38 | P3 | S | HR + Founders |
-| 11 | Switcher UI v3 / v4 navegación | P3 | M | Fiori |
-| 12 | Doc 19 UAT (al final · post-ejecución) | P4 | M | User-QAS |
+| 1 | Doc 11 Especificación Funcional | P1 | ✅ v2 granular (2026-05-27) | Cerebro + Functional-Lead |
+| 2 | Doc 13 Especificación Técnica | P1 | ✅ v2 granular (2026-05-27) | Cerebro + Architect |
+| 3 | Doc 18 Plan Ejecución Gantt | P1 | ✅ Gantt + agentes + monto | Cerebro + PM |
+| 4 | Doc 19 UAT | P1 | ✅ v1 · 24 CU + 5 E2E (2026-05-27) | User-QAS |
+| 5 | Rediseño Doc 17 (3 secciones nuevas) | P2 | ✅ §10 review semanal + §11 breakdown + §12 conexión Doc 18 | Cerebro + Founders |
+| 6 | Doc 14 scenario BREAKDOWN | P2 | ✅ §06 incidentes + escalación | Founders |
+| 7 | Scaffolding code · adapters | P1 | ✅ ChannelAdapter + SupplierAdapter en repo (2026-05-27) | Backend |
+| 8 | Rediseño Doc 03 Requirements | P2 | 🟡 pendiente · agrupar por fase | Functional-Lead |
+| 9 | Sub-diagrama Supplier Adapter Doc 07 | P2 | 🟡 pendiente | Architect |
+| 10 | Tablas supplier + ads Doc 05 | P2 | 🟡 pendiente | Backend |
+| 11 | Endpoints /api/suppliers + /api/ads Doc 06 | P2 | 🟡 pendiente | Backend |
+| 12 | P14 ADS process Doc 02 BBP | P3 | 🟡 pendiente | Business Dev |
+| 13 | Onboarding Camila/Javier Doc 38 | P3 | 🟡 pendiente | HR + Founders |
+| 14 | Switcher UI v3 / v4 navegación | P3 | 🟡 pendiente | Fiori |
 
 P1 = bloquea v4 · P2 = roadmap v4 · P3 = nice-to-have · P4 = post-launch.
 
 # 10 · Próximos pasos inmediatos (cola Sentinela)
 
-1. ✅ Doc 09 Assessment creado (este doc)
-2. ⏭️ Doc 10 Especificación Funcional
-3. ⏭️ Doc 11 Especificación Técnica
-4. ⏭️ Doc 18 Plan Ejecución (Gantt + agentes + montos)
-5. ⏭️ Tu OK para ejecutar v4
-6. ⏭️ Ejecutar (aplicar cambios v4 al banco)
-7. ⏭️ Doc 19 UAT (mientras se ejecuta · paralelo)
+1. ✅ Doc 10 Assessment creado
+2. ✅ Doc 11 Especificación Funcional v2 (granular · 3 sidecars)
+3. ✅ Doc 13 Especificación Técnica v2 (granular · 1 sidecar)
+4. ✅ Doc 18 Plan Ejecución (Gantt + agentes + montos)
+5. ✅ Doc 19 UAT v1 (24 CU · 5 E2E · sign-off por fase)
+6. ✅ Scaffolding repo marketplace · adapters + Sprint 1
+7. ✅ Doc 17 refinado (review semanal · breakdown · conexión Doc 18)
+8. ✅ Doc 14 refinado (scenario BREAKDOWN)
+9. ⏭️ Sprint 2 Q4-26 · empezar implementación real (MeLi OAuth + dashboard)
+10. ⏭️ Resto backlog P2-P3 según prioridad founders
+
+Status v4: **70% completado** · pendiente Sprint 2-10 ejecución técnica.

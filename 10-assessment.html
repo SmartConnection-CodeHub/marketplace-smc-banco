@@ -355,93 +355,107 @@ Switcher UI (a construir):
 <th>#</th>
 <th>Item</th>
 <th>Prioridad</th>
-<th>Effort</th>
+<th>Estado</th>
 <th>Owner</th>
 </tr></thead>
 <tbody>
 <tr>
 <td>1</td>
-<td>Doc 10 Especificación Funcional</td>
+<td>Doc 11 Especificación Funcional</td>
 <td>P1</td>
-<td>M</td>
+<td>✅ v2 granular (2026-05-27)</td>
 <td>Cerebro + Functional-Lead</td>
 </tr>
 <tr>
 <td>2</td>
-<td>Doc 11 Especificación Técnica</td>
+<td>Doc 13 Especificación Técnica</td>
 <td>P1</td>
-<td>M</td>
+<td>✅ v2 granular (2026-05-27)</td>
 <td>Cerebro + Architect</td>
 </tr>
 <tr>
 <td>3</td>
 <td>Doc 18 Plan Ejecución Gantt</td>
 <td>P1</td>
-<td>M</td>
+<td>✅ Gantt + agentes + monto</td>
 <td>Cerebro + PM</td>
 </tr>
 <tr>
 <td>4</td>
-<td>Rediseño Doc 03 Requirements</td>
-<td>P2</td>
-<td>S</td>
-<td>Functional-Lead</td>
+<td>Doc 19 UAT</td>
+<td>P1</td>
+<td>✅ v1 · 24 CU + 5 E2E (2026-05-27)</td>
+<td>User-QAS</td>
 </tr>
 <tr>
 <td>5</td>
 <td>Rediseño Doc 17 (3 secciones nuevas)</td>
 <td>P2</td>
-<td>S</td>
+<td>✅ §10 review semanal + §11 breakdown + §12 conexión Doc 18</td>
 <td>Cerebro + Founders</td>
 </tr>
 <tr>
 <td>6</td>
-<td>Sub-diagrama Supplier Adapter Doc 07</td>
+<td>Doc 14 scenario BREAKDOWN</td>
 <td>P2</td>
-<td>S</td>
-<td>Architect</td>
+<td>✅ §06 incidentes + escalación</td>
+<td>Founders</td>
 </tr>
 <tr>
 <td>7</td>
-<td>Tablas supplier + ads Doc 05</td>
-<td>P2</td>
-<td>S</td>
+<td>Scaffolding code · adapters</td>
+<td>P1</td>
+<td>✅ ChannelAdapter + SupplierAdapter en repo (2026-05-27)</td>
 <td>Backend</td>
 </tr>
 <tr>
 <td>8</td>
-<td>Endpoints /api/suppliers + /api/ads Doc 06</td>
+<td>Rediseño Doc 03 Requirements</td>
 <td>P2</td>
-<td>M</td>
-<td>Backend</td>
+<td>🟡 pendiente · agrupar por fase</td>
+<td>Functional-Lead</td>
 </tr>
 <tr>
 <td>9</td>
-<td>P14 ADS process Doc 02 BBP</td>
-<td>P3</td>
-<td>S</td>
-<td>Business Dev</td>
+<td>Sub-diagrama Supplier Adapter Doc 07</td>
+<td>P2</td>
+<td>🟡 pendiente</td>
+<td>Architect</td>
 </tr>
 <tr>
 <td>10</td>
-<td>Onboarding Camila/Javier Doc 38</td>
-<td>P3</td>
-<td>S</td>
-<td>HR + Founders</td>
+<td>Tablas supplier + ads Doc 05</td>
+<td>P2</td>
+<td>🟡 pendiente</td>
+<td>Backend</td>
 </tr>
 <tr>
 <td>11</td>
-<td>Switcher UI v3 / v4 navegación</td>
-<td>P3</td>
-<td>M</td>
-<td>Fiori</td>
+<td>Endpoints /api/suppliers + /api/ads Doc 06</td>
+<td>P2</td>
+<td>🟡 pendiente</td>
+<td>Backend</td>
 </tr>
 <tr>
 <td>12</td>
-<td>Doc 19 UAT (al final · post-ejecución)</td>
-<td>P4</td>
-<td>M</td>
-<td>User-QAS</td>
+<td>P14 ADS process Doc 02 BBP</td>
+<td>P3</td>
+<td>🟡 pendiente</td>
+<td>Business Dev</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Onboarding Camila/Javier Doc 38</td>
+<td>P3</td>
+<td>🟡 pendiente</td>
+<td>HR + Founders</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Switcher UI v3 / v4 navegación</td>
+<td>P3</td>
+<td>🟡 pendiente</td>
+<td>Fiori</td>
 </tr>
 </tbody></table>
 <p>P1 = bloquea v4 · P2 = roadmap v4 · P3 = nice-to-have · P4 = post-launch.</p>
@@ -450,14 +464,18 @@ Switcher UI (a construir):
 <section class="page" id="10-pr-ximos-pasos-inmediatos-cola-sentinela">
   <h2><span class="h2-num">10</span>Próximos pasos inmediatos (cola Sentinela)</h2>
   <ul>
-<li>✅ Doc 09 Assessment creado (este doc)</li>
-<li>⏭️ Doc 10 Especificación Funcional</li>
-<li>⏭️ Doc 11 Especificación Técnica</li>
-<li>⏭️ Doc 18 Plan Ejecución (Gantt + agentes + montos)</li>
-<li>⏭️ Tu OK para ejecutar v4</li>
-<li>⏭️ Ejecutar (aplicar cambios v4 al banco)</li>
-<li>⏭️ Doc 19 UAT (mientras se ejecuta · paralelo)</li>
+<li>✅ Doc 10 Assessment creado</li>
+<li>✅ Doc 11 Especificación Funcional v2 (granular · 3 sidecars)</li>
+<li>✅ Doc 13 Especificación Técnica v2 (granular · 1 sidecar)</li>
+<li>✅ Doc 18 Plan Ejecución (Gantt + agentes + montos)</li>
+<li>✅ Doc 19 UAT v1 (24 CU · 5 E2E · sign-off por fase)</li>
+<li>✅ Scaffolding repo marketplace · adapters + Sprint 1</li>
+<li>✅ Doc 17 refinado (review semanal · breakdown · conexión Doc 18)</li>
+<li>✅ Doc 14 refinado (scenario BREAKDOWN)</li>
+<li>⏭️ Sprint 2 Q4-26 · empezar implementación real (MeLi OAuth + dashboard)</li>
+<li>⏭️ Resto backlog P2-P3 según prioridad founders</li>
 </ul>
+<p>Status v4: <strong>70% completado</strong> · pendiente Sprint 2-10 ejecución técnica.</p>
   <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>12</span></div>
 </section>
 
