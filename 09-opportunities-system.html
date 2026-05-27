@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>09 · Sistema Oportunidades · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+<style>
+.layer { background: white; border: 1px solid var(--ink-200); border-radius: 12px; padding: 18px 20px; margin: 10px 0; border-left: 5px solid var(--smc-primary); }
+.layer-num { display: inline-block; background: var(--smc-primary); color: white; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-weight: 800; font-size: 12px; margin-right: 8px; }
+.layer-title { font-weight: 800; font-size: 15px; display: inline-block; }
+.layer-desc { color: var(--ink-700); font-size: 13px; margin: 6px 0 0 34px; }
+.founder-block { background: white; border: 1px solid var(--ink-200); border-radius: 14px; padding: 20px; margin: 14px 0; border-left: 6px solid var(--smc-primary); }
+.founder-name { font-weight: 800; font-size: 18px; margin: 0 0 4px; }
+.founder-role { color: var(--ink-500); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.tag-shared { background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 100px; font-size: 11px; font-weight: 700; margin-left: 6px; }
+</style>
+</head>
+<body>
+<nav class="doc-nav"><a href="08-roadmap.html">◂ doc 08</a><span class="nav-center">DOCUMENTO 09 · SISTEMA OPORTUNIDADES</span><a href="12-roles-founders.html">doc 12 ▸</a></nav>
+
+<div class="doc">
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Blueprint · Marketplace SMC</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 09</div>
+    <h1 class="cover-title">Sistema de Oportunidades</h1>
+    <p class="cover-subtitle">Cómo los 3 founders identifican productos con alta rotación y buen margen · sin pagar APIs · sin scrape propio · sin data lake.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-27</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Cerebro + Founders</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 Design approved · S1 pending</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
+</section>
+
+<section class="page toc">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol>
+    <li><a href="#01-que-es">01 · Qué es el Sistema de Oportunidades</a><span class="toc-pg">03</span></li>
+    <li><a href="#02-por-los-3">02 · Por qué este sistema lo operamos los 3 founders</a><span class="toc-pg">04</span></li>
+    <li><a href="#03-arquitectura">03 · Arquitectura · 6 capas</a><span class="toc-pg">05</span></li>
+    <li><a href="#04-scoring">04 · Scoring sin LLM · 6 señales</a><span class="toc-pg">06</span></li>
+    <li><a href="#05-cache">05 · Smart Cache · NO data lake</a><span class="toc-pg">07</span></li>
+    <li><a href="#06-camila">06 · Qué hace Camila con el sistema</a><span class="toc-pg">08</span></li>
+    <li><a href="#07-javier">07 · Qué hace Javier con el sistema</a><span class="toc-pg">09</span></li>
+    <li><a href="#08-guillermo">08 · Qué hace Guillermo con el sistema</a><span class="toc-pg">10</span></li>
+    <li><a href="#09-sources">09 · Sources conectadas (estado actual)</a><span class="toc-pg">11</span></li>
+    <li><a href="#10-roadmap">10 · Roadmap 3 sprints</a><span class="toc-pg">12</span></li>
+    <li><a href="#11-restricciones">11 · Restricciones que NO se violan</a><span class="toc-pg">13</span></li>
+  </ol>
+</section>
+
+<section class="page" id="01-que-es">
+  <h2><span class="h2-num">01</span>Qué es el Sistema de Oportunidades</h2>
+  <p>Marketplace SMC v5 incluye una vista <strong>/dashboard/oportunidades</strong> donde los 3 founders ven una tabla de productos con alta rotación + buen margen estimado · sin gastar tokens de LLM · sin clonar catálogos completos · sin pagar APIs.</p>
+  <p>Esto reemplaza la idea original de "Helium 10 para MeLi" que chocó con el bloqueo de PolicyAgent de Mercado Libre (DPP exige USD 200K GMV/mes · imposible arrancar).</p>
+  <div class="box box-info"><div class="box-title">💡 La verdad incómoda</div><p>No tenemos acceso a ventas reales ni a costos reales. El "score de oportunidad" es una <strong>aproximación honesta basada en 6 señales proxy</strong>. NO es ranking real MeLi · es estimación.</p></div>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>03</span></div>
+</section>
+
+<section class="page" id="02-por-los-3">
+  <h2><span class="h2-num">02</span>Por qué este sistema lo operamos los 3 founders</h2>
+  <p>El sistema NO es una herramienta exclusiva de Guillermo (técnico). Es una herramienta operativa que <strong>los 3 founders consultan a diario</strong> para decidir qué comprar a Nexport, qué publicar en MeLi, qué postular en Mercado Público.</p>
+  <table>
+    <thead><tr><th>Rol con el sistema</th><th>Camila</th><th>Javier</th><th>Guillermo</th></tr></thead>
+    <tbody>
+      <tr><td>Consulta la tabla de oportunidades diaria</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Ajusta filtros por categoría / score</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Click "Explicar" para entender un score</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Operaciona la oportunidad (compra · publica)</td><td>✓</td><td>✓</td><td>—</td></tr>
+      <tr><td>Mantiene el sistema (código · APIs · cron)</td><td>—</td><td>—</td><td>✓</td></tr>
+      <tr><td>Propone nueva señal de scoring</td><td>✓</td><td>✓</td><td>✓</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Rotación garantizada · sin silos:</strong> ningún founder bloquea al otro porque cada uno puede usar el sistema sin esperar a otro.</p>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>04</span></div>
+</section>
+
+<section class="page" id="03-arquitectura">
+  <h2><span class="h2-num">03</span>Arquitectura · 6 capas</h2>
+  <p>De abajo hacia arriba · cada capa tiene política de tokens · todas las inferiores son <strong>cero LLM</strong>.</p>
+  <div class="layer"><div><span class="layer-num">1</span><span class="layer-title">Sources (gratis)</span></div><div class="layer-desc">SoloTodo + Mercado Público + Open Food Facts + futuro otros. Nunca guardamos el catálogo entero · solo consulta on-demand.</div></div>
+  <div class="layer"><div><span class="layer-num">2</span><span class="layer-title">Filters</span></div><div class="layer-desc">Reglas duras antes del scoring: quitar libros · quitar usados · solo Chile · stock>0 · price>0.</div></div>
+  <div class="layer"><div><span class="layer-num">3</span><span class="layer-title">Scoring Engine</span></div><div class="layer-desc">JS/SQL puro · combina 6 señales en 1 número 0-10 · cero tokens LLM.</div></div>
+  <div class="layer"><div><span class="layer-num">4</span><span class="layer-title">Smart Cache Supabase</span></div><div class="layer-desc">Tabla <code>mkt_opportunity_cache</code> · máx 1.000 filas · TTL diferenciado · cron limpia diario.</div></div>
+  <div class="layer"><div><span class="layer-num">5</span><span class="layer-title">API /api/opportunities/list</span></div><div class="layer-desc">SQL · cero LLM · lee cache + aplica filtros usuario + ordena score.</div></div>
+  <div class="layer"><div><span class="layer-num">6</span><span class="layer-title">UI /dashboard/oportunidades</span></div><div class="layer-desc">Tabla con scores · filtros · tooltips transparencia · botón "Explicar" (única capa con LLM opt-in cacheado 24h).</div></div>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>05</span></div>
+</section>
+
+<section class="page" id="04-scoring">
+  <h2><span class="h2-num">04</span>Scoring sin LLM · 6 señales</h2>
+  <p>Cada producto tiene un score 0-10 calculado por combinación ponderada de 6 señales <strong>proxy</strong> (no truth · estimación).</p>
+  <table>
+    <thead><tr><th>#</th><th>Señal</th><th>Qué proxy mide</th><th>Cómo</th><th>Peso</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Multistore presence</td><td>Demanda</td><td># stores con mismo SKU canónico</td><td>25%</td></tr>
+      <tr><td>2</td><td>Price spread</td><td>Margen</td><td>(max−min)/min · spread &gt;15% = oportunidad arbi</td><td>25%</td></tr>
+      <tr><td>3</td><td>Availability rate</td><td>Stock real</td><td>% stores con <code>is_available=true</code></td><td>15%</td></tr>
+      <tr><td>4</td><td>Price stability</td><td>Demanda sostenida</td><td>Baja varianza precio en 7d (proxy no-overstock)</td><td>15%</td></tr>
+      <tr><td>5</td><td>Category premium</td><td>Margen por categoría</td><td>Tabla fija (accesorios &gt; línea blanca)</td><td>10%</td></tr>
+      <tr><td>6</td><td>MeLi presence</td><td>Validación marketplace</td><td>¿Producto está en MeLi además de retail?</td><td>10%</td></tr>
+    </tbody>
+  </table>
+  <p>Total: <strong>1 SQL query · cero LLM tokens.</strong></p>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>06</span></div>
+</section>
+
+<section class="page" id="05-cache">
+  <h2><span class="h2-num">05</span>Smart Cache · NO data lake</h2>
+  <p>El sistema NO clona los 58.611 productos de SoloTodo. Cache estricto de máx <strong>1.000 filas</strong>. Solo entra al cache lo que algún founder consultó.</p>
+  <table>
+    <thead><tr><th>Aspecto</th><th>Política</th></tr></thead>
+    <tbody>
+      <tr><td>Tabla</td><td><code>mkt_opportunity_cache</code></td></tr>
+      <tr><td>Columnas</td><td>sku_canonico (PK) · score · category · n_stores · price_min · price_max · top_url · last_synced · n_queries</td></tr>
+      <tr><td>Tamaño máximo</td><td>1.000 filas (~200 KB total)</td></tr>
+      <tr><td>TTL Hot (n_queries &gt;5)</td><td>6h (alineado con frecuencia SoloTodo)</td></tr>
+      <tr><td>TTL Warm (n_queries 1-5)</td><td>12h</td></tr>
+      <tr><td>TTL Cold (sin query 7d)</td><td>DELETE automático</td></tr>
+      <tr><td>Cron limpieza</td><td><code>pg_cron</code> diario 3:00 AM · borra cold · si tabla &gt;1000 drop lowest score</td></tr>
+    </tbody>
+  </table>
+  <div class="box box-info"><div class="box-title">💡 Por qué resuelve "no queremos data"</div><p>No clonamos SoloTodo · cache se autolimpia · si nadie consulta más, queda vacío · costo Supabase tier free sigue activo.</p></div>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>07</span></div>
+</section>
+
+<section class="page" id="06-camila">
+  <h2><span class="h2-num">06</span>Qué hace Camila con el sistema</h2>
+  <div class="founder-block">
+    <p class="founder-name">Camila Bianchi</p>
+    <p class="founder-role">Founder · logística + comercial · rotación con Javier y Guillermo</p>
+    <p><strong>Uso diario del Sistema Oportunidades:</strong></p>
+    <ul>
+      <li>Cada mañana abre <code>/dashboard/oportunidades</code> y filtra por <strong>Score &gt;7 + spread &gt;15%</strong></li>
+      <li>Identifica 3-5 SKUs para revisar con Javier en sourcing</li>
+      <li>Cruza con stock actual de bodega (¿ya tenemos? ¿cuánto?)</li>
+      <li>Si hay oportunidad → la postula a licitación Mercado Público (su fuerte)</li>
+      <li>Marca "Hot 🔥" los SKUs que está empujando para que el sistema priorice</li>
+      <li>Reporta a los 3 founders en stand-up lunes: top 3 oportunidades de la semana</li>
+    </ul>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>08</span></div>
+</section>
+
+<section class="page" id="07-javier">
+  <h2><span class="h2-num">07</span>Qué hace Javier con el sistema</h2>
+  <div class="founder-block">
+    <p class="founder-name">Javier Bianchi</p>
+    <p class="founder-role">Founder · sourcing + comercial · rotación con Camila y Guillermo</p>
+    <p><strong>Uso diario del Sistema Oportunidades:</strong></p>
+    <ul>
+      <li>Filtra por <strong>Categoría premium + MeLi presence</strong> para sourcing Nexport</li>
+      <li>Click "Explicar" en el top 5 antes de negociar con proveedor</li>
+      <li>Compara <code>price_min</code> del sistema vs precio Nexport ofrecido</li>
+      <li>Aprueba/rechaza compra a Nexport con datos en mano (no a ojo)</li>
+      <li>Si abre cuenta B2B nueva → cruza catálogo cliente vs oportunidades sistema</li>
+      <li>Propone nuevas señales de scoring si detecta gap (ej: estacionalidad)</li>
+    </ul>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>09</span></div>
+</section>
+
+<section class="page" id="08-guillermo">
+  <h2><span class="h2-num">08</span>Qué hace Guillermo con el sistema</h2>
+  <div class="founder-block">
+    <p class="founder-name">Guillermo González León</p>
+    <p class="founder-role">Founder · técnico + plataforma + backup operacional</p>
+    <p><strong>Construye y mantiene · también consulta como Camila y Javier:</strong></p>
+    <ul>
+      <li>Mantiene los 6 endpoints (sources + scoring + cache + list)</li>
+      <li>Vigila el cron <code>pg_cron</code> diario · revisa logs de tokens LLM (debe estar &lt;1% sesión)</li>
+      <li>Suma sources nuevas cuando hay caso de uso real (no especulativo)</li>
+      <li>Ajusta pesos del scoring según feedback de Camila y Javier (no unilateral)</li>
+      <li>Consulta el sistema como Camila/Javier cuando hace backup operacional</li>
+      <li>Reporta a galvarez.cl si hay cambios fiscales (UF/USD en BCentral)</li>
+    </ul>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>10</span></div>
+</section>
+
+<section class="page" id="09-sources">
+  <h2><span class="h2-num">09</span>Sources conectadas · estado actual</h2>
+  <table>
+    <thead><tr><th>API</th><th>Endpoint app</th><th>Estado</th><th>Auth</th><th>Cobertura</th></tr></thead>
+    <tbody>
+      <tr><td>SoloTodo</td><td><code>/api/solotodo/test</code></td><td>🟢 OK commit 876e5c9</td><td>sin auth</td><td>58.611 productos MeLi Chile · 564 stores · tech/electro</td></tr>
+      <tr><td>Mercado Público</td><td><code>/api/mercadopublico/test</code></td><td>🟡 OK commit db51105 · falta ticket env</td><td>ticket free</td><td>Licitaciones B2G ChileCompra</td></tr>
+      <tr><td>Open Food Facts</td><td>pendiente</td><td>⚪ pendiente</td><td>sin auth</td><td>6.440 productos alimentación Chile + EAN</td></tr>
+      <tr><td>BCentral</td><td>pendiente</td><td>⚪ pendiente</td><td>user/pass free</td><td>UF/USD/UTM/IPC oficial Chile</td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>11</span></div>
+</section>
+
+<section class="page" id="10-roadmap">
+  <h2><span class="h2-num">10</span>Roadmap 3 sprints</h2>
+  <table>
+    <thead><tr><th>Sprint</th><th>Entregable funcional</th><th>Tokens estimados</th></tr></thead>
+    <tbody>
+      <tr><td>S1 "tubería"</td><td>Backend completo sin UI · SQL migration + scoring.ts + filters.ts + 2 endpoints + cron pg_cron · curl validable</td><td>15-20% sesión</td></tr>
+      <tr><td>S2 "ducha"</td><td>Página <code>/dashboard/oportunidades</code> con tabla básica · top 50 default · 3 founders pueden abrir</td><td>8-10% sesión</td></tr>
+      <tr><td>S3 "grifos finos"</td><td>Filtros client-side + botón "Explicar" con Groq cacheado 24h + tooltips transparencia</td><td>10-12% sesión</td></tr>
+    </tbody>
+  </table>
+  <p>Cada sprint deja algo funcional · no hace falta esperar S3 para validar S1 con Camila y Javier.</p>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>12</span></div>
+</section>
+
+<section class="page" id="11-restricciones">
+  <h2><span class="h2-num">11</span>Restricciones que NO se violan</h2>
+  <ol>
+    <li><strong>NO data lake masivo</strong> · cache ligero · no clonamos catálogo SoloTodo</li>
+    <li><strong>NO LLM en cada vista</strong> · scoring es math puro · LLM solo on-click "Explicar"</li>
+    <li><strong>NO libros</strong> (categoría excluida explícitamente)</li>
+    <li><strong>Transparente para el usuario final</strong> · los 3 founders ven scores · no la cocina</li>
+    <li><strong>Sin scraping propio</strong> · solo APIs públicas con permisos</li>
+    <li><strong>Sin pagar APIs</strong> · stack 100% gratis</li>
+  </ol>
+  <div class="box box-info"><div class="box-title">💡 ADR canónico</div><p>El detalle técnico completo (SQL schemas · TypeScript signatures · cómputo del score paso a paso) vive en <code>~/smartconnection-marketplace/docs/adr/0001-opportunities-architecture.md</code> del repo. Este documento del banco es la vista founders · no la vista dev.</p></div>
+  <div class="page-footer"><span>Banco SMC · Sistema Oportunidades</span><span>13</span></div>
+</section>
+
+</div>
+<nav class="doc-nav"><a href="08-roadmap.html">◂ doc 08</a><span class="nav-center">FIN DOC 09</span><a href="12-roles-founders.html">doc 12 ▸</a></nav>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script src="_diagram-kit.js"></script>
+<script>if (window.SMCDiagram && SMCDiagram.boot) SMCDiagram.boot();</script>
+</body>
+</html>
