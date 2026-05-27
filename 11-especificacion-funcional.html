@@ -3,21 +3,66 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>11 · Especificación Funcional · Marketplace SMC</title>
 <link rel="stylesheet" href="_styles.css">
 <link rel="stylesheet" href="_diagram-kit.css">
+<style>
+.usecase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 18px 0; }
+.usecase-card { background: white; border: 1px solid var(--ink-200); border-radius: 12px; padding: 16px; border-left: 5px solid var(--smc-primary); display: flex; flex-direction: column; gap: 8px; transition: all 0.2s; }
+.usecase-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,193,193,0.12); }
+.usecase-card.fase1 { border-left-color: #00C1C1; }
+.usecase-card.fase2 { border-left-color: #F472B6; }
+.usecase-card.fase3 { border-left-color: #F59E0B; }
+.usecase-card.fase4 { border-left-color: #22C55E; }
+.cu-head { display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+.cu-num { font-weight: 800; color: var(--smc-primary-dark); letter-spacing: 0.5px; }
+.cu-fase { background: var(--ink-100); padding: 3px 10px; border-radius: 100px; color: var(--ink-700); }
+.usecase-card.fase1 .cu-fase { background: #ECFEFF; color: #0E7490; }
+.usecase-card.fase2 .cu-fase { background: #FCE7F3; color: #BE185D; }
+.usecase-card.fase3 .cu-fase { background: #FEF3C7; color: #92400E; }
+.usecase-card.fase4 .cu-fase { background: #DCFCE7; color: #166534; }
+.cu-title { font-size: 14px; font-weight: 800; margin: 0; color: var(--ink-900); line-height: 1.3; }
+.cu-icon { font-size: 22px; }
+.cu-bullets { list-style: none; padding: 0; margin: 0; font-size: 11.5px; color: var(--ink-700); display: flex; flex-direction: column; gap: 4px; }
+.cu-bullets li { padding-left: 14px; position: relative; line-height: 1.5; }
+.cu-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--smc-primary); font-weight: 700; }
+.cu-bullets strong { color: var(--ink-900); font-weight: 700; }
+
+.phase-banner { background: linear-gradient(135deg, var(--smc-primary), var(--smc-primary-dark)); color: white; padding: 14px 20px; border-radius: 12px; margin: 24px 0 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.phase-banner.fase2 { background: linear-gradient(135deg, #F472B6, #BE185D); }
+.phase-banner.fase3 { background: linear-gradient(135deg, #F59E0B, #92400E); }
+.phase-banner.fase4 { background: linear-gradient(135deg, #22C55E, #166534); }
+.phase-banner h3 { margin: 0; font-size: 16px; color: white; }
+.phase-banner-sub { font-size: 12px; opacity: 0.92; }
+
+.br-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 18px 0; }
+.br-card { background: var(--ink-50); border-radius: 10px; padding: 14px 18px; border-left: 4px solid var(--smc-info); }
+.br-card.critical { border-left-color: var(--smc-danger); background: #FEF2F2; }
+.br-code { font-size: 11px; font-weight: 800; color: var(--ink-500); letter-spacing: 1px; }
+.br-name { font-size: 13px; font-weight: 700; margin: 4px 0; color: var(--ink-900); }
+.br-impl { font-size: 11px; color: var(--ink-700); line-height: 1.5; }
+.br-impl code { background: white; padding: 1px 5px; border-radius: 4px; font-size: 10px; }
+
+.tech-todo-banner { background: #FEF3C7; border: 2px dashed #F59E0B; border-radius: 12px; padding: 16px 20px; margin: 24px 0; font-size: 13px; color: #78350F; }
+.tech-todo-banner strong { color: #92400E; }
+
+@media (max-width: 768px) {
+  .usecase-grid { grid-template-columns: 1fr; }
+  .br-grid { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
-<nav class="doc-nav"><a href="10-assessment.html">◂ doc anterior</a><span class="nav-center">DOC 11 · PRODUCTO TÉCNICO</span><a href="13-especificacion-tecnica.html">doc siguiente ▸</a></nav>
+<nav class="doc-nav"><a href="10-assessment.html">◂ doc 10</a><span class="nav-center">DOC 11 · ESPECIFICACIÓN FUNCIONAL</span><a href="13-especificacion-tecnica.html">doc 13 técnica ▸</a></nav>
 <div class="doc">
 <section class="cover">
-  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Producto Técnico</div></div>
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Producto Funcional</div></div>
   <div class="cover-center">
-    <div class="cover-doc-num">Documento 11 · Producto Técnico</div>
+    <div class="cover-doc-num">Documento 11 · Funcional</div>
     <h1 class="cover-title">Especificación Funcional</h1>
-    <p class="cover-subtitle">Qué hace el sistema · herramientas concretas · flujos detallados · interacciones granulares · maquetas.</p>
+    <p class="cover-subtitle">Qué hace el sistema desde la mirada operativa · 24 casos de uso visuales · 18 reglas de negocio · workflows por modo. Lo técnico vive en Doc 13.</p>
     <div class="cover-meta">
-      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">2.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">3.0</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-27</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Functional-Lead + PM + Cerebro</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 Draft · pendiente review founders</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Functional-Lead + Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Refactor visual aplicado</div></div>
     </div>
   </div>
   <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
@@ -26,1050 +71,380 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li><li><a href="#02-mapa-funcional-de-herramientas">02 · Mapa funcional de herramientas</a><span class="toc-pg">04</span></li><li><a href="#03-cat-logo-de-herramientas-externas-granular">03 · Catálogo de herramientas externas (granular)</a><span class="toc-pg">05</span></li><li><a href="#04-workflows-por-modo-paso-a-paso">04 · Workflows por modo · paso a paso</a><span class="toc-pg">06</span></li><li><a href="#05-24-casos-de-uso-detalle-granular">05 · 24 casos de uso · detalle granular</a><span class="toc-pg">07</span></li><li><a href="#06-18-reglas-de-negocio-ejemplo-concreto-cada-una">06 · 18 reglas de negocio · ejemplo concreto cada una</a><span class="toc-pg">08</span></li><li><a href="#07-maquetas-m-nimas-y1-qu-construir">07 · Maquetas mínimas Y1 · qué construir</a><span class="toc-pg">09</span></li><li><a href="#08-criterios-aceptaci-n-medibles-con-sql">08 · Criterios aceptación medibles con SQL</a><span class="toc-pg">10</span></li><li><a href="#09-out-of-scope-expl-cito-y1">09 · Out of scope explícito Y1</a><span class="toc-pg">11</span></li><li><a href="#10-pr-ximos-pasos">10 · Próximos pasos</a><span class="toc-pg">12</span></li></ol>
+  <ol>
+    <li><a href="#01-premisa">01 · Premisa</a><span class="toc-pg">03</span></li>
+    <li><a href="#02-mapa">02 · Mapa funcional de herramientas</a><span class="toc-pg">04</span></li>
+    <li><a href="#03-workflows">03 · Workflows por modo · pipeline visual</a><span class="toc-pg">05</span></li>
+    <li><a href="#04-casos-uso">04 · 24 casos de uso · cards infografía</a><span class="toc-pg">06</span></li>
+    <li><a href="#05-reglas">05 · 18 reglas de negocio · matriz visual</a><span class="toc-pg">10</span></li>
+    <li><a href="#06-out-of-scope">06 · Out of scope explícito Y1</a><span class="toc-pg">11</span></li>
+    <li><a href="#07-proximos-pasos">07 · Próximos pasos</a><span class="toc-pg">12</span></li>
+  </ol>
 </section>
 
 <section class="page" id="01-premisa">
   <h2><span class="h2-num">01</span>Premisa</h2>
-  <p>Doc 11 detalla <strong>qué hace el sistema</strong> a nivel granular: qué herramienta específica toma cada decisión · cómo conversan entre sí · qué disparadores activan cada flujo · qué endpoints toca · qué tablas DB · qué UI screen.</p>
-<div class="box box-info"><div class="box-title">💡 No es repetición de Doc 02 BBP</div><p>Doc 02 muestra los 14 procesos. Doc 11 detalla cómo CADA proceso se ejecuta en herramientas concretas con disparadores · datos · APIs · UI. Doc 13 es el espejo técnico (cómo se construye).</p></div>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>03</span></div>
+  <p>Doc 11 detalla <strong>qué hace el sistema</strong> desde la mirada operativa de los 3 founders. Cada caso de uso es una acción real que Camila · Javier o Guillermo ejecutan en el sistema. Las reglas de negocio son las invariantes que el sistema debe garantizar siempre.</p>
+  <div class="box box-info"><div class="box-title">💡 División funcional vs técnico</div><p>Este doc es <strong>funcional puro</strong>. Lo técnico (catálogo de APIs, maquetas wireframe, SQL queries de aceptación) vive en <a href="13-especificacion-tecnica.html">Doc 13 Especificación Técnica</a>. Si necesitás endpoints, schemas o specs de UI, andá al 13.</p></div>
+  <p>Cada caso de uso (CU) tiene 3 atributos visibles: <strong>Trigger</strong> (qué lo dispara), <strong>Output</strong> (qué deja como resultado), <strong>Tools</strong> (qué herramientas del stack participan).</p>
+  <div class="page-footer"><span>Banco SMC · Funcional</span><span>03</span></div>
 </section>
-<section class="page" id="02-mapa-funcional-de-herramientas">
+
+<section class="page" id="02-mapa">
   <h2><span class="h2-num">02</span>Mapa funcional de herramientas</h2>
   <div class="diagram-section">
   <p class="diagram-caption">Cada bloque = herramienta concreta del stack. Click ve qué casos de uso la usan + cómo conversa con las demás. Filtros por modo (local · Nexport · dropship).</p>
   <div class="diagram-host kind-hla" id="funcional-tools-map" data-kind="hla"></div>
-  <script type="application/json" data-for="funcional-tools-map">{"title": "Mapa funcional de herramientas · Marketplace SMC", "sub": "Cada bloque = herramienta concreta · click ve casos de uso que la usan", "svg": "<g><rect class='group-frame' x='40' y='40' width='280' height='180'/><text class='group-label' x='60' y='66'>FOUNDERS UI</text></g><g><rect class='group-frame' x='360' y='40' width='420' height='180'/><text class='group-label' x='380' y='66'>BACKEND CORE · NEXT.JS</text></g><g><rect class='group-frame' x='820' y='40' width='320' height='180'/><text class='group-label' x='840' y='66'>DATA · SUPABASE</text></g><g><rect class='group-frame' x='40' y='260' width='540' height='180'/><text class='group-label' x='60' y='286'>CANALES VENTA</text></g><g><rect class='group-frame' x='620' y='260' width='520' height='180'/><text class='group-label' x='640' y='286'>SERVICIOS EXTERNOS</text></g><g><rect class='group-frame' x='40' y='480' width='1100' height='160'/><text class='group-label' x='60' y='506'>IA · ANALYTICS · CRON</text></g><path class='conn' data-from='founder-ui' data-to='nextjs-api' d='M 320 130 L 360 130' marker-end='url(#arr)'/><path class='conn' data-from='nextjs-api' data-to='supabase-db' d='M 780 130 L 820 130' marker-end='url(#arr)'/><path class='conn' data-from='nextjs-api' data-to='meli' d='M 460 220 L 200 320' marker-end='url(#arr)' data-channels='meli'/><path class='conn' data-from='meli' data-to='nextjs-api' d='M 200 285 C 200 240 400 240 460 235' marker-end='url(#arr)' data-channels='meli'/><path class='conn' data-from='nextjs-api' data-to='mp' d='M 530 220 C 350 280 350 320 350 330' marker-end='url(#arr)' data-channels='mp'/><path class='conn' data-from='nextjs-api' data-to='openfactura' d='M 640 220 L 720 320' marker-end='url(#arr)'/><path class='conn' data-from='nextjs-api' data-to='couriers' d='M 700 220 L 900 320' marker-end='url(#arr)'/><path class='conn' data-from='nextjs-api' data-to='pagos' d='M 740 220 L 1080 320' marker-end='url(#arr)'/><path class='conn' data-from='nextjs-api' data-to='cerebro' d='M 530 220 C 530 380 530 460 350 510' marker-end='url(#arr)'/><path class='conn' data-from='cerebro' data-to='openrouter' d='M 480 540 L 700 540' marker-end='url(#arr)'/><path class='conn' data-from='nextjs-api' data-to='cron' d='M 700 220 C 800 400 1000 460 990 520' marker-end='url(#arr)'/><g class='block type-actor' data-id='founder-ui'><rect class='block-bg' x='80' y='100' width='200' height='100'/><text class='block-code' x='98' y='125'>UI · FOUNDERS</text><text class='block-title' x='98' y='148'>Browser dashboard</text><text class='block-sub' x='98' y='168'>Camila · Javier · Guillermo</text><text class='block-sub' x='98' y='186'>marketplace.smconnection.cl</text></g><g class='block type-backend' data-id='nextjs-api'><rect class='block-bg' x='400' y='100' width='340' height='100'/><text class='block-code' x='418' y='125'>BACKEND · CORE</text><text class='block-title' x='418' y='148'>Next.js 16 App Router</text><text class='block-sub' x='418' y='168'>RSC · Server Actions · API Routes · Zod</text><text class='block-sub' x='418' y='186'>Channel Adapter + Supplier Adapter Pattern</text></g><g class='block type-data' data-id='supabase-db'><rect class='block-bg' x='860' y='100' width='260' height='100'/><text class='block-code' x='878' y='125'>DATA · PRINCIPAL</text><text class='block-title' x='878' y='148'>Supabase Postgres</text><text class='block-sub' x='878' y='168'>20+ tablas · RLS · pg_notify · pg_cron</text><text class='block-sub' x='878' y='186'>Auth · Storage · region sa-east-1</text></g><g class='block type-channel' data-id='meli'><rect class='block-bg' x='80' y='310' width='220' height='110'/><text class='block-code' x='98' y='335'>CANAL · B2C</text><text class='block-title' x='98' y='358'>Mercado Libre API v2</text><text class='block-sub' x='98' y='378'>OAuth 2.0 PKCE · cookies httpOnly</text><text class='block-sub' x='98' y='396'>Webhook firmado HMAC SHA-256</text><text class='block-sub' x='98' y='414'>+ Mercado Ads (mismo token)</text></g><g class='block type-channel' data-id='mp'><rect class='block-bg' x='320' y='310' width='240' height='110'/><text class='block-code' x='338' y='335'>CANAL · B2G</text><text class='block-title' x='338' y='358'>Mercado Público</text><text class='block-sub' x='338' y='378'>Ticket auth · API REST</text><text class='block-sub' x='338' y='396'>Cron 8am sync licitaciones</text><text class='block-sub' x='338' y='414'>HMAC webhook adjudicación</text></g><g class='block type-payment' data-id='openfactura'><rect class='block-bg' x='640' y='310' width='220' height='110'/><text class='block-code' x='658' y='335'>SII · DTE</text><text class='block-title' x='658' y='358'>Open Factura</text><text class='block-sub' x='658' y='378'>DTE 33 · 39 · 61</text><text class='block-sub' x='658' y='396'>API key + cert digital</text><text class='block-sub' x='658' y='414'>Retry exponencial 5x si rechazo</text></g><g class='block type-logistic' data-id='couriers'><rect class='block-bg' x='880' y='310' width='110' height='110'/><text class='block-code' x='898' y='335'>LOGÍSTICA</text><text class='block-title' x='898' y='358'>Chilexpress</text><text class='block-title' x='898' y='378'>Starken</text><text class='block-sub' x='898' y='398'>Etiqueta</text><text class='block-sub' x='898' y='414'>+ tracking</text></g><g class='block type-payment' data-id='pagos'><rect class='block-bg' x='1010' y='310' width='120' height='110'/><text class='block-code' x='1028' y='335'>PASARELAS</text><text class='block-title' x='1028' y='358'>MercadoPago</text><text class='block-title' x='1028' y='378'>WebPay Plus</text><text class='block-sub' x='1028' y='396'>Webhook</text><text class='block-sub' x='1028' y='414'>firmado HMAC</text></g><g class='block type-ai' data-id='cerebro'><rect class='block-bg' x='80' y='520' width='370' height='100'/><text class='block-code' x='98' y='545'>AI · ORCHESTRATOR</text><text class='block-title' x='98' y='568'>Cerebro IA</text><text class='block-sub' x='98' y='588'>SSE chat · scoring sin LLM · sugerencias</text><text class='block-sub' x='98' y='606'>Cache hot/warm/cold · rate limit 60/día/founder</text></g><g class='block type-ai' data-id='openrouter'><rect class='block-bg' x='480' y='520' width='280' height='100'/><text class='block-code' x='498' y='545'>IA ROUTING</text><text class='block-title' x='498' y='568'>OpenRouter</text><text class='block-sub' x='498' y='588'>Groq → Gemini → DeepSeek</text><text class='block-sub' x='498' y='606'>NUNCA Claude (regla Hoku)</text></g><g class='block type-infra' data-id='cron'><rect class='block-bg' x='790' y='520' width='320' height='100'/><text class='block-code' x='808' y='545'>SCHEDULER</text><text class='block-title' x='808' y='568'>Vercel Cron + pg_cron</text><text class='block-sub' x='808' y='588'>Refresh MeLi 6h · sync MP 8am · cleanup 7d</text><text class='block-sub' x='808' y='606'>Cron secret header · auto-retry 3x</text></g>", "blocks": {"founder-ui": {"type": "UI · FOUNDERS", "title": "Browser dashboard", "desc": "Interfaz que ven Camila · Javier · Guillermo. Next.js Server Components + Tailwind v4 + @smc/ui. Acceso vía marketplace.smconnection.cl con auth Supabase + 2FA opcional.", "stack": ["Next.js 16 App Router", "React 19 Server Components", "Tailwind v4", "Radix UI · @smc/ui"], "related": [{"href": "10-assessment.html", "title": "Doc 10 Assessment", "sub": "qué pantallas faltan diseñar"}]}, "nextjs-api": {"type": "BACKEND CORE", "title": "Next.js 16 API + Server Actions", "desc": "Núcleo del sistema. API Routes para REST + Server Actions para mutations desde RSC. Channel Adapter Pattern + Supplier Adapter Pattern aplicados. JWT validation middleware · rate limit 60 req/min/user.", "stack": ["Next.js 16 Route Handlers", "Zod validation", "Supabase JS SDK", "Drizzle ORM"], "endpoints": ["/api/products", "/api/orders", "/api/channels/*/sync", "/api/cerebro/chat", "/api/webhooks/*"]}, "supabase-db": {"type": "DATA · PRINCIPAL", "title": "Supabase Postgres", "desc": "Source of truth. 20+ tablas con tenant_id ready (multi-tenant Y3+). RLS policies estrictas. pg_notify para cross-canal sync · pg_cron para tareas periódicas. Backups PITR 30d.", "stack": ["Postgres 15", "Supabase Auth", "Supabase Storage", "pg_cron · pg_notify"], "related": [{"href": "05-data-model.html", "title": "Doc 05 Data Model", "sub": "schema completo + ERD interactivo"}]}, "meli": {"type": "CANAL · B2C", "title": "Mercado Libre + Mercado Ads", "desc": "Canal principal volumen Y1. OAuth 2.0 PKCE con tokens en cookies httpOnly. Webhooks firmados HMAC SHA-256. Mercado Ads usa el mismo token OAuth. Refresh tokens cron 6h.", "channels": ["meli"], "endpoints": ["/api/channels/meli/publish", "/api/channels/meli/sync", "/api/webhooks/meli", "/api/channels/meli/ads/*"]}, "mp": {"type": "CANAL · B2G", "title": "Mercado Público (ChileCompra)", "desc": "Canal institucional Fase 3+. Ticket auth env var. Sync diario 8am AM con Cerebro filter + scoring. Webhook adjudicación firmado.", "channels": ["mp"], "endpoints": ["/api/cron/sync-mp", "/api/channels/mp/postular", "/api/webhooks/mp"]}, "openfactura": {"type": "SII · DTE", "title": "Open Factura · DTE SII Chile", "desc": "DTE electrónicos 33 (factura) · 39 (boleta) · 61 (nota crédito). API key + cert digital. Retry exponencial 5x si SII rechaza. PDF guardado en Supabase Storage.", "endpoints": ["/api/invoices/emit"]}, "couriers": {"type": "LOGÍSTICA", "title": "Chilexpress + Starken", "desc": "Couriers locales. Cotización por peso/volumen/destino. Generación de etiqueta PDF + número tracking. Webhook updates tracking real-time. Adapter Pattern para abstraer las 2.", "endpoints": ["/api/courier/quote", "/api/courier/label", "/api/webhooks/courier"]}, "pagos": {"type": "PASARELAS", "title": "MercadoPago + WebPay Plus", "desc": "MercadoPago para B2C MeLi (default). WebPay Plus (Transbank) para D2C Chile. Ambos con webhook firmado HMAC. Idempotency key obligatoria para evitar doble cobro.", "endpoints": ["/api/payments", "/api/webhooks/payment"]}, "cerebro": {"type": "AI · ORCHESTRATOR", "title": "Cerebro IA", "desc": "Motor IA del producto. SSE chat streaming · scoring oportunidades sin LLM (6 señales · ahorra costo) · sugerencias contextuales. Cache hot/warm/cold con TTL diferenciado. Rate limit 60 mensajes/día/founder.", "stack": ["OpenRouter SDK", "SSE streaming", "Postgres analytics", "Smart Cache"], "endpoints": ["/api/cerebro/chat", "/api/cerebro/opportunities", "/api/cerebro/mp-suggestions"]}, "openrouter": {"type": "IA ROUTING", "title": "OpenRouter · fallback chain", "desc": "Capa de routing entre providers IA. Preferences order: Groq Llama 3.3 70B (primary · 12K TPM) → Gemini Flash 2.0 (fallback · free tier) → DeepSeek V3 (fallback 2 · cheap). Claude EXPLÍCITAMENTE excluido por regla Hoku.", "notes": "Si los 3 fallan · retry exponencial + alerta CloudWatch · fallback final mensaje 'IA temporalmente no disponible'."}, "cron": {"type": "SCHEDULER", "title": "Vercel Cron + pg_cron", "desc": "Vercel Cron para jobs externos (refresh MeLi tokens 6h · sync MP 8am diario · cache cleanup 7d). pg_cron para jobs internos DB (refresh materialized views · cleanup logs antiguos). Header `CRON_SECRET` valida origin.", "endpoints": ["/api/cron/refresh-meli", "/api/cron/sync-mp", "/api/cron/cache-cleanup"]}}, "connections": [{"from": "founder-ui", "to": "nextjs-api"}, {"from": "nextjs-api", "to": "supabase-db"}, {"from": "nextjs-api", "to": "meli", "channels": ["meli"]}, {"from": "meli", "to": "nextjs-api", "channels": ["meli"]}, {"from": "nextjs-api", "to": "mp", "channels": ["mp"]}, {"from": "nextjs-api", "to": "openfactura"}, {"from": "nextjs-api", "to": "couriers"}, {"from": "nextjs-api", "to": "pagos"}, {"from": "nextjs-api", "to": "cerebro"}, {"from": "cerebro", "to": "openrouter"}, {"from": "nextjs-api", "to": "cron"}]}</script>
-</div>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>04</span></div>
+  <script type="application/json" data-for="funcional-tools-map">{"title": "Mapa funcional de herramientas · Marketplace SMC", "sub": "Cada bloque = herramienta concreta · click ve casos de uso que la usan", "blocks": {"founder-ui": {"type": "UI · FOUNDERS", "title": "Browser dashboard", "desc": "Interfaz que ven los 3 founders. Acceso vía marketplace.smconnection.cl."}, "nextjs-api": {"type": "BACKEND CORE", "title": "Next.js 16 API + Server Actions", "desc": "Núcleo del sistema. Channel Adapter + Supplier Adapter Pattern."}, "supabase-db": {"type": "DATA · PRINCIPAL", "title": "Supabase Postgres", "desc": "Source of truth. 20+ tablas. RLS + pg_notify + pg_cron."}, "meli": {"type": "CANAL · B2C", "title": "Mercado Libre + Ads", "desc": "Canal principal volumen Y1. OAuth 2.0 + webhooks HMAC."}, "mp": {"type": "CANAL · B2G", "title": "Mercado Público", "desc": "Canal institucional. Sync diario 8am. Cerebro filter + scoring."}, "openfactura": {"type": "SII · DTE", "title": "Open Factura", "desc": "DTE 33 · 39 · 61. Retry exponencial 5x."}, "couriers": {"type": "LOGÍSTICA", "title": "Chilexpress + Starken", "desc": "Cotización · etiqueta · tracking via Adapter Pattern."}, "pagos": {"type": "PASARELAS", "title": "MercadoPago + WebPay Plus", "desc": "B2C MeLi (MP) + D2C Chile (WebPay). Webhooks firmados."}, "cerebro": {"type": "AI · ORCHESTRATOR", "title": "Cerebro IA", "desc": "SSE chat · scoring sin LLM · sugerencias. Rate limit 60/día/founder."}, "openrouter": {"type": "IA ROUTING", "title": "OpenRouter fallback", "desc": "Groq → Gemini → DeepSeek. NUNCA Claude (regla Hoku)."}, "cron": {"type": "SCHEDULER", "title": "Vercel Cron + pg_cron", "desc": "Refresh MeLi 6h · sync MP 8am · cleanup 7d."}}, "connections": [{"from": "founder-ui", "to": "nextjs-api"}, {"from": "nextjs-api", "to": "supabase-db"}, {"from": "nextjs-api", "to": "meli", "channels": ["meli"]}, {"from": "meli", "to": "nextjs-api", "channels": ["meli"]}, {"from": "nextjs-api", "to": "mp", "channels": ["mp"]}, {"from": "nextjs-api", "to": "openfactura"}, {"from": "nextjs-api", "to": "couriers"}, {"from": "nextjs-api", "to": "pagos"}, {"from": "nextjs-api", "to": "cerebro"}, {"from": "cerebro", "to": "openrouter"}, {"from": "nextjs-api", "to": "cron"}]}</script>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Funcional</span><span>04</span></div>
 </section>
-<section class="page" id="03-cat-logo-de-herramientas-externas-granular">
-  <h2><span class="h2-num">03</span>Catálogo de herramientas externas (granular)</h2>
-  <table>
-<thead><tr>
-<th>Herramienta</th>
-<th>Categoría</th>
-<th>Rol Y1</th>
-<th>Auth method</th>
-<th>Frecuencia</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><strong>Mercado Libre API v2</strong></td>
-<td>Canal</td>
-<td>Publicar listings · sync stock · recibir órdenes</td>
-<td>OAuth 2.0 PKCE + cookies httpOnly</td>
-<td>Webhooks real-time + cron 6h refresh</td>
-</tr>
-<tr>
-<td><strong>Mercado Ads</strong></td>
-<td>Canal · publicidad</td>
-<td>Campaigns · ROAS tracking · pausing</td>
-<td>Token OAuth ML</td>
-<td>Diaria (auto-tune)</td>
-</tr>
-<tr>
-<td><strong>Mercado Público (ChileCompra)</strong></td>
-<td>Canal B2G</td>
-<td>Sync licitaciones · postular · adjudicar</td>
-<td>Ticket auth (env var)</td>
-<td>Cron 8am diario</td>
-</tr>
-<tr>
-<td><strong>B2B Portal propio</strong></td>
-<td>Canal B2B</td>
-<td>RFQ · cotización · firma HMAC</td>
-<td>API keys por cliente</td>
-<td>Real-time</td>
-</tr>
-<tr>
-<td><strong>MercadoPago</strong></td>
-<td>Pasarela</td>
-<td>Cobros B2C MeLi + D2C</td>
-<td>OAuth + webhook firmado HMAC</td>
-<td>Webhook real-time</td>
-</tr>
-<tr>
-<td><strong>WebPay Plus (Transbank)</strong></td>
-<td>Pasarela</td>
-<td>Cobros D2C Chile débito + crédito</td>
-<td>Certificado + commerce code</td>
-<td>Real-time + reverso 24h</td>
-</tr>
-<tr>
-<td><strong>Open Factura</strong></td>
-<td>DTE SII</td>
-<td>Emitir DTE 33/39/61</td>
-<td>API key + cert digital</td>
-<td>Real-time post-venta</td>
-</tr>
-<tr>
-<td><strong>Chilexpress API</strong></td>
-<td>Logística</td>
-<td>Cotizar + etiqueta + tracking</td>
-<td>API key</td>
-<td>Real-time</td>
-</tr>
-<tr>
-<td><strong>Starken API</strong></td>
-<td>Logística</td>
-<td>Cotizar + etiqueta + tracking</td>
-<td>API key</td>
-<td>Real-time</td>
-</tr>
-<tr>
-<td><strong>Groq Llama 3.3 70B</strong></td>
-<td>IA primary</td>
-<td>Cerebro chat · scoring</td>
-<td>API key OpenRouter</td>
-<td>Real-time SSE</td>
-</tr>
-<tr>
-<td><strong>Gemini Flash 2.0</strong></td>
-<td>IA fallback 1</td>
-<td>Cuando Groq excede TPM</td>
-<td>API key OpenRouter</td>
-<td>Fallback</td>
-</tr>
-<tr>
-<td><strong>DeepSeek V3</strong></td>
-<td>IA fallback 2</td>
-<td>Cuando Gemini falla</td>
-<td>API key OpenRouter</td>
-<td>Fallback</td>
-</tr>
-<tr>
-<td><strong>OpenRouter</strong></td>
-<td>IA router</td>
-<td>Routing automatic + cost cap</td>
-<td>API key</td>
-<td>Capa sobre Groq/Gemini/DS</td>
-</tr>
-<tr>
-<td><strong>SoloTodo API</strong></td>
-<td>Source pricing</td>
-<td>Comparación cross-tiendas Chile</td>
-<td>Pública sin auth</td>
-<td>Cron diario</td>
-</tr>
-<tr>
-<td><strong>Open Food Facts</strong></td>
-<td>Source data</td>
-<td>Productos alimentación + nutrición</td>
-<td>Pública sin auth</td>
-<td>Cron diario</td>
-</tr>
-<tr>
-<td><strong>Banco Central API</strong></td>
-<td>Source FX</td>
-<td>USD/CLP tipo cambio</td>
-<td>Pública sin auth</td>
-<td>Cron diario 9am</td>
-</tr>
-<tr>
-<td><strong>Supabase Auth</strong></td>
-<td>Auth users</td>
-<td>JWT founders · 2FA opcional TOTP</td>
-<td>Email/password</td>
-<td>Login persistente 30d</td>
-</tr>
-<tr>
-<td><strong>Supabase Postgres</strong></td>
-<td>DB principal</td>
-<td>Source of truth · RLS multi-tenant ready</td>
-<td>service_role solo backend</td>
-<td>Real-time todos reads/writes</td>
-</tr>
-<tr>
-<td><strong>Supabase Storage</strong></td>
-<td>Blob storage</td>
-<td>Fotos productos · PDFs DTE · attachments</td>
-<td>Signed URLs</td>
-<td>On demand</td>
-</tr>
-<tr>
-<td><strong>AWS Amplify</strong></td>
-<td>Hosting + CDN</td>
-<td>Deploy Next.js · CloudFront edge</td>
-<td>GitHub PAT + AWS IAM</td>
-<td>Push to main → deploy</td>
-</tr>
-<tr>
-<td><strong>GitHub Actions</strong></td>
-<td>CI/CD</td>
-<td>Lint · type-check · tests · build · tag</td>
-<td>GITHUB_TOKEN write</td>
-<td>Push to main</td>
-</tr>
-<tr>
-<td><strong>Sentry</strong></td>
-<td>Errors</td>
-<td>Error tracking + alerts</td>
-<td>DSN</td>
-<td>Real-time</td>
-</tr>
-<tr>
-<td><strong>PostHog</strong></td>
-<td>Product analytics</td>
-<td>Funnels · feature flags · events</td>
-<td>Project API key</td>
-<td>Real-time</td>
-</tr>
-<tr>
-<td><strong>CloudWatch</strong></td>
-<td>Infra metrics</td>
-<td>Lambda timing · API Gateway · cost</td>
-<td>AWS IAM</td>
-<td>Real-time + 14d retention</td>
-</tr>
-<tr>
-<td><strong>Resend</strong></td>
-<td>Email transaccional</td>
-<td>Confirmaciones · tracking · password reset</td>
-<td>API key</td>
-<td>On event</td>
-</tr>
-<tr>
-<td><strong>Vercel Cron</strong></td>
-<td>Scheduler</td>
-<td>Refresh MeLi 6h · sync MP 8am · cleanup 7d</td>
-<td>CRON_SECRET header</td>
-<td>Programado</td>
-</tr>
-<tr>
-<td><strong>pg_cron + pg_notify</strong></td>
-<td>DB triggers</td>
-<td>Stock cross-canal · events internos</td>
-<td>Solo Postgres</td>
-<td>Real-time</td>
-</tr>
-</tbody></table>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>05</span></div>
-</section>
-<section class="page" id="04-workflows-por-modo-paso-a-paso">
-  <h2><span class="h2-num">04</span>Workflows por modo · paso a paso</h2>
-  <h3>4.1 · Modo stock propio compra local Chile (Y1 prioridad)</h3>
-<div class="diagram-section">
-  <p class="diagram-caption">Venta end-to-end · 3 escenarios paralelos (MeLi · D2C storefront · MP) · cada etapa con herramientas · disparadores · DB · tiempo target. Click box ve detalle granular.</p>
+
+<section class="page" id="03-workflows">
+  <h2><span class="h2-num">03</span>Workflows por modo · pipeline visual</h2>
+
+  <h3>3.1 · Modo stock propio compra local Chile <span style="background:var(--smc-primary);color:white;padding:2px 10px;border-radius:100px;font-size:11px;margin-left:6px;">Y1 prioridad</span></h3>
+  <div class="diagram-section">
+  <p class="diagram-caption">Venta end-to-end · 8 etapas · herramientas concretas · disparadores · tiempo target. Click box ve detalle.</p>
   <div class="diagram-host kind-pipeline" id="flow-stock-local" data-kind="pipeline"></div>
-  <script type="application/json" data-for="flow-stock-local">{"default": "MELI", "scenarios": {"MELI": {"title": "Stock local · Venta MeLi", "sub": "8 etapas · cliente MeLi recibe en 3-5 días · DTE auto · margen 28%", "callout": "Modo Y1 prioridad · proveedor local Chile · pago CLP · ciclo despacho 3-7 días.", "tags": ["Y1 prioridad", "B2C MeLi", "Margen 28%"], "stages": [{"num": "01", "name": "Sourcing local", "boxes": [{"code": "SL-01", "label": "Compra a proveedor chileno (CLP)", "kind": "pay", "stack": "Email/WhatsApp · transferencia bancaria"}, {"code": "SL-02", "label": "Recepción bodega · QA físico · ingreso DB", "kind": "create", "stack": "Camila o Javier · Supabase mkt_inventory"}]}, {"num": "02", "name": "Publicar MeLi", "boxes": [{"code": "SL-03", "label": "Fotos pro propias (BR-001 valida)", "kind": "create", "stack": "Cualquier founder · Storage upload"}, {"code": "SL-04", "label": "POST /items MeLi · Channel Adapter", "kind": "create", "stack": "Next.js API + MeLi API v2"}]}, {"num": "03", "name": "Recibir venta", "boxes": [{"code": "SL-05", "label": "MeLi webhook → POST /api/webhooks/meli", "kind": "notify", "stack": "HMAC SHA-256 verify + idempotency"}]}, {"num": "04", "name": "Aceptar y reservar", "boxes": [{"code": "SL-06", "label": "Reservar stock · SELECT FOR UPDATE", "kind": "update", "stack": "Postgres transaction · BR-006"}]}, {"num": "05", "name": "Cotizar + etiqueta courier", "boxes": [{"code": "SL-07", "label": "POST /api/courier/quote · Adapter Chilexpress/Starken", "kind": "search", "stack": "Adapter pattern courier"}, {"code": "SL-08", "label": "POST /api/courier/label → PDF generado", "kind": "doc", "stack": "Courier API + Storage"}]}, {"num": "06", "name": "Despacho físico", "boxes": [{"code": "SL-09", "label": "Camila/Javier despacha desde bodega", "kind": "update", "stack": "Manual · scanner QR opcional Y2"}]}, {"num": "07", "name": "DTE + email", "boxes": [{"code": "SL-10", "label": "Open Factura emit DTE 39 (o 33 si RUT empresa)", "kind": "doc", "stack": "API Open Factura + folio SII · BR-010"}, {"code": "SL-11", "label": "Resend email tracking al comprador", "kind": "notify", "stack": "Email transaccional Resend"}]}, {"num": "08", "name": "Tracking + cierre", "boxes": [{"code": "SL-12", "label": "Courier webhook 'delivered' → order.status='delivered'", "kind": "notify", "stack": "Webhook courier + DB update"}]}]}, "D2C": {"title": "Stock local · Venta D2C storefront propio", "sub": "8 etapas · marketplace.smconnection.cl checkout directo · sin comisión canal · margen 40%+", "callout": "Canal con margen más alto · sin fee 13-17% MeLi · pasarela 2.9% solo · DTE auto · brand directo. Diferenciador: 'fotos pro propias' + curaduría SMC vs revendedores random MeLi.", "tags": ["Margen 40%+", "B2C directo", "Sin fee MeLi"], "stages": [{"num": "01", "name": "Sourcing local", "boxes": [{"code": "D2C-01", "label": "Compra a proveedor chileno (mismo que MELI)", "kind": "pay", "stack": "Email/WhatsApp · transferencia bancaria CLP"}, {"code": "D2C-02", "label": "Recepción bodega · QA físico · ingreso DB", "kind": "create", "stack": "Camila o Javier · Supabase mkt_inventory"}]}, {"num": "02", "name": "Publicar storefront", "boxes": [{"code": "D2C-03", "label": "Fotos pro propias (BR-001 valida)", "kind": "create", "stack": "Founders · Storage upload optimized WebP"}, {"code": "D2C-04", "label": "Página producto en Next.js · ISR revalidate", "kind": "create", "stack": "Next.js 16 · RSC + ISR · marketplace.smconnection.cl/p/[slug]"}]}, {"num": "03", "name": "Cliente navega + carrito", "boxes": [{"code": "D2C-05", "label": "SEO + breadcrumbs · agregar al carrito", "kind": "create", "stack": "Storefront público · sin auth requerido · localStorage cart"}]}, {"num": "04", "name": "Checkout pasarela", "boxes": [{"code": "D2C-06", "label": "POST /api/checkout · WebPay Plus o MercadoPago", "kind": "pay", "stack": "@transbank/webpay-plus · mercadopago SDK · idempotency_key"}]}, {"num": "05", "name": "Confirmación pago", "boxes": [{"code": "D2C-07", "label": "Webhook firmado HMAC · INSERT mkt_orders", "kind": "notify", "stack": "Postgres transaction · UPDATE inventory.reserved"}]}, {"num": "06", "name": "Cotizar + etiqueta courier", "boxes": [{"code": "D2C-08", "label": "POST /api/courier/quote + label", "kind": "search", "stack": "Adapter Chilexpress/Starken · PDF Storage"}]}, {"num": "07", "name": "Despacho físico", "boxes": [{"code": "D2C-09", "label": "Camila/Javier despacha desde bodega", "kind": "update", "stack": "Manual · scanner QR opcional Y2"}]}, {"num": "08", "name": "DTE + email + post-venta", "boxes": [{"code": "D2C-10", "label": "Open Factura emit DTE 39 (boleta) o 33 (B2B RUT empresa)", "kind": "doc", "stack": "API Open Factura · folio SII · BR-010"}, {"code": "D2C-11", "label": "Resend email tracking + post-venta survey", "kind": "notify", "stack": "Email transaccional · review request 7d después delivered"}]}]}, "MP": {"title": "Stock local · Venta Mercado Público B2G", "sub": "Detectar · postular · adjudicar · despacho institucional · factura DTE 33", "callout": "Canal B2G Fase 3. Cerebro IA sugiere licitaciones afines · Javier postula · adjudicación → workflow despacho institucional.", "tags": ["B2G", "Cerebro asistido", "Factura DTE 33"], "stages": [{"num": "01", "name": "Sync diario", "boxes": [{"code": "MP-01", "label": "Cron 8am · POST /api/cron/sync-mp", "kind": "search", "stack": "Mercado Público API · ticket auth"}]}, {"num": "02", "name": "Cerebro filter", "boxes": [{"code": "MP-02", "label": "Matching catálogo (pg_trgm fuzzy)", "kind": "search", "stack": "Cerebro + Postgres"}]}, {"num": "03", "name": "Postular", "boxes": [{"code": "MP-03", "label": "Javier revisa top 5 · click postular", "kind": "create", "stack": "UI dashboard B2G"}, {"code": "MP-04", "label": "Cerebro genera template · founder valida", "kind": "create", "stack": "Cerebro IA + edits"}, {"code": "MP-05", "label": "POST oferta a MP · ticket auth", "kind": "notify", "stack": "MP API + PDF Storage"}]}, {"num": "04", "name": "Adjudicación", "boxes": [{"code": "MP-06", "label": "MP envía webhook resultado", "kind": "notify", "stack": "HMAC verify + DB update"}]}, {"num": "05", "name": "Despacho institucional", "boxes": [{"code": "MP-07", "label": "Guía electrónica DTE 52 + courier", "kind": "doc", "stack": "Open Factura + Adapter courier"}]}, {"num": "06", "name": "Factura B2G", "boxes": [{"code": "MP-08", "label": "DTE 33 factura institucional", "kind": "doc", "stack": "Open Factura · pago 30/60 días"}]}]}}}</script>
-</div>
-<p><strong>3 canales del mismo modo stock propio</strong>:</p>
-<table>
-<thead><tr>
-<th>Canal</th>
-<th>Margen</th>
-<th>Comisión</th>
-<th>Volumen Y1 esperado</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><strong>MELI</strong> (default visible)</td>
-<td>28%</td>
-<td>Fee MeLi 13-17% + MP 2.9%</td>
-<td>80% Y1</td>
-</tr>
-<tr>
-<td><strong>D2C storefront</strong></td>
-<td>40%+</td>
-<td>Solo pasarela 2.9%</td>
-<td>5-10% Y1 · crece Y2</td>
-</tr>
-<tr>
-<td><strong>MP B2G</strong></td>
-<td>22-30%</td>
-<td>0% (pago directo institución 30-60d)</td>
-<td>Fase 3</td>
-</tr>
-</tbody></table>
-<h3>4.2 · Modo dropshipping (paralelo)</h3>
-<div class="diagram-section">
-  <p class="diagram-caption">Venta sin stock propio · 7 etapas · OC propagada al proveedor · despacho directo al cliente final.</p>
+  <script type="application/json" data-for="flow-stock-local">{"default": "MELI", "scenarios": {"MELI": {"title": "Stock local · Venta MeLi", "sub": "8 etapas · cliente MeLi recibe en 3-5 días · DTE auto · margen 28%", "callout": "Modo Y1 prioridad · proveedor local Chile · pago CLP · ciclo despacho 3-7 días.", "tags": ["Y1 prioridad", "B2C MeLi", "Margen 28%"], "stages": [{"num": "01", "name": "Sourcing local", "boxes": [{"code": "SL-01", "label": "Compra a proveedor chileno (CLP)", "kind": "pay"}, {"code": "SL-02", "label": "Recepción bodega · QA físico", "kind": "create"}]}, {"num": "02", "name": "Publicar MeLi", "boxes": [{"code": "SL-03", "label": "Fotos pro propias (BR-001)", "kind": "create"}, {"code": "SL-04", "label": "POST /items MeLi · Channel Adapter", "kind": "create"}]}, {"num": "03", "name": "Recibir venta", "boxes": [{"code": "SL-05", "label": "Webhook MeLi · HMAC verify", "kind": "notify"}]}, {"num": "04", "name": "Reservar stock", "boxes": [{"code": "SL-06", "label": "SELECT FOR UPDATE · BR-006", "kind": "update"}]}, {"num": "05", "name": "Etiqueta courier", "boxes": [{"code": "SL-07", "label": "Quote Chilexpress/Starken", "kind": "search"}, {"code": "SL-08", "label": "Generar PDF etiqueta", "kind": "doc"}]}, {"num": "06", "name": "Despacho", "boxes": [{"code": "SL-09", "label": "Camila/Javier despacha", "kind": "update"}]}, {"num": "07", "name": "DTE + email", "boxes": [{"code": "SL-10", "label": "Open Factura DTE 39", "kind": "doc"}, {"code": "SL-11", "label": "Resend email tracking", "kind": "notify"}]}, {"num": "08", "name": "Cierre", "boxes": [{"code": "SL-12", "label": "Courier webhook delivered", "kind": "notify"}]}]}, "MP": {"title": "Stock local · Venta Mercado Público B2G", "sub": "Cerebro asistido · postular · adjudicar · despacho institucional", "callout": "Canal B2G Fase 3. Cerebro IA sugiere licitaciones afines · Javier postula.", "tags": ["B2G", "Cerebro asistido", "DTE 33"], "stages": [{"num": "01", "name": "Sync diario", "boxes": [{"code": "MP-01", "label": "Cron 8am · ticket auth", "kind": "search"}]}, {"num": "02", "name": "Cerebro filter", "boxes": [{"code": "MP-02", "label": "Matching catálogo pg_trgm", "kind": "search"}]}, {"num": "03", "name": "Postular", "boxes": [{"code": "MP-03", "label": "Javier revisa top 5", "kind": "create"}, {"code": "MP-04", "label": "Cerebro genera template", "kind": "create"}, {"code": "MP-05", "label": "POST oferta a MP", "kind": "notify"}]}, {"num": "04", "name": "Adjudicación", "boxes": [{"code": "MP-06", "label": "Webhook resultado HMAC", "kind": "notify"}]}, {"num": "05", "name": "Despacho", "boxes": [{"code": "MP-07", "label": "DTE 52 + courier", "kind": "doc"}]}, {"num": "06", "name": "Factura B2G", "boxes": [{"code": "MP-08", "label": "DTE 33 · pago 30/60d", "kind": "doc"}]}]}}}</script>
+  </div>
+
+  <h3>3.2 · Modo dropshipping <span style="background:#F472B6;color:white;padding:2px 10px;border-radius:100px;font-size:11px;margin-left:6px;">Paralelo</span></h3>
+  <div class="diagram-section">
+  <p class="diagram-caption">Venta sin stock propio · 7 etapas · OC propagada al proveedor · despacho directo cliente final.</p>
   <div class="diagram-host kind-pipeline" id="flow-dropshipping" data-kind="pipeline"></div>
-  <script type="application/json" data-for="flow-dropshipping">{"default": "DROPSHIP", "scenarios": {"DROPSHIP": {"title": "Dropshipping · venta sin stock propio", "sub": "7 etapas · proveedor despacha directo · margen 10-25% · escala catálogo rápido", "callout": "Modo paralelo al stock propio. SKUs marcados is_dropship=true. Sin capital atado · ideal para PROBAR demanda antes de comprar stock. Validado por referente chileno e-commerce 2020-25.", "tags": ["Sin capital atado", "Margen 10-25%", "Escala catálogo rápido"], "stages": [{"num": "01", "name": "Sync catálogo proveedor", "boxes": [{"code": "DS-01", "label": "POST /api/suppliers/sync · Supplier Adapter", "kind": "search", "stack": "API o feed XML proveedor · cron diario"}, {"code": "DS-02", "label": "Filter SKUs viables · margen 15%+", "kind": "search", "stack": "Cerebro scoring + reglas operador"}]}, {"num": "02", "name": "Publicación cross-canal", "boxes": [{"code": "DS-03", "label": "Publicar en canales con is_dropship=true", "kind": "create", "stack": "Mismo Channel Adapter · flag diferenciador"}]}, {"num": "03", "name": "Venta cliente final", "boxes": [{"code": "DS-04", "label": "Webhook canal · orden recibida", "kind": "notify", "stack": "Mismo flujo que stock propio P05"}]}, {"num": "04", "name": "Propagar OC al proveedor", "boxes": [{"code": "DS-05", "label": "POST /api/suppliers/order · Supplier Adapter", "kind": "create", "stack": "API proveedor · API key o email automatizado"}, {"code": "DS-06", "label": "Confirmar disponibilidad real-time", "kind": "search", "stack": "Si stock=0 → refund + comunicación cliente"}]}, {"num": "05", "name": "Despacho directo", "boxes": [{"code": "DS-07", "label": "Proveedor despacha al cliente final", "kind": "doc", "stack": "Courier del proveedor · webhook tracking compartido"}]}, {"num": "06", "name": "Cobro + factura nuestra", "boxes": [{"code": "DS-08", "label": "Cobro pasarela + DTE emitido por SMC SpA", "kind": "pay", "stack": "Open Factura · DTE a nombre SMC"}]}, {"num": "07", "name": "Liquidación proveedor", "boxes": [{"code": "DS-09", "label": "Pagar proveedor menos comisión nuestra", "kind": "pay", "stack": "Transferencia 7-15 días post-venta"}]}]}, "MIGRATE": {"title": "Migración dropship → stock local", "sub": "Cuando SKU vende >USD 5K/mes sostenido 2 meses · migrar a stock propio · subir margen 15-25pp", "callout": "Estrategia validada · empezar dropship para PROBAR · cuando funciona · comprar stock para SUBIR MARGEN. Trigger en Doc 21 sección 03c.", "tags": ["Trigger migración", "Margen sube 15-25pp", "Decisión Cerebro asistida"], "stages": [{"num": "01", "name": "Detección automatica", "boxes": [{"code": "MIG-01", "label": "Cerebro monitor · alerta cuando SKU > $5K/mes 2 meses", "kind": "search", "stack": "Postgres analytics + Cerebro"}]}, {"num": "02", "name": "Evaluar proveedor local", "boxes": [{"code": "MIG-02", "label": "Javier busca proveedor chileno mismo SKU", "kind": "search", "stack": "Mercado Libre Mayorista · directorios · gremios"}, {"code": "MIG-03", "label": "Comparar costos · margen post-comisión MeLi", "kind": "search", "stack": "Cerebro + sheet comparativo"}]}, {"num": "03", "name": "Compra inicial", "boxes": [{"code": "MIG-04", "label": "Comprar lote inicial (lo que rota 1 mes)", "kind": "pay", "stack": "Transferencia CLP"}, {"code": "MIG-05", "label": "Recepción bodega · update inventory", "kind": "create", "stack": "Camila/Javier"}]}, {"num": "04", "name": "Toggle flag", "boxes": [{"code": "MIG-06", "label": "UPDATE products SET is_dropship=false · stock_real=lote", "kind": "update", "stack": "Postgres · pg_notify sync canales"}]}, {"num": "05", "name": "Validar primeros 30 días", "boxes": [{"code": "MIG-07", "label": "Margen real vs proyectado · rotación", "kind": "search", "stack": "Postgres analytics"}]}]}}}</script>
-</div>
-<h3>4.3 · Modo Nexport importación (Fase 2 · Y2+)</h3>
-<p>Same flow que 4.1 más sub-proceso importación previo (ciclo 30-90 días USD). Documentado en Doc 02 BBP P02b.</p>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>06</span></div>
-</section>
-<section class="page" id="05-24-casos-de-uso-detalle-granular">
-  <h2><span class="h2-num">05</span>24 casos de uso · detalle granular</h2>
-  <p>Cada CU tiene 6 atributos: <strong>Trigger · Tools · Endpoint · Tablas · UI screen · Output</strong>.</p>
-<h3>Fase 1 · Reputación Q4-26 (CU-001 → CU-006)</h3>
-<h4>CU-001 · Crear producto en catálogo maestro</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Founder click "Nuevo producto" en <code>/dashboard/productos</code></td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Supabase Postgres (insert) · Supabase Storage (upload fotos)</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/products</code> (validación Zod · service_role insert)</td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>products</code> (insert) · <code>product_images</code> (jsonb embedded)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td><code>/dashboard/productos/nuevo</code> · formulario 12 campos · drag-drop fotos</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>producto con <code>id</code> UUID · <code>status='active'</code> · ready para publicar</td>
-</tr>
-<tr>
-<td>Tiempo target</td>
-<td>&lt; 3 min input founder · &lt; 500ms response API</td>
-</tr>
-</tbody></table>
-<h4>CU-002 · Configurar listing MeLi</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Founder click "Publicar en MeLi" en producto existente</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>MeLi API v2 (<code>POST /items</code>) · Channel Adapter pattern</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/channels/meli/publish/:product_id</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>channel_listings</code> (insert) · <code>products</code> (update <code>external_ids</code>)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Modal con campos MeLi-specific (categoría · attrs requeridos)</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>listing live en MeLi · <code>mlc_id</code> guardado en DB</td>
-</tr>
-<tr>
-<td>Tiempo target</td>
-<td>&lt; 5s API call MeLi + 2s db write</td>
-</tr>
-</tbody></table>
-<h4>CU-003 · Primera venta (regalo o costo)</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Comprador hace pedido en MeLi · MeLi dispara webhook</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Webhook receiver · DB insert · Open Factura DTE 39 · Chilexpress label</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/webhooks/meli</code> (HMAC + idempotency)</td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>orders</code> (insert · status=accepted) · <code>order_items</code> (insert) · <code>inventory</code> (decrement · SELECT FOR UPDATE)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Toast "Nueva venta MeLi" · <code>/dashboard/ordenes/:id</code></td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Orden cerrada · DTE emitido · etiqueta · email comprador</td>
-</tr>
-<tr>
-<td>Tiempo target</td>
-<td>Webhook → DTE emitido &lt; 30s end-to-end</td>
-</tr>
-</tbody></table>
-<h4>CU-004 · Recibir orden vía webhook (genérico)</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>MeLi POST webhook con order_id</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Next.js Route Handler · HMAC SHA-256 verify · Idempotency key check</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/webhooks/meli</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>webhook_events</code> (append-only audit) · <code>orders</code> (insert si nueva)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>N/A · server-side</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Order procesada · stock reservado · pg_notify event</td>
-</tr>
-<tr>
-<td>Reglas BR</td>
-<td>BR-005 (stock real-time) · BR-006 (SELECT FOR UPDATE) · BR-009 (DTE auto)</td>
-</tr>
-</tbody></table>
-<h4>CU-005 · Emitir DTE 39 boleta</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Evento <code>order.completed</code> · pg_notify dispara worker</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Open Factura API · Supabase Storage (PDF) · Resend (email)</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/invoices/emit/:order_id</code> (internal)</td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>invoices</code> (insert con <code>folio_sii</code> · <code>pdf_url</code>)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Indicador en <code>/dashboard/ordenes/:id</code> con badge DTE estado</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>DTE 39 con folio SII oficial · PDF en Storage · email al comprador</td>
-</tr>
-<tr>
-<td>Reglas BR</td>
-<td>BR-010 (39 default · 33 si RUT empresa) · BR-011 (retry 5x)</td>
-</tr>
-</tbody></table>
-<h4>CU-006 · Tracker reputación · 10 ventas verdes</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Cada orden completada dispara recálculo</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Postgres materialized view + pg_cron refresh 1h</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>GET /api/metrics/reputation</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>orders</code> JOIN <code>order_reputation_signals</code> (view)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Widget hero <code>/dashboard</code> · progress bar 0/10 · color sem</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Indicador real-time hito Fase 1</td>
-</tr>
-</tbody></table>
-<h3>Fase 2 · Escala MeLi Q1-27 (CU-007 → CU-012)</h3>
-<h4>CU-007 · Configurar Mercado Ads campaign</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Founder click "Crear campaña" en producto con reputación verde</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>MeLi Ads API · validation <code>reputation_color=green</code> antes submit</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/channels/meli/ads/campaign</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>ads_campaigns</code> (insert) · <code>ads_pixels</code> (mapping product → pixel)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Wizard 3 pasos: producto · presupuesto · validación BR-003</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Campaña activa · tracking ROAS panel</td>
-</tr>
-</tbody></table>
-<h4>CU-008 · Monitor ROAS · pausar si &lt;1.5x</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Cron diario 7am calcula ROAS últimas 7d por campaña</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Cerebro IA sugiere · founder decide en UI</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>GET /api/channels/meli/ads/roas</code> · <code>POST .../pause/:id</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>ads_metrics_daily</code> (insert) · <code>ads_campaigns</code> (update status)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Dashboard <code>/ads</code> tabla ROAS · botón pausar · sugerencia Cerebro</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Campañas con ROAS &lt;1.5x sugeridas para pausa · founder valida</td>
-</tr>
-</tbody></table>
-<h4>CU-009 · Migrar SKU a Full Fulfillment MeLi</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Producto vende &gt;5 unidades/sem sostenido 4 sem</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>MeLi FF API · workflow migración stock físico</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/channels/meli/fulfillment/migrate/:product_id</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>products</code> (update <code>fulfillment_mode='full'</code>) · <code>inventory_transfers</code></td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td><code>/dashboard/productos/:id/fulfillment</code> con CTA migrar</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Stock en almacenes MeLi · mayor visibilidad algoritmo</td>
-</tr>
-</tbody></table>
-<h4>CU-010 · Subir a Medalla Plata</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Sistema cumple criterios MeLi (auto-tracked poll diario)</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>MeLi seller reputation API · poll daily</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>GET /api/channels/meli/reputation/level</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>seller_reputation_history</code> (insert)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Badge dashboard · animación al subir</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Medalla Plata visible públicamente</td>
-</tr>
-</tbody></table>
-<h4>CU-011 · Cerebro IA alertas oportunidades</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Cron diario 6am · scoring 6 señales sin LLM</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Cerebro scoring algorithm · Postgres queries · SoloTodo</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>GET /api/cerebro/opportunities?min_score=70</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>opportunities</code> (insert/update con <code>score</code>) · <code>opportunity_signals</code> (jsonb)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Panel <code>/dashboard/oportunidades</code> · top 10 sorted by score</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Top 10 del día · cero costo IA por scoring</td>
-</tr>
-</tbody></table>
-<h4>CU-012 · Cerrar Fase 2 (30 órdenes/mes sostenidas)</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Cron mensual día 1 · si threshold 2x consecutivo · hito cerrado</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Postgres analytics query · pg_cron · email founders</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>GET /api/metrics/phase-2-progress</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>phase_milestones</code> (update)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Hero dashboard "Fase 2 cerrada · pasamos a Fase 3"</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Notificación email + sistema migra lógica a Fase 3</td>
-</tr>
-</tbody></table>
-<h3>Fase 3 · Diversificación Q2-27 (CU-013 → CU-018)</h3>
-<h4>CU-013 · Sync diario licitaciones Mercado Público</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Vercel cron 8am · header <code>CRON_SECRET</code> valida</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Mercado Público API REST · ticket auth · Cerebro filter</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/cron/sync-mp</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>mp_licitaciones</code> (insert/update) · <code>mp_categorias_match</code> (insert)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>N/A server · visible en <code>/dashboard/mercado-publico</code></td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Licitaciones nuevas del día filtradas + scored</td>
-</tr>
-</tbody></table>
-<h4>CU-014 · Cerebro filter + scoring licitaciones</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>post CU-013 · pg_notify event <code>mp_synced</code></td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Cerebro scoring + matching catálogo (pg_trgm fuzzy)</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>GET /api/cerebro/mp-suggestions?date=today</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>mp_licitaciones</code> JOIN <code>products</code> ON fuzzy SKU</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Panel B2G con top 5 sugeridas + score</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Top 5 licitaciones afines + scoring del día</td>
-</tr>
-</tbody></table>
-<h4>CU-015 · Postular a licitación MP</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Javier click "Postular" en sugerencia</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>MP API POST oferta · template Cerebro genera · founder valida</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/channels/mp/postular/:licitacion_id</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>mp_postulaciones</code> (insert) · <code>mp_ofertas_pdf</code> (Storage)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Wizard 4 pasos: validar items · pricing · template · submit</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Oferta enviada · pending hasta apertura</td>
-</tr>
-</tbody></table>
-<h4>CU-016 · Webhook adjudicación MP</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>MP envía webhook POST resultado</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Mercado Público webhook receiver · HMAC validation</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/webhooks/mp</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>mp_postulaciones</code> (update status) · <code>orders</code> (insert si ganada)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Notificación + workflow despacho institucional</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Primera adjudicación B2G · workflow despacho activo</td>
-</tr>
-</tbody></table>
-<h4>CU-017 · Cliente B2B envía RFQ</h4>
-<table>
-<thead><tr>
-<th>Atributo</th>
-<th>Detalle</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Trigger</td>
-<td>Cliente B2B POST form portal <code>/b2b/rfq</code></td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Form Next.js + Zod validation · API key del cliente</td>
-</tr>
-<tr>
-<td>Endpoint</td>
-<td><code>POST /api/b2b/rfq</code></td>
-</tr>
-<tr>
-<td>Tablas</td>
-<td><code>b2b_rfqs</code> (insert) · <code>b2b_companies</code> (lookup/insert)</td>
-</tr>
-<tr>
-<td>UI screen</td>
-<td>Notification founder · <code>/dashboard/b2b/rfq/:id</code></td>
-</tr>
-<tr>
-<td>Output</td>
-<td>RFQ recibida · founder genera cotización</td>
-</tr>
-</tbody></table>
-<h4>CU-018 · Cierre Fase 3</h4>
-<p>Threshold: 1+ adjudicación MP + 1+ B2B + MeLi 30+/mes sostenidos.</p>
-<h3>Fase 4 · Consolidación Q3-27 (CU-019 → CU-024)</h3>
-<p>CU-019 conciliación pagos vs DTE · CU-020 evaluación Nexport · CU-021 D2C prep · CU-022 setup primer supplier dropship · CU-023 risk review · CU-024 cierre Y1 con break-even.</p>
-<p>Detalle por CU sigue mismo formato 6 atributos.</p>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>07</span></div>
-</section>
-<section class="page" id="06-18-reglas-de-negocio-ejemplo-concreto-cada-una">
-  <h2><span class="h2-num">06</span>18 reglas de negocio · ejemplo concreto cada una</h2>
-  <p>Cada BR ahora con implementación específica:</p>
-<pre class="ascii">BR-001 · Fotos pro propias siempre
-  Implementación:
-  · Validation Zod en POST /api/products requiere >= 3 images
-  · Cada imagen pasa por detector "is_provider_default" (perceptual hash
-    contra base fotos típicas proveedores Chile)
-  · Si match > 80% similarity → bloquear publish con error
-    "Esta foto es del proveedor · subí foto propia · ver Doc 17 Estrategia Fase 1"
+  <script type="application/json" data-for="flow-dropshipping">{"default": "DROPSHIP", "scenarios": {"DROPSHIP": {"title": "Dropshipping · venta sin stock propio", "sub": "7 etapas · proveedor despacha directo · margen 10-25%", "callout": "Modo paralelo al stock propio. SKUs marcados is_dropship=true. Sin capital atado · ideal PROBAR demanda antes de comprar stock.", "tags": ["Sin capital atado", "Margen 10-25%", "Escala rápida"], "stages": [{"num": "01", "name": "Sync proveedor", "boxes": [{"code": "DS-01", "label": "Supplier Adapter API/feed", "kind": "search"}, {"code": "DS-02", "label": "Cerebro filter margen 15%+", "kind": "search"}]}, {"num": "02", "name": "Publicar cross-canal", "boxes": [{"code": "DS-03", "label": "Flag is_dropship=true", "kind": "create"}]}, {"num": "03", "name": "Venta cliente", "boxes": [{"code": "DS-04", "label": "Webhook canal · misma lógica P05", "kind": "notify"}]}, {"num": "04", "name": "Propagar OC", "boxes": [{"code": "DS-05", "label": "POST proveedor · Supplier Adapter", "kind": "create"}, {"code": "DS-06", "label": "Confirm stock real-time", "kind": "search"}]}, {"num": "05", "name": "Despacho directo", "boxes": [{"code": "DS-07", "label": "Proveedor envía cliente final", "kind": "doc"}]}, {"num": "06", "name": "Cobro + factura SMC", "boxes": [{"code": "DS-08", "label": "DTE emitido por SMC SpA", "kind": "pay"}]}, {"num": "07", "name": "Liquidación", "boxes": [{"code": "DS-09", "label": "Pagar proveedor 7-15d post-venta", "kind": "pay"}]}]}}}</script>
+  </div>
 
-BR-005 · pg_notify cross-canal stock < 1s
-  Implementación:
-  · Trigger Postgres ON UPDATE OF inventory.stock_real
-  · NOTIFY 'inventory_changed' con product_id payload
-  · Listener Node.js suscrito · llama channels-sync API por adapter
-  · Timeout máx 1s · si excede → alerta CloudWatch
+  <h3>3.3 · Modo Nexport importación <span style="background:#F59E0B;color:white;padding:2px 10px;border-radius:100px;font-size:11px;margin-left:6px;">Fase 2 · Y2+</span></h3>
+  <p>Mismo flujo que 3.1 · más sub-proceso importación previo (ciclo 30-90 días USD). Documentado en <a href="02-bbp.html">Doc 02 BBP P02b</a>.</p>
 
-BR-010 · DTE 39 boleta default · 33 si RUT empresa
-  Implementación:
-  · POST /api/invoices/emit valida campo customer_rut
-  · Si rut termina en -K o letra después número → empresa → DTE 33
-  · Sino → DTE 39 (boleta persona natural)
-  · Edge case: RUT 60-66M (entidades públicas) → DTE 33 forzado
-
-BR-016 · Fallback chain IA · NUNCA Claude
-  Implementación:
-  · OpenRouter routing con preferences order:
-    1. groq/llama-3.3-70b-versatile (primary · rate 12K TPM)
-    2. google/gemini-2.0-flash-001 (fallback · free tier)
-    3. deepseek/deepseek-chat (fallback 2 · cheap)
-  · Claude excluido explícitamente en config preferences
-  · Si los 3 fallan → retornar mensaje "IA temporalmente no disponible · reintentando..."</pre>
-<p>(13 BRs restantes con tratamiento similar granular)</p>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>08</span></div>
+  <div class="page-footer"><span>Banco SMC · Funcional</span><span>05</span></div>
 </section>
-<section class="page" id="07-maquetas-m-nimas-y1-qu-construir">
-  <h2><span class="h2-num">07</span>Maquetas mínimas Y1 · qué construir</h2>
-  <table>
-<thead><tr>
-<th>Maqueta</th>
-<th>Estado</th>
-<th>Ref banco-diseño v8</th>
-<th>Detalle granular</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code>/dashboard</code> home</td>
-<td>🆕 diseñar</td>
-<td>sección home</td>
-<td>Hero con hito fase actual + 4 widgets (ventas hoy · órdenes pending · alertas · oportunidades)</td>
-</tr>
-<tr>
-<td><code>/dashboard/productos</code> lista</td>
-<td>🆕 diseñar</td>
-<td>sección catálogo</td>
-<td>Grid masonry · filtros canal+status · search · CTA nuevo</td>
-</tr>
-<tr>
-<td><code>/dashboard/productos/:id</code> detalle</td>
-<td>🆕 diseñar</td>
-<td>sección detail</td>
-<td>Tabs General · Listings · Inventory · Sales history</td>
-</tr>
-<tr>
-<td><code>/dashboard/productos/nuevo</code> form</td>
-<td>🆕 diseñar</td>
-<td>form pattern</td>
-<td>12 fields · drag-drop fotos · category picker · validation inline</td>
-</tr>
-<tr>
-<td><code>/dashboard/ordenes</code> lista</td>
-<td>🆕 diseñar</td>
-<td>sección órdenes</td>
-<td>Filter status/canal/fecha · row click → detail</td>
-</tr>
-<tr>
-<td><code>/dashboard/ordenes/:id</code> detalle</td>
-<td>🆕 diseñar</td>
-<td>—</td>
-<td>Timeline horizontal · items + payment + invoice + tracking</td>
-</tr>
-<tr>
-<td><code>/dashboard/cerebro</code> chat</td>
-<td>🆕 diseñar</td>
-<td>sección IA</td>
-<td>SSE streaming · sidebar history · suggested prompts</td>
-</tr>
-<tr>
-<td><code>/dashboard/oportunidades</code></td>
-<td>🆕 diseñar</td>
-<td>sección scoring</td>
-<td>Top 10 cards con score breakdown (6 señales) · CTA agregar al catálogo</td>
-</tr>
-<tr>
-<td><code>/dashboard/mercado-publico</code> Q2</td>
-<td>🆕 diseñar</td>
-<td>—</td>
-<td>Licitaciones día · top sugeridas Cerebro · workflow postular</td>
-</tr>
-<tr>
-<td><code>/dashboard/ads</code> Mercado Ads Q1</td>
-<td>🆕 diseñar</td>
-<td>—</td>
-<td>Campaigns table · ROAS chart · pausar/activar</td>
-</tr>
-<tr>
-<td><code>/dashboard/b2b</code> portal Q2</td>
-<td>🆕 diseñar</td>
-<td>—</td>
-<td>RFQs recibidas · cotizaciones · aprobaciones</td>
-</tr>
-<tr>
-<td><code>/dashboard/settings</code></td>
-<td>🆕 diseñar</td>
-<td>settings</td>
-<td>Conectar canales · cron status · usuarios</td>
-</tr>
-</tbody></table>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>09</span></div>
-</section>
-<section class="page" id="08-criterios-aceptaci-n-medibles-con-sql">
-  <h2><span class="h2-num">08</span>Criterios aceptación medibles con SQL</h2>
-  <pre class="ascii">-- Fase 1 cerrada · 10 ventas verdes
-SELECT COUNT(*) >= 10 AS phase_1_closed
-FROM orders
-WHERE channel='meli'
-  AND status='delivered'
-  AND reputation_color='green'
-  AND completed_at > NOW() - INTERVAL '60 days';
 
--- Fase 2 · 2 meses consecutivos 30+ órdenes
-SELECT COUNT(*) >= 2 AS phase_2_closed
-FROM (
-  SELECT DATE_TRUNC('month', completed_at) AS month,
-         COUNT(*) AS orders_count
-  FROM orders
-  WHERE channel='meli' AND status='delivered'
-  GROUP BY month
-  HAVING COUNT(*) >= 30
-) recent_months
-WHERE month >= NOW() - INTERVAL '3 months';
+<section class="page" id="04-casos-uso">
+  <h2><span class="h2-num">04</span>24 casos de uso · cards infografía</h2>
+  <p>Cada caso de uso muestra <strong>Trigger</strong> (qué lo dispara) · <strong>Output</strong> (qué produce) · <strong>Tools</strong> (qué herramientas). Color por fase comercial.</p>
 
--- Margen blended mensual
-SELECT
-  DATE_TRUNC('month', completed_at) AS month,
-  SUM(total) AS revenue,
-  SUM(cogs) AS cogs,
-  ROUND(((SUM(total) - SUM(cogs))::float / NULLIF(SUM(total), 0) * 100)::numeric, 2) AS margin_pct
-FROM orders
-WHERE status='delivered'
-GROUP BY month
-ORDER BY month DESC LIMIT 12;
+  <div class="phase-banner fase1">
+    <div><h3>Fase 1 · Reputación <span style="opacity:0.85">Q4-26</span></h3><div class="phase-banner-sub">CU-001 → CU-006 · primeras 10 ventas verdes</div></div>
+    <div style="font-size:28px;">🌱</div>
+  </div>
+  <div class="usecase-grid">
+    <div class="usecase-card fase1">
+      <div class="cu-head"><span class="cu-num">CU-001</span><span class="cu-fase">Fase 1</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">📦</span><h4 class="cu-title">Crear producto en catálogo</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> founder click "Nuevo producto"</li>
+        <li><strong>Output:</strong> producto con UUID · status active · fotos en Storage</li>
+        <li><strong>Tools:</strong> Supabase Postgres + Storage</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase1">
+      <div class="cu-head"><span class="cu-num">CU-002</span><span class="cu-fase">Fase 1</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🛒</span><h4 class="cu-title">Configurar listing MeLi</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> click "Publicar en MeLi"</li>
+        <li><strong>Output:</strong> listing live · mlc_id guardado</li>
+        <li><strong>Tools:</strong> MeLi API v2 + Channel Adapter</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase1">
+      <div class="cu-head"><span class="cu-num">CU-003</span><span class="cu-fase">Fase 1</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🎁</span><h4 class="cu-title">Primera venta · regalo o costo</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> comprador hace pedido MeLi</li>
+        <li><strong>Output:</strong> orden cerrada · DTE 39 · etiqueta · email</li>
+        <li><strong>Tools:</strong> Webhook · Open Factura · Chilexpress</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase1">
+      <div class="cu-head"><span class="cu-num">CU-004</span><span class="cu-fase">Fase 1</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">📨</span><h4 class="cu-title">Recibir orden webhook</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> MeLi POST webhook con order_id</li>
+        <li><strong>Output:</strong> order procesada · stock reservado · pg_notify</li>
+        <li><strong>Tools:</strong> Next.js Route Handler + HMAC verify</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase1">
+      <div class="cu-head"><span class="cu-num">CU-005</span><span class="cu-fase">Fase 1</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🧾</span><h4 class="cu-title">Emitir DTE 39 boleta</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> evento order.completed</li>
+        <li><strong>Output:</strong> DTE con folio SII · PDF Storage · email</li>
+        <li><strong>Tools:</strong> Open Factura + Resend + Storage</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase1">
+      <div class="cu-head"><span class="cu-num">CU-006</span><span class="cu-fase">Fase 1</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🏆</span><h4 class="cu-title">Tracker reputación · 10 ventas verdes</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> cada venta cerrada actualiza contador</li>
+        <li><strong>Output:</strong> badge medalla actual + progreso a próxima</li>
+        <li><strong>Tools:</strong> Postgres analytics + UI dashboard</li>
+      </ul>
+    </div>
+  </div>
 
--- ROAS Mercado Ads por campaña últimas 7d
-SELECT
-  c.name,
-  c.product_id,
-  SUM(m.revenue) AS revenue_7d,
-  SUM(m.spend) AS spend_7d,
-  CASE WHEN SUM(m.spend) > 0
-    THEN ROUND((SUM(m.revenue) / SUM(m.spend))::numeric, 2)
-    ELSE NULL
-  END AS roas
-FROM ads_campaigns c
-JOIN ads_metrics_daily m ON m.campaign_id = c.id
-WHERE m.date > NOW() - INTERVAL '7 days'
-GROUP BY c.id, c.name, c.product_id
-ORDER BY roas ASC NULLS LAST;</pre>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>10</span></div>
+  <div class="page-footer"><span>Banco SMC · Funcional</span><span>06</span></div>
 </section>
-<section class="page" id="09-out-of-scope-expl-cito-y1">
-  <h2><span class="h2-num">09</span>Out of scope explícito Y1</h2>
-  <p>❌ NO hace Y1:</p>
-<ul>
-<li>App mobile (web responsive es suficiente · pwa Y2)</li>
-<li>Multi-tenant entre marcas (1 tenant = SMC SpA · multi-tenant Y3+)</li>
-<li>Multi-moneda (CLP único · USD solo Nexport Fase 2)</li>
-<li>Garantías / seguros productos (Y2)</li>
-<li>Programa fidelidad clientes (Y2)</li>
-<li>Marketplace interno (no vendemos a otros vendedores)</li>
-<li>Operación fuera Chile (territorialmente Chile-only)</li>
-<li>Pago directo sistema (siempre vía pasarela externa)</li>
-<li>Voice / audio interface (Y3+ si vale)</li>
-</ul>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>11</span></div>
+
+<section class="page" id="04b">
+  <div class="phase-banner fase2">
+    <div><h3>Fase 2 · Escala MeLi <span style="opacity:0.85">Q1-27</span></h3><div class="phase-banner-sub">CU-007 → CU-012 · 30 órdenes/mes sostenidas</div></div>
+    <div style="font-size:28px;">🚀</div>
+  </div>
+  <div class="usecase-grid">
+    <div class="usecase-card fase2">
+      <div class="cu-head"><span class="cu-num">CU-007</span><span class="cu-fase">Fase 2</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">📣</span><h4 class="cu-title">Configurar Mercado Ads</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> founder define campaña + budget diario</li>
+        <li><strong>Output:</strong> campaña activa con bids · targeting categoría</li>
+        <li><strong>Tools:</strong> Mercado Ads API (mismo OAuth MeLi)</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase2">
+      <div class="cu-head"><span class="cu-num">CU-008</span><span class="cu-fase">Fase 2</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">📊</span><h4 class="cu-title">Monitor ROAS · pausar &lt;1.5x</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> cron diario calcula ROAS por campaña</li>
+        <li><strong>Output:</strong> pausa automática si ROAS &lt;1.5 · alerta a founders</li>
+        <li><strong>Tools:</strong> Mercado Ads API + Cerebro alertas</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase2">
+      <div class="cu-head"><span class="cu-num">CU-009</span><span class="cu-fase">Fase 2</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">📤</span><h4 class="cu-title">Migrar SKU a Full Fulfillment</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> SKU vende &gt;USD 3K/mes sostenido</li>
+        <li><strong>Output:</strong> stock enviado a Full · listings actualizados</li>
+        <li><strong>Tools:</strong> MeLi API Fulfillment + workflow Camila</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase2">
+      <div class="cu-head"><span class="cu-num">CU-010</span><span class="cu-fase">Fase 2</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🥈</span><h4 class="cu-title">Subir a Medalla Plata</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> 20+ ventas/mes · &lt;5% reclamos · entregas a tiempo</li>
+        <li><strong>Output:</strong> Plata · listings priorizados algoritmo MeLi</li>
+        <li><strong>Tools:</strong> MeLi reputation API + tracker</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase2">
+      <div class="cu-head"><span class="cu-num">CU-011</span><span class="cu-fase">Fase 2</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🧠</span><h4 class="cu-title">Cerebro alertas oportunidades</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> Cerebro detecta SKU competidor baja precio</li>
+        <li><strong>Output:</strong> notificación con sugerencia + scoring 0-10</li>
+        <li><strong>Tools:</strong> Cerebro IA + SoloTodo API + scoring sin LLM</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase2">
+      <div class="cu-head"><span class="cu-num">CU-012</span><span class="cu-fase">Fase 2</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">✅</span><h4 class="cu-title">Cerrar Fase 2 · 30 órdenes/mes</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> threshold 30 órdenes sostenidas 2 meses</li>
+        <li><strong>Output:</strong> habilitación Fase 3 (B2G + B2B)</li>
+        <li><strong>Tools:</strong> Analytics Postgres + dashboard fases</li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Funcional</span><span>07</span></div>
 </section>
-<section class="page" id="10-pr-ximos-pasos">
-  <h2><span class="h2-num">10</span>Próximos pasos</h2>
+
+<section class="page" id="04c">
+  <div class="phase-banner fase3">
+    <div><h3>Fase 3 · Diversificación <span style="opacity:0.85">Q2-27</span></h3><div class="phase-banner-sub">CU-013 → CU-018 · canales B2G y B2B</div></div>
+    <div style="font-size:28px;">🌐</div>
+  </div>
+  <div class="usecase-grid">
+    <div class="usecase-card fase3">
+      <div class="cu-head"><span class="cu-num">CU-013</span><span class="cu-fase">Fase 3</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🏛️</span><h4 class="cu-title">Sync diario licitaciones MP</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> cron 8am AM ChileCompra ticket auth</li>
+        <li><strong>Output:</strong> tabla licitaciones del día con metadata</li>
+        <li><strong>Tools:</strong> Mercado Público API + cron Vercel</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase3">
+      <div class="cu-head"><span class="cu-num">CU-014</span><span class="cu-fase">Fase 3</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🎯</span><h4 class="cu-title">Cerebro filter + scoring</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> post-sync · Cerebro matching catálogo</li>
+        <li><strong>Output:</strong> top 5 licitaciones por score afinidad</li>
+        <li><strong>Tools:</strong> pg_trgm fuzzy + Cerebro reglas</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase3">
+      <div class="cu-head"><span class="cu-num">CU-015</span><span class="cu-fase">Fase 3</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">📝</span><h4 class="cu-title">Postular a licitación MP</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> Javier click "Postular" en top licitación</li>
+        <li><strong>Output:</strong> oferta enviada · PDF guardado · tracking estado</li>
+        <li><strong>Tools:</strong> MP API + Cerebro template + Storage</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase3">
+      <div class="cu-head"><span class="cu-num">CU-016</span><span class="cu-fase">Fase 3</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🎉</span><h4 class="cu-title">Webhook adjudicación MP</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> MP envía webhook con resultado</li>
+        <li><strong>Output:</strong> si adjudica → workflow despacho institucional</li>
+        <li><strong>Tools:</strong> Webhook HMAC + Open Factura DTE 33</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase3">
+      <div class="cu-head"><span class="cu-num">CU-017</span><span class="cu-fase">Fase 3</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🤝</span><h4 class="cu-title">Cliente B2B envía RFQ</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> formulario web o email institucional</li>
+        <li><strong>Output:</strong> cotización generada · enviada · seguimiento</li>
+        <li><strong>Tools:</strong> Form Next.js + Cerebro draft + Resend</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase3">
+      <div class="cu-head"><span class="cu-num">CU-018</span><span class="cu-fase">Fase 3</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">✅</span><h4 class="cu-title">Cierre Fase 3</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> 1+ adjudicación MP + 1+ B2B + MeLi 30+/mes</li>
+        <li><strong>Output:</strong> habilitación Fase 4 consolidación</li>
+        <li><strong>Tools:</strong> Dashboard fases + Cerebro insights</li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Funcional</span><span>08</span></div>
+</section>
+
+<section class="page" id="04d">
+  <div class="phase-banner fase4">
+    <div><h3>Fase 4 · Consolidación <span style="opacity:0.85">Q3-27</span></h3><div class="phase-banner-sub">CU-019 → CU-024 · break-even Y1</div></div>
+    <div style="font-size:28px;">🎯</div>
+  </div>
+  <div class="usecase-grid">
+    <div class="usecase-card fase4">
+      <div class="cu-head"><span class="cu-num">CU-019</span><span class="cu-fase">Fase 4</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">💰</span><h4 class="cu-title">Conciliación pagos vs DTE</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> cron mensual cierre · cross-check tablas</li>
+        <li><strong>Output:</strong> reporte discrepancias · acción founders</li>
+        <li><strong>Tools:</strong> Postgres analytics + dashboard contable</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase4">
+      <div class="cu-head"><span class="cu-num">CU-020</span><span class="cu-fase">Fase 4</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🌏</span><h4 class="cu-title">Evaluación Nexport import</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> SKU local agotado + demanda sostenida</li>
+        <li><strong>Output:</strong> scoring viabilidad import · decisión founders</li>
+        <li><strong>Tools:</strong> Cerebro + simulador costos (UF·USD·landed)</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase4">
+      <div class="cu-head"><span class="cu-num">CU-021</span><span class="cu-fase">Fase 4</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🛍️</span><h4 class="cu-title">D2C storefront prep</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> founders aprueban marca propia D2C</li>
+        <li><strong>Output:</strong> storefront marca-1 con catálogo desde Hub</li>
+        <li><strong>Tools:</strong> Next.js subdomain + WebPay Plus</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase4">
+      <div class="cu-head"><span class="cu-num">CU-022</span><span class="cu-fase">Fase 4</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🔌</span><h4 class="cu-title">Setup primer dropship</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> proveedor con API/feed disponible</li>
+        <li><strong>Output:</strong> Supplier Adapter activo · catálogo sync</li>
+        <li><strong>Tools:</strong> Supplier Adapter + flag is_dropship</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase4">
+      <div class="cu-head"><span class="cu-num">CU-023</span><span class="cu-fase">Fase 4</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">⚠️</span><h4 class="cu-title">Risk review trimestral</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> cierre trimestre + Risk Register update</li>
+        <li><strong>Output:</strong> mitigaciones priorizadas · plan accionable</li>
+        <li><strong>Tools:</strong> Doc 35 Risk Register + reunión founders</li>
+      </ul>
+    </div>
+    <div class="usecase-card fase4">
+      <div class="cu-head"><span class="cu-num">CU-024</span><span class="cu-fase">Fase 4</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="cu-icon">🎊</span><h4 class="cu-title">Cierre Y1 · break-even</h4></div>
+      <ul class="cu-bullets">
+        <li><strong>Trigger:</strong> P&amp;L mensual cruza umbral break-even</li>
+        <li><strong>Output:</strong> hito Y1 logrado · planning Y2 arranca</li>
+        <li><strong>Tools:</strong> Financial dashboard + Doc 17 Estrategia Y1</li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Funcional</span><span>09</span></div>
+</section>
+
+<section class="page" id="05-reglas">
+  <h2><span class="h2-num">05</span>18 reglas de negocio · matriz visual</h2>
+  <p>Reglas invariantes del sistema. Cada BR es un contrato que el sistema NO viola nunca. Rojo = crítica (puede romper compliance o reputación).</p>
+  <div class="br-grid">
+    <div class="br-card critical"><div class="br-code">BR-001 · CRÍTICA</div><div class="br-name">Fotos pro propias siempre</div><div class="br-impl">Validation requiere &gt;=3 fotos · detector perceptual hash bloquea fotos genéricas de proveedor</div></div>
+    <div class="br-card"><div class="br-code">BR-002</div><div class="br-name">Stock real-time cross-canal</div><div class="br-impl">Inventory master · adapters sync vía pg_notify · timeout 1s · alerta CloudWatch si excede</div></div>
+    <div class="br-card"><div class="br-code">BR-003</div><div class="br-name">Channel Adapter pattern</div><div class="br-impl">Cada canal (MeLi · D2C · MP · B2B) implementa interfaz uniforme · plug-and-play</div></div>
+    <div class="br-card"><div class="br-code">BR-004</div><div class="br-name">Supplier Adapter pattern</div><div class="br-impl">Cada proveedor (Nexport · local · dropship) implementa interfaz uniforme</div></div>
+    <div class="br-card critical"><div class="br-code">BR-005 · CRÍTICA</div><div class="br-name">pg_notify cross-canal stock &lt;1s</div><div class="br-impl">Trigger postgres ON UPDATE inventory · NOTIFY channel-sync · listener Node.js suscrito</div></div>
+    <div class="br-card critical"><div class="br-code">BR-006 · CRÍTICA</div><div class="br-name">SELECT FOR UPDATE stock</div><div class="br-impl">Reserva atómica al recibir orden · evita oversell concurrente · rollback si falla pago</div></div>
+    <div class="br-card"><div class="br-code">BR-007</div><div class="br-name">Webhooks firmados HMAC SHA-256</div><div class="br-impl">MeLi · MP · pagos · couriers · todos validan firma antes de procesar</div></div>
+    <div class="br-card"><div class="br-code">BR-008</div><div class="br-name">Idempotency key obligatoria</div><div class="br-impl">Header X-Idempotency-Key en webhooks · evita doble cobro · doble DTE</div></div>
+    <div class="br-card critical"><div class="br-code">BR-009 · CRÍTICA</div><div class="br-name">DTE automático post-venta</div><div class="br-impl">Evento order.completed dispara emit DTE · &lt;30s end-to-end · retry 5x si rechazo</div></div>
+    <div class="br-card"><div class="br-code">BR-010</div><div class="br-name">DTE 39 default · 33 si RUT empresa</div><div class="br-impl">Si customer_rut termina en -K o letra → DTE 33 · sino DTE 39 · 60-66M forzado 33</div></div>
+    <div class="br-card"><div class="br-code">BR-011</div><div class="br-name">Retry exponencial SII</div><div class="br-impl">5 intentos · 1s · 2s · 4s · 8s · 16s · si falla → cola manual + alerta</div></div>
+    <div class="br-card"><div class="br-code">BR-012</div><div class="br-name">RLS Supabase tenant_id</div><div class="br-impl">Toda tabla tiene tenant_id · RLS policy filtra por sesión · multi-tenant ready Y3+</div></div>
+    <div class="br-card"><div class="br-code">BR-013</div><div class="br-name">Cerebro rate limit 60/día/founder</div><div class="br-impl">Counter Postgres incrementa por mensaje · reset 00:00 CL · evita gasto LLM</div></div>
+    <div class="br-card"><div class="br-code">BR-014</div><div class="br-name">Refresh MeLi tokens 6h</div><div class="br-impl">Cron Vercel cada 6h · refresh OAuth · si falla 3x → alerta a Guillermo</div></div>
+    <div class="br-card"><div class="br-code">BR-015</div><div class="br-name">Sync MP 8am AM diario</div><div class="br-impl">Cron 8am · ticket auth · si MP devuelve &gt;100 licitaciones → filtrar via Cerebro top 20</div></div>
+    <div class="br-card critical"><div class="br-code">BR-016 · CRÍTICA</div><div class="br-name">Fallback chain IA · NUNCA Claude</div><div class="br-impl">OpenRouter: Groq → Gemini → DeepSeek · Claude excluido explícito (regla Hoku)</div></div>
+    <div class="br-card"><div class="br-code">BR-017</div><div class="br-name">Cache hot 6h · warm 12h · cold 7d</div><div class="br-impl">Sistema Oportunidades · max 1000 filas total · pg_cron cleanup diario</div></div>
+    <div class="br-card"><div class="br-code">BR-018</div><div class="br-name">Auditoría append-only</div><div class="br-impl">Tabla webhook_events · order_events · invoice_events · solo INSERT · nunca UPDATE/DELETE</div></div>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Funcional</span><span>10</span></div>
+</section>
+
+<section class="page" id="06-out-of-scope">
+  <h2><span class="h2-num">06</span>Out of scope explícito Y1</h2>
+  <div class="box box-anti">
+    <div class="box-title">⛔ No construimos en Y1</div>
+    <ul>
+      <li>POS físico para tienda con mesón (no aplica · sin retail físico)</li>
+      <li>Conciliación bancaria automática (manual via export · galvarez.cl)</li>
+      <li>F22 anual completo (parcial · contador cierra)</li>
+      <li>RRHH · sueldos · Previred (galvarez.cl externo)</li>
+      <li>Comercio exterior directo (Nexport es intermediario hasta Y2)</li>
+      <li>D2C storefront completo (solo prep · ver CU-021)</li>
+      <li>Multi-tenant UI (arquitectura ready · UI Y3+)</li>
+      <li>Mobile app nativa (responsive web es suficiente)</li>
+    </ul>
+  </div>
+  <div class="page-footer"><span>Banco SMC · Funcional</span><span>11</span></div>
+</section>
+
+<section class="page" id="07-proximos-pasos">
+  <h2><span class="h2-num">07</span>Próximos pasos</h2>
   <ul>
-<li>✅ Doc 11 v2 · granular · herramientas + flujos detallados</li>
-<li>⏭️ Doc 13 v2 · Espec Técnica granular alineada con Doc 07 Architecture</li>
-<li>⏭️ Tu OK para empezar maquetas (Doc 18 detalla qué construir)</li>
-<li>⏭️ Doc 19 UAT post-construcción</li>
-</ul>
-  <div class="page-footer"><span>Banco SMC · Producto Técnico</span><span>12</span></div>
+    <li><strong>Review founders:</strong> Camila y Javier revisan los 24 CUs · marcar los que no entienden</li>
+    <li><strong>Mover a Doc 13:</strong> catálogo herramientas externas · maquetas wireframes · criterios SQL</li>
+    <li><strong>Construir Doc 10 Assessment:</strong> qué pantallas faltan diseñar · prioridad</li>
+    <li><strong>Empezar S1 Sistema Oportunidades:</strong> ver <a href="09-opportunities-system.html">Doc 09</a></li>
+    <li><strong>Validar workflows con la operación real:</strong> mes 1 medir vs lo aquí descrito</li>
+  </ul>
+
+  <div class="tech-todo-banner">
+    <strong>🔧 TODO técnico:</strong> Las secciones <em>Catálogo de herramientas externas</em> · <em>Maquetas mínimas Y1</em> · <em>Criterios de aceptación con SQL</em> que vivían en este doc se van a mover a <a href="13-especificacion-tecnica.html">Doc 13 Especificación Técnica</a> en próximo sprint. El contenido sigue disponible en el commit previo del repo.
+  </div>
+  <div class="page-footer"><span>Banco SMC · Funcional</span><span>12</span></div>
 </section>
 
 </div>
-<nav class="doc-nav"><a href="10-assessment.html">◂ doc anterior</a><span class="nav-center">FIN DOC 11</span><a href="13-especificacion-tecnica.html">doc siguiente ▸</a></nav>
+<nav class="doc-nav"><a href="10-assessment.html">◂ doc 10</a><span class="nav-center">FIN DOC 11 · FUNCIONAL</span><a href="13-especificacion-tecnica.html">doc 13 técnica ▸</a></nav>
 <script src="auth.js"></script>
 <script src="nav.js"></script>
 <script src="_diagram-kit.js"></script>
