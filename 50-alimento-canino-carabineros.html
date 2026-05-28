@@ -12,9 +12,9 @@
   <div class="cover-center">
     <div class="cover-doc-num">Documento 50 · Proyectos</div>
     <h1 class="cover-title">Alimento Canino Carabineros</h1>
-    <p class="cover-subtitle">Proyecto B2G · provisión de alimento canino para unidades K9 y perreras de Carabineros de Chile vía ChileCompra.</p>
+    <p class="cover-subtitle">Proyecto B2G · SMC adjudica licitación ChileCompra · InfoPet provee productos con su know-how de proveedores caninos.</p>
     <div class="cover-meta">
-      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">0.1</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">0.2</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-28</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Javier Bianchi</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 En evaluación</div></div>
@@ -26,18 +26,87 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-descripci-n-del-proyecto">01 · Descripción del Proyecto</a><span class="toc-pg">03</span></li><li><a href="#02-contexto-b2g">02 · Contexto B2G</a><span class="toc-pg">04</span></li><li><a href="#03-producto">03 · Producto</a><span class="toc-pg">05</span></li><li><a href="#04-an-lisis-preliminar">04 · Análisis Preliminar</a><span class="toc-pg">06</span></li><li><a href="#05-pr-ximos-pasos">05 · Próximos Pasos</a><span class="toc-pg">07</span></li></ol>
+  <ol><li><a href="#01-descripci-n-del-proyecto">01 · Descripción del Proyecto</a><span class="toc-pg">03</span></li><li><a href="#02-flujo-operativo">02 · Flujo Operativo</a><span class="toc-pg">04</span></li><li><a href="#03-m-rgenes-del-flujo">03 · Márgenes del Flujo</a><span class="toc-pg">05</span></li><li><a href="#04-contexto-b2g">04 · Contexto B2G</a><span class="toc-pg">06</span></li><li><a href="#05-productos-infopet-para-carabineros">05 · Productos InfoPet para Carabineros</a><span class="toc-pg">07</span></li><li><a href="#06-pr-ximos-pasos">06 · Próximos Pasos</a><span class="toc-pg">08</span></li></ol>
 </section>
 
 <section class="page" id="01-descripci-n-del-proyecto">
   <h2><span class="h2-num">01</span>Descripción del Proyecto</h2>
-  <p>Provisión de alimento canino (croquetas y húmedo) a <strong>Carabineros de Chile</strong> para sus unidades K9 de trabajo y perreras institucionales. El canal es <strong>ChileCompra</strong> (Mercado Público), modalidad licitación pública o trato directo según monto.</p>
-<div class="box box-premise"><div class="box-title">🎯 🎯 Oportunidad</div><p>Carabineros licita anualmente insumos veterinarios y alimentación animal para sus unidades operativas en todo Chile. Los proveedores actuales son generalmente grandes distribuidoras · hay espacio para un proveedor más ágil con mejor servicio y precio competitivo.</p></div>
+  <p>Provisión de alimento canino (croquetas y húmedo) a <strong>Carabineros de Chile</strong> para sus unidades K9 de trabajo y perreras institucionales. El canal es <strong>ChileCompra</strong> (Mercado Público), modalidad licitación pública.</p>
+<p><strong>Smart Connection SpA</strong> actúa como contratista B2G: adjudica la licitación, gestiona el contrato con el Estado y factura a Carabineros. <strong>InfoPet</strong> actúa como proveedor interno: abastece los productos aprovechando su red de proveedores caninos y conocimiento del mercado.</p>
+<div class="box box-premise"><div class="box-title">🎯 🎯 Modelo de negocio</div><p>SMC tiene la estructura legal y comercial para operar en ChileCompra · InfoPet tiene el know-how de productos, proveedores y logística canina. La unión de ambos crea una ventaja competitiva que ninguna distribuidora genérica puede replicar fácilmente.</p></div>
 <p>---</p>
   <div class="page-footer"><span>Banco SMC · Proyectos</span><span>03</span></div>
 </section>
-<section class="page" id="02-contexto-b2g">
-  <h2><span class="h2-num">02</span>Contexto B2G</h2>
+<section class="page" id="02-flujo-operativo">
+  <h2><span class="h2-num">02</span>Flujo Operativo</h2>
+  <p>El proyecto opera en <strong>3 capas</strong> con roles claramente separados:</p>
+<pre class="ascii">┌──────────────────────────────────────────────────────────────┐
+│  CAPA 1 · ESTADO                                             │
+│  Carabineros de Chile · Dirección de Logística               │
+│  Publica licitación en ChileCompra → adjudica → paga factura │
+└──────────────────┬───────────────────────────────────────────┘
+                   │ Contrato + Factura (precio gobierno)
+                   ▼
+┌──────────────────────────────────────────────────────────────┐
+│  CAPA 2 · CONTRATISTA B2G                                    │
+│  Smart Connection SpA (RUT 76.811.863-9)                     │
+│  Se inscribe en ChileProveedores · presenta oferta ·         │
+│  gestiona contrato · coordina entrega · factura al Estado    │
+└──────────────────┬───────────────────────────────────────────┘
+                   │ Orden de compra (precio proveedor + margen SMC)
+                   ▼
+┌──────────────────────────────────────────────────────────────┐
+│  CAPA 3 · PROVEEDOR INTERNO                                  │
+│  InfoPet (know-how productos + red de proveedores caninos)   │
+│  Selecciona productos · gestiona stock · coordina entrega    │
+│  Proveedores: TopK9 · otros distribuidores caninos           │
+└──────────────────────────────────────────────────────────────┘</pre>
+<div class="box box-info"><div class="box-title">💡 💡 Por qué este modelo funciona</div><p>InfoPet ya opera con TopK9 y otros proveedores caninos premium · tiene experiencia comprando volumen · conoce qué productos funcionan para perros de trabajo. SMC aporta la estructura jurídica y comercial para operar en el Estado. Juntos compiten contra distribuidoras genéricas que no tienen ese know-how específico.</p></div>
+<p>---</p>
+  <div class="page-footer"><span>Banco SMC · Proyectos</span><span>04</span></div>
+</section>
+<section class="page" id="03-m-rgenes-del-flujo">
+  <h2><span class="h2-num">03</span>Márgenes del Flujo</h2>
+  <p>El modelo genera margen en <strong>dos puntos</strong>:</p>
+<table>
+<thead><tr>
+<th>Capa</th>
+<th>Actor</th>
+<th>Precio referencia</th>
+<th>Margen estimado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Compra a proveedor</td>
+<td>InfoPet → TopK9/otros</td>
+<td>Costo neto proveedor</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Venta interna</td>
+<td>SMC → InfoPet (precio transfer)</td>
+<td>Costo + margen InfoPet</td>
+<td>~15–25%</td>
+</tr>
+<tr>
+<td>Venta al Estado</td>
+<td>SMC → Carabineros</td>
+<td>Precio licitación</td>
+<td>~20–30% sobre transfer</td>
+</tr>
+<tr>
+<td><strong>Margen total cadena</strong></td>
+<td></td>
+<td></td>
+<td><strong>~35–55% sobre costo</strong></td>
+</tr>
+</tbody></table>
+<div class="box box-warning"><div class="box-title">⚠️ ⚠️ Variables que comprimen margen</div><p>Boleta de seriedad de oferta · garantía de fiel cumplimiento (5–10% del contrato) · logística y despacho a cuarteles · plazo de pago Estado 30–60 días hábiles · IVA diferido. El margen real neto puede ser menor al estimado sin estos costos.</p></div>
+<p>---</p>
+  <div class="page-footer"><span>Banco SMC · Proyectos</span><span>05</span></div>
+</section>
+<section class="page" id="04-contexto-b2g">
+  <h2><span class="h2-num">04</span>Contexto B2G</h2>
   <p><strong>Canal:</strong> ChileCompra · Mercado Público (www.mercadopublico.cl)</p>
 <p><strong>Organismo comprador:</strong> Carabineros de Chile · Dirección de Logística</p>
 <p><strong>Tipo de compra esperada:</strong></p>
@@ -45,9 +114,14 @@
 <thead><tr>
 <th>Modalidad</th>
 <th>Monto estimado</th>
-<th>Plazo</th>
+<th>Plazo proceso</th>
 </tr></thead>
 <tbody>
+<tr>
+<td>Trato directo</td>
+<td>< $30M CLP</td>
+<td>Rápido · menos requisitos</td>
+</tr>
 <tr>
 <td>Licitación pública L1</td>
 <td>< $100M CLP</td>
@@ -58,58 +132,47 @@
 <td>$100M–$1.000M CLP</td>
 <td>30 días hábiles</td>
 </tr>
-<tr>
-<td>Trato directo</td>
-<td>< $30M CLP</td>
-<td>Rápido</td>
-</tr>
 </tbody></table>
-<div class="box box-info"><div class="box-title">💡 💡 Registro proveedor</div><p>Para participar en ChileCompra · Smart Connection SpA debe estar inscrita y habilitada en <strong>ChileProveedores</strong> (www.chileproveedores.cl). Verificar estado del RUT 76.811.863-9.</p></div>
-<p>---</p>
-  <div class="page-footer"><span>Banco SMC · Proyectos</span><span>04</span></div>
-</section>
-<section class="page" id="03-producto">
-  <h2><span class="h2-num">03</span>Producto</h2>
-  <p><strong>Categoría:</strong> Alimento para animales · código ONU 10131500 (Animal feed)</p>
-<p><strong>Productos objetivo:</strong></p>
-<ul>
-<li>Croquetas secas premium para razas medianas/grandes (trabajo)</li>
-<li>Alimento húmedo en lata para recuperación post-operatoria</li>
-<li>Suplementos articulares (glucosamina) para unidades K9 activas</li>
-</ul>
-<p><strong>Proveedor de abastecimiento interno:</strong> TopK9 (proveedor habitual InfoPet) + distribuidores mayoristas.</p>
-<div class="box box-warning"><div class="box-title">⚠️ ⚠️ Punto clave</div><p>Los productos deben tener <strong>resolución SAG</strong> (Servicio Agrícola y Ganadero) y RUT proveedor en la factura. Verificar que TopK9 puede emitir facturas con glosa compatible con licitación pública.</p></div>
-<p>---</p>
-  <div class="page-footer"><span>Banco SMC · Proyectos</span><span>05</span></div>
-</section>
-<section class="page" id="04-an-lisis-preliminar">
-  <h2><span class="h2-num">04</span>Análisis Preliminar</h2>
-  <p><strong>Fortalezas:</strong></p>
-<ul>
-<li>Acceso a productos TopK9 con descuento proveedor</li>
-<li>Experiencia operativa InfoPet en venta de alimento canino premium</li>
-<li>ChileCompra favorece proveedores PyME (puntaje adicional)</li>
-</ul>
-<p><strong>Riesgos:</strong></p>
-<ul>
-<li>Competencia de grandes distribuidoras con contratos marco vigentes</li>
-<li>Exigencia de garantías (boleta de seriedad licitación · garantía fiel cumplimiento)</li>
-<li>Plazos de pago Estado: 30–60 días hábiles post-factura</li>
-</ul>
-<div class="box box-decision"><div class="box-title">📌 📌 Decisión pendiente</div><p>Evaluar si el margen neto después de garantías · logística y plazo de pago justifica el esfuerzo operativo vs. canal B2C/D2C.</p></div>
+<div class="box box-decision"><div class="box-title">📌 📌 Estrategia de entrada</div><p>Arrancar con <strong>trato directo</strong> o <strong>L1</strong> para construir historial como proveedor del Estado antes de competir en licitaciones LE grandes. El historial de contratos cumplidos es un factor de evaluación en futuras licitaciones.</p></div>
 <p>---</p>
   <div class="page-footer"><span>Banco SMC · Proyectos</span><span>06</span></div>
 </section>
-<section class="page" id="05-pr-ximos-pasos">
-  <h2><span class="h2-num">05</span>Próximos Pasos</h2>
-  <ul>
-<li>[ ] Buscar licitaciones históricas de Carabineros en Mercado Público (filtro organismo + rubro)</li>
-<li>[ ] Verificar registro ChileProveedores de Smart Connection SpA</li>
-<li>[ ] Solicitar cotización formal a TopK9 para volumen B2G</li>
-<li>[ ] Calcular margen real con costos logísticos + garantías incluidos</li>
-<li>[ ] Definir si se presenta como SMC SpA o como InfoPet (InfoPet SpA · RUT pendiente)</li>
+<section class="page" id="05-productos-infopet-para-carabineros">
+  <h2><span class="h2-num">05</span>Productos InfoPet para Carabineros</h2>
+  <p><strong>Categoría ONU:</strong> 10131500 (Animal feed)</p>
+<p><strong>Productos objetivo a través de InfoPet:</strong></p>
+<ul>
+<li>Croquetas premium para razas medianas/grandes (perros de trabajo activos)</li>
+<li>Alimento húmedo para recuperación post-operatoria o perros mayores</li>
+<li>Suplementos articulares (glucosamina/condroitina) para K9 de alto rendimiento</li>
+<li>Snacks y premios para entrenamiento K9</li>
 </ul>
+<p><strong>Proveedores de InfoPet que abastecen:</strong></p>
+<ul>
+<li><strong>TopK9</strong> — proveedor principal · alimento y snacks caninos premium</li>
+<li>Otros distribuidores de la red InfoPet según disponibilidad y volumen</li>
+</ul>
+<div class="box box-success"><div class="box-title">✅ ✅ Ventaja diferenciadora</div><p>InfoPet conoce qué productos funcionan en perros de trabajo (alto desgaste energético · articulaciones · recuperación). Eso se traduce en una propuesta técnica más sólida que la de un distribuidor genérico que solo ofrece precio.</p></div>
+<p>---</p>
   <div class="page-footer"><span>Banco SMC · Proyectos</span><span>07</span></div>
+</section>
+<section class="page" id="06-pr-ximos-pasos">
+  <h2><span class="h2-num">06</span>Próximos Pasos</h2>
+  <p><strong>SMC (Javier / Guillermo):</strong></p>
+<ul>
+<li>[ ] Inscribir Smart Connection SpA en ChileProveedores (RUT 76.811.863-9)</li>
+<li>[ ] Buscar licitaciones históricas de Carabineros en Mercado Público (rubro: alimento animal)</li>
+<li>[ ] Preparar ficha de proveedor y documentación requerida por ChileCompra</li>
+<li>[ ] Definir monto objetivo de primera adjudicación (recomendado: trato directo < $30M)</li>
+</ul>
+<p><strong>InfoPet (Javier):</strong></p>
+<ul>
+<li>[ ] Solicitar cotización de volumen B2G a TopK9</li>
+<li>[ ] Levantar catálogo de productos con resolución SAG para licitaciones</li>
+<li>[ ] Calcular precio transfer InfoPet → SMC para distintos volúmenes</li>
+<li>[ ] Confirmar capacidad logística para despacho a cuarteles de Carabineros</li>
+</ul>
+  <div class="page-footer"><span>Banco SMC · Proyectos</span><span>08</span></div>
 </section>
 
 </div>
