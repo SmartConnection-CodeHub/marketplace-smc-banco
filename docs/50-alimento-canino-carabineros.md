@@ -5,7 +5,7 @@ title: Alimento Canino Carabineros
 subtitle: "Proyecto B2G · SMC adjudica licitación ChileCompra · InfoPet provee productos con su know-how de proveedores caninos."
 block: Proyectos
 author: Javier Bianchi
-version: 0.2
+version: 0.3
 date: 2026-05-28
 status: 🟡 En evaluación
 prev: 41-changelog.html
@@ -111,7 +111,63 @@ El modelo genera margen en **dos puntos**:
 
 ---
 
-# 06 · Próximos Pasos
+# 06 · Por Qué SMC y No InfoPet Directamente
+
+InfoPet **no puede licitar** contratos de Carabineros de Chile por **conflicto de interés**: los socios de InfoPet son hijos de funcionarios de Carabineros, lo que les impide ser proveedores directos del organismo según la normativa de probidad y contratos públicos chilena (Ley 19.886, art. 4).
+
+SMC SpA no tiene esa restricción y opera con total independencia legal respecto de Carabineros.
+
+> [!premise] 🤝 Modelo de ayuda mutua — no de maximización de margen
+> SMC no busca el mayor margen posible en esta operación. El % que captura es bajo y acordado entre founders. El valor para SMC es otro: **facturas de ventas reales** a un organismo del Estado, que aumentan la credibilidad financiera de la empresa ante bancos, inversionistas y proveedores. Para InfoPet es la única forma de participar de esta oportunidad sin exponer a sus socios a sanciones legales.
+
+**Beneficios concretos por actor:**
+
+| Actor | Beneficio directo |
+|-------|-------------------|
+| **SMC SpA** | Historial de ventas B2G · credibilidad financiera · facturación real · puntaje ChileProveedores |
+| **InfoPet** | Acceso a un canal B2G que no puede operar directamente · margen sobre sus productos a volumen |
+| **Founders** | Sinergia entre empresas del grupo · sin competencia interna · flujo de caja coordinado |
+
+---
+
+# 07 · Flujo de IVA Optimizado
+
+El modelo de 3 capas permite que cada actor pague IVA **solo sobre su margen**, minimizando el IVA total de la cadena.
+
+```
+PROVEEDOR (TopK9 u otro)
+  Factura a InfoPet: $100 neto + $19 IVA = $119 total
+  IVA emitido: $19
+
+        ↓
+
+INFOPET
+  Crédito fiscal IVA: $19 (factura TopK9)
+  Factura a SMC: $130 neto + $24,7 IVA = $154,7 total
+  IVA a pagar InfoPet: $24,7 − $19 = $5,7 (solo sobre margen $30)
+
+        ↓
+
+SMC SpA
+  Crédito fiscal IVA: $24,7 (factura InfoPet)
+  Factura a Carabineros: $160 neto + $30,4 IVA = $190,4 total
+  IVA a pagar SMC: $30,4 − $24,7 = $5,7 (solo sobre margen $30)
+
+        ↓
+
+CARABINEROS (Estado)
+  Paga $190,4 total · recupera IVA vía crédito fiscal institucional
+```
+
+> [!success] ✅ Resultado del flujo IVA
+> IVA total pagado por la cadena privada: **$11,4** sobre $60 de margen combinado (tasa efectiva 19% solo sobre valor agregado real). Sin este esquema de facturación encadenada, la carga tributaria sería mayor. El Estado recupera su IVA, la cadena privada paga solo lo que corresponde.
+
+> [!info] 💡 Precio gobierno vs. precio costo
+> Los números del ejemplo son ilustrativos. Los márgenes reales se definen al momento de armar la oferta licitatoria: InfoPet fija su precio transfer a SMC con suficiente margen para cubrir operación + IVA diferido · SMC arma el precio oferta considerando garantías + logística + su margen acordado.
+
+---
+
+# 08 · Próximos Pasos
 
 **SMC (Javier / Guillermo):**
 - [ ] Inscribir Smart Connection SpA en ChileProveedores (RUT 76.811.863-9)

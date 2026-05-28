@@ -14,7 +14,7 @@
     <h1 class="cover-title">Alimento Canino Carabineros</h1>
     <p class="cover-subtitle">Proyecto B2G · SMC adjudica licitación ChileCompra · InfoPet provee productos con su know-how de proveedores caninos.</p>
     <div class="cover-meta">
-      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">0.2</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">0.3</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-28</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Javier Bianchi</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 En evaluación</div></div>
@@ -26,7 +26,7 @@
 <section class="page toc">
   <div class="toc-title">Tabla de contenidos</div>
   <h1>Índice</h1>
-  <ol><li><a href="#01-descripci-n-del-proyecto">01 · Descripción del Proyecto</a><span class="toc-pg">03</span></li><li><a href="#02-flujo-operativo">02 · Flujo Operativo</a><span class="toc-pg">04</span></li><li><a href="#03-m-rgenes-del-flujo">03 · Márgenes del Flujo</a><span class="toc-pg">05</span></li><li><a href="#04-contexto-b2g">04 · Contexto B2G</a><span class="toc-pg">06</span></li><li><a href="#05-productos-infopet-para-carabineros">05 · Productos InfoPet para Carabineros</a><span class="toc-pg">07</span></li><li><a href="#06-pr-ximos-pasos">06 · Próximos Pasos</a><span class="toc-pg">08</span></li></ol>
+  <ol><li><a href="#01-descripci-n-del-proyecto">01 · Descripción del Proyecto</a><span class="toc-pg">03</span></li><li><a href="#02-flujo-operativo">02 · Flujo Operativo</a><span class="toc-pg">04</span></li><li><a href="#03-m-rgenes-del-flujo">03 · Márgenes del Flujo</a><span class="toc-pg">05</span></li><li><a href="#04-contexto-b2g">04 · Contexto B2G</a><span class="toc-pg">06</span></li><li><a href="#05-productos-infopet-para-carabineros">05 · Productos InfoPet para Carabineros</a><span class="toc-pg">07</span></li><li><a href="#06-por-qu-smc-y-no-infopet-directamente">06 · Por Qué SMC y No InfoPet Directamente</a><span class="toc-pg">08</span></li><li><a href="#07-flujo-de-iva-optimizado">07 · Flujo de IVA Optimizado</a><span class="toc-pg">09</span></li><li><a href="#08-pr-ximos-pasos">08 · Próximos Pasos</a><span class="toc-pg">10</span></li></ol>
 </section>
 
 <section class="page" id="01-descripci-n-del-proyecto">
@@ -156,8 +156,66 @@
 <p>---</p>
   <div class="page-footer"><span>Banco SMC · Proyectos</span><span>07</span></div>
 </section>
-<section class="page" id="06-pr-ximos-pasos">
-  <h2><span class="h2-num">06</span>Próximos Pasos</h2>
+<section class="page" id="06-por-qu-smc-y-no-infopet-directamente">
+  <h2><span class="h2-num">06</span>Por Qué SMC y No InfoPet Directamente</h2>
+  <p>InfoPet <strong>no puede licitar</strong> contratos de Carabineros de Chile por <strong>conflicto de interés</strong>: los socios de InfoPet son hijos de funcionarios de Carabineros, lo que les impide ser proveedores directos del organismo según la normativa de probidad y contratos públicos chilena (Ley 19.886, art. 4).</p>
+<p>SMC SpA no tiene esa restricción y opera con total independencia legal respecto de Carabineros.</p>
+<div class="box box-premise"><div class="box-title">🎯 🤝 Modelo de ayuda mutua — no de maximización de margen</div><p>SMC no busca el mayor margen posible en esta operación. El % que captura es bajo y acordado entre founders. El valor para SMC es otro: <strong>facturas de ventas reales</strong> a un organismo del Estado, que aumentan la credibilidad financiera de la empresa ante bancos, inversionistas y proveedores. Para InfoPet es la única forma de participar de esta oportunidad sin exponer a sus socios a sanciones legales.</p></div>
+<p><strong>Beneficios concretos por actor:</strong></p>
+<table>
+<thead><tr>
+<th>Actor</th>
+<th>Beneficio directo</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><strong>SMC SpA</strong></td>
+<td>Historial de ventas B2G · credibilidad financiera · facturación real · puntaje ChileProveedores</td>
+</tr>
+<tr>
+<td><strong>InfoPet</strong></td>
+<td>Acceso a un canal B2G que no puede operar directamente · margen sobre sus productos a volumen</td>
+</tr>
+<tr>
+<td><strong>Founders</strong></td>
+<td>Sinergia entre empresas del grupo · sin competencia interna · flujo de caja coordinado</td>
+</tr>
+</tbody></table>
+<p>---</p>
+  <div class="page-footer"><span>Banco SMC · Proyectos</span><span>08</span></div>
+</section>
+<section class="page" id="07-flujo-de-iva-optimizado">
+  <h2><span class="h2-num">07</span>Flujo de IVA Optimizado</h2>
+  <p>El modelo de 3 capas permite que cada actor pague IVA <strong>solo sobre su margen</strong>, minimizando el IVA total de la cadena.</p>
+<pre class="ascii">PROVEEDOR (TopK9 u otro)
+  Factura a InfoPet: $100 neto + $19 IVA = $119 total
+  IVA emitido: $19
+
+        ↓
+
+INFOPET
+  Crédito fiscal IVA: $19 (factura TopK9)
+  Factura a SMC: $130 neto + $24,7 IVA = $154,7 total
+  IVA a pagar InfoPet: $24,7 − $19 = $5,7 (solo sobre margen $30)
+
+        ↓
+
+SMC SpA
+  Crédito fiscal IVA: $24,7 (factura InfoPet)
+  Factura a Carabineros: $160 neto + $30,4 IVA = $190,4 total
+  IVA a pagar SMC: $30,4 − $24,7 = $5,7 (solo sobre margen $30)
+
+        ↓
+
+CARABINEROS (Estado)
+  Paga $190,4 total · recupera IVA vía crédito fiscal institucional</pre>
+<div class="box box-success"><div class="box-title">✅ ✅ Resultado del flujo IVA</div><p>IVA total pagado por la cadena privada: <strong>$11,4</strong> sobre $60 de margen combinado (tasa efectiva 19% solo sobre valor agregado real). Sin este esquema de facturación encadenada, la carga tributaria sería mayor. El Estado recupera su IVA, la cadena privada paga solo lo que corresponde.</p></div>
+<div class="box box-info"><div class="box-title">💡 💡 Precio gobierno vs. precio costo</div><p>Los números del ejemplo son ilustrativos. Los márgenes reales se definen al momento de armar la oferta licitatoria: InfoPet fija su precio transfer a SMC con suficiente margen para cubrir operación + IVA diferido · SMC arma el precio oferta considerando garantías + logística + su margen acordado.</p></div>
+<p>---</p>
+  <div class="page-footer"><span>Banco SMC · Proyectos</span><span>09</span></div>
+</section>
+<section class="page" id="08-pr-ximos-pasos">
+  <h2><span class="h2-num">08</span>Próximos Pasos</h2>
   <p><strong>SMC (Javier / Guillermo):</strong></p>
 <ul>
 <li>[ ] Inscribir Smart Connection SpA en ChileProveedores (RUT 76.811.863-9)</li>
@@ -172,7 +230,7 @@
 <li>[ ] Calcular precio transfer InfoPet → SMC para distintos volúmenes</li>
 <li>[ ] Confirmar capacidad logística para despacho a cuarteles de Carabineros</li>
 </ul>
-  <div class="page-footer"><span>Banco SMC · Proyectos</span><span>08</span></div>
+  <div class="page-footer"><span>Banco SMC · Proyectos</span><span>10</span></div>
 </section>
 
 </div>
