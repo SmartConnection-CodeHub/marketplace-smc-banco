@@ -52,10 +52,15 @@ def audit_file(path, total_docs, all_doc_names):
         if int(y) != total_docs and y != '09':  # Allow grouped blocks like 8/8 if it's a block count
             issues.append(f'  📊 doc-num "{x}/{y}" pero hay {total_docs} docs totales')
 
-    # 2. Kanki residual
-    kanki_count = len(re.findall(r'[Kk]anki', text))
+    # 2. Kanki residual · whitelist patterns válidos
+    # 'Kanki-style' = patrón de pago manual · 'Kanki Street' = proyecto hermano SMC
+    whitelist = ['Kanki-style', 'Kanki Street', 'kanki-style']
+    text_check = text
+    for w in whitelist:
+        text_check = text_check.replace(w, '___VALID___')
+    kanki_count = len(re.findall(r'[Kk]anki', text_check))
     if kanki_count > 0:
-        issues.append(f'  ⚠️ {kanki_count} menciones a Kanki residuales')
+        issues.append(f'  ⚠️ {kanki_count} menciones a Kanki residuales (no whitelist)')
 
     # 3. Referencias a docs HTML
     refs = re.findall(r'href="(\d{2}-[a-z0-9-]+\.html)', text)
