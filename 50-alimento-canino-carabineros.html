@@ -201,7 +201,7 @@
         <label style="display:block; font-size:11px; color:#5C6B7F; font-weight:600; margin-bottom:6px;">💵 Costo proveedor (neto)</label>
         <div style="position:relative;">
           <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">$</span>
-          <input type="number" id="costoBase" value="100" min="1" step="1" style="width:100%; padding:10px 10px 10px 24px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
+          <input type="number" id="costoBase" value="10000000" min="1" step="100000" style="width:100%; padding:10px 10px 10px 24px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
         </div>
         <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Lo que paga InfoPet a TopK9</div>
       </div>
@@ -238,17 +238,17 @@
     <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px;">
       <div style="background:#F0F4F8; padding:14px; border-radius:10px; border-left:3px solid #009EE3;">
         <div style="font-size:10px; color:#5C6B7F; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">💰 Precio al Estado</div>
-        <div style="font-size:22px; font-weight:800; color:#009EE3; margin-top:4px;" id="kpiPrecioEstado">$190,4</div>
+        <div style="font-size:22px; font-weight:800; color:#009EE3; margin-top:4px;" id="kpiPrecioEstado">$19.040.000</div>
         <div style="font-size:11px; color:#8A95A5;" id="kpiPrecioEstadoSub">Total con IVA · paga Carabineros</div>
       </div>
       <div style="background:#E6F5EC; padding:14px; border-radius:10px; border-left:3px solid #00A650;">
         <div style="font-size:10px; color:#5C6B7F; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">📈 Margen total cadena</div>
-        <div style="font-size:22px; font-weight:800; color:#00A650; margin-top:4px;" id="kpiMargenTotal">$60</div>
+        <div style="font-size:22px; font-weight:800; color:#00A650; margin-top:4px;" id="kpiMargenTotal">$5.990.000</div>
         <div style="font-size:11px; color:#8A95A5;" id="kpiMargenTotalSub">60% sobre costo base</div>
       </div>
       <div style="background:#FFF9C4; padding:14px; border-radius:10px; border-left:3px solid #FFE600;">
         <div style="font-size:10px; color:#5C6B7F; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">🧾 IVA neto cadena</div>
-        <div style="font-size:22px; font-weight:800; color:#5C4F00; margin-top:4px;" id="kpiIvaNeto">$11,4</div>
+        <div style="font-size:22px; font-weight:800; color:#5C4F00; margin-top:4px;" id="kpiIvaNeto">$1.138.100</div>
         <div style="font-size:11px; color:#8A95A5;" id="kpiIvaNetoSub">InfoPet + SMC pagan al SII</div>
       </div>
       <div style="background:#FDEAEC; padding:14px; border-radius:10px; border-left:3px solid #F23D4F;">
@@ -359,10 +359,11 @@
     <!-- Botones presets -->
     <div style="display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; align-items:center;">
       <span style="font-size:11px; color:#5C6B7F; font-weight:600;">⚡ Escenarios pre-cargados:</span>
-      <button type="button" class="iva-preset" data-costo="100" data-info="30" data-smc="23" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Default ($100 · 30/23%)</button>
-      <button type="button" class="iva-preset" data-costo="500000" data-info="25" data-smc="20" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Real Carabineros · $500K · 25/20%</button>
-      <button type="button" class="iva-preset" data-costo="1000000" data-info="20" data-smc="15" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Licitación grande · $1M · 20/15%</button>
-      <button type="button" class="iva-preset" data-costo="100" data-info="50" data-smc="30" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Agresivo · 50/30%</button>
+      <button type="button" class="iva-preset" data-costo="10000000" data-info="30" data-smc="23" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Default · $10M · 30/23%</button>
+      <button type="button" class="iva-preset" data-costo="25000000" data-info="25" data-smc="20" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Licitación regional · $25M · 25/20%</button>
+      <button type="button" class="iva-preset" data-costo="100000000" data-info="20" data-smc="15" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Licitación nacional · $100M · 20/15%</button>
+      <button type="button" class="iva-preset" data-costo="500000000" data-info="15" data-smc="10" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Mega contrato · $500M · 15/10%</button>
+      <button type="button" class="iva-preset" data-costo="10000000" data-info="50" data-smc="30" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Margen agresivo · 50/30%</button>
     </div>
 
   </div>
@@ -370,14 +371,10 @@
 <script>
 (function(){
   function fmt(n){
-    if (n === 0) return '$0';
-    var abs = Math.abs(n);
-    if (abs >= 1000) {
-      var rounded = Math.round(n);
-      return '$' + rounded.toLocaleString('es-CL');
-    }
-    var num = Math.round(n * 10) / 10;
-    return '$' + num.toFixed(num % 1 === 0 ? 0 : 1).replace('.', ',');
+    // CLP siempre entero · separador miles con punto · es-CL locale
+    if (!isFinite(n)) return '$0';
+    var rounded = Math.round(n);
+    return '$' + rounded.toLocaleString('es-CL');
   }
 
   function num(id){ return parseFloat(document.getElementById(id).value) || 0; }
