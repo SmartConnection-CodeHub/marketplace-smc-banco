@@ -186,31 +186,310 @@
 </section>
 <section class="page" id="07-flujo-de-iva-optimizado">
   <h2><span class="h2-num">07</span>Flujo de IVA Optimizado</h2>
-  <p>El modelo de 3 capas permite que cada actor pague IVA <strong>solo sobre su margen</strong>, minimizando el IVA total de la cadena.</p>
-<pre class="ascii">PROVEEDOR (TopK9 u otro)
-  Factura a InfoPet: $100 neto + $19 IVA = $119 total
-  IVA emitido: $19
+  <p>El modelo de 3 capas permite que cada actor pague IVA <strong>solo sobre su margen</strong>, minimizando el IVA total de la cadena. <strong>Editá los inputs y los números se mueven en vivo.</strong></p>
 
-        ↓
+  <!-- ═══════════════════════════════════════════════════
+       CALCULADORA INTERACTIVA · FLUJO DE IVA · CARABINEROS
+       Inputs: costo base + márgenes + IVA
+       Outputs: tabla por actor + tarjetas resumen + barra
+       ═══════════════════════════════════════════════════ -->
+  <div class="iva-calc" id="iva-calc" style="background:#FFFFFF; border:1px solid #E1E7EF; border-radius:14px; padding:20px; margin:24px 0; box-shadow:0 1px 3px rgba(45,50,119,0.08); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
 
-INFOPET
-  Crédito fiscal IVA: $19 (factura TopK9)
-  Factura a SMC: $130 neto + $24,7 IVA = $154,7 total
-  IVA a pagar InfoPet: $24,7 − $19 = $5,7 (solo sobre margen $30)
+    <!-- INPUTS -->
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px;">
+      <div>
+        <label style="display:block; font-size:11px; color:#5C6B7F; font-weight:600; margin-bottom:6px;">💵 Costo proveedor (neto)</label>
+        <div style="position:relative;">
+          <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">$</span>
+          <input type="number" id="costoBase" value="100" min="1" step="1" style="width:100%; padding:10px 10px 10px 24px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
+        </div>
+        <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Lo que paga InfoPet a TopK9</div>
+      </div>
 
-        ↓
+      <div>
+        <label style="display:block; font-size:11px; color:#5C6B7F; font-weight:600; margin-bottom:6px;">📊 Margen InfoPet</label>
+        <div style="position:relative;">
+          <input type="number" id="margenInfoPet" value="30" min="0" max="100" step="1" style="width:100%; padding:10px 24px 10px 10px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
+          <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">%</span>
+        </div>
+        <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Sobre costo proveedor</div>
+      </div>
 
-SMC SpA
-  Crédito fiscal IVA: $24,7 (factura InfoPet)
-  Factura a Carabineros: $160 neto + $30,4 IVA = $190,4 total
-  IVA a pagar SMC: $30,4 − $24,7 = $5,7 (solo sobre margen $30)
+      <div>
+        <label style="display:block; font-size:11px; color:#5C6B7F; font-weight:600; margin-bottom:6px;">📊 Margen SMC</label>
+        <div style="position:relative;">
+          <input type="number" id="margenSMC" value="23" min="0" max="100" step="1" style="width:100%; padding:10px 24px 10px 10px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
+          <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">%</span>
+        </div>
+        <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Sobre precio transfer InfoPet</div>
+      </div>
 
-        ↓
+      <div>
+        <label style="display:block; font-size:11px; color:#5C6B7F; font-weight:600; margin-bottom:6px;">🏛️ IVA</label>
+        <div style="position:relative;">
+          <input type="number" id="ivaRate" value="19" min="0" max="50" step="0.5" style="width:100%; padding:10px 24px 10px 10px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
+          <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">%</span>
+        </div>
+        <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Chile estándar 19%</div>
+      </div>
+    </div>
 
-CARABINEROS (Estado)
-  Paga $190,4 total · recupera IVA vía crédito fiscal institucional</pre>
-<div class="box box-success"><div class="box-title">✅ ✅ Resultado del flujo IVA</div><p>IVA total pagado por la cadena privada: <strong>$11,4</strong> sobre $60 de margen combinado (tasa efectiva 19% solo sobre valor agregado real). Sin este esquema de facturación encadenada, la carga tributaria sería mayor. El Estado recupera su IVA, la cadena privada paga solo lo que corresponde.</p></div>
-<div class="box box-info"><div class="box-title">💡 💡 Precio gobierno vs. precio costo</div><p>Los números del ejemplo son ilustrativos. Los márgenes reales se definen al momento de armar la oferta licitatoria: InfoPet fija su precio transfer a SMC con suficiente margen para cubrir operación + IVA diferido · SMC arma el precio oferta considerando garantías + logística + su margen acordado.</p></div>
+    <!-- KPI ROW -->
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px;">
+      <div style="background:#F0F4F8; padding:14px; border-radius:10px; border-left:3px solid #009EE3;">
+        <div style="font-size:10px; color:#5C6B7F; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">💰 Precio al Estado</div>
+        <div style="font-size:22px; font-weight:800; color:#009EE3; margin-top:4px;" id="kpiPrecioEstado">$190,4</div>
+        <div style="font-size:11px; color:#8A95A5;" id="kpiPrecioEstadoSub">Total con IVA · paga Carabineros</div>
+      </div>
+      <div style="background:#E6F5EC; padding:14px; border-radius:10px; border-left:3px solid #00A650;">
+        <div style="font-size:10px; color:#5C6B7F; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">📈 Margen total cadena</div>
+        <div style="font-size:22px; font-weight:800; color:#00A650; margin-top:4px;" id="kpiMargenTotal">$60</div>
+        <div style="font-size:11px; color:#8A95A5;" id="kpiMargenTotalSub">60% sobre costo base</div>
+      </div>
+      <div style="background:#FFF9C4; padding:14px; border-radius:10px; border-left:3px solid #FFE600;">
+        <div style="font-size:10px; color:#5C6B7F; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">🧾 IVA neto cadena</div>
+        <div style="font-size:22px; font-weight:800; color:#5C4F00; margin-top:4px;" id="kpiIvaNeto">$11,4</div>
+        <div style="font-size:11px; color:#8A95A5;" id="kpiIvaNetoSub">InfoPet + SMC pagan al SII</div>
+      </div>
+      <div style="background:#FDEAEC; padding:14px; border-radius:10px; border-left:3px solid #F23D4F;">
+        <div style="font-size:10px; color:#5C6B7F; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">⚖️ Tasa efectiva</div>
+        <div style="font-size:22px; font-weight:800; color:#F23D4F; margin-top:4px;" id="kpiTasaEfectiva">19%</div>
+        <div style="font-size:11px; color:#8A95A5;">IVA pagado / margen real</div>
+      </div>
+    </div>
+
+    <!-- FLOW · 3 actores -->
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px;">
+
+      <!-- ACTOR 1 · PROVEEDOR -->
+      <div style="background:#FFFFFF; border:1px solid #E1E7EF; border-radius:12px; padding:16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <span style="font-size:24px;">🏭</span>
+          <div>
+            <div style="font-size:13px; font-weight:800; color:#1A2734;">Proveedor</div>
+            <div style="font-size:11px; color:#8A95A5;">TopK9 / otros</div>
+          </div>
+        </div>
+        <table style="width:100%; font-size:12px; border-collapse:collapse;">
+          <tr><td style="color:#5C6B7F; padding:4px 0;">Factura a InfoPet</td><td style="text-align:right; font-weight:700; color:#1A2734;" id="prov-factura">$119</td></tr>
+          <tr><td style="color:#5C6B7F; padding:4px 0;">Neto</td><td style="text-align:right; color:#1A2734;" id="prov-neto">$100</td></tr>
+          <tr><td style="color:#5C6B7F; padding:4px 0;">IVA emitido</td><td style="text-align:right; color:#00A650; font-weight:600;" id="prov-iva">$19</td></tr>
+          <tr style="border-top:1px solid #E1E7EF;"><td style="color:#5C6B7F; padding:6px 0 0; font-weight:600;">IVA a pagar SII</td><td style="text-align:right; padding:6px 0 0; font-weight:800; color:#F23D4F;" id="prov-ivaPagar">$19</td></tr>
+        </table>
+        <div style="font-size:10px; color:#8A95A5; margin-top:8px; line-height:1.4;">
+          Paga el 100% del IVA emitido (es el primer eslabón · sin crédito fiscal previo)
+        </div>
+      </div>
+
+      <!-- ACTOR 2 · INFOPET -->
+      <div style="background:#FFFFFF; border:1px solid #009EE3; border-radius:12px; padding:16px; box-shadow:0 0 0 3px rgba(0,158,227,0.10);">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <span style="font-size:24px;">🐾</span>
+          <div>
+            <div style="font-size:13px; font-weight:800; color:#1A2734;">InfoPet</div>
+            <div style="font-size:11px; color:#8A95A5;">Proveedor interno</div>
+          </div>
+        </div>
+        <table style="width:100%; font-size:12px; border-collapse:collapse;">
+          <tr><td style="color:#5C6B7F; padding:4px 0;">Crédito fiscal IVA</td><td style="text-align:right; color:#00A650;" id="info-credito">$19</td></tr>
+          <tr><td style="color:#5C6B7F; padding:4px 0;">Factura a SMC</td><td style="text-align:right; font-weight:700; color:#1A2734;" id="info-factura">$154,7</td></tr>
+          <tr><td style="color:#5C6B7F; padding:4px 0;">Neto</td><td style="text-align:right; color:#1A2734;" id="info-neto">$130</td></tr>
+          <tr><td style="color:#5C6B7F; padding:4px 0;">IVA emitido</td><td style="text-align:right; color:#00A650; font-weight:600;" id="info-iva">$24,7</td></tr>
+          <tr style="border-top:1px solid #E1E7EF;"><td style="color:#5C6B7F; padding:6px 0 0; font-weight:600;">IVA a pagar SII</td><td style="text-align:right; padding:6px 0 0; font-weight:800; color:#F23D4F;" id="info-ivaPagar">$5,7</td></tr>
+          <tr><td style="color:#5C6B7F; padding:2px 0; font-size:11px;">Margen real</td><td style="text-align:right; font-size:11px; color:#00A650;" id="info-margen">$30</td></tr>
+        </table>
+        <div style="font-size:10px; color:#8A95A5; margin-top:8px; line-height:1.4;">
+          Paga IVA solo sobre el valor agregado de su margen ($30 × 19%)
+        </div>
+      </div>
+
+      <!-- ACTOR 3 · SMC SPA -->
+      <div style="background:#FFFFFF; border:2px solid #FFE600; border-radius:12px; padding:16px; box-shadow:0 0 0 3px rgba(255,230,0,0.18);">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <span style="font-size:24px;">🏢</span>
+          <div>
+            <div style="font-size:13px; font-weight:800; color:#1A2734;">SMC SpA</div>
+            <div style="font-size:11px; color:#8A95A5;">Contratista B2G</div>
+          </div>
+        </div>
+        <table style="width:100%; font-size:12px; border-collapse:collapse;">
+          <tr><td style="color:#5C6B7F; padding:4px 0;">Crédito fiscal IVA</td><td style="text-align:right; color:#00A650;" id="smc-credito">$24,7</td></tr>
+          <tr><td style="color:#5C6B7F; padding:4px 0;">Factura a Carabineros</td><td style="text-align:right; font-weight:700; color:#1A2734;" id="smc-factura">$190,4</td></tr>
+          <tr><td style="color:#5C6B7F; padding:4px 0;">Neto</td><td style="text-align:right; color:#1A2734;" id="smc-neto">$160</td></tr>
+          <tr><td style="color:#5C6B7F; padding:4px 0;">IVA emitido</td><td style="text-align:right; color:#00A650; font-weight:600;" id="smc-iva">$30,4</td></tr>
+          <tr style="border-top:1px solid #E1E7EF;"><td style="color:#5C6B7F; padding:6px 0 0; font-weight:600;">IVA a pagar SII</td><td style="text-align:right; padding:6px 0 0; font-weight:800; color:#F23D4F;" id="smc-ivaPagar">$5,7</td></tr>
+          <tr><td style="color:#5C6B7F; padding:2px 0; font-size:11px;">Margen real</td><td style="text-align:right; font-size:11px; color:#00A650;" id="smc-margen">$30</td></tr>
+        </table>
+        <div style="font-size:10px; color:#8A95A5; margin-top:8px; line-height:1.4;">
+          Paga IVA solo sobre el valor agregado de su margen ($30 × 19%)
+        </div>
+      </div>
+    </div>
+
+    <!-- CARABINEROS · estado -->
+    <div style="background:#2D3277; color:#FFFFFF; padding:16px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; gap:16px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:32px;">🏛️</span>
+        <div>
+          <div style="font-size:14px; font-weight:800;">Carabineros de Chile</div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.7);">Recupera IVA vía crédito fiscal institucional</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:11px; color:rgba(255,255,255,0.7);">Paga total con IVA</div>
+        <div style="font-size:22px; font-weight:800;" id="estado-paga">$190,4</div>
+      </div>
+    </div>
+
+    <!-- VISUALIZACIÓN · barra de composición precio final -->
+    <div style="margin-top:20px;">
+      <div style="font-size:11px; color:#5C6B7F; font-weight:700; text-transform:uppercase; margin-bottom:6px; letter-spacing:0.5px;">🧱 Composición del precio final</div>
+      <div style="display:flex; height:32px; border-radius:8px; overflow:hidden; border:1px solid #E1E7EF;" id="composicionBar">
+        <div style="background:#94A3B8; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:11px; font-weight:700;" id="barCosto" title="Costo proveedor">Costo</div>
+        <div style="background:#009EE3; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:11px; font-weight:700;" id="barInfoPet" title="Margen InfoPet">InfoPet</div>
+        <div style="background:#FFE600; display:flex; align-items:center; justify-content:center; color:#5C4F00; font-size:11px; font-weight:700;" id="barSMC" title="Margen SMC">SMC</div>
+        <div style="background:#F23D4F; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:11px; font-weight:700;" id="barIVA" title="IVA total">IVA</div>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:10px; color:#8A95A5;">
+        <span>$0</span>
+        <span id="barTotalLabel">$190,4 total</span>
+      </div>
+    </div>
+
+    <!-- Botones presets -->
+    <div style="display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; align-items:center;">
+      <span style="font-size:11px; color:#5C6B7F; font-weight:600;">⚡ Escenarios pre-cargados:</span>
+      <button type="button" class="iva-preset" data-costo="100" data-info="30" data-smc="23" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Default ($100 · 30/23%)</button>
+      <button type="button" class="iva-preset" data-costo="500000" data-info="25" data-smc="20" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Real Carabineros · $500K · 25/20%</button>
+      <button type="button" class="iva-preset" data-costo="1000000" data-info="20" data-smc="15" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Licitación grande · $1M · 20/15%</button>
+      <button type="button" class="iva-preset" data-costo="100" data-info="50" data-smc="30" style="padding:6px 12px; background:#FFFFFF; border:1px solid #E1E7EF; border-radius:999px; font-size:11px; color:#1A2734; cursor:pointer; font-weight:600;">Agresivo · 50/30%</button>
+    </div>
+
+  </div>
+
+<script>
+(function(){
+  function fmt(n){
+    if (n === 0) return '$0';
+    var abs = Math.abs(n);
+    if (abs >= 1000) {
+      var rounded = Math.round(n);
+      return '$' + rounded.toLocaleString('es-CL');
+    }
+    var num = Math.round(n * 10) / 10;
+    return '$' + num.toFixed(num % 1 === 0 ? 0 : 1).replace('.', ',');
+  }
+
+  function num(id){ return parseFloat(document.getElementById(id).value) || 0; }
+  function set(id, v){ var el = document.getElementById(id); if (el) el.textContent = v; }
+
+  function recalc(){
+    var costo = num('costoBase');
+    var mInfo = num('margenInfoPet') / 100;
+    var mSMC = num('margenSMC') / 100;
+    var iva = num('ivaRate') / 100;
+
+    // PROVEEDOR
+    var provNeto = costo;
+    var provIVA = costo * iva;
+    var provFactura = provNeto + provIVA;
+    var provPagar = provIVA;
+
+    // INFOPET
+    var infoNeto = costo * (1 + mInfo);
+    var infoIVA = infoNeto * iva;
+    var infoFactura = infoNeto + infoIVA;
+    var infoCredito = provIVA;
+    var infoPagar = infoIVA - infoCredito;
+    var infoMargen = infoNeto - costo;
+
+    // SMC
+    var smcNeto = infoNeto * (1 + mSMC);
+    var smcIVA = smcNeto * iva;
+    var smcFactura = smcNeto + smcIVA;
+    var smcCredito = infoIVA;
+    var smcPagar = smcIVA - smcCredito;
+    var smcMargen = smcNeto - infoNeto;
+
+    // KPIs
+    var margenTotal = smcNeto - costo;
+    var ivaNetoCadena = infoPagar + smcPagar;
+    var tasaEfectiva = margenTotal > 0 ? (ivaNetoCadena / margenTotal) * 100 : 0;
+    var margenPctCosto = costo > 0 ? (margenTotal / costo) * 100 : 0;
+
+    // RENDER
+    set('prov-factura', fmt(provFactura));
+    set('prov-neto', fmt(provNeto));
+    set('prov-iva', fmt(provIVA));
+    set('prov-ivaPagar', fmt(provPagar));
+
+    set('info-credito', fmt(infoCredito));
+    set('info-factura', fmt(infoFactura));
+    set('info-neto', fmt(infoNeto));
+    set('info-iva', fmt(infoIVA));
+    set('info-ivaPagar', fmt(infoPagar));
+    set('info-margen', fmt(infoMargen));
+
+    set('smc-credito', fmt(smcCredito));
+    set('smc-factura', fmt(smcFactura));
+    set('smc-neto', fmt(smcNeto));
+    set('smc-iva', fmt(smcIVA));
+    set('smc-ivaPagar', fmt(smcPagar));
+    set('smc-margen', fmt(smcMargen));
+
+    set('estado-paga', fmt(smcFactura));
+
+    set('kpiPrecioEstado', fmt(smcFactura));
+    set('kpiPrecioEstadoSub', 'Total con IVA · paga Carabineros');
+    set('kpiMargenTotal', fmt(margenTotal));
+    set('kpiMargenTotalSub', margenPctCosto.toFixed(0) + '% sobre costo base');
+    set('kpiIvaNeto', fmt(ivaNetoCadena));
+    set('kpiIvaNetoSub', 'InfoPet + SMC pagan al SII');
+    set('kpiTasaEfectiva', tasaEfectiva.toFixed(1) + '%');
+
+    // Bar composición
+    var total = smcFactura;
+    if (total > 0) {
+      function pct(n){ return Math.max(0, (n / total) * 100); }
+      var pCosto = pct(costo);
+      var pInfo = pct(infoMargen);
+      var pSMC = pct(smcMargen);
+      var pIVA = pct(smcIVA);
+      document.getElementById('barCosto').style.width = pCosto + '%';
+      document.getElementById('barInfoPet').style.width = pInfo + '%';
+      document.getElementById('barSMC').style.width = pSMC + '%';
+      document.getElementById('barIVA').style.width = pIVA + '%';
+      // ocultar texto si la barra es muy chica
+      document.getElementById('barCosto').style.fontSize = pCosto < 8 ? '0' : '11px';
+      document.getElementById('barInfoPet').style.fontSize = pInfo < 8 ? '0' : '11px';
+      document.getElementById('barSMC').style.fontSize = pSMC < 8 ? '0' : '11px';
+      document.getElementById('barIVA').style.fontSize = pIVA < 8 ? '0' : '11px';
+      set('barTotalLabel', fmt(total) + ' total');
+    }
+  }
+
+  // Bind inputs
+  ['costoBase','margenInfoPet','margenSMC','ivaRate'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', recalc);
+  });
+
+  // Bind presets
+  document.querySelectorAll('.iva-preset').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.getElementById('costoBase').value = this.dataset.costo;
+      document.getElementById('margenInfoPet').value = this.dataset.info;
+      document.getElementById('margenSMC').value = this.dataset.smc;
+      recalc();
+    });
+  });
+
+  recalc();
+})();
+</script>
+
+<div class="box box-success"><div class="box-title">✅ Resultado del flujo IVA</div><p>Con el escenario default: IVA total pagado por la cadena privada (InfoPet + SMC) sobre el margen combinado · tasa efectiva 19% solo sobre el valor agregado real. Sin este esquema de facturación encadenada la carga tributaria sería mayor. <strong>Editá los inputs arriba para simular escenarios reales</strong>.</p></div>
+<div class="box box-info"><div class="box-title">💡 Precio gobierno vs. precio costo</div><p>Los números del ejemplo default son ilustrativos. Los márgenes reales se definen al momento de armar la oferta licitatoria: InfoPet fija su precio transfer a SMC con suficiente margen para cubrir operación + IVA diferido · SMC arma el precio oferta considerando garantías + logística + su margen acordado.</p></div>
 <p>---</p>
   <div class="page-footer"><span>Banco SMC · Proyectos</span><span>09</span></div>
 </section>
