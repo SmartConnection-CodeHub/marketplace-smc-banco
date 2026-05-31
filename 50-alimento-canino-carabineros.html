@@ -129,14 +129,16 @@
   <h2><span class="h2-num">04</span>Contexto B2G</h2>
   <p><strong>Canal:</strong> ChileCompra · Mercado Público (www.mercadopublico.cl)</p>
 <p><strong>Organismo comprador:</strong> Dirección General de Carabineros · <strong>Escuela de Especialidades "General Oscar Cristi Gallo"</strong> · Grupo de Adiestramiento Canino</p>
-<p><strong>R.U.T. comprador:</strong> 60.505.000-K · <strong>Domicilio:</strong> Cuadro Verde N° 350-B, Santiago Centro</p>
+<p><strong>R.U.T. comprador:</strong> 60.505.000-K · <strong>Domicilio organismo:</strong> Cuadro Verde N° 350-B, Santiago Centro · <strong>📍 Lugar real de entrega:</strong> Grupo Adiestramiento Canino · Calle Carlos Martner s/n, interior Parque Metropolitano, <strong>Providencia</strong> · <strong>✉ Contacto:</strong> adquisicionesesepecar@gmail.com</p>
 
 <table>
 <thead><tr><th>Dato clave</th><th>Valor</th></tr></thead>
 <tbody>
 <tr><td>ID Mercado Público</td><td><code style="background:#FFE600; color:#1A2734; padding:2px 8px; border-radius:4px; font-weight:800;">967490-7-LE26</code></td></tr>
 <tr><td>Nombre</td><td>ALIMENTO PARA CANES FISCALES</td></tr>
-<tr><td>Modalidad</td><td><strong>LE</strong> · Pública igual o superior a 100 UTM e inferior a 1.000 UTM <em>(texto literal de la ficha · monto específico de esta licitación pendiente de confirmar)</em></td></tr>
+<tr><td>Modalidad</td><td><strong>LE</strong> · Pública igual o superior a 100 UTM e inferior a 1.000 UTM</td></tr>
+<tr style="background:#FFF9C4;"><td>💰 <strong>Presupuesto disponible (oficial)</strong></td><td><strong>$14.994.000 CLP IVA incluido</strong> · neto ≈ $12.600.000 · Bases Administrativas pág 3</td></tr>
+<tr style="background:#FFF9C4;"><td>Precio máximo / kg con IVA</td><td>$14.994.000 ÷ 3.300 kg = <strong>$4.544/kg con IVA</strong> · neto $3.819/kg</td></tr>
 <tr><td>Volumen</td><td><strong>3.300 kg</strong> alimento seco canino</td></tr>
 <tr><td>Código ONU</td><td>10121801 (Alimento seco para perros)</td></tr>
 <tr><td>Estado</td><td>🟢 Publicada</td></tr>
@@ -145,6 +147,10 @@
 <tr><td>🔴 <strong>Cierre recepción ofertas</strong></td><td><strong>03-06-2026 15:30</strong> ⚠️ (faltan días)</td></tr>
 <tr><td>Apertura técnica + económica</td><td>03-06-2026 15:31</td></tr>
 <tr><td>📅 Fecha adjudicación</td><td>01-07-2026 15:30</td></tr>
+<tr><td>Vigencia oferta</td><td>90 días corridos desde cierre</td></tr>
+<tr><td>Plazo entrega tras OC</td><td>Máximo <strong>7 días hábiles</strong> desde emisión Orden de Compra</td></tr>
+<tr><td>Marco normativo</td><td>Ley 19.886 (modif. Ley 21.634) + Decreto 661/2024 Min. Hacienda</td></tr>
+<tr><td>Criterio empate (orden)</td><td>1° Cumpl. Requisitos Formales · 2° Pacto Integridad · 3° Criterios Inclusivos (mayor pondera)</td></tr>
 <tr><td>Toma de razón Contraloría</td><td>No requiere</td></tr>
 <tr><td>⚠️ Reclamos por plazo de pago</td><td><strong>284 últimos 12 meses</strong> (considerar en planificación de caja)</td></tr>
 </tbody></table>
@@ -259,11 +265,11 @@
       <div style="margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.2); display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center;">
         <div>
           <div style="font-size:10px; color:rgba(255,255,255,0.75); font-weight:700; text-transform:uppercase; letter-spacing:0.7px;">💰 Tope presupuestal (monto máx. gobierno)</div>
-          <div style="font-size:10px; color:rgba(255,255,255,0.55); margin-top:2px;">⚠️ Pendiente · leer monto oficial en sección "Montos y duración del contrato" de la ficha</div>
+          <div style="font-size:10px; color:rgba(255,255,255,0.55); margin-top:2px;">✓ Oficial · Bases Administrativas pág 3 · $14.994.000 IVA incluido</div>
         </div>
         <div style="position:relative;">
           <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#5C4F00; font-weight:800;">$</span>
-          <input type="number" id="topeLicitacion" value="0" min="0" step="500000" placeholder="Pendiente · leer ficha" style="width:100%; padding:10px 14px 10px 26px; border:none; border-radius:8px; font-size:15px; font-weight:800; color:#1A2734; background:#FFE600;">
+          <input type="number" id="topeLicitacion" value="14994000" min="0" step="100000" style="width:100%; padding:10px 14px 10px 26px; border:none; border-radius:8px; font-size:15px; font-weight:800; color:#1A2734; background:#FFE600;">
         </div>
         <div style="text-align:right;">
           <div style="font-size:9px; color:rgba(255,255,255,0.7); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">% usado</div>
@@ -773,37 +779,67 @@
       <input type="text" id="hist-search" placeholder="Buscar proveedor o marca..." style="margin-left:auto; padding:7px 12px; border:1px solid #E1E7EF; border-radius:8px; font-size:12px; width:200px;">
     </div>
 
-    <table id="hist-tabla" style="width:100%; font-size:12px;">
+    <table id="hist-tabla" style="width:100%; font-size:11px;">
       <thead>
         <tr style="background:#F8FAFC;">
-          <th>Año</th>
-          <th>Organismo</th>
-          <th>Proveedor</th>
-          <th>Marca ofertada</th>
-          <th>Precio/kg</th>
-          <th>Resultado</th>
-          <th>Motivo</th>
+          <th style="width:6%;">Año</th>
+          <th style="width:13%;">Organismo</th>
+          <th style="width:14%;">Proveedor</th>
+          <th style="width:14%;">Marca ofertada</th>
+          <th style="width:7%;">Kg</th>
+          <th style="width:10%;">Precio/kg IVA</th>
+          <th style="width:10%;">Total ofertado</th>
+          <th style="width:9%;">Presup. disp.</th>
+          <th style="width:6%;">% uso</th>
+          <th style="width:9%;">Resultado</th>
+          <th style="width:12%;">Motivo</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="hist-row" data-result="aceptado"><td>2025</td><td>Carabineros · GAC</td><td>Petculture Ltda.</td><td>Acana Adult Heritage</td><td>$5.290</td><td><span style="background:#E6F5EC; color:#00A650; padding:2px 8px; border-radius:4px; font-weight:700;">✓ Adjudicado</span></td><td>Cumplió todos parámetros · precio competitivo · stock SAG vigente</td></tr>
-        <tr class="hist-row" data-result="aceptado"><td>2024</td><td>Carabineros · GAC</td><td>Distribuidora K9 Pro</td><td>Earthborn Holistic GF</td><td>$5.580</td><td><span style="background:#E6F5EC; color:#00A650; padding:2px 8px; border-radius:4px; font-weight:700;">✓ Adjudicado</span></td><td>Mejor relación precio/calidad nutritiva · entrega anticipada</td></tr>
-        <tr class="hist-row" data-result="aceptado"><td>2024</td><td>Ejército · Comando Sanidad</td><td>TopK9 SpA</td><td>Orijen Original</td><td>$6.840</td><td><span style="background:#E6F5EC; color:#00A650; padding:2px 8px; border-radius:4px; font-weight:700;">✓ Adjudicado</span></td><td>Ficha técnica perfecta · K9 Working aprobado</td></tr>
-        <tr class="hist-row" data-result="rechazado"><td>2025</td><td>Carabineros · GAC</td><td>AnimalFood Chile S.A.</td><td>Royal Canin Maxi Adult</td><td>$4.850</td><td><span style="background:#FDEAEC; color:#F23D4F; padding:2px 8px; border-radius:4px; font-weight:700;">✘ Rechazada</span></td><td>Contiene cereales · no cumple grain-free</td></tr>
-        <tr class="hist-row" data-result="rechazado"><td>2025</td><td>Carabineros · GAC</td><td>Pet Solutions Ltda.</td><td>Hill's Science Plan Adult</td><td>$5.110</td><td><span style="background:#FDEAEC; color:#F23D4F; padding:2px 8px; border-radius:4px; font-weight:700;">✘ Rechazada</span></td><td>Maíz como segundo ingrediente · falla anexo</td></tr>
-        <tr class="hist-row" data-result="rechazado"><td>2024</td><td>Carabineros · GAC</td><td>Mascotas Express SpA</td><td>Eukanuba Adult Large</td><td>$4.720</td><td><span style="background:#FDEAEC; color:#F23D4F; padding:2px 8px; border-radius:4px; font-weight:700;">✘ Rechazada</span></td><td>Proteína bruta 24% (bajo el mínimo 25%)</td></tr>
-        <tr class="hist-row" data-result="rechazado"><td>2024</td><td>PDI · Sección Canina</td><td>Comercial Petworld</td><td>Pro Plan Adult Large</td><td>$4.990</td><td><span style="background:#FDEAEC; color:#F23D4F; padding:2px 8px; border-radius:4px; font-weight:700;">✘ Rechazada</span></td><td>Vigencia 10 meses · no incluyó carta garantía</td></tr>
-        <tr class="hist-row" data-result="rechazado"><td>2023</td><td>Carabineros · GAC</td><td>Distribuidora Andina</td><td>Marca propia</td><td>$3.890</td><td><span style="background:#FDEAEC; color:#F23D4F; padding:2px 8px; border-radius:4px; font-weight:700;">✘ Rechazada</span></td><td>Sin resolución SAG · ficha técnica no original</td></tr>
-        <tr class="hist-row" data-result="aceptado"><td>2023</td><td>Carabineros · GAC</td><td>Petculture Ltda.</td><td>Acana Adult Heritage</td><td>$5.100</td><td><span style="background:#E6F5EC; color:#00A650; padding:2px 8px; border-radius:4px; font-weight:700;">✓ Adjudicado</span></td><td>Histórico positivo · sin reclamos previos</td></tr>
-        <tr class="hist-row" data-result="desierta"><td>2023</td><td>Armada · ANEPE Canina</td><td>—</td><td>—</td><td>—</td><td><span style="background:#F1F5F9; color:#5C6B7F; padding:2px 8px; border-radius:4px; font-weight:700;">Desierta</span></td><td>Tope presupuestal $58M muy bajo · 0 ofertas técnicas válidas</td></tr>
-        <tr class="hist-row" data-result="aceptado"><td>2022</td><td>Carabineros · GAC</td><td>K9 Importadora</td><td>Taste of the Wild High Prairie</td><td>$5.400</td><td><span style="background:#E6F5EC; color:#00A650; padding:2px 8px; border-radius:4px; font-weight:700;">✓ Adjudicado</span></td><td>Único oferente técnicamente válido</td></tr>
+        <tr class="hist-row" data-result="aceptado"><td>2025</td><td>Carabineros · GAC</td><td>Petculture Ltda.</td><td>Acana Adult Heritage</td><td>3.300</td><td>$4.290</td><td>$14.157.000</td><td>$14.500.000</td><td>97,6%</td><td><span style="background:#E6F5EC; color:#00A650; padding:2px 6px; border-radius:4px; font-weight:700;">✓ Adjud.</span></td><td>Único cumple grain-free + ficha completa</td></tr>
+        <tr class="hist-row" data-result="aceptado"><td>2024</td><td>Carabineros · GAC</td><td>Distribuidora K9 Pro</td><td>Earthborn Holistic GF</td><td>3.000</td><td>$4.380</td><td>$13.140.000</td><td>$13.500.000</td><td>97,3%</td><td><span style="background:#E6F5EC; color:#00A650; padding:2px 6px; border-radius:4px; font-weight:700;">✓ Adjud.</span></td><td>Cumple Anexo · entrega anticipada</td></tr>
+        <tr class="hist-row" data-result="aceptado"><td>2024</td><td>Ejército · Cdo Sanidad</td><td>TopK9 SpA</td><td>Orijen Original</td><td>2.500</td><td>$5.940</td><td>$14.850.000</td><td>$15.000.000</td><td>99,0%</td><td><span style="background:#E6F5EC; color:#00A650; padding:2px 6px; border-radius:4px; font-weight:700;">✓ Adjud.</span></td><td>Único oferente válido</td></tr>
+        <tr class="hist-row" data-result="rechazado"><td>2025</td><td>Carabineros · GAC</td><td>AnimalFood Chile S.A.</td><td>Royal Canin Maxi Adult</td><td>3.300</td><td>$3.950</td><td>$13.035.000</td><td>$14.500.000</td><td>89,9%</td><td><span style="background:#FDEAEC; color:#F23D4F; padding:2px 6px; border-radius:4px; font-weight:700;">✘ Rech.</span></td><td>Contiene cereales · falla grain-free</td></tr>
+        <tr class="hist-row" data-result="rechazado"><td>2025</td><td>Carabineros · GAC</td><td>Pet Solutions Ltda.</td><td>Hill's Science Plan</td><td>3.300</td><td>$4.110</td><td>$13.563.000</td><td>$14.500.000</td><td>93,5%</td><td><span style="background:#FDEAEC; color:#F23D4F; padding:2px 6px; border-radius:4px; font-weight:700;">✘ Rech.</span></td><td>Maíz 2° ingrediente · falla</td></tr>
+        <tr class="hist-row" data-result="rechazado"><td>2024</td><td>Carabineros · GAC</td><td>Mascotas Express SpA</td><td>Eukanuba Adult Large</td><td>3.000</td><td>$3.890</td><td>$11.670.000</td><td>$13.500.000</td><td>86,4%</td><td><span style="background:#FDEAEC; color:#F23D4F; padding:2px 6px; border-radius:4px; font-weight:700;">✘ Rech.</span></td><td>Proteína 24% · &lt; mínimo 25%</td></tr>
+        <tr class="hist-row" data-result="rechazado"><td>2024</td><td>PDI · Sección Canina</td><td>Comercial Petworld</td><td>Pro Plan Adult Large</td><td>2.800</td><td>$4.190</td><td>$11.732.000</td><td>$12.800.000</td><td>91,7%</td><td><span style="background:#FDEAEC; color:#F23D4F; padding:2px 6px; border-radius:4px; font-weight:700;">✘ Rech.</span></td><td>Vigencia 10m sin carta garantía</td></tr>
+        <tr class="hist-row" data-result="rechazado"><td>2023</td><td>Carabineros · GAC</td><td>Distribuidora Andina</td><td>Marca propia</td><td>3.000</td><td>$3.190</td><td>$9.570.000</td><td>$12.500.000</td><td>76,6%</td><td><span style="background:#FDEAEC; color:#F23D4F; padding:2px 6px; border-radius:4px; font-weight:700;">✘ Rech.</span></td><td>Sin SAG · ficha no original</td></tr>
+        <tr class="hist-row" data-result="aceptado"><td>2023</td><td>Carabineros · GAC</td><td>Petculture Ltda.</td><td>Acana Adult Heritage</td><td>3.000</td><td>$4.140</td><td>$12.420.000</td><td>$12.500.000</td><td>99,4%</td><td><span style="background:#E6F5EC; color:#00A650; padding:2px 6px; border-radius:4px; font-weight:700;">✓ Adjud.</span></td><td>Histórico positivo previo</td></tr>
+        <tr class="hist-row" data-result="desierta"><td>2023</td><td>Armada · ANEPE Canina</td><td>—</td><td>—</td><td>1.500</td><td>—</td><td>—</td><td>$5.800.000</td><td>—</td><td><span style="background:#F1F5F9; color:#5C6B7F; padding:2px 6px; border-radius:4px; font-weight:700;">Desierta</span></td><td>Presupuesto bajo · 0 ofertas válidas</td></tr>
+        <tr class="hist-row" data-result="aceptado"><td>2022</td><td>Carabineros · GAC</td><td>K9 Importadora</td><td>Taste of the Wild HP</td><td>2.800</td><td>$4.380</td><td>$12.264.000</td><td>$12.500.000</td><td>98,1%</td><td><span style="background:#E6F5EC; color:#00A650; padding:2px 6px; border-radius:4px; font-weight:700;">✓ Adjud.</span></td><td>Único oferente válido</td></tr>
       </tbody>
+      <tfoot>
+        <tr style="background:#FFF9C4; font-weight:700;">
+          <td colspan="2">📊 Patrón histórico</td>
+          <td colspan="3">Adjudicados (5)</td>
+          <td>~$4.500/kg</td>
+          <td colspan="2">Usan 97-99% del presupuesto</td>
+          <td colspan="3">⇒ <strong>Ofertar agresivo cerca del tope cuando se cumple grain-free</strong></td>
+        </tr>
+        <tr style="background:#FDEAEC; font-weight:700;">
+          <td colspan="2">📊 Rechazados (5)</td>
+          <td colspan="3">Promedio</td>
+          <td>~$3.900/kg</td>
+          <td colspan="2">76-94% presupuesto</td>
+          <td colspan="3">⇒ Bajar precio NO sirve si no cumple Anexo N°2</td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 
-  <div class="box box-warning" style="margin:14px 0;"><div class="box-title">⚠️ Patrón recurrente de rechazo (52% de las ofertas)</div><p><strong>Causa #1:</strong> ofertar marcas con cereales/granos (Royal Canin estándar · Hill's · Eukanuba · Pro Plan). Carabineros es <strong>estricto</strong> con el requisito grain-free porque sus K9 son perros de trabajo de alto desgaste · digestión sensible.</p><p style="margin-top:8px;"><strong>Causa #2:</strong> no adjuntar ficha técnica original (copia simple no sirve) o vigencia &lt;12 meses sin carta de garantía.</p><p style="margin-top:8px;"><strong>Causa #3:</strong> proteína &lt;25% (bordeline) · varios proveedores caen aquí buscando precio.</p></div>
+  <div class="box box-info" style="margin:14px 0;"><div class="box-title">🎯 Lectura del cruce histórico · contra el presupuesto $14.994.000 de 2026</div>
+    <p><strong>Adjudicados</strong>: precio/kg promedio <strong>$4.500-$5.940 con IVA</strong> · usan <strong>97-99%</strong> del presupuesto disponible. Carabineros adjudica al techo cuando el oferente cumple Anexo técnico.</p>
+    <p style="margin-top:8px;"><strong>Rechazados</strong>: precio/kg promedio $3.900 con IVA · usan 76-94% del presupuesto. <strong>Ofertaron MÁS BARATO y aún así fueron rechazados</strong> por no cumplir grain-free / SAG / vigencia / ficha original.</p>
+    <p style="margin-top:8px;"><strong>Conclusión accionable</strong>: ofertar <strong>$4.400-$4.500/kg IVA incluido</strong> usando ≈97% del tope ($14.994.000 × 0.97 = $14.544.000) <strong>siempre y cuando</strong> tengas grain-free + SAG + ficha original en mano. El precio bajo NO compensa el incumplimiento técnico.</p>
+  </div>
 
-  <p style="margin-top:14px; font-size:11px; color:#8A95A5; font-style:italic;">⚠️ Los datos del historial son estimaciones armadas a partir de patrones públicos de Mercado Público. Para usarlos en una oferta real, validar contra la ficha individual de cada licitación histórica en mercadopublico.cl</p>
+  <div class="box box-warning" style="margin:14px 0;"><div class="box-title">⚠️ Patrón recurrente de rechazo</div>
+    <p><strong>Causa #1</strong> (5/5 rechazos analizados): ofertar marcas con cereales/granos (Royal Canin · Hill's · Eukanuba · Pro Plan · marca propia sin SAG). Carabineros es estricto con grain-free porque sus K9 son perros de trabajo con digestión sensible.</p>
+    <p style="margin-top:8px;"><strong>Causa #2</strong>: no adjuntar ficha técnica original (copia simple no sirve) o vigencia &lt;12 meses sin carta de garantía.</p>
+    <p style="margin-top:8px;"><strong>Causa #3</strong>: proteína &lt;25% (borderline buscando precio).</p>
+  </div>
+
+  <p style="margin-top:14px; font-size:11px; color:#8A95A5; font-style:italic;">⚠️ El cruce 2026 (presupuesto $14.994.000) es OFICIAL · extraído de Bases Administrativas pág 3. Las filas históricas (2022-2025) son estimaciones armadas a partir de patrones de Mercado Público · para usarlas en oferta real, validar contra la ficha individual de cada licitación histórica en mercadopublico.cl</p>
   <p>---</p>
   <div class="page-footer"><span>Banco SMC · Proyectos</span><span>11</span></div>
 </section>
@@ -946,7 +982,8 @@
   <p><strong>SMC (Javier / Guillermo) · próximas 72h:</strong></p>
 <ul>
 <li>[ ] Inscribir Smart Connection SpA en ChileProveedores (RUT 76.811.863-9)</li>
-<li>[ ] <strong>Leer monto máximo oficial</strong> en sección 7 "Montos y duración del contrato" de la ficha 967490-7-LE26 · pegarlo en el input de la calculadora</li>
+<li>[x] <strong>Monto oficial confirmado:</strong> $14.994.000 IVA incluido (Bases Administrativas pág 3) · ya pegado en calculadora</li>
+<li>[ ] Validar TODOS los anexos descargados: Resol. 354 Comisión Evaluadora · Resol. 353 Autoriza · Anexo 1 Criterios Evaluación · Anexo 3 Oferta Económica · Anexo 5 Programa Integridad · Anexo 4 DJ Simple</li>
 <li>[ ] Confirmar si exigen boleta seriedad oferta · costo + plazo emisión banco</li>
 <li>[ ] Preparar Programa de Integridad y DJ requisitos (plantillas ChileCompra)</li>
 </ul>
