@@ -208,19 +208,37 @@
        ═══════════════════════════════════════════════════ -->
   <div class="iva-calc" id="iva-calc" style="background:#FFFFFF; border:1px solid #E1E7EF; border-radius:14px; padding:20px; margin:24px 0; box-shadow:0 1px 3px rgba(45,50,119,0.08); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
 
-    <!-- HEADER · Licitación Mercado Público -->
-    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 16px; background:linear-gradient(135deg, #2D3277 0%, #009EE3 100%); color:#FFFFFF; border-radius:10px; margin-bottom:18px;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span style="font-size:28px;">🏛️</span>
+    <!-- HEADER · Licitación Mercado Público + TOPE -->
+    <div style="padding:14px 16px; background:linear-gradient(135deg, #2D3277 0%, #009EE3 100%); color:#FFFFFF; border-radius:10px; margin-bottom:18px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:28px;">🏛️</span>
+          <div>
+            <div style="font-size:10px; color:rgba(255,255,255,0.75); font-weight:700; text-transform:uppercase; letter-spacing:0.7px;">Licitación ChileCompra</div>
+            <div style="font-size:15px; font-weight:800; margin-top:2px;">967490-7-LE26</div>
+            <div style="font-size:11px; color:rgba(255,255,255,0.8); margin-top:2px;">Carabineros de Chile · Alimento canino K9</div>
+          </div>
+        </div>
+        <a href="https://www.mercadopublico.cl/Procurement/Modules/RFB/DetailsAcquisition.aspx?idlicitacion=967490-7-LE26" target="_blank" rel="noopener noreferrer" style="background:#FFE600; color:#5C4F00; padding:10px 16px; border-radius:999px; font-size:12px; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+          Ver en Mercado Público →
+        </a>
+      </div>
+      <!-- TOPE PRESUPUESTAL · monto máximo ofertado por el Estado -->
+      <div style="margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.2); display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center;">
         <div>
-          <div style="font-size:10px; color:rgba(255,255,255,0.75); font-weight:700; text-transform:uppercase; letter-spacing:0.7px;">Licitación ChileCompra</div>
-          <div style="font-size:15px; font-weight:800; margin-top:2px;">967490-7-LE26</div>
-          <div style="font-size:11px; color:rgba(255,255,255,0.8); margin-top:2px;">Carabineros de Chile · Alimento canino K9</div>
+          <div style="font-size:10px; color:rgba(255,255,255,0.75); font-weight:700; text-transform:uppercase; letter-spacing:0.7px;">💰 Tope presupuestal (monto máx. gobierno)</div>
+          <div style="font-size:10px; color:rgba(255,255,255,0.55); margin-top:2px;">El precio final de la oferta no puede superar este valor</div>
+        </div>
+        <div style="position:relative;">
+          <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#5C4F00; font-weight:800;">$</span>
+          <input type="number" id="topeLicitacion" value="100000000" min="0" step="1000000" style="width:100%; padding:10px 14px 10px 26px; border:none; border-radius:8px; font-size:15px; font-weight:800; color:#1A2734; background:#FFE600;">
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:9px; color:rgba(255,255,255,0.7); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">% usado</div>
+          <div id="topeUsoPct" style="font-size:22px; font-weight:900;">19%</div>
+          <div id="topeUsoStatus" style="font-size:10px; color:#A7F3D0; font-weight:600;">✓ Dentro del tope</div>
         </div>
       </div>
-      <a href="https://www.mercadopublico.cl/Procurement/Modules/RFB/DetailsAcquisition.aspx?idlicitacion=967490-7-LE26" target="_blank" rel="noopener noreferrer" style="background:#FFE600; color:#5C4F00; padding:10px 16px; border-radius:999px; font-size:12px; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-        Ver en Mercado Público →
-      </a>
     </div>
 
     <!-- INPUTS · base -->
@@ -417,6 +435,17 @@
     </div>
 
     <!-- VISUALIZACIÓN · barra de composición precio final -->
+    <!-- Alerta · supera tope -->
+    <div id="topeAlert" style="display:none; margin-top:16px; padding:14px 16px; background:#FEE2E2; border:2px solid #DC2626; border-radius:10px; color:#7F1D1D;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:24px;">🚨</span>
+        <div>
+          <div style="font-size:13px; font-weight:800;">El precio al Estado SUPERA el tope presupuestal de la licitación</div>
+          <div style="font-size:11px; margin-top:4px;">Tu oferta sería rechazada automáticamente. Reducí costos · márgenes · o renegociá el tope con Carabineros.</div>
+        </div>
+      </div>
+    </div>
+
     <div style="margin-top:20px;">
       <div style="font-size:11px; color:#5C6B7F; font-weight:700; text-transform:uppercase; margin-bottom:6px; letter-spacing:0.5px;">🧱 Composición del precio final</div>
       <div style="display:flex; height:32px; border-radius:8px; overflow:hidden; border:1px solid #E1E7EF;" id="composicionBar">
@@ -429,6 +458,12 @@
       <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:10px; color:#8A95A5;">
         <span>$0</span>
         <span id="barTotalLabel">$190,4 total</span>
+      </div>
+      <!-- Marca del tope sobre la barra -->
+      <div style="position:relative; height:0;">
+        <div id="topeMarker" style="position:absolute; top:-44px; left:100%; transform:translateX(-50%); width:2px; height:42px; background:#DC2626; z-index:10;">
+          <div style="position:absolute; top:-18px; left:50%; transform:translateX(-50%); background:#DC2626; color:#FFFFFF; padding:2px 7px; border-radius:4px; font-size:9px; font-weight:800; white-space:nowrap;">TOPE</div>
+        </div>
       </div>
     </div>
 
@@ -529,6 +564,35 @@
     set('kpiIvaNetoSub', 'InfoPet + SMC pagan al SII');
     set('kpiTasaEfectiva', tasaEfectiva.toFixed(1) + '%');
 
+    // TOPE LICITACIÓN · semáforo + alerta
+    var tope = num('topeLicitacion');
+    var topeUso = tope > 0 ? (smcFactura / tope) * 100 : 0;
+    var topeEl = document.getElementById('topeUsoPct');
+    var topeStatusEl = document.getElementById('topeUsoStatus');
+    if (topeEl) topeEl.textContent = topeUso.toFixed(1) + '%';
+    if (topeStatusEl) {
+      if (topeUso > 100) {
+        topeStatusEl.textContent = '🚨 SUPERA el tope · -' + fmt(smcFactura - tope);
+        topeStatusEl.style.color = '#FECACA';
+        topeEl.style.color = '#FECACA';
+      } else if (topeUso > 90) {
+        topeStatusEl.textContent = '⚠️ Cerca del tope · ' + fmt(tope - smcFactura) + ' libre';
+        topeStatusEl.style.color = '#FDE68A';
+        topeEl.style.color = '#FDE68A';
+      } else if (topeUso > 75) {
+        topeStatusEl.textContent = 'En rango · ' + fmt(tope - smcFactura) + ' libre';
+        topeStatusEl.style.color = '#FDE68A';
+        topeEl.style.color = '#FFFFFF';
+      } else {
+        topeStatusEl.textContent = '✓ Dentro del tope · ' + fmt(tope - smcFactura) + ' libre';
+        topeStatusEl.style.color = '#A7F3D0';
+        topeEl.style.color = '#FFFFFF';
+      }
+    }
+    // Alerta visible cuando supera
+    var alertEl = document.getElementById('topeAlert');
+    if (alertEl) alertEl.style.display = topeUso > 100 ? 'block' : 'none';
+
     // Bar composición (ahora con 5 segmentos: costo · ops · infoPet · smc · iva)
     var total = smcFactura;
     if (total > 0) {
@@ -548,11 +612,34 @@
         }
       });
       set('barTotalLabel', fmt(total) + ' total');
+
+      // Marcador TOPE sobre la barra
+      var topeMarker = document.getElementById('topeMarker');
+      if (topeMarker && tope > 0) {
+        // Calculamos un denominador que incluya el max entre total y tope para que ambos
+        // queden visibles. Si total < tope, marker queda dentro de la barra (verde).
+        // Si total > tope, la barra se extiende fuera del 100% gráfico, así que escalamos.
+        var maxRef = Math.max(total, tope);
+        var topePct = (tope / maxRef) * 100;
+        var barFillPct = (total / maxRef) * 100;
+        topeMarker.style.left = topePct + '%';
+        topeMarker.style.background = total > tope ? '#DC2626' : '#15803D';
+        var topeBadge = topeMarker.querySelector('div');
+        if (topeBadge) topeBadge.style.background = total > tope ? '#DC2626' : '#15803D';
+        // Reescalamos la barra para que se vea el tope cuando total > tope
+        if (total > tope) {
+          var bar = document.getElementById('composicionBar');
+          if (bar) bar.style.width = barFillPct + '%';
+        } else {
+          var bar2 = document.getElementById('composicionBar');
+          if (bar2) bar2.style.width = '100%';
+        }
+      }
     }
   }
 
   // Bind inputs
-  ['costoBase','margenInfoPet','margenSMC','ivaRate','costoLogistica','costoDespacho','costoFlete','costoBodega'].forEach(function(id){
+  ['costoBase','margenInfoPet','margenSMC','ivaRate','costoLogistica','costoDespacho','costoFlete','costoBodega','topeLicitacion'].forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.addEventListener('input', recalc);
   });
