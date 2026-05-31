@@ -14,10 +14,11 @@
     <h1 class="cover-title">Alimento Canino Carabineros</h1>
     <p class="cover-subtitle">Proyecto B2G · SMC adjudica licitación ChileCompra · InfoPet provee productos con su know-how de proveedores caninos.</p>
     <div class="cover-meta">
-      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">0.3</div></div>
-      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-28</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">0.4</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-05-31</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Javier Bianchi</div></div>
       <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟡 En evaluación</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">ID Licitación</div><div class="cover-meta-value">967490-7-LE26</div></div>
     </div>
   </div>
   <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial</div></div>
@@ -67,13 +68,13 @@
 </section>
 <section class="page" id="03-m-rgenes-del-flujo">
   <h2><span class="h2-num">03</span>Márgenes del Flujo</h2>
-  <p>El modelo genera margen en <strong>dos puntos</strong>:</p>
+  <p>El modelo genera margen en <strong>dos puntos</strong> y suma <strong>costos operacionales</strong> que InfoPet cobra a SMC:</p>
 <table>
 <thead><tr>
 <th>Capa</th>
 <th>Actor</th>
 <th>Precio referencia</th>
-<th>Margen estimado</th>
+<th>Margen / costo</th>
 </tr></thead>
 <tbody>
 <tr>
@@ -83,25 +84,31 @@
 <td>—</td>
 </tr>
 <tr>
-<td>Venta interna</td>
+<td>Venta interna (productos)</td>
 <td>SMC → InfoPet (precio transfer)</td>
 <td>Costo + margen InfoPet</td>
-<td>~15–25%</td>
+<td>~15–30%</td>
+</tr>
+<tr>
+<td>Costos operacionales</td>
+<td>InfoPet → SMC (con IVA)</td>
+<td>Logística + despacho + flete + bodega</td>
+<td>~5–10% del contrato</td>
 </tr>
 <tr>
 <td>Venta al Estado</td>
 <td>SMC → Carabineros</td>
-<td>Precio licitación</td>
-<td>~20–30% sobre transfer</td>
+<td>Precio licitación 967490-7-LE26</td>
+<td>~15–25% sobre transfer + ops</td>
 </tr>
 <tr>
 <td><strong>Margen total cadena</strong></td>
 <td></td>
 <td></td>
-<td><strong>~35–55% sobre costo</strong></td>
+<td><strong>~30–50% sobre costo</strong></td>
 </tr>
 </tbody></table>
-<div class="box box-warning"><div class="box-title">⚠️ ⚠️ Variables que comprimen margen</div><p>Boleta de seriedad de oferta · garantía de fiel cumplimiento (5–10% del contrato) · logística y despacho a cuarteles · plazo de pago Estado 30–60 días hábiles · IVA diferido. El margen real neto puede ser menor al estimado sin estos costos.</p></div>
+<div class="box box-warning"><div class="box-title">⚠️ Variables que comprimen margen</div><p>Boleta de seriedad de oferta · garantía de fiel cumplimiento (5–10% del contrato) · <strong>costos operacionales (logística, despacho, flete, bodega)</strong> · plazo de pago Estado 30–60 días hábiles · IVA diferido. Estos costos ahora están explícitos en la calculadora de la sección 07.</p></div>
 <p>---</p>
   <div class="page-footer"><span>Banco SMC · Proyectos</span><span>05</span></div>
 </section>
@@ -109,6 +116,12 @@
   <h2><span class="h2-num">04</span>Contexto B2G</h2>
   <p><strong>Canal:</strong> ChileCompra · Mercado Público (www.mercadopublico.cl)</p>
 <p><strong>Organismo comprador:</strong> Carabineros de Chile · Dirección de Logística</p>
+<div class="box box-decision" style="margin:14px 0;">
+  <div class="box-title">🆔 Licitación activa identificada</div>
+  <p><strong>ID Mercado Público:</strong> <code style="background:#FFE600; color:#1A2734; padding:2px 8px; border-radius:4px; font-weight:800; font-size:14px; letter-spacing:0.5px;">967490-7-LE26</code></p>
+  <p style="margin-top:6px;"><strong>Ficha pública:</strong> <a href="https://www.mercadopublico.cl/Procurement/Modules/RFB/DetailsAcquisition.aspx?idlicitacion=967490-7-LE26" target="_blank" rel="noopener">mercadopublico.cl/...?idlicitacion=967490-7-LE26</a></p>
+  <p style="margin-top:6px; font-size:12px; color:#5C6B7F;">Modalidad <strong>LE</strong> (Licitación pública entre $100M y $1.000M CLP · plazo 30 días hábiles). Sobre esta ficha se arman los costos del flujo, garantías y oferta económica.</p>
+</div>
 <p><strong>Tipo de compra esperada:</strong></p>
 <table>
 <thead><tr>
@@ -195,8 +208,8 @@
        ═══════════════════════════════════════════════════ -->
   <div class="iva-calc" id="iva-calc" style="background:#FFFFFF; border:1px solid #E1E7EF; border-radius:14px; padding:20px; margin:24px 0; box-shadow:0 1px 3px rgba(45,50,119,0.08); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
 
-    <!-- INPUTS -->
-    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px;">
+    <!-- INPUTS · base -->
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:14px;">
       <div>
         <label style="display:block; font-size:11px; color:#5C6B7F; font-weight:600; margin-bottom:6px;">💵 Costo proveedor (neto)</label>
         <div style="position:relative;">
@@ -221,7 +234,7 @@
           <input type="number" id="margenSMC" value="23" min="0" max="100" step="1" style="width:100%; padding:10px 24px 10px 10px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
           <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">%</span>
         </div>
-        <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Sobre precio transfer InfoPet</div>
+        <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Sobre precio transfer + logística</div>
       </div>
 
       <div>
@@ -231,6 +244,53 @@
           <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">%</span>
         </div>
         <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Chile estándar 19%</div>
+      </div>
+    </div>
+
+    <!-- INPUTS · costos operacionales (logística B2G) -->
+    <div style="background:#F8FAFC; border:1px dashed #94A3B8; border-radius:10px; padding:14px; margin-bottom:24px;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+        <span style="font-size:16px;">🚚</span>
+        <div style="font-size:12px; font-weight:800; color:#1A2734; letter-spacing:0.3px;">Costos operacionales · entrega a Carabineros</div>
+        <div style="font-size:10px; color:#8A95A5; margin-left:auto;">Cobra InfoPet a SMC (con IVA · crédito fiscal)</div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px;">
+        <div>
+          <label style="display:block; font-size:11px; color:#5C6B7F; font-weight:600; margin-bottom:6px;">📋 Logística</label>
+          <div style="position:relative;">
+            <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">$</span>
+            <input type="number" id="costoLogistica" value="350000" min="0" step="10000" style="width:100%; padding:10px 10px 10px 24px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
+          </div>
+          <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Coordinación + picking</div>
+        </div>
+        <div>
+          <label style="display:block; font-size:11px; color:#5C6B7F; font-weight:600; margin-bottom:6px;">📦 Despacho</label>
+          <div style="position:relative;">
+            <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">$</span>
+            <input type="number" id="costoDespacho" value="280000" min="0" step="10000" style="width:100%; padding:10px 10px 10px 24px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
+          </div>
+          <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Última milla a cuarteles</div>
+        </div>
+        <div>
+          <label style="display:block; font-size:11px; color:#5C6B7F; font-weight:600; margin-bottom:6px;">🚛 Flete / camión</label>
+          <div style="position:relative;">
+            <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">$</span>
+            <input type="number" id="costoFlete" value="650000" min="0" step="10000" style="width:100%; padding:10px 10px 10px 24px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
+          </div>
+          <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Transporte largo · pallets</div>
+        </div>
+        <div>
+          <label style="display:block; font-size:11px; color:#5C6B7F; font-weight:600; margin-bottom:6px;">🏬 Bodega</label>
+          <div style="position:relative;">
+            <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#5C6B7F; font-weight:600;">$</span>
+            <input type="number" id="costoBodega" value="220000" min="0" step="10000" style="width:100%; padding:10px 10px 10px 24px; border:1px solid #E1E7EF; border-radius:8px; font-size:14px; color:#1A2734;">
+          </div>
+          <div style="font-size:10px; color:#8A95A5; margin-top:4px;">Almacenaje pre-despacho</div>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid #E1E7EF; font-size:12px;">
+        <span style="color:#5C6B7F; font-weight:600;">Total operacional (neto):</span>
+        <span id="costoOperacionalTotal" style="font-weight:800; color:#1A2734;">$1.500.000</span>
       </div>
     </div>
 
@@ -345,7 +405,8 @@
     <div style="margin-top:20px;">
       <div style="font-size:11px; color:#5C6B7F; font-weight:700; text-transform:uppercase; margin-bottom:6px; letter-spacing:0.5px;">🧱 Composición del precio final</div>
       <div style="display:flex; height:32px; border-radius:8px; overflow:hidden; border:1px solid #E1E7EF;" id="composicionBar">
-        <div style="background:#94A3B8; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:11px; font-weight:700;" id="barCosto" title="Costo proveedor">Costo</div>
+        <div style="background:#94A3B8; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:11px; font-weight:700;" id="barCosto" title="Costo proveedor (productos)">Costo</div>
+        <div style="background:#FB923C; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:11px; font-weight:700;" id="barOps" title="Costos operacionales (logística + despacho + flete + bodega)">Ops</div>
         <div style="background:#009EE3; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:11px; font-weight:700;" id="barInfoPet" title="Margen InfoPet">InfoPet</div>
         <div style="background:#FFE600; display:flex; align-items:center; justify-content:center; color:#5C4F00; font-size:11px; font-weight:700;" id="barSMC" title="Margen SMC">SMC</div>
         <div style="background:#F23D4F; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:11px; font-weight:700;" id="barIVA" title="IVA total">IVA</div>
@@ -386,21 +447,30 @@
     var mSMC = num('margenSMC') / 100;
     var iva = num('ivaRate') / 100;
 
+    // Costos operacionales (InfoPet → SMC con IVA)
+    var costoLog = num('costoLogistica');
+    var costoDes = num('costoDespacho');
+    var costoFle = num('costoFlete');
+    var costoBod = num('costoBodega');
+    var costoOpNeto = costoLog + costoDes + costoFle + costoBod;
+    var costoOpIVA = costoOpNeto * iva;
+    set('costoOperacionalTotal', fmt(costoOpNeto));
+
     // PROVEEDOR
     var provNeto = costo;
     var provIVA = costo * iva;
     var provFactura = provNeto + provIVA;
     var provPagar = provIVA;
 
-    // INFOPET
-    var infoNeto = costo * (1 + mInfo);
+    // INFOPET (transfer + recharga costos op a precio)
+    var infoNeto = costo * (1 + mInfo) + costoOpNeto;
     var infoIVA = infoNeto * iva;
     var infoFactura = infoNeto + infoIVA;
     var infoCredito = provIVA;
     var infoPagar = infoIVA - infoCredito;
-    var infoMargen = infoNeto - costo;
+    var infoMargen = infoNeto - costo - costoOpNeto; // margen real sobre productos solamente
 
-    // SMC
+    // SMC (margen sobre transfer + logística)
     var smcNeto = infoNeto * (1 + mSMC);
     var smcIVA = smcNeto * iva;
     var smcFactura = smcNeto + smcIVA;
@@ -444,29 +514,30 @@
     set('kpiIvaNetoSub', 'InfoPet + SMC pagan al SII');
     set('kpiTasaEfectiva', tasaEfectiva.toFixed(1) + '%');
 
-    // Bar composición
+    // Bar composición (ahora con 5 segmentos: costo · ops · infoPet · smc · iva)
     var total = smcFactura;
     if (total > 0) {
       function pct(n){ return Math.max(0, (n / total) * 100); }
       var pCosto = pct(costo);
+      var pOps = pct(costoOpNeto);
       var pInfo = pct(infoMargen);
       var pSMC = pct(smcMargen);
       var pIVA = pct(smcIVA);
-      document.getElementById('barCosto').style.width = pCosto + '%';
-      document.getElementById('barInfoPet').style.width = pInfo + '%';
-      document.getElementById('barSMC').style.width = pSMC + '%';
-      document.getElementById('barIVA').style.width = pIVA + '%';
-      // ocultar texto si la barra es muy chica
-      document.getElementById('barCosto').style.fontSize = pCosto < 8 ? '0' : '11px';
-      document.getElementById('barInfoPet').style.fontSize = pInfo < 8 ? '0' : '11px';
-      document.getElementById('barSMC').style.fontSize = pSMC < 8 ? '0' : '11px';
-      document.getElementById('barIVA').style.fontSize = pIVA < 8 ? '0' : '11px';
+      var ids = ['barCosto','barOps','barInfoPet','barSMC','barIVA'];
+      var vals = [pCosto, pOps, pInfo, pSMC, pIVA];
+      ids.forEach(function(id, i){
+        var el = document.getElementById(id);
+        if (el) {
+          el.style.width = vals[i] + '%';
+          el.style.fontSize = vals[i] < 8 ? '0' : '11px';
+        }
+      });
       set('barTotalLabel', fmt(total) + ' total');
     }
   }
 
   // Bind inputs
-  ['costoBase','margenInfoPet','margenSMC','ivaRate'].forEach(function(id){
+  ['costoBase','margenInfoPet','margenSMC','ivaRate','costoLogistica','costoDespacho','costoFlete','costoBodega'].forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.addEventListener('input', recalc);
   });
