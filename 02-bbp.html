@@ -128,8 +128,209 @@
   <line x1="450" y1="275" x2="410" y2="310" stroke="#EF4444" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#ar)"/>
   <line x1="550" y1="275" x2="640" y2="310" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#arPurple)"/>
 
-  <text x="460" y="376" text-anchor="middle" font-size="11" fill="#64748B" font-style="italic">+ contabilidad auto · inventario real-time · Cerebro IA · compliance · analytics (transversales)</text>
+  <text x="460" y="376" text-anchor="middle" font-size="11" fill="#64748B" font-style="italic"><!-- Pelotita simulación -->
+  <circle id="bbp-sim-ball" class="hidden" cx="105" cy="48" r="11"/>
 </svg>
+</div>
+<div class="bbp-sim-controls">
+  <button class="bbp-sim-btn" id="bbp-sim-play">▶ Ejecutar simulación</button>
+  <button class="bbp-sim-btn pause" id="bbp-sim-pause" disabled>⏸ Pause</button>
+  <button class="bbp-sim-btn reset" id="bbp-sim-reset" disabled>↺ Reset</button>
+  <span class="bbp-sim-status" id="bbp-sim-status">listo</span>
+</div>
+<div class="bbp-sim-popup" id="bbp-sim-popup">
+  <button class="close" onclick="document.getElementById('bbp-sim-popup').classList.remove('show')">×</button>
+  <h4 id="bbp-sim-popup-title">—</h4>
+  <div class="sub" id="bbp-sim-popup-sub">—</div>
+  <div id="bbp-sim-popup-callout">—</div>
+  <div class="tags" id="bbp-sim-popup-tags"></div>
+</div>
+<div class="bbp-sim-modal-bg" id="bbp-sim-modal-bg" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="bbp-sim-modal" id="bbp-sim-modal">
+    <button class="close" style="position:absolute;top:14px;right:18px;background:none;border:none;font-size:22px;cursor:pointer;color:#94A3B8" onclick="document.getElementById('bbp-sim-modal-bg').classList.remove('show')">×</button>
+    <h3 id="bbp-modal-title">—</h3>
+    <div class="sub" id="bbp-modal-sub" style="color:#64748B;font-size:12px"></div>
+    <div class="callout" id="bbp-modal-callout"></div>
+    <div class="stages" id="bbp-modal-stages"></div>
+  </div>
+</div>
+<script>
+(function(){
+  // Waypoints de la pelotita por proceso (coordenadas SVG viewBox 920×380)
+  var waypoints = [
+    { id: 'P01', x: 105, y: 48 },
+    { id: 'P02', x: 305, y: 48 },
+    { id: 'P03', x: 505, y: 48 },
+    { id: 'P04', x: 720, y: 48 },
+    { id: 'P05', x: 115, y: 160 },
+    { id: 'P06', x: 325, y: 160 },
+    { id: 'P07', x: 530, y: 160 },
+    { id: 'P08', x: 735, y: 160 },
+    { id: 'P09', x: 450, y: 250 },
+    { id: 'P11', x: 180, y: 335 },
+    { id: 'P10', x: 410, y: 335 },
+    { id: 'P12', x: 640, y: 335 }
+  ];
+
+  // Map SVG box id por proceso (para highlight)
+  var procesos = {
+    P01: { boxIdx: 0 }, P02: { boxIdx: 1 }, P03: { boxIdx: 2 }, P04: { boxIdx: 3 },
+    P05: { boxIdx: 4 }, P06: { boxIdx: 5 }, P07: { boxIdx: 6 }, P08: { boxIdx: 7 },
+    P09: { boxIdx: 8 }, P11: { boxIdx: 9 }, P10: { boxIdx: 10 }, P12: { boxIdx: 11 }
+  };
+
+  function getBbpData() {
+    var s = document.querySelector('script[data-for="bbp-procesos"]');
+    try { return JSON.parse(s.textContent); } catch(e) { return null; }
+  }
+
+  var ball = document.getElementById('bbp-sim-ball');
+  var btnPlay = document.getElementById('bbp-sim-play');
+  var btnPause = document.getElementById('bbp-sim-pause');
+  var btnReset = document.getElementById('bbp-sim-reset');
+  var status = document.getElementById('bbp-sim-status');
+  var popup = document.getElementById('bbp-sim-popup');
+  var popupTitle = document.getElementById('bbp-sim-popup-title');
+  var popupSub = document.getElementById('bbp-sim-popup-sub');
+  var popupCallout = document.getElementById('bbp-sim-popup-callout');
+  var popupTags = document.getElementById('bbp-sim-popup-tags');
+
+  var current = 0;
+  var paused = false;
+  var running = false;
+  var timer = null;
+  var bbpData = null;
+
+  function setBallPos(x, y) {
+    ball.setAttribute('cx', x);
+    ball.setAttribute('cy', y);
+  }
+
+  function showPopupForProcess(pid) {
+    if (!bbpData) bbpData = getBbpData();
+    var scenarios = bbpData && bbpData.scenarios;
+    var proc = scenarios && scenarios[pid];
+    if (!proc) return;
+    popupTitle.textContent = proc.title || pid;
+    popupSub.textContent = proc.sub || '';
+    popupCallout.textContent = proc.callout || '';
+    popupTags.innerHTML = '';
+    (proc.tags || []).forEach(function(t){
+      var s = document.createElement('span');
+      s.className = 'tag';
+      s.textContent = t;
+      popupTags.appendChild(s);
+    });
+    // Posicionar popup cerca del SVG
+    var svgRect = document.querySelector('#00-mapa-visual-end-to-end svg').getBoundingClientRect();
+    popup.style.top = (svgRect.top + window.scrollY + 30) + 'px';
+    popup.style.left = (svgRect.left + 20) + 'px';
+    popup.classList.add('show');
+  }
+
+  function highlightBox(pid) {
+    // Remove old highlights
+    document.querySelectorAll('.bbp-sim-active').forEach(function(g){ g.classList.remove('bbp-sim-active'); });
+    var svg = document.querySelector('#00-mapa-visual-end-to-end svg');
+    var groups = svg.querySelectorAll('g');
+    var idx = procesos[pid] && procesos[pid].boxIdx;
+    if (idx !== undefined && groups[idx]) groups[idx].classList.add('bbp-sim-active');
+  }
+
+  function step() {
+    if (paused || !running) return;
+    if (current >= waypoints.length) {
+      stop();
+      status.textContent = '✓ flujo completo';
+      return;
+    }
+    var wp = waypoints[current];
+    setBallPos(wp.x, wp.y);
+    highlightBox(wp.id);
+    showPopupForProcess(wp.id);
+    status.textContent = wp.id + ' · ' + (current+1) + '/' + waypoints.length;
+    current++;
+    timer = setTimeout(step, 2200);
+  }
+
+  function play() {
+    if (!bbpData) bbpData = getBbpData();
+    running = true; paused = false;
+    btnPlay.disabled = true;
+    btnPause.disabled = false;
+    btnReset.disabled = false;
+    ball.classList.remove('hidden');
+    if (current === 0) {
+      var wp = waypoints[0];
+      setBallPos(wp.x, wp.y);
+    }
+    step();
+  }
+
+  function pause() {
+    paused = !paused;
+    btnPause.textContent = paused ? '▶ Continuar' : '⏸ Pause';
+    if (!paused && running) step();
+    else if (timer) clearTimeout(timer);
+    status.textContent = paused ? 'pausa' : 'corriendo';
+  }
+
+  function stop() {
+    running = false; paused = false;
+    if (timer) clearTimeout(timer);
+    btnPlay.disabled = false;
+    btnPause.disabled = true;
+    btnPause.textContent = '⏸ Pause';
+  }
+
+  function reset() {
+    stop();
+    current = 0;
+    ball.classList.add('hidden');
+    popup.classList.remove('show');
+    document.querySelectorAll('.bbp-sim-active').forEach(function(g){ g.classList.remove('bbp-sim-active'); });
+    btnReset.disabled = true;
+    status.textContent = 'listo';
+  }
+
+  btnPlay.addEventListener('click', play);
+  btnPause.addEventListener('click', pause);
+  btnReset.addEventListener('click', reset);
+
+  // Click sobre cualquier box del SVG mapa → abrir modal detalle
+  function openModal(pid) {
+    if (!bbpData) bbpData = getBbpData();
+    var proc = bbpData && bbpData.scenarios && bbpData.scenarios[pid];
+    if (!proc) return;
+    document.getElementById('bbp-modal-title').textContent = proc.title || pid;
+    document.getElementById('bbp-modal-sub').textContent = proc.sub || '';
+    document.getElementById('bbp-modal-callout').textContent = proc.callout || '';
+    var stagesDiv = document.getElementById('bbp-modal-stages');
+    stagesDiv.innerHTML = '';
+    (proc.stages || []).forEach(function(s){
+      var d = document.createElement('div');
+      d.className = 'stage-pill';
+      d.innerHTML = '<div class="num">ETAPA ' + (s.num||'') + '</div><div style="font-weight:700;margin:4px 0">' + (s.name||'') + '</div><div style="font-size:10px;color:#64748B">' + (s.boxes||[]).length + ' pasos</div>';
+      stagesDiv.appendChild(d);
+    });
+    document.getElementById('bbp-sim-modal-bg').classList.add('show');
+  }
+
+  // Bind clicks a los groups del SVG (por orden = boxIdx)
+  document.addEventListener('DOMContentLoaded', function(){
+    var svg = document.querySelector('#00-mapa-visual-end-to-end svg');
+    if (!svg) return;
+    var groups = svg.querySelectorAll('g');
+    var orderedPids = ['P01','P02','P03','P04','P05','P06','P07','P08','P09','P11','P10','P12'];
+    orderedPids.forEach(function(pid, i){
+      var g = groups[i];
+      if (!g) return;
+      g.style.cursor = 'pointer';
+      g.addEventListener('click', function(){ openModal(pid); });
+    });
+  });
+})();
+</script>
 </div>
   <div class="page-footer"><span>Banco SMC · Marketplace SMC</span><span>03</span></div>
 </section>
