@@ -32,6 +32,7 @@
     <li><a href="#cobertura">02 · Cobertura (qué prueba)</a></li>
     <li><a href="#evidencia">03 · Evidencia · última corrida</a></li>
     <li><a href="#criterios">04 · Criterios y notas</a></li>
+    <li><a href="#clic">05 · Plan de clic UAT (paridad MP)</a></li>
   </ol>
 </section>
 
@@ -89,6 +90,27 @@ bash scripts/smoke-b2g.sh https://marketplace.smconnection.cl</code></pre>
     <li>El script corre igual contra localhost o PROD — recomendado correrlo post-deploy.</li>
     <li>Pendiente Fase 2 (no cubierto aún por datos reales): UTM del día, región/fecha publicación (OCDS), compras/reclamos del comprador, ingesta bulk Compra Ágil. Esos campos muestran "s/d".</li>
   </ul>
+</section>
+
+<section class="page" id="clic">
+  <h1>05 · Plan de clic UAT · paridad Mercado Público</h1>
+  <p>Pruebas manuales paso a paso para verificar que el marketplace entrega la misma info que Mercado Público. Tester sigue los clics y compara con mercadopublico.cl.</p>
+  <table><thead><tr><th>#</th><th>Acción (clic)</th><th>Esperado</th><th>Resultado real (2026-06-18)</th></tr></thead><tbody>
+    <tr><td>1</td><td>Abrir Licitaciones (sidebar → Licitaciones Workzone)</td><td>Carga lista + filtros izquierda + KPIs</td><td>✅ OK</td></tr>
+    <tr><td>2</td><td>Buscar <code>3623-20-LS26</code> en "Buscar"</td><td>Aparece la licitación real</td><td>✅ Aparece · SERVICIO PROFESIONAL FORMULADOR · I. Mun. Mafil · $21.864.000 (== MP)</td></tr>
+    <tr><td>3</td><td>Buscar un código que NO esté en BD</td><td>Botón "Traer de Mercado Público" → al click la trae (OCDS por código)</td><td>✅ OK (endpoint buscar-mp · persiste y recarga)</td></tr>
+    <tr><td>4</td><td>Expandir la fila</td><td>Ficha: monto CLP+UTM, organismo, fechas, score, DECISIÓN</td><td>✅ OK · compras/reclamos en "s/d" (Fase 2)</td></tr>
+    <tr><td>5</td><td>Ir a Compra Ágil · expandir 2694-122-COT26</td><td>Ficha COT (alarma, Cartagena, $3.000.000)</td><td>✅ OK (seed real)</td></tr>
+    <tr><td>6</td><td>Buscar palabra clave <code>carne</code></td><td>Resultados como MP (14)</td><td>⚠️ Fase 2 · OCDS no busca por keyword y el buscador MP es iframe/SPA → requiere bulk Datos Abiertos</td></tr>
+  </tbody></table>
+  <h2>Bug encontrado y corregido en la corrida</h2>
+  <p><b>UAT-FIX-01:</b> buscar el código de un <b>servicio</b> (3623-20-LS26) daba 0 resultados porque el toggle "Solo productos" (default ON) ocultaba servicios. <b>Corregido:</b> con búsqueda explícita el filtro "Solo productos" no aplica → muestra lo buscado aunque sea servicio. Verificado (commit 855e71d).</p>
+  <h2>Estado de paridad MP↔Marketplace</h2>
+  <table><thead><tr><th>Capacidad</th><th>Estado</th></tr></thead><tbody>
+    <tr><td>Buscar por CÓDIGO (ej. 3623-20-LS26)</td><td>🟢 LIVE · OCDS por código + on-demand "Traer de MP"</td></tr>
+    <tr><td>Ingesta por fecha (todos los rubros)</td><td>🟢 LIVE · quitado el filtro canino</td></tr>
+    <tr><td>Buscar por KEYWORD (carne) · conteos Publicado/No-Publicado · compras/reclamos</td><td>🟡 Fase 2 · sólo en el buscador (iframe/SPA, sin puppeteer, Amplify no corre Chrome) o bulk Datos Abiertos</td></tr>
+  </tbody></table>
 </section>
 
 </div>
