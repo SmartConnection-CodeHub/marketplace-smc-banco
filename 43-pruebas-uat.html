@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>43 · Pruebas UAT · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+</head>
+<body>
+<nav class="doc-nav"><a href="42-marketplace-licitaciones-compra-agil.html">◂ doc anterior</a><span class="nav-center">DOC 43 · CALIDAD · PRUEBAS UAT</span><a href="index.html">índice ▸</a></nav>
+<div class="doc">
+
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Calidad</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 43 · Calidad / QA</div>
+    <h1 class="cover-title">Pruebas UAT</h1>
+    <p class="cover-subtitle">Script de pruebas reusable + evidencia de las corridas · Canal B2G (Licitaciones &amp; Compra Ágil) + B2C (Mercado Libre / SoloTodo) del Marketplace.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-06-18</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">User-QAS + Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 16/16 PASS · todo verde</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial · Uso interno</div></div>
+</section>
+
+<section class="page">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol>
+    <li><a href="#correr">01 · Cómo correr las pruebas</a></li>
+    <li><a href="#cobertura">02 · Cobertura (qué prueba)</a></li>
+    <li><a href="#evidencia">03 · Evidencia · última corrida</a></li>
+    <li><a href="#criterios">04 · Criterios y notas</a></li>
+  </ol>
+</section>
+
+<section class="page" id="correr">
+  <h1>01 · Cómo correr las pruebas</h1>
+  <p>Script reusable y versionado en el repo del Marketplace: <code>scripts/smoke-b2g.sh</code>. Hace PASS/FAIL por check, crea filas de prueba y las <b>limpia al final</b>, y sale 0 si todo pasa.</p>
+  <pre><code># local (next dev en :3020)
+bash scripts/smoke-b2g.sh
+
+# producción
+bash scripts/smoke-b2g.sh https://marketplace.smconnection.cl</code></pre>
+  <p>Requiere <code>.env.local</code> con <code>CRON_SECRET</code> y <code>SUPABASE_SERVICE_KEY</code> (para los checks autenticados y el cleanup).</p>
+</section>
+
+<section class="page" id="cobertura">
+  <h1>02 · Cobertura (16 checks)</h1>
+  <table><thead><tr><th>Grupo</th><th>Checks</th></tr></thead><tbody>
+    <tr><td>B2G · Licitaciones</td><td>seguimiento 200 · optimizar canino ($/kg) · optimizar genérico (sin "no aplica") · documentos/eventos 200 (no blind)</td></tr>
+    <tr><td>B2G · Proveedores</td><td>alta (validado) · upsert refresca precio (no 409) · cleanup</td></tr>
+    <tr><td>B2G · RADAR</td><td>discovery SoloTodo → candidatos validado=false</td></tr>
+    <tr><td>B2G · Compra Ágil</td><td>listado 200 (seed + total mercado)</td></tr>
+    <tr><td>B2G · Cron</td><td>sync-licitaciones 401/Bearer · cleanup-hist Bearer</td></tr>
+    <tr><td>B2C · Marketplace</td><td>categories · search · meli items (truncated) · items-hist guard 400</td></tr>
+  </tbody></table>
+</section>
+
+<section class="page" id="evidencia">
+  <h1>03 · Evidencia · última corrida</h1>
+  <p><b>2026-06-18 11:11</b> · base <code>http://localhost:3020</code> (Supabase prod) · <b>RESULTADO: PASS=16 · FAIL=0 · 🟢 TODO VERDE</b></p>
+  <table><thead><tr><th>#</th><th>Check</th><th>Resultado</th></tr></thead><tbody>
+    <tr><td>1</td><td>seguimiento 200 (embudo 13)</td><td>✅ PASS</td></tr>
+    <tr><td>2</td><td>optimizar canino ($/kg)</td><td>✅ PASS</td></tr>
+    <tr><td>3</td><td>optimizar genérico (no-canino, sin "no aplica")</td><td>✅ PASS</td></tr>
+    <tr><td>4</td><td>documentos 200 (no blind)</td><td>✅ PASS</td></tr>
+    <tr><td>5</td><td>eventos 200 (no blind)</td><td>✅ PASS</td></tr>
+    <tr><td>6</td><td>proveedores alta (validado)</td><td>✅ PASS</td></tr>
+    <tr><td>7</td><td>proveedores upsert (no 409)</td><td>✅ PASS</td></tr>
+    <tr><td>8</td><td>RADAR discovery (3 candidatos SoloTodo)</td><td>✅ PASS</td></tr>
+    <tr><td>9</td><td>compra-agil 200 (total 5 · mercado 8.332)</td><td>✅ PASS</td></tr>
+    <tr><td>10</td><td>sync-licitaciones 401 sin auth</td><td>✅ PASS</td></tr>
+    <tr><td>11</td><td>sync-licitaciones Bearer 200</td><td>✅ PASS</td></tr>
+    <tr><td>12</td><td>cleanup-hist Bearer 200</td><td>✅ PASS</td></tr>
+    <tr><td>13</td><td>marketplace categories 200</td><td>✅ PASS</td></tr>
+    <tr><td>14</td><td>marketplace search 200 (n 3.334)</td><td>✅ PASS</td></tr>
+    <tr><td>15</td><td>meli items 200 (truncated=false)</td><td>✅ PASS</td></tr>
+    <tr><td>16</td><td>items-hist 400 sin id (guard)</td><td>✅ PASS</td></tr>
+  </tbody></table>
+</section>
+
+<section class="page" id="criterios">
+  <h1>04 · Criterios y notas</h1>
+  <ul>
+    <li>Cada corrida limpia sus filas de prueba en Supabase (sin residuo).</li>
+    <li>Los checks autenticados (cron) validan 401 sin auth y 200 con <code>Bearer CRON_SECRET</code>.</li>
+    <li>El script corre igual contra localhost o PROD — recomendado correrlo post-deploy.</li>
+    <li>Pendiente Fase 2 (no cubierto aún por datos reales): UTM del día, región/fecha publicación (OCDS), compras/reclamos del comprador, ingesta bulk Compra Ágil. Esos campos muestran "s/d".</li>
+  </ul>
+</section>
+
+</div>
+</body>
+</html>
