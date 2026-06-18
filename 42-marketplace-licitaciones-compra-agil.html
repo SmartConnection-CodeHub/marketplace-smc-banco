@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>42 · Licitaciones &amp; Compra Ágil · Marketplace SMC</title>
+<link rel="stylesheet" href="_styles.css">
+<link rel="stylesheet" href="_diagram-kit.css">
+</head>
+<body>
+<nav class="doc-nav"><a href="41-changelog.html">◂ doc anterior</a><span class="nav-center">DOC 42 · PRODUCTO TÉCNICO · CANAL B2G</span><a href="index.html">índice ▸</a></nav>
+<div class="doc">
+
+<section class="cover">
+  <div class="cover-header"><div class="cover-brand">SMART CONNECTION</div><div>Banco · Canal B2G</div></div>
+  <div class="cover-center">
+    <div class="cover-doc-num">Documento 42 · Producto Técnico</div>
+    <h1 class="cover-title">Licitaciones &amp; Compra Ágil</h1>
+    <p class="cover-subtitle">Canal B2G del Marketplace · réplica de Mercado Público en estilo workzone SMC · filtros, fichas, pipeline comercial, RADAR de proveedores, base de datos, APIs y paridad MP↔Marketplace.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Versión</div><div class="cover-meta-value">1.0</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha</div><div class="cover-meta-value">2026-06-18</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Autor</div><div class="cover-meta-value">Architect + Backend + Hoku + Cerebro</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Status</div><div class="cover-meta-value">🟢 Live en PROD (Fase 1) · Fase 2 datos en curso</div></div>
+    </div>
+  </div>
+  <div class="cover-footer"><div>Smart Connection SpA · Rut 76.811.863-9</div><div>Confidencial · Uso interno</div></div>
+</section>
+
+<section class="page">
+  <div class="toc-title">Tabla de contenidos</div>
+  <h1>Índice</h1>
+  <ol>
+    <li><a href="#premisa">01 · Premisa y alcance</a></li>
+    <li><a href="#licitaciones">02 · Licitaciones (ex Oportunidades) · fusión</a></li>
+    <li><a href="#compra-agil">03 · Compra Ágil · sección nueva</a></li>
+    <li><a href="#bd">04 · Modelo de datos (Supabase)</a></li>
+    <li><a href="#apis">05 · APIs (lectura + sync)</a></li>
+    <li><a href="#integraciones">06 · Integraciones escalables (patrón 2-niveles)</a></li>
+    <li><a href="#paridad">07 · Paridad MP↔Marketplace (2 scripts)</a></li>
+    <li><a href="#fase2">08 · Fase 2 · datos exactos</a></li>
+  </ol>
+</section>
+
+<section class="page" id="premisa">
+  <h1>01 · Premisa y alcance</h1>
+  <p>El canal <b>B2G</b> del Marketplace replica las dos vías de compra del Estado en Mercado Público — <b>Licitaciones</b> y <b>Compra Ágil</b> — con el estilo del workzone SMC y, encima, un <b>pipeline comercial</b> propio (detección → seguimiento → decisión → oferta) que Mercado Público no da.</p>
+  <p>Se renombró "Oportunidades" → <b>"Licitaciones"</b> en toda la UI. Se sumó la sección <b>Compra Ágil</b>. Ambas comparten el mismo patrón: lista expandible (clic = despliega ficha + DECISIÓN + score) y filtros tipo Mercado Público.</p>
+  <table><thead><tr><th>Vía</th><th>Qué es</th><th>Sección</th></tr></thead><tbody>
+    <tr><td>Licitaciones</td><td>Procesos > 100 UTM (LE/LP/LR…)</td><td>/dashboard/mercado-publico/oportunidades</td></tr>
+    <tr><td>Compra Ágil</td><td>Compras &lt; 100 UTM · publicar+cotizar en 1 paso</td><td>/dashboard/mercado-publico/compra-agil</td></tr>
+  </tbody></table>
+</section>
+
+<section class="page" id="licitaciones">
+  <h1>02 · Licitaciones (ex Oportunidades) · fusión</h1>
+  <p>Fusión: se conservó 100% la lista expandible + DECISIÓN + SCORE existentes, y se sumaron los filtros de Mercado Público y la data enriquecida.</p>
+  <h2>Filtros (sidebar izquierdo)</h2>
+  <p>Rubro → Subcategoría → Producto (dependientes) · Región · Tipo de licitación (<b>nombre completo</b>: LP → "Licitación Pública ≥ 1.000 UTM e inferior a 2.000 UTM") · Estado · Presupuesto (Publicado / No publicado) · Fecha de cierre (Este mes / Próximo / 3m+) · Garantía · Comprador · Proveedor · Score mínimo · Mercado · "Solo productos" (excluye servicios).</p>
+  <h2>Ficha enriquecida (al desplegar)</h2>
+  <p>Monto en <b>CLP + UTM</b> · Tipo nombre completo · Región / mercado · Fecha de publicación · <b>Compras efectuadas</b> y <b>Reclamos por pago no oportuno</b> del comprador (señales de riesgo de pago) · más el SCORE de 6 preguntas y el panel DECISIÓN (A ofertar / Ofertada [manual, gate con correo+fecha] / Descartar · quién oferta · nota · análisis profundo · flujo automático).</p>
+</section>
+
+<section class="page" id="compra-agil">
+  <h1>03 · Compra Ágil · sección nueva</h1>
+  <p>Réplica del buscador de Compra Ágil de Mercado Público, en estilo workzone SMC y con el mismo patrón fusionado.</p>
+  <ul>
+    <li>KPIs: Compras Ágiles · Recibiendo cotizaciones · $ en juego · con riesgo (demandas).</li>
+    <li>Buscador: palabra/N° · Estado · Fecha desde/hasta · Región · Organismo.</li>
+    <li>Lista expandible → <b>Ficha</b> (Nombre · Descripción · Organismo+RUT · Dirección de entrega · Plazo · Presupuesto CLP+UTM · Publicada · Finaliza · Demandas ante Tribunal) + DECISIÓN (A cotizar / Cotizada / Descartar).</li>
+  </ul>
+  <p>Ejemplo real cargado: <code>2694-122-COT26</code> · Servicio de alarma · I. Municipalidad de Cartagena · $3.000.000.</p>
+</section>
+
+<section class="page" id="bd">
+  <h1>04 · Modelo de datos (Supabase · yjjtbwfgtoepsevvkzta)</h1>
+  <table><thead><tr><th>Tabla</th><th>Rol</th></tr></thead><tbody>
+    <tr><td>licitaciones</td><td>Licitaciones B2G (+ columnas nuevas: region, fecha_publicacion)</td></tr>
+    <tr><td>b2g_compra_agil</td><td><b>Nueva</b> · Compras Ágiles (&lt; 100 UTM)</td></tr>
+    <tr><td>b2g_proveedor_precio</td><td>Abastecimiento: proveedores+precio/unidad (RADAR descubre, humano valida)</td></tr>
+    <tr><td>b2g_utm_diaria</td><td><b>Nueva</b> · valor UTM del día (CLP↔UTM)</td></tr>
+    <tr><td>b2g_seguimiento (+canal)</td><td>Pipeline comercial · canal = licitacion | compra_agil</td></tr>
+    <tr><td>b2g_md_org (+métricas)</td><td>Comprador · compras_efectuadas_12m, reclamos_pago_12m</td></tr>
+  </tbody></table>
+  <p>Todas con RLS activo · acceso server-side (service_role). Aditivas (IF NOT EXISTS).</p>
+</section>
+
+<section class="page" id="apis">
+  <h1>05 · APIs</h1>
+  <h2>Lectura</h2>
+  <table><thead><tr><th>Endpoint</th><th>Qué hace</th></tr></thead><tbody>
+    <tr><td>POST /api/mercado-publico/optimizar-oferta</td><td>Recomendación IA por unidad (genérico, no solo $/kg) · degradación elegante si la IA rate-limita</td></tr>
+    <tr><td>GET/POST/PATCH /api/mercado-publico/proveedores</td><td>Abastecimiento: listar / alta (upsert) / validar (HITL)</td></tr>
+    <tr><td>POST /api/mercado-publico/radar-proveedores</td><td>RADAR auto-discovery (SoloTodo) · candidatos a validar</td></tr>
+    <tr><td>GET /api/mercado-publico/compra-agil</td><td>Lista Compra Ágil (DB + seed fallback · filtros)</td></tr>
+    <tr><td>GET /api/meli/me/items-hist</td><td>Historial de ofertas MeLi (serie temporal)</td></tr>
+  </tbody></table>
+  <h2>Sync / Cron (Bearer CRON_SECRET)</h2>
+  <table><thead><tr><th>Endpoint</th><th>Qué hace</th></tr></thead><tbody>
+    <tr><td>GET /api/cron/sync-licitaciones</td><td>Paridad incremental Licitaciones (OCDS)</td></tr>
+    <tr><td>GET /api/cron/sync-compra-agil</td><td>Paridad Compra Ágil (API 403 → bulk Datos Abiertos)</td></tr>
+    <tr><td>GET /api/cron/sync-utm</td><td>Valor UTM del día (mindicador.cl) — Fase 2</td></tr>
+    <tr><td>GET /api/cron/cleanup-hist</td><td>Retención 90 días del historial de ofertas</td></tr>
+  </tbody></table>
+</section>
+
+<section class="page" id="integraciones">
+  <h1>06 · Integraciones escalables (patrón 2-niveles)</h1>
+  <p>Con muchas integraciones, el patrón escalable NO es "un POST que lleva GET/PATCH" (rompe REST: cache, semántica, debugging). Lo correcto, en 2 niveles:</p>
+  <ol>
+    <li><b>Nivel recurso (REST):</b> GET/POST/PATCH por ruta de recurso (ej. /proveedores). Cacheable, estándar, debuggeable.</li>
+    <li><b>Nivel registro/adapter:</b> registry de conectores (lib/adapters/suppliers + api-inventory + smc-registry.json) → 1 interfaz, fuentes pluggables (firecrawl/meli/solotodo). Cliente fetch unificado con retry/timeout/fallback/log (patrón runAIChain generalizado).</li>
+    <li><b>Gateway / Playground (acá sí el "2-niveles"):</b> un <code>POST /api/gateway {op:'get'|'patch', recurso, …}</code> que <b>despacha</b> a los recursos REST. Sirve para el Playground (catálogo vivo) y operaciones batch, sin romper REST en producción.</li>
+  </ol>
+  <p>Beneficio: menos superficie, más reuso, crece sin acoplarse. Las secciones Arquitectura / Integración / API Playground reflejan este modelo.</p>
+</section>
+
+<section class="page" id="paridad">
+  <h1>07 · Paridad MP↔Marketplace (2 scripts)</h1>
+  <p>Objetivo: que Licitaciones y Compra Ágil entreguen la misma info que Mercado Público.</p>
+  <table><thead><tr><th>Script</th><th>Opción A (incremental)</th><th>Opción B (paridad total)</th></tr></thead><tbody>
+    <tr><td>sync-licitaciones</td><td>OCDS API por fecha (mp-client + persistLicitacion) · funciona, rate-limit en volumen</td><td>Bulk Datos Abiertos ChileCompra (archivo)</td></tr>
+    <tr><td>sync-compra-agil</td><td>API restringida (HTTP 403) · endpoint configurable</td><td><b>Bulk Datos Abiertos</b> (única vía real)</td></tr>
+  </tbody></table>
+  <p><b>El muro:</b> la API OCDS/Compra Ágil rate-limita y devuelve 403 en volumen. Para paridad <b>total</b> la vía robusta es la descarga masiva de Datos Abiertos, no llamada por llamada. Los 2 scripts incrementales quedan operativos para el día a día; el bulk es Fase 2.</p>
+</section>
+
+<section class="page" id="fase2">
+  <h1>08 · Fase 2 · datos exactos</h1>
+  <table><thead><tr><th>Dato</th><th>Fuente</th><th>Dificultad</th></tr></thead><tbody>
+    <tr><td>Valor UTM del día</td><td>mindicador.cl/api/utm</td><td>🟢 fácil</td></tr>
+    <tr><td>Región + fecha publicación licitación</td><td>OCDS Mercado Público</td><td>🟡 media</td></tr>
+    <tr><td>Publicado / No publicado (conteos)</td><td>derivado de monto</td><td>🟢 fácil</td></tr>
+    <tr><td>Compra Ágil (~8.332)</td><td>Bulk Datos Abiertos</td><td>🟡 media</td></tr>
+    <tr><td>Compras efectuadas + reclamos pago</td><td>ficha del comprador (scrape)</td><td>🔴 difícil</td></tr>
+  </tbody></table>
+  <p>Mientras tanto, esos campos muestran "s/d" — no se inventan números.</p>
+</section>
+
+</div>
+</body>
+</html>
