@@ -109,8 +109,30 @@ bash scripts/smoke-b2g.sh https://marketplace.smconnection.cl</code></pre>
   <table><thead><tr><th>Capacidad</th><th>Estado</th></tr></thead><tbody>
     <tr><td>Buscar por CÓDIGO (ej. 3623-20-LS26)</td><td>🟢 LIVE · OCDS por código + on-demand "Traer de MP"</td></tr>
     <tr><td>Ingesta por fecha (todos los rubros)</td><td>🟢 LIVE · quitado el filtro canino</td></tr>
-    <tr><td>Buscar por KEYWORD (carne) · conteos Publicado/No-Publicado · compras/reclamos</td><td>🟡 Fase 2 · sólo en el buscador (iframe/SPA, sin puppeteer, Amplify no corre Chrome) o bulk Datos Abiertos</td></tr>
+    <tr><td>Buscar por KEYWORD (carne, aseo, medicamento…)</td><td>🟢 LIVE (act. 2026-06-23) · paridad 10/10 por producto sobre la data poblada (ver sección 06)</td></tr>
+    <tr><td>Conteos Publicado/No-Publicado · compras/reclamos · histórico total</td><td>🟡 Fase 2 · bulk Datos Abiertos ChileCompra</td></tr>
   </tbody></table>
+</section>
+
+<section class="page" id="productos">
+  <h1>06 · Paridad por PRODUCTO (10 tipos) · 2026-06-23</h1>
+  <p>Script reusable <code>scripts/paridad-productos.mjs</code>: busca 10 tipos de producto en <b>Mercado Público</b> (estado=activas, por Nombre) y en el <b>Marketplace</b> (BD, título ilike), y compara los conteos. <b>Resultado: 10/10 paridad perfecta</b> — el buscador del marketplace encuentra exactamente lo mismo que MP.</p>
+  <table><thead><tr><th>Producto</th><th>MP (activas)</th><th>Marketplace (publicada)</th><th>Estado</th></tr></thead><tbody>
+    <tr><td>carne</td><td>5</td><td>5</td><td>🟢</td></tr>
+    <tr><td>pan</td><td>37</td><td>37</td><td>🟢</td></tr>
+    <tr><td>computador</td><td>5</td><td>5</td><td>🟢</td></tr>
+    <tr><td>vestuario</td><td>28</td><td>28</td><td>🟢</td></tr>
+    <tr><td>aseo</td><td>98</td><td>98</td><td>🟢</td></tr>
+    <tr><td>medicamento</td><td>71</td><td>71</td><td>🟢</td></tr>
+    <tr><td>combustible</td><td>10</td><td>10</td><td>🟢</td></tr>
+    <tr><td>papel</td><td>7</td><td>7</td><td>🟢</td></tr>
+    <tr><td>neumático</td><td>2</td><td>2</td><td>🟢</td></tr>
+    <tr><td>alimento</td><td>27</td><td>27</td><td>🟢</td></tr>
+  </tbody></table>
+  <h2>Gap detectado · Compra Ágil</h2>
+  <p>🔴 <b>b2g_compra_agil vacía (0 registros)</b> + la API Compra Ágil de ChileCompra está <b>restringida (403)</b>. La sección usa el seed (5 ejemplos) mientras tanto. <b>Paridad de Compra Ágil por producto = Fase 2</b>: requiere <code>COMPRA_AGIL_API_URL</code> con acceso o la descarga bulk de Datos Abiertos. Anotado a la cola.</p>
+  <h2>Veredicto</h2>
+  <p>✅ Licitaciones: paridad por producto <b>completa (10/10)</b> · 🔴 Compra Ágil: gap estructural de fuente (Fase 2). Verificado en localhost · script versionado en el repo · smoke 16/16.</p>
 </section>
 
 </div>
